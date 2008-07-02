@@ -32,8 +32,6 @@
 #include "gmnreader.h"
 guido::gmnreader * gReader;
 
-#include "guido.h"
-
 #define yyleng		guidoleng
 #define yyin		guidoin
 #define yyrestart	guidorestart
