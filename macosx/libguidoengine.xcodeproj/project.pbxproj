@@ -90,6 +90,7 @@
 		D39096A60E1B715C00693853 /* guidoduration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D39096A50E1B715C00693853 /* guidoduration.cpp */; };
 		D390973A0E1B86DF00693853 /* guidorpar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D39097390E1B86DF00693853 /* guidorpar.cpp */; };
 		D390973B0E1B86E700693853 /* libguidoengine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoengine.framework */; };
+		D39097C80E1BCD4900693853 /* export.h in Headers */ = {isa = PBXBuildFile; fileRef = D39097C70E1BCD4900693853 /* export.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -203,6 +204,7 @@
 		D39096A50E1B715C00693853 /* guidoduration.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = guidoduration.cpp; path = ../tools/guidoduration.cpp; sourceTree = SOURCE_ROOT; };
 		D39097310E1B86B200693853 /* guidorpar */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = guidorpar; sourceTree = BUILT_PRODUCTS_DIR; };
 		D39097390E1B86DF00693853 /* guidorpar.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = guidorpar.cpp; path = ../tools/guidorpar.cpp; sourceTree = SOURCE_ROOT; };
+		D39097C70E1BCD4900693853 /* export.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = export.h; path = ../src/lib/export.h; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -325,6 +327,7 @@
 		D347376E0DED77F400BE54BE /* lib */ = {
 			isa = PBXGroup;
 			children = (
+				D39097C70E1BCD4900693853 /* export.h */,
 				D34739950DEE084F00BE54BE /* browser.h */,
 				D34738B80DEDF18F00BE54BE /* streambeautifuller.cpp */,
 				D34738B90DEDF18F00BE54BE /* streambeautifuller.h */,
@@ -448,6 +451,7 @@
 				D386D44C0E093EEF00231224 /* seqOperation.h in Headers */,
 				D364158C0E1A912800E4E545 /* clonevisitor.h in Headers */,
 				D39096930E1B6FF100693853 /* durationvisitor.h in Headers */,
+				D39097C80E1BCD4900693853 /* export.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
