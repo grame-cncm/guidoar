@@ -1087,7 +1087,7 @@ YY_RULE_SETUP
 case 44:
 YY_RULE_SETUP
 #line 113 "guido.l"
-printf("extra text is : %s\n", guidotext); return EXTRA;
+printf("guido extra text is : %s\n", guidotext); return EXTRA;
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
@@ -1508,7 +1508,7 @@ static int yy_get_next_buffer (void)
 				case EOB_ACT_END_OF_FILE:
 					{
 					if ( guidowrap( ) )
-						return 0;
+						return EOF;
 
 					if ( ! (yy_did_buffer_switch_on_eof) )
 						YY_NEW_FILE;

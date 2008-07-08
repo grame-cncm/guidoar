@@ -23,6 +23,46 @@ static void vadd (std::vector<guido::Sguidoelement>* v1, std::vector<guido::Sgui
 		v1->push_back(*i);
 }
 
+#include <math.h>
+float dotatof( const char * s ) 
+{ 
+	char * dotPos = strchr(s,'.');
+	if ( !dotPos )
+	{
+		return atof(s);
+	}
+	else
+	{
+		int x,y;
+		int length = strlen(s);
+		int digitsAfterDot = length - (dotPos - s + 1);
+		if ( digitsAfterDot == 0 )
+		{
+			if ( length == 1 )
+				return 0;
+			else
+			{
+				sscanf( s , "%d." , &x );
+				return x;
+			}
+		}
+		else
+		{
+			float decimalDivisor = pow( 10 , digitsAfterDot );
+			if ( dotPos == s )
+			{
+				sscanf( s , ".%d" , &x );
+				return x / decimalDivisor;
+			}
+			else
+			{
+				sscanf( s , "%d.%d" , &x , &y );
+				return x + y / pow(10 , digitsAfterDot);
+			}
+		}
+	}
+}
+
 //#define parseDebug
 
 #ifdef parseDebug
@@ -264,7 +304,7 @@ pnumber		: PNUMBER								{ vdebug("NUMBER", guidotext); $$ = atol(guidotext); }
 			;
 nnumber		: NNUMBER								{ vdebug("NUMBER", guidotext); $$ = atol(guidotext); }
 			;
-floatn		: FLOAT									{ $$ = atof(guidotext); }
+floatn		: FLOAT									{ $$ = dotatof(guidotext); }
 			;
 signednumber: number								{ $$ = $1; }
 			| pnumber								{ $$ = $1; } 
