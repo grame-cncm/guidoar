@@ -35,8 +35,8 @@ class visitable
 {
 	public:
 		virtual ~visitable() {}
-		virtual void acceptIn(basevisitor& visitor)  {}
-		virtual void acceptOut(basevisitor& visitor) {}
+		virtual void acceptIn(basevisitor&)  {}
+		virtual void acceptOut(basevisitor&) {}
 };
 
 } // namespace
