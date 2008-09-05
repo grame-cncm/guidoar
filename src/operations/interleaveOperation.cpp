@@ -1,0 +1,111 @@
+/*
+  GUIDO Library
+  Copyright (C) 2006  Grame
+
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or (at your option) any later version.
+
+  This library is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
+
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  research@grame.fr
+
+*/
+
+#include <iostream>
+
+#include "clonevisitor.h"
+#include "durationvisitor.h"
+#include "interleaveOperation.h"
+#include "ARFactory.h"
+#include "ARNote.h"
+#include "AROthers.h"
+#include "tree_browser.h"
+
+
+using namespace std;
+
+namespace guido 
+{
+
+//_______________________________________________________________________________
+// a visitor to count the number of notes and chords
+// notes inside a chord are not counted
+class stepsCounter :
+	public visitor<SARNote>,
+	public visitor<SARChord>
+{
+    public: stepsCounter() {}
+		int count(const Sguidoelement&);
+	protected:
+		void visitStart( SARNote& elt );
+		void visitStart( SARChord& elt );
+		void visitEnd  ( SARChord& elt );
+		bool	fInChord;
+		int		fCount;
+};
+
+int stepsCounter::count(const Sguidoelement& elt)
+{
+	fInChord = false;
+	fCount = 0;
+	if (elt) {
+		tree_browser<guidoelement> tb(this);
+		tb.browse (*elt);
+	}
+	return fCount;
+}
+
+void stepsCounter::visitStart(SARNote& elt)		{ if (!fInChord) fCount++; }
+void stepsCounter::visitStart(SARChord& elt)	{ fInChord = true; fCount++; }
+void stepsCounter::visitEnd  (SARChord& elt)	{ fInChord = false; }
+
+//_______________________________________________________________________________
+SARVoice interleaveOperation::interleave ( const Sguidoelement& voice1, const Sguidoelement& voice2, int offset )
+{
+	SARVoice elt = ARFactory::instance().createVoice();
+	if (elt) {
+	}
+	return elt;
+}
+
+//_______________________________________________________________________________
+SARMusic interleaveOperation::operator() ( const SARMusic& score1, const SARMusic& score2 )
+{
+	SARMusic elt = ARFactory::instance().createMusic();
+	if (elt) {
+		clonevisitor cv;
+		SARMusic cs1 = dynamic_cast<ARMusic*>((guidoelement*)cv.clone(score1));
+		SARMusic cs2 = dynamic_cast<ARMusic*>((guidoelement*)cv.clone(score2));
+		
+		ctree<guidoelement>::const_literator i1 = cs1->lbegin();
+		ctree<guidoelement>::const_literator i2 = cs2->lbegin();
+		while ((i1 != cs1->lend()) && (i2 != cs2->lend())) {
+			int offset = 0;
+			if (fMode == kRight) {
+				stepsCounter sc;
+				offset = sc.count (*i1) - sc.count (*i2);
+			} 
+			cout << "offset is " << offset << endl;		
+			elt->push (interleave (*i1, *i2, offset));
+			i1++; i2++;
+		}
+		while (i1 != cs1->lend())
+			elt->push(*i1++);
+		while (i2 != cs2->lend())
+			elt->push (*i2++);
+	}
+	return elt;
+}
+
+
+} // namespace
