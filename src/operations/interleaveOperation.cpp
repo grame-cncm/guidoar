@@ -39,7 +39,7 @@ namespace guido
 
 //_______________________________________________________________________________
 // a visitor to count the number of notes and chords
-// notes inside a chord are not counted
+// a chord counts for 1 and notes inside a chord are ignored
 class stepsCounter :
 	public visitor<SARNote>,
 	public visitor<SARChord>
@@ -90,6 +90,7 @@ SARMusic interleaveOperation::operator() ( const SARMusic& score1, const SARMusi
 		ctree<guidoelement>::const_literator i1 = cs1->lbegin();
 		ctree<guidoelement>::const_literator i2 = cs2->lbegin();
 		while ((i1 != cs1->lend()) && (i2 != cs2->lend())) {
+			// interleaves voice by voice with a start offset depending on the requested alignment
 			int offset = 0;
 			if (fMode == kRight) {
 				stepsCounter sc;
