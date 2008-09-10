@@ -71,7 +71,7 @@ template <typename T> class treeIterator : public std::iterator<std::input_itera
 		virtual void forward_down(const T& t) {
 			fCurrentIterator = t->elements().begin();
 			if (fCurrentIterator != t->elements().end())
-				fStack.push( make_pair(fCurrentIterator+1, t));
+				fStack.push( std::make_pair(fCurrentIterator+1, t));
 		}
 
 		//________________________________________________________________________
@@ -83,7 +83,7 @@ template <typename T> class treeIterator : public std::iterator<std::input_itera
 
 				fCurrentIterator = s.first;
 				if (fCurrentIterator != s.second->elements().end()) {
-					fStack.push( make_pair(fCurrentIterator+1, s.second));
+					fStack.push( std::make_pair(fCurrentIterator+1, s.second));
 					return;
 				}
 			}
@@ -104,7 +104,7 @@ template <typename T> class treeIterator : public std::iterator<std::input_itera
 			fCurrentIterator = parent->elements().erase(fCurrentIterator);
 			if (fStack.size()) fStack.pop();
 			if (fCurrentIterator != parent->elements().end()) {
-				fStack.push( make_pair(fCurrentIterator+1, parent));
+				fStack.push( std::make_pair(fCurrentIterator+1, parent));
 			}
 			else forward_up();
 			return *this; 
@@ -115,7 +115,7 @@ template <typename T> class treeIterator : public std::iterator<std::input_itera
 			T parent = getParent();
 			fCurrentIterator = parent->elements().insert(fCurrentIterator, value);
 			if (fStack.size()) fStack.pop();
-			fStack.push( make_pair(fCurrentIterator+1, parent));
+			fStack.push( std::make_pair(fCurrentIterator+1, parent));
 			return *this;
 		}
 
