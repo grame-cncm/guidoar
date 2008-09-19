@@ -14,7 +14,7 @@ SRC = $(wildcard $(BASE)/guido/*.cpp $(BASE)/guido/abstract/*.cpp $(BASE)/lib/*.
 OBJ = $(patsubst %.cpp, %.o, $(SRC))
 CXXFLAGS = $(addprefix -I, $(subprojects))
 
-TOOLS = guidoread guidopar guidorpar guidoseq guidodur
+TOOLS = guidoread guidopar guidorpar guidoseq guidodur guido2midi
 
 .PHONY: $(TARGET)
 
@@ -23,6 +23,9 @@ all : $(TARGET) $(TOOLS)
 $(TARGET) : $(OBJ)
 	ar -ru $(TARGET) $(OBJ)
 	ranlib  $(TARGET)
+
+guido2midi : ../tools/guido2midi.cpp
+	g++ ../tools/guido2midi.cpp $(CXXFLAGS) libguidoar.a -o guido2midi
 
 guidoread : ../tools/guidoread.cpp
 	g++ ../tools/guidoread.cpp $(CXXFLAGS) libguidoar.a -o guidoread
