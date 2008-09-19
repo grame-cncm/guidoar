@@ -52,6 +52,7 @@ class export ARNote : public guidoelement
 
 	public:
 		enum { kUndefined = -1 };
+		enum pitch { kNoPitch = -1, C, D, E, F, G, A, B };
 
 		static SMARTP<ARNote> create();
         virtual void			acceptIn  (basevisitor& v);
@@ -65,6 +66,8 @@ class export ARNote : public guidoelement
 	int GetAccidental	() const	{ return fAccidental; }
 	int GetDots			() const	{ return fDots; }
 	
+	pitch GetPitch		(bool &sharp) const;
+	
 	// duration operations
 	rational&		duration()		{ return fDuration; }
 	ARNote& operator =  (const rational&);
@@ -74,7 +77,6 @@ class export ARNote : public guidoelement
 	ARNote& operator /= (const rational&);
 
 	operator std::string () const;
-	
 };
 
 }

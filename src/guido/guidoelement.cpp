@@ -75,6 +75,76 @@ Sguidoelement guidoelement::create()
 	{ guidoelement * o = new guidoelement; assert(o!=0); return o; }
 
 //______________________________________________________________________________
+// attributes access by name
+//______________________________________________________________________________
+const Sguidoattribute guidoelement::getAttribute (const std::string& attrname) const
+{
+	Sguidoattributes::const_iterator it;
+	for (it = attributes().begin(); it != attributes().end(); it++) {
+		if ((*it)->getName() == attrname)
+			return *it;
+	}
+	return 0;
+}
+
+const std::string guidoelement::getAttributeValue (const std::string& attrname) const
+{
+	Sguidoattribute attribute = getAttribute(attrname);
+	return attribute ? attribute->getValue() : "";
+}
+
+long guidoelement::getAttributeLongValue	(const std::string& attrname, long defaultvalue) const
+{
+	Sguidoattribute attribute = getAttribute(attrname);
+	return attribute ? long(*attribute) : defaultvalue;
+}
+
+int guidoelement::getAttributeIntValue	(const std::string& attrname, int defaultvalue) const
+{
+	Sguidoattribute attribute = getAttribute(attrname);
+	return attribute ? int(*attribute) : defaultvalue;
+}
+
+float guidoelement::getAttributeFloatValue	(const std::string& attrname, float defaultvalue) const
+{
+	Sguidoattribute attribute = getAttribute(attrname);
+	return attribute ? float(*attribute) : defaultvalue;
+}
+
+//______________________________________________________________________________
+// attributes access by index
+//______________________________________________________________________________
+const Sguidoattribute guidoelement::getAttribute (unsigned int index) const
+{
+	Sguidoattributes attrs = attributes();
+	return (index < attrs.size()) ? attrs[index] : 0;
+}
+
+const std::string guidoelement::getAttributeValue (unsigned int index) const
+{
+	Sguidoattribute attribute = getAttribute(index);
+	return attribute ? attribute->getValue() : "";
+}
+
+long guidoelement::getAttributeLongValue	(unsigned int index, long defaultvalue) const
+{
+	Sguidoattribute attribute = getAttribute(index);
+	return attribute ? long(*attribute) : defaultvalue;
+}
+
+int guidoelement::getAttributeIntValue	(unsigned int index, int defaultvalue) const
+{
+	Sguidoattribute attribute = getAttribute(index);
+	return attribute ? int(*attribute) : defaultvalue;
+}
+
+float guidoelement::getAttributeFloatValue	(unsigned int index, float defaultvalue) const
+{
+	Sguidoattribute attribute = getAttribute(index);
+	return attribute ? float(*attribute) : defaultvalue;
+}
+
+//______________________________________________________________________________
 long guidoelement::add (const Sguidoattribute& attr)
 { 
 	long n = fAttributes.size();

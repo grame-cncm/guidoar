@@ -39,6 +39,27 @@ ARNote::ARNote()
 }
 
 //______________________________________________________________________________
+ARNote::pitch ARNote::GetPitch (bool& sharp) const
+{
+	string name = getName();
+	sharp = false;
+	if (name == "cis") { sharp = true; return C; }
+	if (name == "dis") { sharp = true; return D; }
+	if (name == "fis") { sharp = true; return F; }
+	if (name == "gis") { sharp = true; return G; }
+	if (name == "ais") { sharp = true; return A; }
+
+	if (name == "do" || name == "c") return C;
+	if (name == "re" || name == "d") return D;
+	if (name == "mi" || name == "e") return E;
+	if (name == "fa" || name == "f") return F;
+	if (name == "sol" || name == "g") return G;
+	if (name == "la" || name == "a") return A;
+	if (name == "si" || name == "ti" || name == "b" || name == "h") return B;
+	return kNoPitch;
+}
+
+//______________________________________________________________________________
 ARNote& ARNote::operator =  (const rational& d)	{ fDuration  = d; fDuration.rationalise(); return *this; }
 ARNote& ARNote::operator += (const rational& d)	{ fDuration += d; fDuration.rationalise(); return *this; }
 ARNote& ARNote::operator *= (const rational& d)	{ fDuration *= d; fDuration.rationalise(); return *this; }

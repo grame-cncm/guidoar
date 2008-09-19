@@ -119,6 +119,18 @@ class export guidoelement : public ctree<guidoelement>, public visitable
 		long add (const Sguidoattributes& attr);        
         const Sguidoattributes& attributes() const	{ return fAttributes; }
         Sguidoattributes& attributes()				{ return fAttributes; }
+
+        const Sguidoattribute getAttribute			(const std::string& attrname) const;
+		const std::string	getAttributeValue		(const std::string& attrname) const;
+		long				getAttributeLongValue	(const std::string& attrname, long defaultvalue) const;
+		int					getAttributeIntValue	(const std::string& attrname, int defaultvalue) const;
+		float				getAttributeFloatValue	(const std::string& attrname, float defaultvalue) const;
+
+        const Sguidoattribute getAttribute			(unsigned int index) const;
+		const std::string	getAttributeValue		(unsigned int index) const;
+		long				getAttributeLongValue	(unsigned int index, long defaultvalue) const;
+		int					getAttributeIntValue	(unsigned int index, int defaultvalue) const;
+		float				getAttributeFloatValue	(unsigned int index, float defaultvalue) const;
 };
 
 export std::ostream& operator << (std::ostream& os, const Sguidoelement& elt);
