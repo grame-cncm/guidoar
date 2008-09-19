@@ -169,6 +169,10 @@ SOURCE=..\..\src\visitors\durationvisitor.cpp
 
 SOURCE=..\..\src\visitors\gmnvisitor.cpp
 # End Source File
+# Begin Source File
+
+SOURCE=..\..\src\visitors\midicontextvisitor.cpp
+# End Source File
 # End Group
 # Begin Group "guido"
 

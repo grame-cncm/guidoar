@@ -3,6 +3,18 @@ Microsoft Developer Studio Workspace File, Format Version 6.00
 
 ###############################################################################
 
+Project: "guido2midi"=.\guido2midi\guido2midi.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
 Project: "guidoar"=.\guidoar\guidoar.dsp - Package Owner=<4>
 
 Package=<5>
