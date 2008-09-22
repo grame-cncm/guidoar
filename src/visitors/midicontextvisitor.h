@@ -86,8 +86,16 @@ class export midicontextvisitor :
 	public visitor<SARNote>
 {
     private:
-        bool	fInChord, fInSlur, fInStaccato, fInTie, fInGrace;
+		enum { kNoTie, kInTie, kTiedNote, kTiedChord };
+		SARVoice	fCurrentVoice;
+		std::vector<SARNote> fTiedNotes; 
+        bool	fInChord, fInSlur, fInStaccato, fInGrace;
+		int		fTieState;
+
 		void	reset();
+		void	startTie(Sguidoelement tie, Sguidoelement context = 0);
+		void	stopTie ();
+		void	storeTied ( SARChord& elt );
    
     protected:
 		midiwriter*	fMidiWriter;
@@ -98,7 +106,6 @@ class export midicontextvisitor :
 		int			fCurrentVel;		// current notes velocity
 		int			fCurrentDots;		// current notes dots
         int			fTranspose;			// current transpose value
-        SARNote		fTied;				// a note to be tied
 		long		fTPQ;				// ticks-per-quater value for date conversion
 		
 		int  moveTime (int dur);
@@ -135,10 +142,10 @@ class export midicontextvisitor :
 		virtual void visitStart( SARStaccBegin& elt )	{ fInStaccato = true; }
 		virtual void visitStart( SARStaccEnd& elt )		{ fInStaccato = false; }
 
-		virtual void visitStart( SARTie& elt )			{ fInTie = true; }
-		virtual void visitEnd  ( SARTie& elt )			{ fInTie = false; }
-		virtual void visitStart( SARTieBegin& elt )		{ fInTie = true; }
-		virtual void visitStart( SARTieEnd& elt )		{ fInTie = false; }
+		virtual void visitStart( SARTie& elt );
+		virtual void visitEnd  ( SARTie& elt );
+		virtual void visitStart( SARTieBegin& elt );
+		virtual void visitStart( SARTieEnd& elt );
 
 	// nuances rendering
 		virtual void visitStart( SARIntens& elt );

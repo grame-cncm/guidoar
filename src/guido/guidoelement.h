@@ -99,7 +99,7 @@ class export guidoelement : public ctree<guidoelement>, public visitable
 	Sguidoattributes fAttributes;
 	//! list of the element attributes
 	bool	fAuto;
-		
+	
     protected:
 		guidoelement() : fAuto(false) {}
 		virtual ~guidoelement() {}

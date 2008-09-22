@@ -20,10 +20,12 @@
 
 */
 
+#include "ARChord.h"
 #include "ARNote.h"
+#include "AROthers.h"
 #include "ARTag.h"
 #include "midicontextvisitor.h"
-#include "tree_browser.h"
+#include "unrolled_guido_browser.h"
 
 using namespace std;
 namespace guido {
@@ -45,14 +47,15 @@ midicontextvisitor::midicontextvisitor(long tpq, midiwriter* writer)
 void midicontextvisitor::visit(Sguidoelement& elt) 
 { 
 	reset();
-	tree_browser<guidoelement> tb(this);
-	tb.browse (*elt);
+	unrolled_guido_browser tb(this);
+	tb.browse (elt);
 }
 
 //________________________________________________________________________
 void midicontextvisitor::reset() 
 { 
-	fInChord =  fInSlur = fInStaccato = fInTie = fInGrace = false;
+	fInChord =  fInSlur = fInStaccato = fInGrace = false;
+	fTieState = kNoTie;
 	// reset to the default guido implicit values
     fCurrentDate = fChordDuration = 0;
 	fCurrentDuration = rational (1,4);
@@ -148,11 +151,54 @@ void midicontextvisitor::playMidiInstrument (int progChange)
 }
 
 //________________________________________________________________________
+void midicontextvisitor::startTie(Sguidoelement tie, Sguidoelement context)	
+{ 
+	fTieState = kInTie;
+/*
+	ctree<guidoelement>::iterator i;
+	if (context) {
+		i = context->begin();
+	}
+	else if (fCurrentVoice) {
+		context = fCurrentVoice;
+		i = find(context->begin(), context->end(), tie);
+	}
+
+	while (i != context->end()) {
+		SARNote note = dynamic_cast<ARNote*>((guidoelement*)(*i));
+		SARChord chord = dynamic_cast<ARChord*>((guidoelement*)(*i));
+		SARTieEnd tieEnd = dynamic_cast<ARTag<kTTieEnd>*>((guidoelement*)(*i));
+		
+		i++;
+	}
+*/
+}
+
+//________________________________________________________________________
+void midicontextvisitor::stopTie()	
+{ 
+	fTiedNotes.clear();
+	fTieState = kNoTie;
+}
+
+//________________________________________________________________________
+void midicontextvisitor::storeTied( SARChord& elt )	
+{
+	fTiedNotes.clear();
+	ctree<guidoelement>::iterator i;
+	for (i = elt->begin(); i != elt->end(); i++) {
+		SARNote note = dynamic_cast<ARNote*>((guidoelement*)(*i));
+		if (note) fTiedNotes.push_back(note); 
+	}
+}
+
+//________________________________________________________________________
 // the visitxxx methods
 //________________________________________________________________________
 void midicontextvisitor::visitStart ( SARVoice& elt )
 {
 	reset ();
+	fCurrentVoice = elt;
 	if (fMidiWriter) fMidiWriter->startVoice();
 }
 void midicontextvisitor::visitEnd ( SARVoice& elt )		{ if (fMidiWriter) fMidiWriter->endVoice (fCurrentDate); }
@@ -160,19 +206,37 @@ void midicontextvisitor::visitEnd ( SARVoice& elt )		{ if (fMidiWriter) fMidiWri
 //________________________________________________________________________
 void midicontextvisitor::visitStart( SARNote& elt )
 {
+	if (fTieState == kInTie) {
+		fTieState = kTiedNote;
+		fTiedNotes.push_back(elt);
+	}
+	else if (fTieState == kTiedNote) {
+	}
+
 	int octave = elt->GetOctave();
 	if (octave != ARNote::kUndefined) fCurrentOctave = octave;
 
 	int dur = rational2ticks (noteduration(elt));
 	int pitch = midiPitch(elt);
-	if (fInTie) {
-	}
 	if (pitch >= 0)	playNote (fCurrentDate, pitch, dur);
 	fCurrentDate += moveTime (dur);
 }
 
 //________________________________________________________________________
-void midicontextvisitor::visitStart( SARChord& elt )	{ fChordDuration = 0; fInChord = true; }
+void midicontextvisitor::visitStart( SARTie& elt )			{ startTie(elt, elt); }
+void midicontextvisitor::visitEnd  ( SARTie& elt )			{ stopTie(); }
+void midicontextvisitor::visitStart( SARTieBegin& elt )		{ startTie(elt); }
+void midicontextvisitor::visitStart( SARTieEnd& elt )		{ stopTie(); }
+
+//________________________________________________________________________
+void midicontextvisitor::visitStart( SARChord& elt )	{ 
+	fChordDuration = 0; 
+	fInChord = true; 
+	if (fTieState == kInTie) {
+		fTieState = kTiedChord;
+		storeTied (elt);
+	}
+}
 void midicontextvisitor::visitEnd  ( SARChord& elt )	{ fInChord = false; fCurrentDate += moveTime (fChordDuration); }
 
 //________________________________________________________________________
