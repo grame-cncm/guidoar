@@ -42,33 +42,13 @@ namespace guido
 //______________________________________________________________________________
 template <typename T> class treeIterator : public std::iterator<std::input_iterator_tag, T>
 {
-	protected:
-		typedef typename std::vector<T>::iterator nodes_iterator;
-		typedef std::pair<nodes_iterator, T> state;
-
-		std::stack<state>	fStack;
-		T					fRootElement;
-		nodes_iterator		fCurrentIterator;
-
-	public:
-				 treeIterator() {}
-				 treeIterator(const T& t, bool end=false) {
-					 fRootElement = t;
-					 if (end) fCurrentIterator = t->elements().end();
-					 else forward_down (t);
-				 }
-				 treeIterator(const treeIterator& a)  { *this = a; }
-		virtual ~treeIterator() {}
-		
-		T operator  *() const	{ return *fCurrentIterator; }
-		T operator ->() const	{ return *fCurrentIterator; } 
-		
+	private:
 		//________________________________________________________________________
 		T getParent() const		{ return fStack.size() ? fStack.top().second : fRootElement; }
 		
 		//________________________________________________________________________
 		// current element has sub-elements: go down to sub-elements first			
-		virtual void forward_down(const T& t) {
+		void forward_down(const T& t) {
 			fCurrentIterator = t->elements().begin();
 			if (fCurrentIterator != t->elements().end())
 				fStack.push( std::make_pair(fCurrentIterator+1, t));
@@ -95,8 +75,33 @@ template <typename T> class treeIterator : public std::iterator<std::input_itera
 			if ((*fCurrentIterator)->size()) forward_down(*fCurrentIterator);
 			else forward_up();
 		}
+
+	protected:
+		typedef typename std::vector<T>::iterator nodes_iterator;
+		typedef std::pair<nodes_iterator, T> state;
+
+		std::stack<state>	fStack;
+		T					fRootElement;
+		nodes_iterator		fCurrentIterator;
+		
+	public:
+				 treeIterator() {}
+				 treeIterator(const T& t, bool end=false) {
+					 fRootElement = t;
+					 if (end) fCurrentIterator = t->elements().end();
+					 else forward_down (t);
+				 }
+				 treeIterator(const treeIterator& a)  { *this = a; }
+		virtual ~treeIterator() {}
+		
+		T operator  *() const	{ return *fCurrentIterator; }
+		T operator ->() const	{ return *fCurrentIterator; } 
 		treeIterator& operator ++()		{ forward(); return *this; }
 		treeIterator& operator ++(int)	{ forward(); return *this; }
+
+		//________________________________________________________________________
+		// inc the iterator at the same vector level ie without forward down
+		treeIterator& rightShift()		{ forward_up(); return *this; }
 
 		//________________________________________________________________________
 		treeIterator& erase() {
