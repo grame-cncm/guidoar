@@ -25,6 +25,8 @@
 #ifndef __midiContextVisitor__
 #define __midiContextVisitor__
 
+#include <map>
+
 #include "export.h"
 #include "guidoelement.h"
 #include "ARTypes.h"
@@ -87,15 +89,18 @@ class export midicontextvisitor :
 {
     private:
 		enum { kNoTie, kInTie, kTiedNote, kTiedChord };
+		std::map<Sguidoelement,int>		fTiedMap;			// used to store tied notes in a single tie sequence
+		ctree<guidoelement>::iterator	fEndTie;			// end iterator for tie container browsing
 		SARVoice	fCurrentVoice;
-		std::vector<SARNote> fTiedNotes; 
         bool	fInChord, fInSlur, fInStaccato, fInGrace;
 		int		fTieState;
 
 		void	reset();
-		void	startTie(Sguidoelement tie, Sguidoelement context = 0);
+		void	startTie(Sguidoelement tie, bool storeEnd = false);
 		void	stopTie ();
-		void	storeTied ( SARChord& elt );
+		void	storeNotes ( SARChord& elt, std::vector<SARNote>& dest );
+		void	lookupTied(ctree<guidoelement>::iterator start, ctree<guidoelement>::iterator end, SARNote note, std::vector<SARNote>&);
+		rational totalDuration ( const std::vector<SARNote>& list ) const;
    
     protected:
 		midiwriter*	fMidiWriter;
@@ -109,9 +114,10 @@ class export midicontextvisitor :
 		long		fTPQ;				// ticks-per-quater value for date conversion
 		
 		int  moveTime (int dur);
-		rational noteduration (SARNote& elt );		// computes a note duration
-		int  rational2ticks (const rational& dur);	// converts guido rational time into ticks
-		int  midiPitch (SARNote& elt);
+		bool equalPitch (const SARNote&, const SARNote&) const;
+		rational noteduration (const SARNote& elt, rational& currentDuration, int& currentDots ) const;	// computes a note duration
+		int  rational2ticks (const rational& dur) const;		// converts guido rational time into ticks
+		int  midiPitch (const SARNote& elt) const;
  
  		virtual void playMidiInstrument (int progChange);
  		virtual void playNote (long date, int pitch, int duration);

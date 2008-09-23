@@ -73,7 +73,7 @@ int midicontextvisitor::moveTime(int dur)
 }
 
 //________________________________________________________________________
-int midicontextvisitor::rational2ticks(const rational& dur) 
+int midicontextvisitor::rational2ticks(const rational& dur) const
 {
 	// dur is expressed in whole note fraction
 	float fdur = float(dur * 4);
@@ -81,7 +81,7 @@ int midicontextvisitor::rational2ticks(const rational& dur)
 }
 
 //________________________________________________________________________
-int midicontextvisitor::midiPitch (SARNote& elt) 
+int midicontextvisitor::midiPitch (const SARNote& elt)  const
 {
 	bool sharp; int midi = -1;
 	ARNote::pitch pitch = elt->GetPitch (sharp);
@@ -95,17 +95,17 @@ int midicontextvisitor::midiPitch (SARNote& elt)
 	return midi;
 }
 //________________________________________________________________________
-rational midicontextvisitor::noteduration (SARNote& elt )
+rational midicontextvisitor::noteduration (const SARNote& elt, rational& currentDuration, int& currentDots ) const
 {
 	rational dur = elt->duration();
 	if (dur.getNumerator() != ARNote::kUndefined) {
-		fCurrentDuration = dur;
-		fCurrentDots = 0;
+		currentDuration = dur;
+		currentDots = 0;
 	}
 	int dots = elt->GetDots();
-	if (dots) fCurrentDots = dots;
-	dur = fCurrentDuration;
-	dots = fCurrentDots;
+	if (dots) currentDots = dots;
+	dur = currentDuration;
+	dots = currentDots;
 	rational dotmult (1,1);
 	while (dots) {
 		dotmult /= 2;
@@ -151,44 +151,101 @@ void midicontextvisitor::playMidiInstrument (int progChange)
 }
 
 //________________________________________________________________________
-void midicontextvisitor::startTie(Sguidoelement tie, Sguidoelement context)	
+void midicontextvisitor::startTie(Sguidoelement tie, bool storeEnd)	
 { 
+	fTiedMap.clear();
 	fTieState = kInTie;
-/*
-	ctree<guidoelement>::iterator i;
-	if (context) {
-		i = context->begin();
+	if (storeEnd) {
+		ctree<guidoelement>::iterator i = find(fCurrentVoice->begin(), fCurrentVoice->end(), tie);
+		i.rightShift();
+		fEndTie = i;
 	}
-	else if (fCurrentVoice) {
-		context = fCurrentVoice;
-		i = find(context->begin(), context->end(), tie);
-	}
-
-	while (i != context->end()) {
-		SARNote note = dynamic_cast<ARNote*>((guidoelement*)(*i));
-		SARChord chord = dynamic_cast<ARChord*>((guidoelement*)(*i));
-		SARTieEnd tieEnd = dynamic_cast<ARTag<kTTieEnd>*>((guidoelement*)(*i));
-		
-		i++;
-	}
-*/
+	else fEndTie = fCurrentVoice->end();
 }
 
 //________________________________________________________________________
 void midicontextvisitor::stopTie()	
 { 
-	fTiedNotes.clear();
+	fTiedMap.clear();
 	fTieState = kNoTie;
 }
 
 //________________________________________________________________________
-void midicontextvisitor::storeTied( SARChord& elt )	
+void midicontextvisitor::storeNotes( SARChord& elt, vector<SARNote>& dest )	
 {
-	fTiedNotes.clear();
 	ctree<guidoelement>::iterator i;
 	for (i = elt->begin(); i != elt->end(); i++) {
 		SARNote note = dynamic_cast<ARNote*>((guidoelement*)(*i));
-		if (note) fTiedNotes.push_back(note); 
+		if (note) dest.push_back(note); 
+	}
+}
+
+//________________________________________________________________________
+// note: similar pitch from different name space are different (like g and sol)
+// this is to comply with the current layout result  
+bool midicontextvisitor::equalPitch (const SARNote& n1, const SARNote& n2) const
+{
+	int octave1 = n1->GetOctave();
+	if (octave1 == ARNote::kUndefined) octave1 = fCurrentOctave;
+	int octave2 = n2->GetOctave();
+	if (octave2 == ARNote::kUndefined) octave2 = fCurrentOctave;
+
+	return	(n1->getName() == n2->getName()) &&
+			(octave1 == octave2) &&
+			(n1->GetAccidental() == n2->GetAccidental());
+}
+
+//________________________________________________________________________
+rational midicontextvisitor::totalDuration( const vector<SARNote>& list ) const
+{
+	rational listDuration (0,1);
+	rational currentDuration = fCurrentDuration;
+	int currentDots = fCurrentDots;
+	for (vector<SARNote>::const_iterator i = list.begin(); i != list.end(); i++) {
+		listDuration += noteduration(*i, currentDuration, currentDots);
+		listDuration.rationalise();
+	}
+	return listDuration;
+}
+
+//________________________________________________________________________
+void midicontextvisitor::lookupTied(ctree<guidoelement>::iterator start, ctree<guidoelement>::iterator end, SARNote note, vector<SARNote>& list)	
+{ 
+	int chordnotes = 0;
+	while (start != end) {
+		// end of a tie depends on the end iterator or on the \tieEnd tag
+		SARTieEnd tieEnd = dynamic_cast<ARTag<kTTieEnd>*>((guidoelement*)(*start));
+		if (tieEnd) break;
+
+		SARNote next = dynamic_cast<ARNote*>((guidoelement*)(*start));
+		if (next) {
+			if (chordnotes) chordnotes--;		// notes inside a chord are handled below
+			else if ( equalPitch(note, next) ) {
+				 list.push_back(next);
+				 fTiedMap[next] = 1;
+			}
+			else {
+				fTieState = kInTie;		// return to tie begin state
+				break;					// which allows for further ties to operate
+			}
+		}
+
+		SARChord chord = dynamic_cast<ARChord*>((guidoelement*)(*start));
+		if (chord) {
+			vector<SARNote> clist;
+			storeNotes (chord, clist);		// get the notes from the chord
+			chordnotes = clist.size();		// stores the notes count (to be ignored above)
+			bool chordTied = false;			// a flag to check for effective tied notes
+			for (vector<SARNote>::const_iterator i = clist.begin(); i != clist.end(); i++) {
+				if ( equalPitch(note, *i) ) {
+					list.push_back(*i);
+					fTiedMap[*i] = 1;
+					chordTied = true;
+				}
+			}
+			if (!chordTied) break;			// chords without a tie breaks the tie processing
+		}
+		start++;
 	}
 }
 
@@ -206,24 +263,36 @@ void midicontextvisitor::visitEnd ( SARVoice& elt )		{ if (fMidiWriter) fMidiWri
 //________________________________________________________________________
 void midicontextvisitor::visitStart( SARNote& elt )
 {
-	if (fTieState == kInTie) {
-		fTieState = kTiedNote;
-		fTiedNotes.push_back(elt);
+	int noteDuration = rational2ticks (noteduration(elt, fCurrentDuration, fCurrentDots));
+	if (fTiedMap[elt]) {
+		fCurrentDate += moveTime (noteDuration);	// moves the current time
+		return;										// but skip already tied notes
 	}
-	else if (fTieState == kTiedNote) {
-	}
-
+	
 	int octave = elt->GetOctave();
 	if (octave != ARNote::kUndefined) fCurrentOctave = octave;
+	int dur = 0;
 
-	int dur = rational2ticks (noteduration(elt));
+	if (fTieState == kInTie) {				// we've just entered a tie
+		fTieState = kTiedNote;
+
+		vector<SARNote> list;
+		list.push_back(elt);
+		// 		
+		ctree<guidoelement>::iterator i = find(fCurrentVoice->begin(), fCurrentVoice->end(), elt);
+		if (i != fCurrentVoice->end()) {
+			lookupTied (++i, fEndTie, elt, list);			// get the list of tied notes
+			dur = rational2ticks (totalDuration(list));		// and compute the total duration
+		}
+	}
+	else dur = rational2ticks (noteduration(elt, fCurrentDuration, fCurrentDots));
 	int pitch = midiPitch(elt);
 	if (pitch >= 0)	playNote (fCurrentDate, pitch, dur);
-	fCurrentDate += moveTime (dur);
+	fCurrentDate += moveTime (noteDuration);
 }
 
 //________________________________________________________________________
-void midicontextvisitor::visitStart( SARTie& elt )			{ startTie(elt, elt); }
+void midicontextvisitor::visitStart( SARTie& elt )			{ startTie(elt, true); }
 void midicontextvisitor::visitEnd  ( SARTie& elt )			{ stopTie(); }
 void midicontextvisitor::visitStart( SARTieBegin& elt )		{ startTie(elt); }
 void midicontextvisitor::visitStart( SARTieEnd& elt )		{ stopTie(); }
@@ -234,7 +303,20 @@ void midicontextvisitor::visitStart( SARChord& elt )	{
 	fInChord = true; 
 	if (fTieState == kInTie) {
 		fTieState = kTiedChord;
-		storeTied (elt);
+		vector<SARNote> cnotes;
+		storeNotes (elt, cnotes);
+		ctree<guidoelement>::iterator i = find(fCurrentVoice->begin(), fCurrentVoice->end(), elt);
+		if (i == fCurrentVoice->end()) return;
+
+		for (vector<SARNote>::const_iterator note = cnotes.begin(); note != cnotes.end(); note++) {
+			if (fTiedMap[*note]) continue;
+
+			vector<SARNote> list;			
+			lookupTied (i, fEndTie, *note, list);
+			int dur = rational2ticks (totalDuration(list));
+			int pitch = midiPitch(*note);
+			if (pitch >= 0)	playNote (fCurrentDate, pitch, dur);
+		}
 	}
 }
 void midicontextvisitor::visitEnd  ( SARChord& elt )	{ fInChord = false; fCurrentDate += moveTime (fChordDuration); }
