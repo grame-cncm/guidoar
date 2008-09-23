@@ -81,6 +81,7 @@ class export unrolled_guido_browser : public browser<Sguidoelement>,
 		typedef struct { rational duration; int dots; int octave; } notestate;	// current implicit notes state
 
 		std::map<Sguidoelement,int>	fRepeatMap;			// used to avoid loops in scores
+		std::map<Sguidoelement,int>	fJumpsMap;			// used to avoid loops in scores
 		bool	fWriteImplicit;		///< a boolean to control implicit notes values (for jumps and repeated sections)
 		notestate	fCurrentNoteState;
 		

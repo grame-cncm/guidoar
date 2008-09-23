@@ -16,6 +16,8 @@
 #include "guidoparser.h"
 #include "midicontextvisitor.h"
 
+//#define debug
+
 using namespace std;
 using namespace guido;
 
@@ -40,6 +42,19 @@ class mymidiwriter : public midiwriter {
 
 //_______________________________________________________________________________
 int main(int argc, char *argv[]) {
+#ifdef debug
+	guidoparser r;
+	Sguidoelement g = r.parseFile( "test.gmn" );
+	if (g) {
+		mymidiwriter writer;
+		midicontextvisitor mcv(100, &writer);
+		mcv.visit (g);
+	}
+	else {
+		cerr << "test.gmn: read failed!" << endl;
+		return 1;
+	}
+#else
 	if (argc == 1) {
 		guidoparser r;
 		Sguidoelement g = r.parseFile( stdin );
@@ -62,5 +77,6 @@ int main(int argc, char *argv[]) {
 			return 1;
 		}
 	}
+#endif
 	return 0;
 }

@@ -35,7 +35,7 @@ namespace guido
 {
 
 //______________________________________________________________________________
-void unrolled_guido_browser::browse (Sguidoelement& t)				{ t->acceptIn(*this); }
+void unrolled_guido_browser::browse (Sguidoelement& elt) { elt->acceptIn(*this); }
 
 void unrolled_guido_browser::visitStart( Sguidoelement& elt)
 { 
@@ -89,10 +89,10 @@ void unrolled_guido_browser::visitStart( SARRepeatEnd& elt)
 //______________________________________________________________________________
 bool unrolled_guido_browser::jump(ctree<guidoelement>::literator where, Sguidoelement elt)
 {
-	if (fRepeatMap[elt] == 0) {
+	if (fJumpsMap[elt] == 0) {
 		fRepeatMap.clear();				// reset repeat sections
 		fNextIterator = where;			// set next iteration
-		fRepeatMap[elt] = 1;
+		fJumpsMap[elt] = 1;
 		return true;
 	}
 	return false;
@@ -107,19 +107,21 @@ void unrolled_guido_browser::visitStart( SARDaCapo& elt)
 //______________________________________________________________________________
 void unrolled_guido_browser::visitStart( SARDaCoda& elt)
 {
-	jump (fCodaIterator, elt);
+	if (fCodaIterator != fEndIterator)
+		jump (fCodaIterator, elt);		// only if coda sign has already been met
 }
 
 //______________________________________________________________________________
 void unrolled_guido_browser::visitStart( SARDalSegno& elt)
 {
-	jump (fSegnoIterator, elt);
+	if (fSegnoIterator != fEndIterator)
+		jump (fSegnoIterator, elt);	// only if segno sign has already been met
 }
 
 //______________________________________________________________________________
 void unrolled_guido_browser::visitStart( SARDalSegnoAlFine& elt)
 {
-	if (jump (fSegnoIterator, elt))
+	if ( (fSegnoIterator != fEndIterator) && (jump (fSegnoIterator, elt)))
 		fEndIterator = fFineIterator;
 }
 
@@ -152,6 +154,7 @@ void unrolled_guido_browser::visitStart( SARFine& elt )			{ fStoreIterator = &fF
 void unrolled_guido_browser::reset()
 {
 	fRepeatMap.clear();					// clear the map of backward repeat measures
+	fJumpsMap.clear();					// clear the map of jumps locations
 	fWriteImplicit = true;				// for repeat bars to the top of the score 
 	fCurrentNoteState.duration = rational(1,4);
 	fCurrentNoteState.dots = 0;
