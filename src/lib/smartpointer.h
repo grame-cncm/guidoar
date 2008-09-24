@@ -120,6 +120,8 @@ template<class T> class SMARTP {
 			}
 			return *this;
 		}
+		//! operator < to support SMARTP map with Visual C++
+		bool operator<(const SMARTP<T>& p_)	const			  { return fSmartPtr < ((T *) p_); }
 		//! operator = to support inherited class reference
 		SMARTP& operator=(const SMARTP<T>& p_)                { return operator=((T *) p_); }
 		//! dynamic cast support
