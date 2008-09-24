@@ -86,23 +86,28 @@ class export midicontextvisitor :
 	public visitor<SARGrace>,
 	public visitor<SAROct>,
 	public visitor<SARNote>
-{
+{   
+    protected:
+		typedef ctree<guidoelement>::iterator guidoIterator;
+		typedef std::vector<SARNote> ARNotes;
+
     private:
 		enum { kNoTie, kInTie, kTiedNote, kTiedChord };
-		std::map<Sguidoelement,int>		fTiedMap;			// used to store tied notes in a single tie sequence
-		ctree<guidoelement>::iterator	fEndTie;			// end iterator for tie container browsing
-		SARVoice	fCurrentVoice;
+		std::map<Sguidoelement,int>	fTiedMap;	// used to store tied notes in a single tie sequence
+		guidoIterator	fEndTie;				// end iterator for tie container browsing
+		SARVoice		fCurrentVoice;
         bool	fInChord, fInSlur, fInStaccato, fInGrace;
 		int		fTieState;
 
-		void	reset();
-		void	startTie(Sguidoelement tie, bool storeEnd = false);
-		void	stopTie ();
-		void	storeNotes ( SARChord& elt, std::vector<SARNote>& dest );
-		void	lookupTied(ctree<guidoelement>::iterator start, ctree<guidoelement>::iterator end, SARNote note, std::vector<SARNote>&);
-		rational totalDuration ( const std::vector<SARNote>& list ) const;
+		void	reset ();
+		void	startTie (Sguidoelement tie, bool storeEnd = false);
+		void	stopTie	();
+		void	storeNotes	( SARChord& elt, ARNotes& dest );
+		void	lookupTied	(guidoIterator start, guidoIterator end, const SARNote& note, ARNotes&);
+		rational totalDuration ( const ARNotes& list ) const;
    
     protected:
+
 		midiwriter*	fMidiWriter;
         long		fCurrentDate;		// current date
         rational	fCurrentDuration;	// current notes duration

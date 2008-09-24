@@ -20,6 +20,12 @@
 
 */
 
+#ifdef WIN32
+# pragma warning (disable : 4786)
+#endif
+
+#include <algorithm>
+
 #include "ARChord.h"
 #include "ARNote.h"
 #include "AROthers.h"
@@ -94,6 +100,7 @@ int midicontextvisitor::midiPitch (const SARNote& elt)  const
 	}
 	return midi;
 }
+
 //________________________________________________________________________
 rational midicontextvisitor::noteduration (const SARNote& elt, rational& currentDuration, int& currentDots ) const
 {
@@ -151,12 +158,14 @@ void midicontextvisitor::playMidiInstrument (int progChange)
 }
 
 //________________________________________________________________________
+// ties management
+//________________________________________________________________________
 void midicontextvisitor::startTie(Sguidoelement tie, bool storeEnd)	
 { 
 	fTiedMap.clear();
 	fTieState = kInTie;
 	if (storeEnd) {
-		ctree<guidoelement>::iterator i = find(fCurrentVoice->begin(), fCurrentVoice->end(), tie);
+		guidoIterator i = find(fCurrentVoice->begin(), fCurrentVoice->end(), tie);
 		i.rightShift();
 		fEndTie = i;
 	}
@@ -171,9 +180,9 @@ void midicontextvisitor::stopTie()
 }
 
 //________________________________________________________________________
-void midicontextvisitor::storeNotes( SARChord& elt, vector<SARNote>& dest )	
+void midicontextvisitor::storeNotes( SARChord& elt, ARNotes& dest )	
 {
-	ctree<guidoelement>::iterator i;
+	guidoIterator i;
 	for (i = elt->begin(); i != elt->end(); i++) {
 		SARNote note = dynamic_cast<ARNote*>((guidoelement*)(*i));
 		if (note) dest.push_back(note); 
@@ -196,12 +205,12 @@ bool midicontextvisitor::equalPitch (const SARNote& n1, const SARNote& n2) const
 }
 
 //________________________________________________________________________
-rational midicontextvisitor::totalDuration( const vector<SARNote>& list ) const
+rational midicontextvisitor::totalDuration( const ARNotes& list ) const
 {
 	rational listDuration (0,1);
 	rational currentDuration = fCurrentDuration;
 	int currentDots = fCurrentDots;
-	for (vector<SARNote>::const_iterator i = list.begin(); i != list.end(); i++) {
+	for (ARNotes::const_iterator i = list.begin(); i != list.end(); i++) {
 		listDuration += noteduration(*i, currentDuration, currentDots);
 		listDuration.rationalise();
 	}
@@ -209,12 +218,12 @@ rational midicontextvisitor::totalDuration( const vector<SARNote>& list ) const
 }
 
 //________________________________________________________________________
-void midicontextvisitor::lookupTied(ctree<guidoelement>::iterator start, ctree<guidoelement>::iterator end, SARNote note, vector<SARNote>& list)	
+void midicontextvisitor::lookupTied(guidoIterator start, guidoIterator end, const SARNote& note, ARNotes& list)	
 { 
 	int chordnotes = 0;
 	while (start != end) {
 		// end of a tie depends on the end iterator or on the \tieEnd tag
-		SARTieEnd tieEnd = dynamic_cast<ARTag<kTTieEnd>*>((guidoelement*)(*start));
+		SARTieEnd tieEnd = dynamic_cast<ARTag <kTTieEnd>* >((guidoelement*)(*start));
 		if (tieEnd) break;
 
 		SARNote next = dynamic_cast<ARNote*>((guidoelement*)(*start));
@@ -232,11 +241,11 @@ void midicontextvisitor::lookupTied(ctree<guidoelement>::iterator start, ctree<g
 
 		SARChord chord = dynamic_cast<ARChord*>((guidoelement*)(*start));
 		if (chord) {
-			vector<SARNote> clist;
+			ARNotes clist;
 			storeNotes (chord, clist);		// get the notes from the chord
 			chordnotes = clist.size();		// stores the notes count (to be ignored above)
 			bool chordTied = false;			// a flag to check for effective tied notes
-			for (vector<SARNote>::const_iterator i = clist.begin(); i != clist.end(); i++) {
+			for (ARNotes::const_iterator i = clist.begin(); i != clist.end(); i++) {
 				if ( equalPitch(note, *i) ) {
 					list.push_back(*i);
 					fTiedMap[*i] = 1;
@@ -276,10 +285,10 @@ void midicontextvisitor::visitStart( SARNote& elt )
 	if (fTieState == kInTie) {				// we've just entered a tie
 		fTieState = kTiedNote;
 
-		vector<SARNote> list;
+		ARNotes list;
 		list.push_back(elt);
 		// 		
-		ctree<guidoelement>::iterator i = find(fCurrentVoice->begin(), fCurrentVoice->end(), elt);
+		guidoIterator i = find(fCurrentVoice->begin(), fCurrentVoice->end(), elt);
 		if (i != fCurrentVoice->end()) {
 			lookupTied (++i, fEndTie, elt, list);			// get the list of tied notes
 			dur = rational2ticks (totalDuration(list));		// and compute the total duration
@@ -303,15 +312,15 @@ void midicontextvisitor::visitStart( SARChord& elt )	{
 	fInChord = true; 
 	if (fTieState == kInTie) {
 		fTieState = kTiedChord;
-		vector<SARNote> cnotes;
+		ARNotes cnotes;
 		storeNotes (elt, cnotes);
-		ctree<guidoelement>::iterator i = find(fCurrentVoice->begin(), fCurrentVoice->end(), elt);
+		guidoIterator i = find(fCurrentVoice->begin(), fCurrentVoice->end(), elt);
 		if (i == fCurrentVoice->end()) return;
 
-		for (vector<SARNote>::const_iterator note = cnotes.begin(); note != cnotes.end(); note++) {
+		for (ARNotes::const_iterator note = cnotes.begin(); note != cnotes.end(); note++) {
 			if (fTiedMap[*note]) continue;
 
-			vector<SARNote> list;			
+			ARNotes list;			
 			lookupTied (i, fEndTie, *note, list);
 			int dur = rational2ticks (totalDuration(list));
 			int pitch = midiPitch(*note);
@@ -363,4 +372,3 @@ void midicontextvisitor::visitStart( SARInstr& elt )
 }
 
 } // end namespace
-
