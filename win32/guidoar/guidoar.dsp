@@ -109,6 +109,10 @@ SOURCE=..\..\src\lib\streambeautifuller.cpp
 # PROP Default_Filter ""
 # Begin Source File
 
+SOURCE=..\..\src\operations\interleaveOperation.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\operations\parOperation.cpp
 # End Source File
 # Begin Source File
@@ -172,6 +176,10 @@ SOURCE=..\..\src\visitors\gmnvisitor.cpp
 # Begin Source File
 
 SOURCE=..\..\src\visitors\midicontextvisitor.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\visitors\unrolled_guido_browser.cpp
 # End Source File
 # End Group
 # Begin Group "guido"
