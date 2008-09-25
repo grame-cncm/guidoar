@@ -24,6 +24,9 @@
 #ifndef __ARNote__
 #define __ARNote__
 
+#include <map>
+#include <string>
+
 #include "guidoelement.h"
 #include "rational.h"
 #include "export.h"
@@ -43,15 +46,17 @@ class basevisitor;
 */
 class export ARNote : public guidoelement
 { 
-    protected:	
+    protected:
 				ARNote();
 		virtual ~ARNote() {}
 
 	int fOctave, fAccidental, fDots;
 	rational fDuration;
 
+	static std::map<std::string, std::pair<char, int> >	fNormalizeMap;
+
 	public:
-		enum { kUndefined = -1 };
+		enum { kUndefined = -99 };
 		enum pitch { kNoPitch = -1, C, D, E, F, G, A, B };
 
 		static SMARTP<ARNote> create();
@@ -62,11 +67,14 @@ class export ARNote : public guidoelement
 	void SetAccidental	(int acc)	{ fAccidental= acc; }
 	void SetDots		(int dots)	{ fDots = dots; }
 
+	//! normalizes pitch names to 'a b c d...' notation, alter is to catch 'cis, dis...' notation
+	void NormalizedPitchName (char& name, int& alter) const;		
+
 	int GetOctave		() const	{ return fOctave; }
 	int GetAccidental	() const	{ return fAccidental; }
 	int GetDots			() const	{ return fDots; }
 	
-	pitch GetPitch		(bool &sharp) const;
+	pitch GetPitch		(int& alter) const;
 	
 	// duration operations
 	rational&		duration()		{ return fDuration; }
@@ -75,6 +83,8 @@ class export ARNote : public guidoelement
 	ARNote& operator -= (const rational&);
 	ARNote& operator *= (const rational&);
 	ARNote& operator /= (const rational&);
+	
+	static pitch NormalizedName2Pitch	(char note);
 
 	operator std::string () const;
 };

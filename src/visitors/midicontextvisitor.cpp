@@ -89,14 +89,13 @@ int midicontextvisitor::rational2ticks(const rational& dur) const
 //________________________________________________________________________
 int midicontextvisitor::midiPitch (const SARNote& elt)  const
 {
-	bool sharp; int midi = -1;
-	ARNote::pitch pitch = elt->GetPitch (sharp);
+	int alter; int midi = -1;
+	ARNote::pitch pitch = elt->GetPitch (alter);
 	if (pitch != ARNote::kNoPitch) {
 		// offset in octave numeration between guido and midi is 3
 		int midioctave = (fCurrentOctave + 3) * 12;
-		midi = midioctave + (pitch*2) + elt->GetAccidental();
+		midi = midioctave + (pitch*2) + alter;
 		if (pitch > ARNote::E) midi--;
-		if (sharp) midi++;
 	}
 	return midi;
 }

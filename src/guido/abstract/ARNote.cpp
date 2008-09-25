@@ -30,33 +30,77 @@ using namespace std;
 namespace guido 
 {
 
+std::map<std::string, std::pair<char, int> > ARNote::fNormalizeMap;
+
 //______________________________________________________________________________
 ARNote::ARNote() 
 	:	fOctave(kUndefined), fAccidental(0), 
 		fDuration(kUndefined,4),
 		fDots(0)
 {
+	if (!fNormalizeMap.size()) {
+		fNormalizeMap["c"]   = make_pair('c', 0);
+		fNormalizeMap["d"]   = make_pair('d', 0);
+		fNormalizeMap["e"]   = make_pair('e', 0);
+		fNormalizeMap["f"]   = make_pair('f', 0);
+		fNormalizeMap["g"]   = make_pair('g', 0);
+		fNormalizeMap["a"]   = make_pair('a', 0);
+		fNormalizeMap["b"]   = make_pair('b', 0);
+		fNormalizeMap["h"]   = make_pair('b', 0);
+
+		fNormalizeMap["do"]  = make_pair('c', 0);
+		fNormalizeMap["re"]  = make_pair('d', 0);
+		fNormalizeMap["mi"]  = make_pair('e', 0);
+		fNormalizeMap["fa"]  = make_pair('f', 0);
+		fNormalizeMap["sol"] = make_pair('g', 0);
+		fNormalizeMap["la"]  = make_pair('a', 0);
+		fNormalizeMap["si"]  = make_pair('b', 0);
+		fNormalizeMap["ti"]  = make_pair('b', 0);
+
+		fNormalizeMap["cis"] = make_pair('c', 1);
+		fNormalizeMap["dis"] = make_pair('d', 1);
+		fNormalizeMap["fis"] = make_pair('f', 1);
+		fNormalizeMap["gis"] = make_pair('g', 1);
+		fNormalizeMap["ais"] = make_pair('a', 1);
+	}
 }
 
 //______________________________________________________________________________
-ARNote::pitch ARNote::GetPitch (bool& sharp) const
+void ARNote::NormalizedPitchName (char& name, int& alter) const
 {
-	string name = getName();
-	sharp = false;
-	if (name == "cis") { sharp = true; return C; }
-	if (name == "dis") { sharp = true; return D; }
-	if (name == "fis") { sharp = true; return F; }
-	if (name == "gis") { sharp = true; return G; }
-	if (name == "ais") { sharp = true; return A; }
+	map<string, pair<char, int> >::const_iterator i = fNormalizeMap.lower_bound( getName() );
+	if (i == fNormalizeMap.end()) {
+		name = 0;
+		alter = 0;
+	}
+	else {
+		name = (*i).second.first;
+		alter = (*i).second.second;
+	}
+}
 
-	if (name == "do" || name == "c") return C;
-	if (name == "re" || name == "d") return D;
-	if (name == "mi" || name == "e") return E;
-	if (name == "fa" || name == "f") return F;
-	if (name == "sol" || name == "g") return G;
-	if (name == "la" || name == "a") return A;
-	if (name == "si" || name == "ti" || name == "b" || name == "h") return B;
+//______________________________________________________________________________
+ARNote::pitch ARNote::NormalizedName2Pitch	(char note)
+{
+	switch (note) {
+		case 'a':	return A;
+		case 'b':	return B;
+		case 'c':	return C;
+		case 'd':	return D;
+		case 'e':	return E;
+		case 'f':	return F;
+		case 'g':	return G;
+	}
 	return kNoPitch;
+}
+
+//______________________________________________________________________________
+ARNote::pitch ARNote::GetPitch (int& alter) const
+{
+	char npitch;
+	NormalizedPitchName (npitch, alter);
+	alter += GetAccidental();
+	return NormalizedName2Pitch(npitch);
 }
 
 //______________________________________________________________________________

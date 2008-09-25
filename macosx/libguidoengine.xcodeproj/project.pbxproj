@@ -34,6 +34,7 @@
 				D390CC670E5C780200C6FB95 /* PBXTargetDependency */,
 				D390CC8F0E5C7BCD00C6FB95 /* PBXTargetDependency */,
 				D3B095BC0E83D63500262449 /* PBXTargetDependency */,
+				D307D8A30E8BE52D00B3555D /* PBXTargetDependency */,
 			);
 			name = all;
 			productName = all;
@@ -42,6 +43,10 @@
 
 /* Begin PBXBuildFile section */
 		8D07F2C00486CC7A007CD1D0 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C1666FE841158C02AAC07 /* InfoPlist.strings */; };
+		D307D8570E8BDB4E00B3555D /* transposeOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D307D8040E8BB77500B3555D /* transposeOperation.cpp */; };
+		D307D8580E8BDB4F00B3555D /* transposeOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = D307D8050E8BB77500B3555D /* transposeOperation.h */; };
+		D307D8A60E8BE55E00B3555D /* guidotranspose.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D307D8A50E8BE55E00B3555D /* guidotranspose.cpp */; };
+		D307D8A80E8BE56600B3555D /* libguidoengine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoengine.framework */; };
 		D31E25300E082FBF001406DF /* parOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D31E252E0E082FBF001406DF /* parOperation.cpp */; };
 		D31E25310E082FBF001406DF /* parOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = D31E252F0E082FBF001406DF /* parOperation.h */; };
 		D31E25630E083191001406DF /* guidopar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D31E25620E083191001406DF /* guidopar.cpp */; };
@@ -109,6 +114,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		D307D8A20E8BE52D00B3555D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D307D89D0E8BE52300B3555D /* guidotranspose */;
+			remoteInfo = guidotranspose;
+		};
 		D31E25600E08315D001406DF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
@@ -185,6 +197,10 @@
 		089C1667FE841158C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8D07F2C70486CC7A007CD1D0 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8D07F2C80486CC7A007CD1D0 /* libguidoengine.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = libguidoengine.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D307D8040E8BB77500B3555D /* transposeOperation.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = transposeOperation.cpp; path = ../src/operations/transposeOperation.cpp; sourceTree = SOURCE_ROOT; };
+		D307D8050E8BB77500B3555D /* transposeOperation.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = transposeOperation.h; path = ../src/operations/transposeOperation.h; sourceTree = SOURCE_ROOT; };
+		D307D89E0E8BE52300B3555D /* guidotranspose */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = guidotranspose; sourceTree = BUILT_PRODUCTS_DIR; };
+		D307D8A50E8BE55E00B3555D /* guidotranspose.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = guidotranspose.cpp; path = ../tools/guidotranspose.cpp; sourceTree = SOURCE_ROOT; };
 		D31E252E0E082FBF001406DF /* parOperation.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = parOperation.cpp; path = ../src/operations/parOperation.cpp; sourceTree = SOURCE_ROOT; };
 		D31E252F0E082FBF001406DF /* parOperation.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = parOperation.h; path = ../src/operations/parOperation.h; sourceTree = SOURCE_ROOT; };
 		D31E255C0E083150001406DF /* guidopar */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = guidopar; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -260,6 +276,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D307D89C0E8BE52300B3555D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D307D8A80E8BE56600B3555D /* libguidoengine.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -342,6 +366,7 @@
 				D390CC610E5C77DE00C6FB95 /* guidointerleave */,
 				D390CC8A0E5C7BB300C6FB95 /* guidorinterleave */,
 				D3B095B70E83D62B00262449 /* guido2midi */,
+				D307D89E0E8BE52300B3555D /* guidotranspose */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -390,6 +415,8 @@
 		D31E252D0E082FBF001406DF /* operations */ = {
 			isa = PBXGroup;
 			children = (
+				D307D8040E8BB77500B3555D /* transposeOperation.cpp */,
+				D307D8050E8BB77500B3555D /* transposeOperation.h */,
 				D390CC260E5C6F0C00C6FB95 /* interleaveOperation.cpp */,
 				D390CC270E5C6F0C00C6FB95 /* interleaveOperation.h */,
 				D386D4490E093EEF00231224 /* seqOperation.cpp */,
@@ -490,6 +517,7 @@
 		D34739A80DEE097D00BE54BE /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				D307D8A50E8BE55E00B3555D /* guidotranspose.cpp */,
 				D3B095BE0E83D65A00262449 /* guido2midi.cpp */,
 				D390CC910E5C7BEB00C6FB95 /* guidorinterleave.cpp */,
 				D390CC6A0E5C783200C6FB95 /* guidointerleave.cpp */,
@@ -539,6 +567,7 @@
 				D390CC290E5C6F0C00C6FB95 /* interleaveOperation.h in Headers */,
 				D3B095510E838A9800262449 /* midicontextvisitor.h in Headers */,
 				D3C5BD550E87DC2000E11354 /* unrolled_guido_browser.h in Headers */,
+				D307D8580E8BDB4F00B3555D /* transposeOperation.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -564,6 +593,22 @@
 			productName = libguidoengine;
 			productReference = 8D07F2C80486CC7A007CD1D0 /* libguidoengine.framework */;
 			productType = "com.apple.product-type.framework";
+		};
+		D307D89D0E8BE52300B3555D /* guidotranspose */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D307D8A70E8BE55E00B3555D /* Build configuration list for PBXNativeTarget "guidotranspose" */;
+			buildPhases = (
+				D307D89B0E8BE52300B3555D /* Sources */,
+				D307D89C0E8BE52300B3555D /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = guidotranspose;
+			productName = guidotranspose;
+			productReference = D307D89E0E8BE52300B3555D /* guidotranspose */;
+			productType = "com.apple.product-type.tool";
 		};
 		D31E255B0E083150001406DF /* guidopar */ = {
 			isa = PBXNativeTarget;
@@ -717,6 +762,7 @@
 				D390CC600E5C77DE00C6FB95 /* guidointerleave */,
 				D390CC890E5C7BB300C6FB95 /* guidorinterleave */,
 				D3B095B60E83D62B00262449 /* guido2midi */,
+				D307D89D0E8BE52300B3555D /* guidotranspose */,
 			);
 		};
 /* End PBXProject section */
@@ -781,6 +827,15 @@
 				D390CC280E5C6F0C00C6FB95 /* interleaveOperation.cpp in Sources */,
 				D3B095500E838A9800262449 /* midicontextvisitor.cpp in Sources */,
 				D3C5BD540E87DC2000E11354 /* unrolled_guido_browser.cpp in Sources */,
+				D307D8570E8BDB4E00B3555D /* transposeOperation.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D307D89B0E8BE52300B3555D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D307D8A60E8BE55E00B3555D /* guidotranspose.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -851,6 +906,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		D307D8A30E8BE52D00B3555D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D307D89D0E8BE52300B3555D /* guidotranspose */;
+			targetProxy = D307D8A20E8BE52D00B3555D /* PBXContainerItemProxy */;
+		};
 		D31E25610E08315D001406DF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = D31E255B0E083150001406DF /* guidopar */;
@@ -980,6 +1040,45 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				PREBINDING = NO;
 				SDKROOT = /Developer/SDKs/MacOSX10.5.sdk;
+			};
+			name = Release;
+		};
+		D307D8A00E8BE52300B3555D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../../../../../Library/Frameworks\"";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INSTALL_PATH = /usr/local/bin;
+				PREBINDING = NO;
+				PRODUCT_NAME = guidotranspose;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		D307D8A10E8BE52300B3555D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../../../../../Library/Frameworks\"";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				INSTALL_PATH = /usr/local/bin;
+				PREBINDING = NO;
+				PRODUCT_NAME = guidotranspose;
+				ZERO_LINK = NO;
 			};
 			name = Release;
 		};
@@ -1372,6 +1471,15 @@
 			buildConfigurations = (
 				4FADC24708B4156D00ABE55E /* Debug */,
 				4FADC24808B4156D00ABE55E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D307D8A70E8BE55E00B3555D /* Build configuration list for PBXNativeTarget "guidotranspose" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D307D8A00E8BE52300B3555D /* Debug */,
+				D307D8A10E8BE52300B3555D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
