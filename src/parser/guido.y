@@ -26,7 +26,7 @@ static void vadd (std::vector<guido::Sguidoelement>* v1, std::vector<guido::Sgui
 #include <math.h>
 float dotatof( const char * s ) 
 { 
-	char * dotPos = strchr(s,'.');
+	const char * dotPos = strchr(s,'.');
 	if ( !dotPos )
 	{
 		return atof(s);
@@ -48,7 +48,7 @@ float dotatof( const char * s )
 		}
 		else
 		{
-			float decimalDivisor = pow( 10 , digitsAfterDot );
+			float decimalDivisor = pow( 10.0f , digitsAfterDot );
 			if ( dotPos == s )
 			{
 				sscanf( s , ".%d" , &x );
@@ -57,7 +57,7 @@ float dotatof( const char * s )
 			else
 			{
 				sscanf( s , "%d.%d" , &x , &y );
-				return x + y / pow(10 , digitsAfterDot);
+				return x + y / pow(10.0f , digitsAfterDot);
 			}
 		}
 	}

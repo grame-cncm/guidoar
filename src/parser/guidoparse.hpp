@@ -129,7 +129,7 @@ typedef union YYSTYPE
 	std::vector<guido::Sguidoattribute>* vattr;
 	rational *		r;
 }
-/* Line 1489 of yacc.c.  */
+/* Line 1529 of yacc.c.  */
 #line 134 "guidoparse.hpp"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */

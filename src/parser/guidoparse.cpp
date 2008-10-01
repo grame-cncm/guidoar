@@ -179,7 +179,7 @@ static void vadd (std::vector<guido::Sguidoelement>* v1, std::vector<guido::Sgui
 #include <math.h>
 float dotatof( const char * s ) 
 { 
-	char * dotPos = strchr(s,'.');
+	const char * dotPos = strchr(s,'.');
 	if ( !dotPos )
 	{
 		return atof(s);
@@ -201,7 +201,7 @@ float dotatof( const char * s )
 		}
 		else
 		{
-			float decimalDivisor = pow( 10 , digitsAfterDot );
+			float decimalDivisor = pow( 10.0f , digitsAfterDot );
 			if ( dotPos == s )
 			{
 				sscanf( s , ".%d" , &x );
@@ -210,7 +210,7 @@ float dotatof( const char * s )
 			else
 			{
 				sscanf( s , "%d.%d" , &x , &y );
-				return x + y / pow(10 , digitsAfterDot);
+				return x + y / pow(10.0f , digitsAfterDot);
 			}
 		}
 	}
@@ -268,7 +268,7 @@ typedef union YYSTYPE
 	std::vector<guido::Sguidoattribute>* vattr;
 	rational *		r;
 }
-/* Line 187 of yacc.c.  */
+/* Line 193 of yacc.c.  */
 #line 273 "guidoparse.cpp"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -332,7 +332,7 @@ typedef short int yytype_int16;
 #define YYSIZE_MAXIMUM ((YYSIZE_T) -1)
 
 #ifndef YY_
-# if YYENABLE_NLS
+# if defined YYENABLE_NLS && YYENABLE_NLS
 #  if ENABLE_NLS
 #   include <libintl.h> /* INFRINGES ON USER NAME SPACE */
 #   define YY_(msgid) dgettext ("bison-runtime", msgid)
@@ -842,7 +842,7 @@ while (YYID (0))
    we won't break user code: when these are the locations we know.  */
 
 #ifndef YY_LOCATION_PRINT
-# if YYLTYPE_IS_TRIVIAL
+# if defined YYLTYPE_IS_TRIVIAL && YYLTYPE_IS_TRIVIAL
 #  define YY_LOCATION_PRINT(File, Loc)			\
      fprintf (File, "%d.%d-%d.%d",			\
 	      (Loc).first_line, (Loc).first_column,	\
