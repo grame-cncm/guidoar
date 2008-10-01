@@ -22,6 +22,7 @@
 
 #ifdef WIN32
 # pragma warning (disable : 4786)
+# define _CRT_SECURE_NO_DEPRECATE
 #endif
 
 #include <algorithm>
@@ -354,7 +355,7 @@ void midicontextvisitor::visitStart( SARIntens& elt )
 //________________________________________________________________________
 void midicontextvisitor::visitStart( SAROct& elt )
 {
-	fTranspose = elt->getAttributeFloatValue (0, 0) * 12;
+	fTranspose = int(elt->getAttributeFloatValue (0, 0) * 12);
 }
 void midicontextvisitor::visitEnd( SAROct& elt )
 {
