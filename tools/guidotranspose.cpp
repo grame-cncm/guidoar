@@ -6,7 +6,7 @@
 #include <iostream>
 #include <string>
 #include <stdio.h>
-#include <inttypes.h>
+//#include <inttypes.h>
 
 #include "AROthers.h"
 #include "guidoelement.h"

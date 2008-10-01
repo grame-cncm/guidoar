@@ -21,6 +21,10 @@
 
 */
 
+#ifdef WIN32
+#pragma warning (disable : 4786)
+#endif
+
 #include <sstream>
 #include "ARNote.h"
 #include "visitor.h"

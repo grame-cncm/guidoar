@@ -119,6 +119,10 @@ SOURCE=..\..\src\operations\parOperation.cpp
 
 SOURCE=..\..\src\operations\seqOperation.cpp
 # End Source File
+# Begin Source File
+
+SOURCE=..\..\src\operations\transposeOperation.cpp
+# End Source File
 # End Group
 # Begin Group "parser"
 
