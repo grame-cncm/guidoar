@@ -135,11 +135,11 @@ void tailOperation::visitStart ( SARNote& elt )
 	if (duration.getNumerator() != ARNote::kUndefined) fCurrentNoteDuration = duration;
 	if (fState) {
 		if (fState == kStartPending) {
-			int alter;
-			ARNote::pitch p = elt->GetPitch(alter);
-			if (p != ARNote::kNoPitch) {
-				if ((elt->GetOctave() == ARNote::kUndefined) && (fCurrentOctave != 1))
+			string name = elt->getName();
+			if ((name != "_") && (name != "empty")) {
+				if ((elt->GetOctave() == ARNote::kUndefined) && (fCurrentOctave != 1)) {
 					elt->SetOctave(fCurrentOctave);
+				}
 				fState = kCopy;
 			}
 			if (duration.getNumerator() == ARNote::kUndefined) (*elt) = fCurrentNoteDuration;
