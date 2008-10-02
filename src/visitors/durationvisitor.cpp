@@ -50,6 +50,7 @@ rational durationvisitor::duration(const Sguidoelement& elt)
 //______________________________________________________________________________
 void durationvisitor::visitStart( SARVoice& elt )
 {
+	fInChord = false;
 	fCurrentVoiceDuration = rational(0,1);
 	fCurrentNoteDuration = rational(1,4);
 }
@@ -77,7 +78,7 @@ void durationvisitor::visitStart( SARNote& elt )
 	
 	fCurrentNoteDuration = duration;
 	if ( fInChord ) {
-		if (elt->duration() > fCurrentChordDuration)
+		if (fCurrentNoteDuration > fCurrentChordDuration)
 			fCurrentChordDuration = fCurrentNoteDuration;
 	}
 	else {

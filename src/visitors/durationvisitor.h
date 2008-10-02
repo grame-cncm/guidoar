@@ -55,13 +55,16 @@ class export durationvisitor :
               
 		virtual rational duration(const Sguidoelement&);
 
-	protected:
 		virtual void visitStart( SARVoice& elt );
 		virtual void visitStart( SARChord& elt );
 		virtual void visitStart( SARNote& elt );
 
 		virtual void visitEnd  ( SARVoice& elt );
 		virtual void visitEnd  ( SARChord& elt );
+		
+		virtual rational  currentVoiceDate()	{ return fCurrentVoiceDuration; }
+
+	protected:
 		
 		rational	fCurrentVoiceDuration;
 		rational	fCurrentChordDuration;

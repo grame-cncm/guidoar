@@ -35,6 +35,7 @@
 				D390CC8F0E5C7BCD00C6FB95 /* PBXTargetDependency */,
 				D3B095BC0E83D63500262449 /* PBXTargetDependency */,
 				D307D8A30E8BE52D00B3555D /* PBXTargetDependency */,
+				D3D3E1010E94C3C400A93F41 /* PBXTargetDependency */,
 			);
 			name = all;
 			productName = all;
@@ -111,6 +112,10 @@
 		D3B095BF0E83D65A00262449 /* guido2midi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3B095BE0E83D65A00262449 /* guido2midi.cpp */; };
 		D3C5BD540E87DC2000E11354 /* unrolled_guido_browser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3C5BD520E87DC1F00E11354 /* unrolled_guido_browser.cpp */; };
 		D3C5BD550E87DC2000E11354 /* unrolled_guido_browser.h in Headers */ = {isa = PBXBuildFile; fileRef = D3C5BD530E87DC1F00E11354 /* unrolled_guido_browser.h */; };
+		D3D3E0EA0E94B73B00A93F41 /* headOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3D3E0E80E94B73B00A93F41 /* headOperation.cpp */; };
+		D3D3E0EB0E94B73B00A93F41 /* headOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = D3D3E0E90E94B73B00A93F41 /* headOperation.h */; };
+		D3D3E1030E94C3D200A93F41 /* libguidoengine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoengine.framework */; };
+		D3D3E1060E94C3E600A93F41 /* guidohead.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3D3E1050E94C3E600A93F41 /* guidohead.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -118,7 +123,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = D307D89D0E8BE52300B3555D /* guidotranspose */;
+			remoteGlobalIDString = D307D89D0E8BE52300B3555D;
 			remoteInfo = guidotranspose;
 		};
 		D31E25600E08315D001406DF /* PBXContainerItemProxy */ = {
@@ -190,6 +195,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = D3B095B60E83D62B00262449;
 			remoteInfo = guido2midi;
+		};
+		D3D3E1000E94C3C400A93F41 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D3D3E0FB0E94C3B400A93F41 /* guidohead */;
+			remoteInfo = guidohead;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -269,6 +281,10 @@
 		D3B095BE0E83D65A00262449 /* guido2midi.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = guido2midi.cpp; path = ../tools/guido2midi.cpp; sourceTree = SOURCE_ROOT; };
 		D3C5BD520E87DC1F00E11354 /* unrolled_guido_browser.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = unrolled_guido_browser.cpp; path = ../src/visitors/unrolled_guido_browser.cpp; sourceTree = SOURCE_ROOT; };
 		D3C5BD530E87DC1F00E11354 /* unrolled_guido_browser.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = unrolled_guido_browser.h; path = ../src/visitors/unrolled_guido_browser.h; sourceTree = SOURCE_ROOT; };
+		D3D3E0E80E94B73B00A93F41 /* headOperation.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = headOperation.cpp; path = ../src/operations/headOperation.cpp; sourceTree = SOURCE_ROOT; };
+		D3D3E0E90E94B73B00A93F41 /* headOperation.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = headOperation.h; path = ../src/operations/headOperation.h; sourceTree = SOURCE_ROOT; };
+		D3D3E0FC0E94C3B400A93F41 /* guidohead */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = guidohead; sourceTree = BUILT_PRODUCTS_DIR; };
+		D3D3E1050E94C3E600A93F41 /* guidohead.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = guidohead.cpp; path = ../tools/guidohead.cpp; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -351,6 +367,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D3D3E0FA0E94C3B400A93F41 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D3D3E1030E94C3D200A93F41 /* libguidoengine.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -367,6 +391,7 @@
 				D390CC8A0E5C7BB300C6FB95 /* guidorinterleave */,
 				D3B095B70E83D62B00262449 /* guido2midi */,
 				D307D89E0E8BE52300B3555D /* guidotranspose */,
+				D3D3E0FC0E94C3B400A93F41 /* guidohead */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -415,6 +440,8 @@
 		D31E252D0E082FBF001406DF /* operations */ = {
 			isa = PBXGroup;
 			children = (
+				D3D3E0E80E94B73B00A93F41 /* headOperation.cpp */,
+				D3D3E0E90E94B73B00A93F41 /* headOperation.h */,
 				D307D8040E8BB77500B3555D /* transposeOperation.cpp */,
 				D307D8050E8BB77500B3555D /* transposeOperation.h */,
 				D390CC260E5C6F0C00C6FB95 /* interleaveOperation.cpp */,
@@ -517,6 +544,7 @@
 		D34739A80DEE097D00BE54BE /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				D3D3E1050E94C3E600A93F41 /* guidohead.cpp */,
 				D307D8A50E8BE55E00B3555D /* guidotranspose.cpp */,
 				D3B095BE0E83D65A00262449 /* guido2midi.cpp */,
 				D390CC910E5C7BEB00C6FB95 /* guidorinterleave.cpp */,
@@ -568,6 +596,7 @@
 				D3B095510E838A9800262449 /* midicontextvisitor.h in Headers */,
 				D3C5BD550E87DC2000E11354 /* unrolled_guido_browser.h in Headers */,
 				D307D8580E8BDB4F00B3555D /* transposeOperation.h in Headers */,
+				D3D3E0EB0E94B73B00A93F41 /* headOperation.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -738,6 +767,22 @@
 			productReference = D3B095B70E83D62B00262449 /* guido2midi */;
 			productType = "com.apple.product-type.tool";
 		};
+		D3D3E0FB0E94C3B400A93F41 /* guidohead */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D3D3E1070E94C3E600A93F41 /* Build configuration list for PBXNativeTarget "guidohead" */;
+			buildPhases = (
+				D3D3E0F90E94C3B400A93F41 /* Sources */,
+				D3D3E0FA0E94C3B400A93F41 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = guidohead;
+			productName = guidohead;
+			productReference = D3D3E0FC0E94C3B400A93F41 /* guidohead */;
+			productType = "com.apple.product-type.tool";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -763,6 +808,7 @@
 				D390CC890E5C7BB300C6FB95 /* guidorinterleave */,
 				D3B095B60E83D62B00262449 /* guido2midi */,
 				D307D89D0E8BE52300B3555D /* guidotranspose */,
+				D3D3E0FB0E94C3B400A93F41 /* guidohead */,
 			);
 		};
 /* End PBXProject section */
@@ -828,6 +874,7 @@
 				D3B095500E838A9800262449 /* midicontextvisitor.cpp in Sources */,
 				D3C5BD540E87DC2000E11354 /* unrolled_guido_browser.cpp in Sources */,
 				D307D8570E8BDB4E00B3555D /* transposeOperation.cpp in Sources */,
+				D3D3E0EA0E94B73B00A93F41 /* headOperation.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -903,6 +950,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D3D3E0F90E94C3B400A93F41 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D3D3E1060E94C3E600A93F41 /* guidohead.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -960,6 +1015,11 @@
 			isa = PBXTargetDependency;
 			target = D3B095B60E83D62B00262449 /* guido2midi */;
 			targetProxy = D3B095BB0E83D63500262449 /* PBXContainerItemProxy */;
+		};
+		D3D3E1010E94C3C400A93F41 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D3D3E0FB0E94C3B400A93F41 /* guidohead */;
+			targetProxy = D3D3E1000E94C3C400A93F41 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1454,6 +1514,45 @@
 			};
 			name = Release;
 		};
+		D3D3E0FE0E94C3B500A93F41 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../../../../../Library/Frameworks\"";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INSTALL_PATH = /usr/local/bin;
+				PREBINDING = NO;
+				PRODUCT_NAME = guidohead;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		D3D3E0FF0E94C3B500A93F41 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../../../../../Library/Frameworks\"";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				INSTALL_PATH = /usr/local/bin;
+				PREBINDING = NO;
+				PRODUCT_NAME = guidohead;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1570,6 +1669,15 @@
 			buildConfigurations = (
 				D3B095B90E83D62B00262449 /* Debug */,
 				D3B095BA0E83D62B00262449 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D3D3E1070E94C3E600A93F41 /* Build configuration list for PBXNativeTarget "guidohead" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D3D3E0FE0E94C3B500A93F41 /* Debug */,
+				D3D3E0FF0E94C3B500A93F41 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
