@@ -131,6 +131,14 @@ SOURCE=..\..\src\operations\tailOperation.cpp
 
 SOURCE=..\..\src\operations\transposeOperation.cpp
 # End Source File
+# Begin Source File
+
+SOURCE=..\..\src\operations\vheadOperation.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\operations\vtailOperation.cpp
+# End Source File
 # End Group
 # Begin Group "parser"
 

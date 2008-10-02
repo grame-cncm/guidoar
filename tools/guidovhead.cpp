@@ -2,6 +2,7 @@
 #ifdef WIN32
 # pragma warning (disable : 4786)
 # define basename(name)	(name)
+# define _CRT_SECURE_NO_DEPRECATE
 #else 
 # include <libgen.h>
 #endif

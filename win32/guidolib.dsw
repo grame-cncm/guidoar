@@ -123,6 +123,30 @@ Package=<4>
 
 ###############################################################################
 
+Project: "guidovhead"=.\guidovhead\guidovhead.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "guidovtail"=.\guidovtail\guidovtail.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
 Global:
 
 Package=<5>
