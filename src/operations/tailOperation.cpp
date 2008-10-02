@@ -182,28 +182,28 @@ void tailOperation::visitStart ( Sguidotag& elt )
 //________________________________________________________________________
 void tailOperation::visitStart ( SARKey& elt )
 {
-	if (fState == kSkip)	fCurrentKey = elt;
+	if (fState == kSkip)	fCurrentKey = Sguidotag(elt);
 	else					cloneTag (elt);
 }
 
 //________________________________________________________________________
 void tailOperation::visitStart ( SARMeter& elt )
 {
-	if (fState == kSkip)	fCurrentMeter = elt;
+	if (fState == kSkip)	fCurrentMeter = Sguidotag(elt);
 	else					cloneTag (elt);
 }
 
 //________________________________________________________________________
 void tailOperation::visitStart ( SARClef& elt )
 {
-	if (fState == kSkip)	fCurrentClef = elt;
+	if (fState == kSkip)	fCurrentClef = Sguidotag(elt);
 	else					cloneTag (elt);
 }
 
 //________________________________________________________________________
 void tailOperation::visitStart ( SARStaff& elt )
 {
-	if (fState == kSkip)	fCurrentStaff = elt;
+	if (fState == kSkip)	fCurrentStaff = Sguidotag(elt);
 	else					cloneTag (elt);
 }
 

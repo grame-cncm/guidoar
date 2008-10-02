@@ -109,6 +109,10 @@ SOURCE=..\..\src\lib\streambeautifuller.cpp
 # PROP Default_Filter ""
 # Begin Source File
 
+SOURCE=..\..\src\operations\headOperation.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\operations\interleaveOperation.cpp
 # End Source File
 # Begin Source File
@@ -118,6 +122,10 @@ SOURCE=..\..\src\operations\parOperation.cpp
 # Begin Source File
 
 SOURCE=..\..\src\operations\seqOperation.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\operations\tailOperation.cpp
 # End Source File
 # Begin Source File
 
