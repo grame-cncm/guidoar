@@ -1,11 +1,14 @@
 
 #ifdef WIN32
 # pragma warning (disable : 4786)
+# define basename(name)	(name)
+# define _CRT_SECURE_NO_DEPRECATE
+#else 
+# include <libgen.h>
 #endif
 
 #include <iostream>
 #include <stdio.h>
-#include <libgen.h>
 
 #include "AROthers.h"
 #include "guidoelement.h"

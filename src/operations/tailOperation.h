@@ -28,6 +28,7 @@
 
 #include "export.h"
 #include "ARTypes.h"
+#include "ARTag.h"
 #include "guidoelement.h"
 #include "clonevisitor.h"
 #include "durationvisitor.h"

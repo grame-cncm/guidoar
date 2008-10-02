@@ -145,7 +145,7 @@ template <typename T> class ctree : virtual public smartable
 		typedef typename branchs::const_iterator const_literator;	///< the current level const_iterator type
 		typedef treeIterator<treePtr>		iterator;	///< the top -> bottom iterator type
 
-		static treePtr new_tree() { ctree<T>* o = new ctree<T>; assert(o!=0); return o; }
+//		static treePtr new_tree() { ctree<T>* o = new ctree<T>; assert(o!=0); return o; }
 		
 		branchs& elements()						{ return fElements; }		
 		const branchs& elements() const			{ return fElements; }		
@@ -154,7 +154,7 @@ template <typename T> class ctree : virtual public smartable
 			for (i = b.begin(); i != b.end(); i++)
 				fElements.push_back(*i); 
 		}
-		virtual int  size  () const				{ return fElements.size(); }
+		virtual int  size  () const				{ return int(fElements.size()); }
 		virtual bool empty () const				{ return fElements.size()==0; }
 
 		iterator begin()			{ treePtr start=dynamic_cast<T*>(this); return iterator(start); }
