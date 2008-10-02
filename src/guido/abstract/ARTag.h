@@ -57,7 +57,8 @@ class export guidotag : public guidoelement
         virtual void acceptIn(basevisitor& v);
         virtual void acceptOut(basevisitor& v);
 				
-		long getID() const				{ return fID; }
+		int  getType() const			{ return fType; }	/// return the tag type ie the tag template integer
+		long getID() const				{ return fID; }		/// return the tag id i.e. the xx of the \tag:xx form
 		void setID(long id)				{ fID = id; }
 		operator std::string () const;
 
@@ -66,6 +67,7 @@ class export guidotag : public guidoelement
 		virtual ~guidotag() {}
 		std::string escape(const std::string&) const;
 		long fID;						// represents the tag id i.e the \tag:xx form of the tags where xx is a discriminant id
+		int  fType;						// the tag template integer
 };
 typedef SMARTP<guidotag>	Sguidotag;
 
@@ -79,7 +81,7 @@ template <int elt> class ARTag : public guidotag
 {
 	public:
 		static SMARTP<ARTag<elt> > create(long id)
-			{ ARTag<elt>* o = new ARTag<elt>(id); assert(o!=0); return o; }
+			{ ARTag<elt>* o = new ARTag<elt>(id); assert(o!=0); o->fType=elt; return o; }
 
         virtual void acceptIn(basevisitor& v) {
 			if (visitor<SMARTP<ARTag<elt> > >* p = dynamic_cast<visitor<SMARTP<ARTag<elt> > >*>(&v)) {
