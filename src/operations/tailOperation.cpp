@@ -30,7 +30,6 @@
 #include <string>
 
 #include "ARNote.h"
-#include "ARFactory.h"
 #include "AROthers.h"
 #include "ARTag.h"
 #include "clonevisitor.h"

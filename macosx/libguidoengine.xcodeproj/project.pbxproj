@@ -37,6 +37,8 @@
 				D307D8A30E8BE52D00B3555D /* PBXTargetDependency */,
 				D3D3E1010E94C3C400A93F41 /* PBXTargetDependency */,
 				D3D3E2AE0E94F64F00A93F41 /* PBXTargetDependency */,
+				D3D3E4B90E95425B00A93F41 /* PBXTargetDependency */,
+				D3D3E4BB0E95425E00A93F41 /* PBXTargetDependency */,
 			);
 			name = all;
 			productName = all;
@@ -121,6 +123,14 @@
 		D3D3E2A50E94F63A00A93F41 /* tailOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = D3D3E2A30E94F63A00A93F41 /* tailOperation.h */; };
 		D3D3E2B00E94F66200A93F41 /* guidotail.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3D3E2AF0E94F66200A93F41 /* guidotail.cpp */; };
 		D3D3E2B20E94F66A00A93F41 /* libguidoengine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoengine.framework */; };
+		D3D3E4120E95343000A93F41 /* vheadOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3D3E4100E95343000A93F41 /* vheadOperation.cpp */; };
+		D3D3E4130E95343000A93F41 /* vheadOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = D3D3E4110E95343000A93F41 /* vheadOperation.h */; };
+		D3D3E4290E95347C00A93F41 /* guidovhead.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3D3E4280E95347C00A93F41 /* guidovhead.cpp */; };
+		D3D3E42C0E95348900A93F41 /* libguidoengine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoengine.framework */; };
+		D3D3E4A40E95417500A93F41 /* vtailOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3D3E4A20E95417500A93F41 /* vtailOperation.cpp */; };
+		D3D3E4A50E95417500A93F41 /* vtailOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = D3D3E4A30E95417500A93F41 /* vtailOperation.h */; };
+		D3D3E4AE0E95419700A93F41 /* guidovtail.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3D3E4AD0E95419700A93F41 /* guidovtail.cpp */; };
+		D3D3E4B00E95419D00A93F41 /* libguidoengine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoengine.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -215,6 +225,20 @@
 			remoteGlobalIDString = D3D3E2A80E94F64800A93F41 /* guidotail */;
 			remoteInfo = guidotail;
 		};
+		D3D3E4B80E95425B00A93F41 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D3D3E4180E95344800A93F41 /* guidovhead */;
+			remoteInfo = guidovhead;
+		};
+		D3D3E4BA0E95425E00A93F41 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D3D3E4A80E95418200A93F41 /* guidovtail */;
+			remoteInfo = guidovtail;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -301,6 +325,14 @@
 		D3D3E2A30E94F63A00A93F41 /* tailOperation.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = tailOperation.h; path = ../src/operations/tailOperation.h; sourceTree = SOURCE_ROOT; };
 		D3D3E2A90E94F64800A93F41 /* guidotail */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = guidotail; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3D3E2AF0E94F66200A93F41 /* guidotail.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = guidotail.cpp; path = ../tools/guidotail.cpp; sourceTree = SOURCE_ROOT; };
+		D3D3E4100E95343000A93F41 /* vheadOperation.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = vheadOperation.cpp; path = ../src/operations/vheadOperation.cpp; sourceTree = SOURCE_ROOT; };
+		D3D3E4110E95343000A93F41 /* vheadOperation.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = vheadOperation.h; path = ../src/operations/vheadOperation.h; sourceTree = SOURCE_ROOT; };
+		D3D3E4190E95344800A93F41 /* guidovhead */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = guidovhead; sourceTree = BUILT_PRODUCTS_DIR; };
+		D3D3E4280E95347C00A93F41 /* guidovhead.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = guidovhead.cpp; path = ../tools/guidovhead.cpp; sourceTree = SOURCE_ROOT; };
+		D3D3E4A20E95417500A93F41 /* vtailOperation.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = vtailOperation.cpp; path = ../src/operations/vtailOperation.cpp; sourceTree = SOURCE_ROOT; };
+		D3D3E4A30E95417500A93F41 /* vtailOperation.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = vtailOperation.h; path = ../src/operations/vtailOperation.h; sourceTree = SOURCE_ROOT; };
+		D3D3E4A90E95418200A93F41 /* guidovtail */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = guidovtail; sourceTree = BUILT_PRODUCTS_DIR; };
+		D3D3E4AD0E95419700A93F41 /* guidovtail.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = guidovtail.cpp; path = ../tools/guidovtail.cpp; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -399,6 +431,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D3D3E4170E95344800A93F41 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D3D3E42C0E95348900A93F41 /* libguidoengine.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D3D3E4A70E95418200A93F41 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D3D3E4B00E95419D00A93F41 /* libguidoengine.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -417,6 +465,8 @@
 				D307D89E0E8BE52300B3555D /* guidotranspose */,
 				D3D3E0FC0E94C3B400A93F41 /* guidohead */,
 				D3D3E2A90E94F64800A93F41 /* guidotail */,
+				D3D3E4190E95344800A93F41 /* guidovhead */,
+				D3D3E4A90E95418200A93F41 /* guidovtail */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -465,6 +515,10 @@
 		D31E252D0E082FBF001406DF /* operations */ = {
 			isa = PBXGroup;
 			children = (
+				D3D3E4A20E95417500A93F41 /* vtailOperation.cpp */,
+				D3D3E4A30E95417500A93F41 /* vtailOperation.h */,
+				D3D3E4100E95343000A93F41 /* vheadOperation.cpp */,
+				D3D3E4110E95343000A93F41 /* vheadOperation.h */,
 				D3D3E2A20E94F63A00A93F41 /* tailOperation.cpp */,
 				D3D3E2A30E94F63A00A93F41 /* tailOperation.h */,
 				D3D3E0E80E94B73B00A93F41 /* headOperation.cpp */,
@@ -571,6 +625,8 @@
 		D34739A80DEE097D00BE54BE /* Tools */ = {
 			isa = PBXGroup;
 			children = (
+				D3D3E4AD0E95419700A93F41 /* guidovtail.cpp */,
+				D3D3E4280E95347C00A93F41 /* guidovhead.cpp */,
 				D3D3E2AF0E94F66200A93F41 /* guidotail.cpp */,
 				D3D3E1050E94C3E600A93F41 /* guidohead.cpp */,
 				D307D8A50E8BE55E00B3555D /* guidotranspose.cpp */,
@@ -626,6 +682,8 @@
 				D307D8580E8BDB4F00B3555D /* transposeOperation.h in Headers */,
 				D3D3E0EB0E94B73B00A93F41 /* headOperation.h in Headers */,
 				D3D3E2A50E94F63A00A93F41 /* tailOperation.h in Headers */,
+				D3D3E4130E95343000A93F41 /* vheadOperation.h in Headers */,
+				D3D3E4A50E95417500A93F41 /* vtailOperation.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -828,6 +886,38 @@
 			productReference = D3D3E2A90E94F64800A93F41 /* guidotail */;
 			productType = "com.apple.product-type.tool";
 		};
+		D3D3E4180E95344800A93F41 /* guidovhead */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D3D3E4270E95345800A93F41 /* Build configuration list for PBXNativeTarget "guidovhead" */;
+			buildPhases = (
+				D3D3E4160E95344800A93F41 /* Sources */,
+				D3D3E4170E95344800A93F41 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = guidovhead;
+			productName = guidovhead;
+			productReference = D3D3E4190E95344800A93F41 /* guidovhead */;
+			productType = "com.apple.product-type.tool";
+		};
+		D3D3E4A80E95418200A93F41 /* guidovtail */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D3D3E4AF0E95419700A93F41 /* Build configuration list for PBXNativeTarget "guidovtail" */;
+			buildPhases = (
+				D3D3E4A60E95418200A93F41 /* Sources */,
+				D3D3E4A70E95418200A93F41 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = guidovtail;
+			productName = guidovtail;
+			productReference = D3D3E4A90E95418200A93F41 /* guidovtail */;
+			productType = "com.apple.product-type.tool";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -855,6 +945,8 @@
 				D307D89D0E8BE52300B3555D /* guidotranspose */,
 				D3D3E0FB0E94C3B400A93F41 /* guidohead */,
 				D3D3E2A80E94F64800A93F41 /* guidotail */,
+				D3D3E4180E95344800A93F41 /* guidovhead */,
+				D3D3E4A80E95418200A93F41 /* guidovtail */,
 			);
 		};
 /* End PBXProject section */
@@ -922,6 +1014,8 @@
 				D307D8570E8BDB4E00B3555D /* transposeOperation.cpp in Sources */,
 				D3D3E0EA0E94B73B00A93F41 /* headOperation.cpp in Sources */,
 				D3D3E2A40E94F63A00A93F41 /* tailOperation.cpp in Sources */,
+				D3D3E4120E95343000A93F41 /* vheadOperation.cpp in Sources */,
+				D3D3E4A40E95417500A93F41 /* vtailOperation.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1013,6 +1107,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D3D3E4160E95344800A93F41 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D3D3E4290E95347C00A93F41 /* guidovhead.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D3D3E4A60E95418200A93F41 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D3D3E4AE0E95419700A93F41 /* guidovtail.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -1080,6 +1190,16 @@
 			isa = PBXTargetDependency;
 			target = D3D3E2A80E94F64800A93F41 /* guidotail */;
 			targetProxy = D3D3E2AD0E94F64F00A93F41 /* PBXContainerItemProxy */;
+		};
+		D3D3E4B90E95425B00A93F41 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D3D3E4180E95344800A93F41 /* guidovhead */;
+			targetProxy = D3D3E4B80E95425B00A93F41 /* PBXContainerItemProxy */;
+		};
+		D3D3E4BB0E95425E00A93F41 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D3D3E4A80E95418200A93F41 /* guidovtail */;
+			targetProxy = D3D3E4BA0E95425E00A93F41 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1652,6 +1772,84 @@
 			};
 			name = Release;
 		};
+		D3D3E41B0E95344800A93F41 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../../../../../Library/Frameworks\"";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INSTALL_PATH = /usr/local/bin;
+				PREBINDING = NO;
+				PRODUCT_NAME = guidovhead;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		D3D3E41C0E95344800A93F41 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../../../../../Library/Frameworks\"";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				INSTALL_PATH = /usr/local/bin;
+				PREBINDING = NO;
+				PRODUCT_NAME = guidovhead;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		D3D3E4AB0E95418200A93F41 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../../../../../Library/Frameworks\"";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INSTALL_PATH = /usr/local/bin;
+				PREBINDING = NO;
+				PRODUCT_NAME = guidovtail;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		D3D3E4AC0E95418200A93F41 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../../../../../Library/Frameworks\"";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				INSTALL_PATH = /usr/local/bin;
+				PREBINDING = NO;
+				PRODUCT_NAME = guidovtail;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1786,6 +1984,24 @@
 			buildConfigurations = (
 				D3D3E2AB0E94F64800A93F41 /* Debug */,
 				D3D3E2AC0E94F64800A93F41 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D3D3E4270E95345800A93F41 /* Build configuration list for PBXNativeTarget "guidovhead" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D3D3E41B0E95344800A93F41 /* Debug */,
+				D3D3E41C0E95344800A93F41 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D3D3E4AF0E95419700A93F41 /* Build configuration list for PBXNativeTarget "guidovtail" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D3D3E4AB0E95418200A93F41 /* Debug */,
+				D3D3E4AC0E95418200A93F41 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

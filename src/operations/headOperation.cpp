@@ -67,8 +67,7 @@ void headOperation::checkOpenedTags()
 			size_t n = name.find("Begin", 0);
 			if (n !=string::npos) {
 				name.replace (n, name.length(), "End");
-				ARFactory factory;
-				Sguidoelement tag = factory.createTag(name);
+				Sguidoelement tag = ARFactory::instance().createTag(name);
 				if (tag) push (tag, false);
 			}
 			i->second = 0;
