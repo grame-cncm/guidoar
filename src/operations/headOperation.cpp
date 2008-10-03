@@ -110,6 +110,14 @@ void headOperation::visitStart ( Sguidotag& elt )
 	if (fCopy) {
 		clonevisitor::visitStart (elt);
 
+
+		string name = elt->getName();
+		if (elt->beginTag())
+			fOpenedTagsMap[name] += 1;
+		else if (elt->endTag()) {
+			fOpenedTagsMap[elt->matchTag()] -= 1;
+		}
+/*
 		string name = elt->getName();
 		if ( name.find("Begin", 0) !=string::npos) {
 			fOpenedTagsMap[name] += 1;
@@ -121,6 +129,7 @@ void headOperation::visitStart ( Sguidotag& elt )
 				fOpenedTagsMap[name] -= 1;
 			}
 		}
+*/
 	}
 }
 

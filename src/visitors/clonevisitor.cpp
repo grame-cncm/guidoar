@@ -80,13 +80,6 @@ Sguidoelement clonevisitor::copy (const Sguidoelement& src, Sguidoelement& dst)
 }
 
 //______________________________________________________________________________
-void clonevisitor::visitStart( SARMusic& elt )
-{
-	Sguidoelement cc = ARFactory::instance().createMusic();
-	fStack.push (copy (elt, cc));	
-}
-
-//______________________________________________________________________________
 void clonevisitor::push( const Sguidoelement& elt, bool stack )
 {
 	if (fStack.empty())
@@ -96,42 +89,59 @@ void clonevisitor::push( const Sguidoelement& elt, bool stack )
 }
 
 //______________________________________________________________________________
+// the visit methods
+//______________________________________________________________________________
+void clonevisitor::visitStart( SARMusic& elt )
+{
+	Sguidoelement cc = ARFactory::instance().createMusic();
+	fStack.push (copy (elt, cc));	
+}
+
+//______________________________________________________________________________
 void clonevisitor::visitStart( SARVoice& elt )
 {
-	Sguidoelement cc = ARFactory::instance().createVoice();
-	push( copy (elt, cc) );
+	if (copy()) {
+		Sguidoelement cc = ARFactory::instance().createVoice();
+		push( copy (elt, cc) );
+	}
 }
 
 //______________________________________________________________________________
 void clonevisitor::visitStart( SARChord& elt )
 {
-	Sguidoelement cc = ARFactory::instance().createChord();
-	push( copy (elt, cc) );
+	if (copy()) {
+		Sguidoelement cc = ARFactory::instance().createChord();
+		push( copy (elt, cc) );
+	}
 }
 
 //______________________________________________________________________________
 void clonevisitor::visitStart( SARNote& elt )
 {
-	SARNote note = ARFactory::instance().createNote(elt->getName());
-	note->SetOctave (elt->GetOctave());
-	note->SetAccidental (elt->GetAccidental());
-	note->SetDots (elt->GetDots());
-	*note = elt->duration();
-	Sguidoelement cc = note;
-	push( copy (elt, cc), false );
+	if (copy()) {
+		SARNote note = ARFactory::instance().createNote(elt->getName());
+		note->SetOctave (elt->GetOctave());
+		note->SetAccidental (elt->GetAccidental());
+		note->SetDots (elt->GetDots());
+		*note = elt->duration();
+		Sguidoelement cc = note;
+		push( copy (elt, cc), false );
+	}
 }
 
 //______________________________________________________________________________
 void clonevisitor::visitStart( Sguidotag& elt )
 {
-	Sguidoelement cc = ARFactory::instance().createTag(elt->getName(), elt->getID() );
-	push( copy (elt, cc), elt->size() );
+	if (copy()) {
+		Sguidoelement cc = ARFactory::instance().createTag(elt->getName(), elt->getID() );
+		push( copy (elt, cc), elt->size() );
+	}
 }
 
 //______________________________________________________________________________
-void clonevisitor::visitEnd  ( SARVoice& elt )		{ fStack.pop(); }
-void clonevisitor::visitEnd  ( SARChord& elt )		{ fStack.pop(); }
-void clonevisitor::visitEnd  ( Sguidotag& elt )		{ if (elt->size()) fStack.pop(); }
+void clonevisitor::visitEnd  ( SARVoice& elt )		{ if (copy()) fStack.pop(); }
+void clonevisitor::visitEnd  ( SARChord& elt )		{ if (copy()) fStack.pop(); }
+void clonevisitor::visitEnd  ( Sguidotag& elt )		{ if (copy() && elt->size()) fStack.pop(); }
 
 
 }

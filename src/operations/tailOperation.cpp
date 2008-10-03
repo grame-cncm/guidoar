@@ -134,8 +134,7 @@ void tailOperation::visitStart ( SARNote& elt )
 	if (duration.getNumerator() != ARNote::kUndefined) fCurrentNoteDuration = duration;
 	if (fState) {
 		if (fState == kStartPending) {
-			string name = elt->getName();
-			if ((name != "_") && (name != "empty")) {
+			if (!elt->isRest() && !elt->isEmpty()) {
 				if ((elt->GetOctave() == ARNote::kUndefined) && (fCurrentOctave != 1)) {
 					elt->SetOctave(fCurrentOctave);
 				}

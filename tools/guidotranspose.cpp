@@ -16,7 +16,7 @@
 using namespace std;
 using namespace guido;
 
-//#define debug
+#define debug
 
 //_______________________________________________________________________________
 static void usage(const char * name)
@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
 {
 #ifdef debug
 	argc = 3;
-	char * args[] = {"../test.gmn", "-1", 0};
+	char * args[] = {"bach.gmn", "3", 0};
 	char ** argsPtr = args;
 #else
 	if (argc != 3) usage(argv[0]);

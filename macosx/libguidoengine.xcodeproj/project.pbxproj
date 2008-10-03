@@ -215,28 +215,28 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = D3D3E0FB0E94C3B400A93F41 /* guidohead */;
+			remoteGlobalIDString = D3D3E0FB0E94C3B400A93F41;
 			remoteInfo = guidohead;
 		};
 		D3D3E2AD0E94F64F00A93F41 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = D3D3E2A80E94F64800A93F41 /* guidotail */;
+			remoteGlobalIDString = D3D3E2A80E94F64800A93F41;
 			remoteInfo = guidotail;
 		};
 		D3D3E4B80E95425B00A93F41 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = D3D3E4180E95344800A93F41 /* guidovhead */;
+			remoteGlobalIDString = D3D3E4180E95344800A93F41;
 			remoteInfo = guidovhead;
 		};
 		D3D3E4BA0E95425E00A93F41 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = D3D3E4A80E95418200A93F41 /* guidovtail */;
+			remoteGlobalIDString = D3D3E4A80E95418200A93F41;
 			remoteInfo = guidovtail;
 		};
 /* End PBXContainerItemProxy section */

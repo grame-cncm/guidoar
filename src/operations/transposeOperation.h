@@ -100,6 +100,7 @@ class export transposeOperation :
  
      protected:
 		std::vector<std::pair<char,int> >	fFifthCycle;	// the fifth cycle table
+		std::map<std::string,int >			fKeysMap;		// string to numeric keys map
 		Chromatic	fChromaticSteps;						// the target transposing interval
 
 		int		fTableShift;			// the current shift into the table of fifths

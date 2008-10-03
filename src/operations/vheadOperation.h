@@ -56,15 +56,10 @@ class export vheadOperation :
      protected:
 		int			fVoiceNum, fCurrentVoice;
 
+		virtual bool copy  ();
+
 		virtual void visitStart( SARStaff& elt );
 		virtual void visitStart( SARVoice& elt );
-		virtual void visitStart( SARChord& elt );
-		virtual void visitStart( SARNote& elt );
-		virtual void visitStart( Sguidotag& elt );
-
-		virtual void visitEnd  ( SARVoice& elt );
-		virtual void visitEnd  ( SARChord& elt );
-		virtual void visitEnd  ( Sguidotag& elt );
 };
 
 /*! @} */

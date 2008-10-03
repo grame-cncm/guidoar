@@ -73,6 +73,8 @@ class export ARNote : public guidoelement
 	int GetOctave		() const	{ return fOctave; }
 	int GetAccidental	() const	{ return fAccidental; }
 	int GetDots			() const	{ return fDots; }
+	bool isRest ()	const			{ return getName() == "_"; }
+	bool isEmpty ()	const			{ return getName() == "empty"; }
 	
 	pitch GetPitch		(int& alter) const;
 	

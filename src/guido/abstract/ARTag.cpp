@@ -30,6 +30,39 @@ namespace guido
 {
 
 //______________________________________________________________________________
+bool guidotag::beginTag() const {
+	return getName().find("Begin", 0) != string::npos;
+}
+
+//______________________________________________________________________________
+bool guidotag::endTag() const {
+	return getName().find("End", 0) != string::npos;
+}
+
+//______________________________________________________________________________
+string guidotag::matchTag () const {
+	string name = getName();
+	size_t n = name.find("Begin", 0);
+	if (n != string::npos) {
+		name.replace (n, name.length(), "End");
+		return name;
+	}
+	else {
+		n = name.find("End", 0);
+		if (n != string::npos) {
+			name.replace (n, name.length(), "Begin");
+			return name;
+		}
+	}
+	return "";
+}
+
+//______________________________________________________________________________
+bool guidotag::matchTag (const Sguidotag& tag) const {
+	return matchTag() == tag->getName();
+}
+
+//______________________________________________________________________________
 void guidotag::acceptIn(basevisitor& v) {
 	if (visitor<SMARTP<guidotag> >* p = dynamic_cast<visitor<SMARTP<guidotag> >*>(&v)) {
 		SMARTP<guidotag> sptr = this;

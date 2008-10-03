@@ -54,68 +54,21 @@ Sguidoelement vtailOperation::operator() ( const Sguidoelement& score, int voice
 }
 
 //________________________________________________________________________
+bool vtailOperation::copy  ()	{ return fCurrentVoice > fVoiceNum; }
+
+//________________________________________________________________________
 // The visit methods
 //________________________________________________________________________
 void vtailOperation::visitStart ( SARVoice& elt )
 {
 	fCurrentVoice++;
-	if (fCurrentVoice > fVoiceNum)
-		clonevisitor::visitStart (elt);
+	clonevisitor::visitStart (elt);
 }
 
 //________________________________________________________________________
 void vtailOperation::visitStart ( SARStaff& elt )
 {
 // don't copy staff assignments
-/*
-	if (fCurrentVoice > fVoiceNum) {
-		long staffNum = elt->getAttributeLongValue(0,9999);
-		Sguidoelement copy = ARFactory::instance().createTag(elt->getName());
-		Sguidoattribute attr = guidoattribute::create();
-		attr->setValue( (staffNum > fCurrentVoice) ? fCurrentVoice : staffNum);
-		copy->add(attr);
-		push( copy, false );
-	}
-*/
-}
-
-//________________________________________________________________________
-void vtailOperation::visitStart ( SARChord& elt )
-{
-	if (fCurrentVoice > fVoiceNum)
-		clonevisitor::visitStart (elt);
-}
-
-//________________________________________________________________________
-void vtailOperation::visitStart ( SARNote& elt )
-{
-	if (fCurrentVoice > fVoiceNum)
-		clonevisitor::visitStart (elt);
-}
-
-//________________________________________________________________________
-void vtailOperation::visitStart ( Sguidotag& elt )
-{
-	if (fCurrentVoice > fVoiceNum)
-		clonevisitor::visitStart (elt);
-}
-
-//________________________________________________________________________
-void vtailOperation::visitEnd ( SARVoice& elt )
-{
-	if (fCurrentVoice > fVoiceNum) clonevisitor::visitEnd (elt);
-}
-
-//________________________________________________________________________
-void vtailOperation::visitEnd ( SARChord& elt )
-{
-	if (fCurrentVoice > fVoiceNum) clonevisitor::visitEnd (elt);
-}
-
-//________________________________________________________________________
-void vtailOperation::visitEnd ( Sguidotag& elt )
-{
-	if (fCurrentVoice > fVoiceNum) clonevisitor::visitEnd (elt);
 }
 
 }

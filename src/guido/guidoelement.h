@@ -69,6 +69,7 @@ class export guidoattribute : public smartable {
 		void setUnit (const std::string& unit);
 		void setValue (long value);
 		void setValue (double value);
+		void setQuoteVal (bool);
 
 		const std::string& getName () const		{ return fName; }
 		const std::string& getValue () const	{ return fValue; }

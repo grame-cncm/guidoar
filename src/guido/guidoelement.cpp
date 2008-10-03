@@ -42,6 +42,7 @@ namespace guido
 void guidoattribute::setName (const string& name) 		{ fName = name; }
 void guidoattribute::setUnit (const string& unit)		{ fUnit = unit; }
 void guidoattribute::setValue (const string& value, bool quote) { fValue = value; fQuoteVal=quote; }
+void guidoattribute::setQuoteVal (bool quote)			{ fQuoteVal=quote; }
 
 //______________________________________________________________________________
 void guidoattribute::setValue (long value)

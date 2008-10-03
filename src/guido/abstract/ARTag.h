@@ -25,6 +25,8 @@
 #define __ARTag__
 
 #include <iostream>
+#include <string>
+
 #include "export.h"
 #include "guidoelement.h"
 #include "visitor.h"
@@ -51,6 +53,8 @@ The GAR is organised as a Tree composed of the following elements:
 /*!
 \brief A type for guido tags.
 */
+class guidotag;
+typedef SMARTP<guidotag>	Sguidotag;
 class export guidotag : public guidoelement
 {
 	public:
@@ -62,6 +66,11 @@ class export guidotag : public guidoelement
 		void setID(long id)				{ fID = id; }
 		operator std::string () const;
 
+		bool	beginTag () const;		/// return true when the tag is in the form xxxBegin (tieBegin, slurBegin etc...)
+		bool	endTag () const;		/// return true when the tag is in the form xxxEnd (tieEnd, slurEnd etc...)
+		bool	matchTag (const Sguidotag&) const;	/// return true if tags are in the form xxxBegin and xxxEnd and xxx matches 
+		std::string	matchTag () const;		/// return the name of the matching xxxBegin or xxxEnd form if any 
+
     protected:	
 				 guidotag(long id) : fID(id) {}
 		virtual ~guidotag() {}
@@ -69,7 +78,6 @@ class export guidotag : public guidoelement
 		long fID;						// represents the tag id i.e the \tag:xx form of the tags where xx is a discriminant id
 		int  fType;						// the tag template integer
 };
-typedef SMARTP<guidotag>	Sguidotag;
 
 //______________________________________________________________________________
 /*!
