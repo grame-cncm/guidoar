@@ -21,12 +21,10 @@
 
 */
 
-#ifndef __seqOperation__
-#define __seqOperation__
+#ifndef __operation__
+#define __operation__
 
 #include "export.h"
-#include "guidoelement.h"
-#include "operation.h"
 #include "ARTypes.h"
 
 namespace guido 
@@ -41,16 +39,13 @@ namespace guido
 /*!
 \brief	A visitor to print the gmn description
 */
-class export seqOperation : public operation
+class export operation
 {
-    private:
-		void delEndBar(Sguidoelement);
-
     public:
-				 seqOperation() {}
-		virtual ~seqOperation() {}
+				 operation() {}
+		virtual ~operation() {}
 
-		SARMusic operator() ( const SARMusic& score1, const SARMusic& score2 );
+		virtual SARMusic operator() ( const SARMusic& score1, const SARMusic& score2 ) = 0;
 };
 
 /*! @} */

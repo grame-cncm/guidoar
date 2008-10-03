@@ -32,7 +32,7 @@
 #include "guidoelement.h"
 #include "clonevisitor.h"
 #include "durationvisitor.h"
-
+#include "operation.h"
 
 namespace guido 
 {
@@ -46,6 +46,7 @@ namespace guido
 \brief A visitor that cuts the tail of a score.
 */
 class export tailOperation : 
+	public operation,
 	public clonevisitor,
 	public visitor<SARStaff>,
 	public visitor<SARKey>,
@@ -56,12 +57,20 @@ class export tailOperation :
  				 tailOperation();
 		virtual ~tailOperation();
 
-		/*! cuts the tail of a score after a given duration
+		/*! cuts the head of a score before a given duration
+			\param score the score to be cut
 			\param duration the score duration to drop
 			\return a new score
 		*/
 		Sguidoelement operator() ( const Sguidoelement& score, const rational& duration );
- 
+
+		/*! cuts the head of a score before a given duration
+			\param score1 the score to be cut
+			\param score2 a score which duration is used as cut point
+			\return a new score
+		*/
+		SARMusic operator() ( const SARMusic& score1, const SARMusic& score2 );
+  
      protected:
 		enum state  { kSkip, kStartPending, kCopy };
 		rational		fStartPoint;

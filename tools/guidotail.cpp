@@ -23,11 +23,12 @@ using namespace guido;
 //_______________________________________________________________________________
 static void usage(char * name)
 {
-	cerr << "usage: " << basename(name) << " <file> <duration>"  << endl;
+	cerr << "usage: " << basename(name) << " <score> <duration | dscore>"  << endl;
 	cerr << "       cut a score after a given duration"  << endl;
-	cerr << "       file: the input file or '-' the read stdin"  << endl;
+	cerr << "       score: the input file or '-' the read stdin"  << endl;
 	cerr << "       duration: the score duration to preserve,"  << endl;
 	cerr << "                 expressed as a non null rational where 1 is a whole note"  << endl;
+	cerr << "       dscore: a score file used as duration specifier"  << endl;
 	exit (1);
 }
 
@@ -76,12 +77,18 @@ int main(int argc, char *argv[])
 	if (argc != 3) usage(argv[0]);
 	char ** argsPtr = &argv[1];
 #endif
-	rational duration = durationArg (argsPtr[1]);
-	if (!duration.getNumerator()) usage(argv[0]);
-
 	SARMusic score = read (argsPtr[0]);
 	tailOperation tail;
-	Sguidoelement result = tail(score, duration);
+	Sguidoelement result;
+
+	rational duration = durationArg (argsPtr[1]);
+	if (duration.getNumerator()) {
+		result = tail(score, duration);
+	}
+	else {
+		SARMusic dscore = read (argsPtr[1]);
+		result = tail(score, dscore);
+	}
 	if (result) cout << result << endl;
 	return 0;
 }

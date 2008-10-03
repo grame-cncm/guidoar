@@ -46,6 +46,14 @@ tailOperation::tailOperation()	{}
 tailOperation::~tailOperation()	{}
 
 //_______________________________________________________________________________
+SARMusic tailOperation::operator() ( const SARMusic& score1, const SARMusic& score2 )
+{
+	if (!score2) return 0;
+	Sguidoelement elt = (*this)(score1, fDuration.duration(score2));
+	return dynamic_cast<ARMusic*>((guidoelement*)elt);
+}
+
+//_______________________________________________________________________________
 Sguidoelement tailOperation::operator() ( const Sguidoelement& score, const rational& duration )
 {
 	fPendingTagsMap.clear();

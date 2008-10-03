@@ -26,6 +26,7 @@
 #include "export.h"
 #include "AROthers.h"
 #include "clonevisitor.h"
+#include "operation.h"
 
 
 namespace guido 
@@ -40,6 +41,7 @@ namespace guido
 \brief A visitor that cuts the head of a score voices.
 */
 class export vtailOperation : 
+	public operation,
 	public clonevisitor,
 	public visitor<SARStaff>
 {		
@@ -48,10 +50,18 @@ class export vtailOperation :
 		virtual ~vtailOperation()	{}
 
 		/*! cuts the head of the score voices before a given voice
+			\param score the score to be cut
 			\param voicenum the score voices to drop
 			\return a new score
 		*/
 		Sguidoelement operator() ( const Sguidoelement& score, int voicenum );
+
+		/*! cuts the head of the score voices before a given voice
+			\param score1 the score to be cut
+			\param score2 a score which voice number is used as voice index
+			\return a new score
+		*/
+		SARMusic operator() ( const SARMusic& score1, const SARMusic& score2 );
  
      protected:
 		int			fVoiceNum, fCurrentVoice;

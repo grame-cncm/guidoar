@@ -26,6 +26,7 @@
 
 #include "export.h"
 #include "guidoelement.h"
+#include "operation.h"
 #include "ARTypes.h"
 
 namespace guido 
@@ -40,7 +41,7 @@ namespace guido
 /*!
 \brief	an operation to interleave 2 scores
 */
-class export interleaveOperation
+class export interleaveOperation : public operation
 {
     public:
 		enum mode { kLeft, kRight };

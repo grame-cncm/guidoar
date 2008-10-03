@@ -88,6 +88,7 @@
 		D34739090DEDF97E00BE54BE /* parser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D34739070DEDF97E00BE54BE /* parser.cpp */; };
 		D34739960DEE084F00BE54BE /* browser.h in Headers */ = {isa = PBXBuildFile; fileRef = D34739950DEE084F00BE54BE /* browser.h */; };
 		D34739AB0DEE099400BE54BE /* guidoread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D34739AA0DEE099400BE54BE /* guidoread.cpp */; };
+		D3573AF00E965834000525C7 /* operation.h in Headers */ = {isa = PBXBuildFile; fileRef = D3573AEF0E965834000525C7 /* operation.h */; };
 		D364158B0E1A912800E4E545 /* clonevisitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D36415890E1A912800E4E545 /* clonevisitor.cpp */; };
 		D364158C0E1A912800E4E545 /* clonevisitor.h in Headers */ = {isa = PBXBuildFile; fileRef = D364158A0E1A912800E4E545 /* clonevisitor.h */; };
 		D37EF9F10DEE0B5800A3AB8A /* libguidoengine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoengine.framework */; };
@@ -291,6 +292,7 @@
 		D34739950DEE084F00BE54BE /* browser.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = browser.h; path = ../src/lib/browser.h; sourceTree = SOURCE_ROOT; };
 		D34739A30DEE096F00BE54BE /* guidoread */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = guidoread; sourceTree = BUILT_PRODUCTS_DIR; };
 		D34739AA0DEE099400BE54BE /* guidoread.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = guidoread.cpp; path = ../tools/guidoread.cpp; sourceTree = SOURCE_ROOT; };
+		D3573AEF0E965834000525C7 /* operation.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = operation.h; path = ../src/operations/operation.h; sourceTree = SOURCE_ROOT; };
 		D36415890E1A912800E4E545 /* clonevisitor.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = clonevisitor.cpp; path = ../src/visitors/clonevisitor.cpp; sourceTree = SOURCE_ROOT; };
 		D364158A0E1A912800E4E545 /* clonevisitor.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = clonevisitor.h; path = ../src/visitors/clonevisitor.h; sourceTree = SOURCE_ROOT; };
 		D37EF9F00DEE0B5800A3AB8A /* libguidoengine.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = libguidoengine.framework; path = ../../../../../../Library/Frameworks/libguidoengine.framework; sourceTree = SOURCE_ROOT; };
@@ -515,6 +517,7 @@
 		D31E252D0E082FBF001406DF /* operations */ = {
 			isa = PBXGroup;
 			children = (
+				D3573AEF0E965834000525C7 /* operation.h */,
 				D3D3E4A20E95417500A93F41 /* vtailOperation.cpp */,
 				D3D3E4A30E95417500A93F41 /* vtailOperation.h */,
 				D3D3E4100E95343000A93F41 /* vheadOperation.cpp */,
@@ -684,6 +687,7 @@
 				D3D3E2A50E94F63A00A93F41 /* tailOperation.h in Headers */,
 				D3D3E4130E95343000A93F41 /* vheadOperation.h in Headers */,
 				D3D3E4A50E95417500A93F41 /* vtailOperation.h in Headers */,
+				D3573AF00E965834000525C7 /* operation.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

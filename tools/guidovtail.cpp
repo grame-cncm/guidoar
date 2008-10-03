@@ -23,10 +23,11 @@ using namespace guido;
 //_______________________________________________________________________________
 static void usage(char * name)
 {
-	cerr << "usage: " << basename(name) << " <file> <voicenum>"  << endl;
+	cerr << "usage: " << basename(name) << " <score> <voicenum | vscore>"  << endl;
 	cerr << "       cut a score after a given duration"  << endl;
-	cerr << "       file: the input file or '-' the read stdin"  << endl;
+	cerr << "       score: the input file or '-' to read stdin"  << endl;
 	cerr << "       voicenum: number of voices to preserve,"  << endl;
+	cerr << "       vscore: a score file used as voice specifier"  << endl;
 	exit (1);
 }
 
@@ -51,7 +52,7 @@ static SARMusic read (const char* file)
 }
 
 //_______________________________________________________________________________
-static rational voiceArg (const char* vi) 
+static int voiceArg (const char* vi) 
 {
 	int num=0;
 	int n = sscanf(vi, "%d", &num);
@@ -70,12 +71,18 @@ int main(int argc, char *argv[])
 	if (argc != 3) usage(argv[0]);
 	char ** argsPtr = &argv[1];
 #endif
-	int nvoices = voiceArg (argsPtr[1]);
-	if (nvoices < 0) usage(argv[0]);
-
 	SARMusic score = read (argsPtr[0]);
 	vtailOperation tail;
-	Sguidoelement result = tail(score, nvoices);
+	Sguidoelement result;
+
+	int nvoices = voiceArg (argsPtr[1]);
+	if (nvoices > 0) {
+		result = tail(score, nvoices);
+	}
+	else {
+		SARMusic dscore = read (argsPtr[1]);
+		result = tail(score, dscore);
+	}
 	if (result) cout << result << endl;
 	return 0;
 }

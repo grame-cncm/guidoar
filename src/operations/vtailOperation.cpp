@@ -53,6 +53,13 @@ Sguidoelement vtailOperation::operator() ( const Sguidoelement& score, int voice
 	return outscore;
 }
 
+//_______________________________________________________________________________
+SARMusic vtailOperation::operator() ( const SARMusic& score1, const SARMusic& score2 )
+{
+	Sguidoelement elt = (*this)(score1, score2->size());
+	return dynamic_cast<ARMusic*>((guidoelement*)elt);
+}
+
 //________________________________________________________________________
 bool vtailOperation::copy  ()	{ return fCurrentVoice > fVoiceNum; }
 

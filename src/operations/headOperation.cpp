@@ -43,6 +43,14 @@ namespace guido
 {
 
 //_______________________________________________________________________________
+SARMusic headOperation::operator() ( const SARMusic& score1, const SARMusic& score2 )
+{
+	if (!score2) return 0;
+	Sguidoelement elt = (*this)(score1, fDuration.duration(score2));
+	return dynamic_cast<ARMusic*>((guidoelement*)elt);
+}
+
+//_______________________________________________________________________________
 Sguidoelement headOperation::operator() ( const Sguidoelement& score, const rational& duration )
 {
 	fOpenedTagsMap.clear();

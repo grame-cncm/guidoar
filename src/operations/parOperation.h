@@ -26,6 +26,7 @@
 
 #include "export.h"
 #include "guidoelement.h"
+#include "operation.h"
 #include "ARTypes.h"
 
 namespace guido 
@@ -40,7 +41,7 @@ namespace guido
 /*!
 \brief	A visitor to print the gmn description
 */
-class export parOperation
+class export parOperation : public operation
 {
     public:
 		enum mode { kLeft, kRight };
