@@ -92,24 +92,58 @@ void transposeOperation::initialize ()
 		fFifthCycle.push_back(make_pair('e', i));
 		fFifthCycle.push_back(make_pair('b', i));
 	}
+	fKeysMap["C&"] = fKeysMap["a&"] = -7;
+	fKeysMap["C"]  = fKeysMap["a"]  = 0;
+	fKeysMap["C#"] = fKeysMap["a#"] = 7;
+
+	fKeysMap["D&"] = fKeysMap["b&"] = fKeysMap["h&"] = -5;
+	fKeysMap["D"]  = fKeysMap["b"]  = fKeysMap["h"]  = 2;
+	fKeysMap["D#"] = fKeysMap["b#"] = fKeysMap["h#"] = 9;
+
+	fKeysMap["E&"] = fKeysMap["c"] = -3;
+	fKeysMap["E"]  = fKeysMap["c#"] = 4;
+	fKeysMap["E#"] = 11;			// double  sharp not supported in key sign
+
+	fKeysMap["F&"] = fKeysMap["d&"] = -8;
+	fKeysMap["F"]  = fKeysMap["d"]  = -1;
+	fKeysMap["F#"] = fKeysMap["d#"] = 6;
+
+	fKeysMap["G&"] = fKeysMap["e&"] = -6;
+	fKeysMap["G"]  = fKeysMap["e"]  = 1;
+	fKeysMap["G#"] = fKeysMap["e#"] = 8;
+
+	fKeysMap["A&"] = fKeysMap["f"] = -4;
+	fKeysMap["A"]  = fKeysMap["f#"] = 3;
+	fKeysMap["A#"] = 10;			// double  sharp not supported in key sign
+
+	fKeysMap["B&"] = fKeysMap["H&"] = fKeysMap["g"] = -2;
+	fKeysMap["B"]  = fKeysMap["H"]  = fKeysMap["g#"] = 5;
+	fKeysMap["B#"] = fKeysMap["H#"] = 12;	// double  sharp not supported in key sign
 }
 
 //________________________________________________________________________
 // transpose a pitch using the table of fifth cycle
 void transposeOperation::transpose ( char& pitch, int& alter, int& octave, int tableshift ) const
 {
+	// retrieve first the normaized pitch integer class
 	int pitch1 = ARNote::NormalizedName2Pitch(pitch);
+	// then browse the fifth cycle table
 	for (unsigned int i=0; i < fFifthCycle.size(); i++) {
+		// until we find the same pitch spelling (ie including name and accident)
 		if ((fFifthCycle[i].second == alter) && (fFifthCycle[i].first == pitch)) {
+			// then we shift into the table
 			i += tableshift;
+			// make possible adjustments
 			if (i > fFifthCycle.size()) i -= 12;
 			else if (i < 0) i += 12;
-			
+			// and retrieve the resulting transposed pitch
 			pitch = fFifthCycle[i].first;
 			alter = fFifthCycle[i].second;
-	
+			// check now fro octave changes
 			int pitch2 = ARNote::NormalizedName2Pitch(pitch);
+			// if pitch is lower but transposition is up: then increase octave
 			if ((pitch2 < pitch1) && (fChromaticSteps > 0)) octave++;
+			// if pitch is higher but transposition is down: then decrease octave
 			else if ((pitch2 > pitch1) && (fChromaticSteps < 0)) octave--;
 
 			return;
@@ -158,6 +192,8 @@ int transposeOperation::getKey (  Chromatic steps )
 //________________________________________________________________________
 void transposeOperation::visitStart ( SARNote& elt ) 
 {
+	if (elt->isRest() || elt->isEmpty()) return;
+
 	char npitch; int alter;
 	elt->NormalizedPitchName (npitch, alter);
 	alter += elt->GetAccidental();
@@ -172,7 +208,8 @@ void transposeOperation::visitStart ( SARNote& elt )
 	string npname; 
 	npname += npitch;
 	elt->setName(npname);
-	if (octave != fCurrentOctaveOut) elt->SetOctave(octave);
+	if ((octave != fCurrentOctaveOut) || (elt->GetOctave() != ARNote::kUndefined))
+		elt->SetOctave(octave);
 	fCurrentOctaveOut = octave;
 	elt->SetAccidental(alter);
 //cerr << string(*elt) << " oct chge: " << fOctaveChange << endl;
@@ -183,10 +220,16 @@ void transposeOperation::visitStart ( SARKey& elt )
 {
 	Sguidoattribute attr = elt->getAttribute(0);
 	if (attr) {
-		int key = int(*attr);
+		int key = 0;
+		map<string,int>::const_iterator i = fKeysMap.lower_bound(attr->getValue());
+		if (i != fKeysMap.end())
+			key = i->second;
+		else 
+			key = int(*attr);
 		int enharmonicChange;
 		int newkey = transposeKey (key, fChromaticSteps, enharmonicChange);
 		attr->setValue (long(newkey));
+		attr->setQuoteVal(false);
 //cerr << "visit SARKey value " << key << " -> " << newkey << " enharmonic (" << enharmonicChange << ")" << endl;
 	}
 }
