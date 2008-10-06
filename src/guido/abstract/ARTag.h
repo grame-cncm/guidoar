@@ -71,6 +71,10 @@ class export guidotag : public guidoelement
 		bool	matchTag (const Sguidotag&) const;	/// return true if tags are in the form xxxBegin and xxxEnd and xxx matches 
 		std::string	matchTag () const;		/// return the name of the matching xxxBegin or xxxEnd form if any 
 
+		//________________________________________________________________________
+		virtual bool operator ==(const Sguidotag& i) const;
+		virtual bool operator !=(const Sguidotag& i) const		{ return !(*this == i); }
+
     protected:	
 				 guidotag(long id) : fID(id) {}
 		virtual ~guidotag() {}
@@ -105,6 +109,7 @@ template <int elt> class ARTag : public guidotag
 			}
 			else guidotag::acceptOut(v);
 		}
+
     protected:	
 				 ARTag(long id) : guidotag(id) {}
 		virtual ~ARTag() {}

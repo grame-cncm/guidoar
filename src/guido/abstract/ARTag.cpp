@@ -63,6 +63,11 @@ bool guidotag::matchTag (const Sguidotag& tag) const {
 }
 
 //______________________________________________________________________________
+bool guidotag::operator ==(const Sguidotag& elt) const { 
+	return (guidoelement::operator == (elt)) && (getID() ==  elt->getID());
+}
+
+//______________________________________________________________________________
 void guidotag::acceptIn(basevisitor& v) {
 	if (visitor<SMARTP<guidotag> >* p = dynamic_cast<visitor<SMARTP<guidotag> >*>(&v)) {
 		SMARTP<guidotag> sptr = this;
