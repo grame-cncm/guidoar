@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
 {
 #ifdef debug
 	argc = 3;
-	char * args[] = {"../a.gmn", "../a.gmn", 0};
+	char * args[] = {"test.gmn", "test.gmn", 0};
 	char ** argsPtr = args;
 #else
 	if (argc == 1) usage(argv[0]);

@@ -56,7 +56,7 @@ static rational pitchArg (const char* vi)
 {
 	int num=0;
 	int n = sscanf(vi, "%d", &num);
-	if (n != 1) num = -1;
+	if (n != 1) num = 9999;
 	return num;
 }
 
@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
 {
 #ifdef debug
 	argc = 3;
-	char * args[] = {"test.gmn", "a.gmn", 0};
+	char * args[] = {"test.gmn", "-2", 0};
 	char ** argsPtr = args;
 #else
 	if (argc != 3) usage(argv[0]);
@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
 	Sguidoelement result;
 
 	int steps = pitchArg (argsPtr[1]);
-	if (steps >= 0) {
+	if (steps < 9999) {
 		result = trsp(score, steps);
 	}
 	else {

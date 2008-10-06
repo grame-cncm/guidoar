@@ -29,9 +29,9 @@
 #include <iostream>
 
 #include "ARFactory.h"
+#include "AROthers.h"
 #include "ARTag.h"
 #include "vtailOperation.h"
-#include "tree_browser.h"
 
 using namespace std;
 
@@ -45,8 +45,8 @@ Sguidoelement vtailOperation::operator() ( const Sguidoelement& score, int voice
 	fCurrentVoice = 0;
 	Sguidoelement outscore;
 	if (score) {
-		tree_browser<guidoelement> tb(this);
-		tb.browse (*score);
+		fBrowser.stop(false);
+		fBrowser.browse (*score);
 		outscore = fStack.top();
 		fStack.pop();
 	}
@@ -69,7 +69,17 @@ bool vtailOperation::copy  ()	{ return fCurrentVoice > fVoiceNum; }
 void vtailOperation::visitStart ( SARVoice& elt )
 {
 	fCurrentVoice++;
-	clonevisitor::visitStart (elt);
+	if (copy())
+		clonevisitor::visitStart (elt);
+	else fBrowser.stop();
+}
+
+//________________________________________________________________________
+void vtailOperation::visitEnd ( SARVoice& elt )
+{
+	fBrowser.stop(false);
+	if (copy())
+		clonevisitor::visitEnd (elt);
 }
 
 //________________________________________________________________________

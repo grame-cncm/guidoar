@@ -93,8 +93,7 @@ void clonevisitor::push( const Sguidoelement& elt, bool stack )
 //______________________________________________________________________________
 void clonevisitor::visitStart( SARMusic& elt )
 {
-	Sguidoelement cc = ARFactory::instance().createMusic();
-	fStack.push (copy (elt, cc));	
+	fStack.push (ARFactory::instance().createMusic());
 }
 
 //______________________________________________________________________________

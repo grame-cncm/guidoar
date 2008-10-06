@@ -38,7 +38,7 @@ namespace guido
 {
 
 //_______________________________________________________________________________
-vheadOperation::vheadOperation() : fBrowser (this) {}
+vheadOperation::vheadOperation()  { fBrowser.set(this); }
 
 //_______________________________________________________________________________
 Sguidoelement vheadOperation::operator() ( const Sguidoelement& score, int voicenum )

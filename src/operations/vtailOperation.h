@@ -27,6 +27,7 @@
 #include "AROthers.h"
 #include "clonevisitor.h"
 #include "operation.h"
+#include "tree_browser.h"
 
 
 namespace guido 
@@ -46,7 +47,7 @@ class export vtailOperation :
 	public visitor<SARStaff>
 {		
     public:
- 				 vtailOperation()	{}
+ 				 vtailOperation()	{ fBrowser.set(this); }
 		virtual ~vtailOperation()	{}
 
 		/*! cuts the head of the score voices before a given voice
@@ -65,10 +66,12 @@ class export vtailOperation :
  
      protected:
 		int			fVoiceNum, fCurrentVoice;
+		tree_browser<guidoelement> fBrowser;
 
 		virtual bool copy  ();
 		virtual void visitStart ( SARStaff& elt );
 		virtual void visitStart ( SARVoice& elt );
+		virtual void visitEnd   ( SARVoice& elt );
 };
 
 /*! @} */
