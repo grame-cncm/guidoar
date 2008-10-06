@@ -65,6 +65,15 @@ guidoattribute::operator long () const	{ return atol(fValue.c_str()); }
 guidoattribute::operator float () const	{ return (float)atof(fValue.c_str()); }
 
 //______________________________________________________________________________
+bool guidoattribute::operator ==(const Sguidoattribute& elt) const { 
+	return  elt 
+			&& (getName() == elt->getName())
+			&& (getValue() == elt->getValue())
+			&& (getUnit() == elt->getUnit())
+			&& (quoteVal() == elt->quoteVal());
+}
+
+//______________________________________________________________________________
 // guidoelement
 //______________________________________________________________________________
 void guidoelement::setName (const string& name) 	{ fName = name; }
@@ -176,6 +185,31 @@ void guidoelement::acceptOut(basevisitor& v) {
 		Sguidoelement ge = this;
 		p->visitEnd (ge);
 	}
+}
+
+//______________________________________________________________________________
+bool guidoelement::operator ==(const Sguidoattributes& attlist) const
+{
+	for (Sguidoattributes::const_iterator i = attributes().begin(); i != attributes().end(); i++) {
+		// position attributes are ignored for comparison
+		string name = (*i)->getName();
+		if ((name.find ("dx", 0) != 0) && (name.find ("dy", 0) != 0) && (name != "h")) {
+			Sguidoattribute first = *i;
+			Sguidoattributes::const_iterator j = attlist.begin();
+			for (; j != attlist.end(); j++) {
+				Sguidoattribute second = *j;
+				if (*first == second) break;
+			}
+			// check if we found any matching attribute
+			if (j == attlist.end()) return false;
+		}
+	}
+	return true;
+}
+
+//______________________________________________________________________________
+bool guidoelement::operator ==(const Sguidoelement& elt) const { 
+	return elt && (getName() == elt->getName()) && (*this) == elt->attributes();
 }
 
 //______________________________________________________________________________
