@@ -27,7 +27,7 @@
 #include "seqOperation.h"
 #include "ARFactory.h"
 #include "AROthers.h"
-
+#include "tree_browser.h"
 
 using namespace std;
 
@@ -35,52 +35,96 @@ namespace guido
 {
 
 //_______________________________________________________________________________
-void seqOperation::delEndBar(Sguidoelement elt)
-{
-	SARVoice v = dynamic_cast<ARVoice*>((guidoelement*)elt);
-	if (v) {
-		Sguidoelement& back = v->elements().back();
-		if (back && (back->getName() == "endBar")) {
-			v->elements().pop_back();
-		}
-	}
-}
-
-//_______________________________________________________________________________
 SARMusic seqOperation::operator() ( const SARMusic& score1, const SARMusic& score2 )
 {
-	SARMusic elt = ARFactory::instance().createMusic();
-	if (elt) {
-		clonevisitor cv;
-		if (score1) {
-			elt->push (cv.clone(score1)->elements());
-		}
-		if (score2) {
-			Sguidoelement copy = cv.clone (score2);
+	SARMusic outscore = ARFactory::instance().createMusic();
+	if (outscore) {
+		push (outscore);
+		
+		Sguidoelement sc1 = score1 ? score1 : outscore;
+		Sguidoelement sc2 = score2 ? score2 : outscore;
 
-			ctree<guidoelement>::const_literator i1 = elt->lbegin();
-			ctree<guidoelement>::const_literator i2 = copy->lbegin();
-			
-			while ((i1 != elt->lend()) && (i2 != copy->lend())) {
-				delEndBar(*i1);
-				(*i1)->push((*i2)->elements());
-				i1++;
-				i2++;
+		ctree<guidoelement>::literator s1i = sc1->lbegin();
+		ctree<guidoelement>::literator s2i = sc2->lbegin();
+
+		tree_browser<guidoelement> browser(this);
+		while ((s1i != sc1->lend()) && (s2i != sc2->lend())) {
+			fCurrentKey = fCurrentMeter = fCurrentClef = 0;
+			if (s1i != sc1->lend()) {
+				fState = kInFirstScore;
+				browser.browse(*(*s1i));
+				s1i++;
 			}
-			while (i1 != elt->lend()) {
-				delEndBar(*i1);
-				i1++;
+			if (s2i != sc2->lend()) {
+				fState = kInSecondScore;
+				browser.browse(*(*s2i));
+				s2i++;
 			}
-			while (i2 != copy->lend()) {
-				// score 2 has more voices than score 1: push the remaining voices
-				elt->push (*i2);
-				i2++;
-			}
-			
 		}
+		fState = kRemainVoice;
+		for (; s1i != sc1->lend(); s1i++)	{ browser.browse(*(*s1i)); }
+		for (; s2i != sc2->lend(); s2i++)	{ browser.browse(*(*s2i)); }		
 	}
-	return elt;
+	return outscore;
 }
+
+void seqOperation::checkHeader(Sguidotag tag, Sguidotag& target)
+{
+	switch (fState) {
+		case kInFirstScore:			
+			target = tag;
+		case kRemainVoice:			
+			clonevisitor::visitStart (tag);
+			break;
+		case kInSecondScore:
+			if (!target || (*tag != target)) 
+				clonevisitor::visitStart (tag);
+			fCurrentClef = 0;
+			break;
+	}
+}
+
+//________________________________________________________________________
+// The visit methods
+//________________________________________________________________________
+void seqOperation::visitStart ( SARClef& elt )		{ checkHeader (elt, fCurrentClef); }
+void seqOperation::visitStart ( SARKey& elt )		{ checkHeader (elt, fCurrentKey); }
+void seqOperation::visitStart ( SARMeter& elt )		{ checkHeader (elt, fCurrentMeter); }
+
+// end bars are skipped for the first score
+void seqOperation::visitStart ( SAREndBar& elt ) 
+{ 
+	Sguidotag tag = elt;
+	switch (fState) {
+		case kRemainVoice:			
+		case kInSecondScore:			
+			clonevisitor::visitStart (tag);
+			break;
+	}
+}
+
+// a voice is created only for the first score
+void seqOperation::visitStart ( SARVoice& elt ) 
+{ 
+	switch (fState) {
+		case kInFirstScore:			
+		case kRemainVoice:			
+			clonevisitor::visitStart (elt);
+			break;
+	}
+}
+
+// a voice is created only for the first score
+void seqOperation::visitEnd   ( SARVoice& elt )
+{ 
+	switch (fState) {
+		case kInSecondScore:			
+		case kRemainVoice:			
+			clonevisitor::visitEnd (elt);
+			break;
+	}
+}
+
 
 
 } // namespace

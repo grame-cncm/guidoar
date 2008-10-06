@@ -28,6 +28,9 @@
 #include "guidoelement.h"
 #include "operation.h"
 #include "ARTypes.h"
+#include "ARTag.h"
+
+#include "clonevisitor.h"
 
 namespace guido 
 {
@@ -41,10 +44,29 @@ namespace guido
 /*!
 \brief	A visitor to print the gmn description
 */
-class export seqOperation : public operation
+class export seqOperation : 
+	public clonevisitor,
+	public operation,
+	public visitor<SARClef>,
+	public visitor<SAREndBar>,
+	public visitor<SARKey>,
+	public visitor<SARMeter>
 {
     private:
-		void delEndBar(Sguidoelement);
+		// current key, meter and clef are maintained to be avoid useless repetitions
+		Sguidotag	fCurrentKey, fCurrentMeter, fCurrentClef;
+		void checkHeader(Sguidotag tag, Sguidotag& target);
+
+	protected:
+		enum state { kInFirstScore, kInSecondScore, kRemainVoice };
+		state	fState;
+		
+		void visitStart ( SARClef& elt );
+		void visitStart ( SAREndBar& elt );
+		void visitStart ( SARKey& elt );
+		void visitStart ( SARMeter& elt );
+		void visitStart ( SARVoice& elt );
+		void visitEnd	( SARVoice& elt );
 
     public:
 				 seqOperation() {}
