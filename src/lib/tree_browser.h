@@ -45,7 +45,7 @@ template <typename T> class tree_browser : public browser<T>
 	public:
 		typedef typename ctree<T>::treePtr treePtr;
 		
-				 tree_browser(basevisitor* v) : fVisitor(v), fDone(false) {}
+				 tree_browser(basevisitor* v=0) : fVisitor(v), fDone(false) {}
 		virtual ~tree_browser() {}
 
 		virtual void stop (bool state=true)	{ fDone = state; }

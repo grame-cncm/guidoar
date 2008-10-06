@@ -53,7 +53,7 @@ class firstnotevisitor :
 	public visitor<SARNote>
 {
     public:
-				 firstnotevisitor() : tree_browser<guidoelement>(this) {}
+				 firstnotevisitor() { set(this); }
        	virtual ~firstnotevisitor() {}
 		int		firstPitch (const Sguidoelement& score);
 
