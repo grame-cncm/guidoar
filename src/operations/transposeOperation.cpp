@@ -42,6 +42,61 @@ using namespace std;
 namespace guido 
 {
 
+
+//______________________________________________________________________________
+/*!
+\brief	A visitor to retrive the pitch of the first note (fist voice, lowest note) 
+*/
+class firstnotevisitor :
+	public tree_browser<guidoelement>,
+	public visitor<SARChord>,
+	public visitor<SARNote>
+{
+    public:
+				 firstnotevisitor() : tree_browser<guidoelement>(this) {}
+       	virtual ~firstnotevisitor() {}
+		int		firstPitch (const Sguidoelement& score);
+
+		bool 	done () const	{ return fDone; }
+		
+	protected:              
+		virtual void visitStart( SARChord& elt );
+		virtual void visitStart( SARNote& elt );
+		virtual void visitEnd  ( SARChord& elt );
+		int		fPitch, fCurrentOctave;
+		bool	fInChord, fDone;
+};
+
+int	firstnotevisitor::firstPitch (const Sguidoelement& score) {
+	fInChord = fDone = false;
+	fPitch = 9999;								// set to a high value since the lowest pitch is collected
+	fCurrentOctave = ARNote::kDefaultOctave;	// the default octave
+	browse (*score);
+	return done() ? fPitch : -1;
+}
+void firstnotevisitor::visitStart( SARChord& elt )	{ fInChord=true; }
+void firstnotevisitor::visitEnd  ( SARChord& elt )	{ fInChord=false; fDone = true; }
+
+void firstnotevisitor::visitStart( SARNote& elt )	
+{
+	int octave = elt->GetOctave();
+	if (octave != ARNote::kUndefined) fCurrentOctave = octave;
+
+	int alter; int midi = -1;
+	ARNote::pitch pitch = elt->GetPitch (alter);
+	if (pitch != ARNote::kNoPitch) {
+		// offset in octave numeration between guido and midi is 3
+		int midioctave = (fCurrentOctave + 3) * 12;
+		midi = midioctave + (pitch*2) + alter;
+		if (pitch > ARNote::E) midi--;
+		if (midi < fPitch) fPitch = midi;
+		if (!fInChord) fDone = true;
+	}
+}
+
+
+//________________________________________________________________________
+// transposeOperation implementation
 //________________________________________________________________________
 transposeOperation::transposeOperation ()
 {
@@ -51,9 +106,23 @@ transposeOperation::transposeOperation ()
 transposeOperation::~transposeOperation() {}
 
 //_______________________________________________________________________________
+SARMusic transposeOperation::operator() ( const SARMusic& score1, const SARMusic& score2 )
+{
+	if (!score1 || !score2) return 0;
+
+	firstnotevisitor fnv;
+	int p1 = fnv.firstPitch (score1);
+	int p2 = fnv.firstPitch (score2);
+	int steps = ((p1 < 0) || (p2 < 0)) ? 0 : p2 - p1;
+
+	Sguidoelement elt = (*this)(score1, steps);
+	return dynamic_cast<ARMusic*>((guidoelement*)elt);
+}
+
+//_______________________________________________________________________________
 Sguidoelement transposeOperation::operator() ( const Sguidoelement& score, int steps )
 {
-	fCurrentOctaveIn = fCurrentOctaveOut = 1;			// default current octave
+	fCurrentOctaveIn = fCurrentOctaveOut = ARNote::kDefaultOctave;			// default current octave
 	fChromaticSteps = steps;
 	fOctaveChange = getOctave(fChromaticSteps);
 	fTableShift = getKey (getOctaveStep(fChromaticSteps));
@@ -236,7 +305,7 @@ void transposeOperation::visitStart ( SARKey& elt )
 
 //________________________________________________________________________
 void transposeOperation::visitStart ( SARVoice& elt ) {
-	fCurrentOctaveIn = fCurrentOctaveOut = 1;				// default current octave
+	fCurrentOctaveIn = fCurrentOctaveOut = ARNote::kDefaultOctave;				// default current octave
 	fTableShift = getKey (getOctaveStep(fChromaticSteps));
 }
 

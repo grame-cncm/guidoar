@@ -37,6 +37,7 @@ template <typename T> class tree_browser : public browser<T>
 {
 	protected:
 		basevisitor*	fVisitor;
+		bool			fDone;
 
 		virtual void enter (T& t)		{ t.acceptIn(*fVisitor); }
 		virtual void leave (T& t)		{ t.acceptOut(*fVisitor); }
@@ -44,14 +45,16 @@ template <typename T> class tree_browser : public browser<T>
 	public:
 		typedef typename ctree<T>::treePtr treePtr;
 		
-				 tree_browser(basevisitor* v) : fVisitor(v) {}
+				 tree_browser(basevisitor* v) : fVisitor(v), fDone(false) {}
 		virtual ~tree_browser() {}
 
-		virtual void set (basevisitor* v)	{  fVisitor = v; }
+		virtual void stop (bool state=true)	{ fDone = state; }
+		virtual bool done () const			{ return fDone; }
+		virtual void set (basevisitor* v)	{ fVisitor = v; }
 		virtual void browse (T& t) {
 			enter(t);
 			typename ctree<T>::literator iter;
-			for (iter = t.lbegin(); iter != t.lend(); iter++)
+			for (iter = t.lbegin(); (iter != t.lend()) && !done(); iter++)
 				browse(**iter);
 			leave(t);
 		}

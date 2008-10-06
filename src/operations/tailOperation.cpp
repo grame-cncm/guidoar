@@ -57,7 +57,7 @@ SARMusic tailOperation::operator() ( const SARMusic& score1, const SARMusic& sco
 Sguidoelement tailOperation::operator() ( const Sguidoelement& score, const rational& duration )
 {
 	fPendingTagsMap.clear();
-	fCurrentOctave = 1;
+	fCurrentOctave = ARNote::kDefaultOctave;
 	fCurrentNoteDots = 0;
 	fCurrentNoteDuration.set(1,4);
 	fStartPoint = duration;
@@ -116,7 +116,7 @@ void tailOperation::visitStart ( SARVoice& elt )
 	fPendingTagsMap.clear();
 	fState = (float(fStartPoint) > 0.001) ? kSkip : kStartPending;
 	fHeaderFlushed = false;
-	fCurrentOctave = 1;
+	fCurrentOctave = ARNote::kDefaultOctave;
 	fCurrentNoteDots = 0;
 	fCurrentNoteDuration.set(1,4);
 	clonevisitor::visitStart (elt);
@@ -143,7 +143,7 @@ void tailOperation::visitStart ( SARNote& elt )
 	if (fState) {
 		if (fState == kStartPending) {
 			if (!elt->isRest() && !elt->isEmpty()) {
-				if ((elt->GetOctave() == ARNote::kUndefined) && (fCurrentOctave != 1)) {
+				if ((elt->GetOctave() == ARNote::kUndefined) && (fCurrentOctave != ARNote::kDefaultOctave)) {
 					elt->SetOctave(fCurrentOctave);
 				}
 				fState = kCopy;

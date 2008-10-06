@@ -68,7 +68,7 @@ class export clonevisitor :
 		virtual void visitEnd  ( Sguidotag& elt );
 		
 		// the copy method may be used by derived classes to filter the elements
-		virtual bool copy  ()	{ return true; }
+		virtual bool copy  () const	{ return true; }
 
 		virtual void			push (const Sguidoelement& elt, bool stack=true);
 		virtual void			copyAttributes (const Sguidoelement& src, Sguidoelement& dst);

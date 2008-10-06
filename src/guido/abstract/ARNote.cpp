@@ -72,14 +72,15 @@ ARNote::ARNote()
 //______________________________________________________________________________
 void ARNote::NormalizedPitchName (char& name, int& alter) const
 {
-	map<string, pair<char, int> >::const_iterator i = fNormalizeMap.lower_bound( getName() );
-	if (i == fNormalizeMap.end()) {
+	pair<map<string, pair<char, int> >::const_iterator, map<string, pair<char, int> >::const_iterator>
+	erp = fNormalizeMap.equal_range( getName() );
+	if (erp.first == erp.second) {
 		name = 0;
 		alter = 0;
 	}
 	else {
-		name = (*i).second.first;
-		alter = (*i).second.second;
+		name = (*erp.first).second.first;
+		alter = (*erp.first).second.second;
 	}
 }
 

@@ -24,9 +24,10 @@
 #define __vheadOperation__
 
 #include "export.h"
-#include "AROthers.h"
+#include "ARTypes.h"
 #include "clonevisitor.h"
 #include "operation.h"
+#include "tree_browser.h"
 
 namespace guido 
 {
@@ -45,7 +46,7 @@ class export vheadOperation :
 	public visitor<SARStaff>
 {		
     public:
- 				 vheadOperation()	{}
+ 				 vheadOperation();
 		virtual ~vheadOperation()	{}
 
 		/*! cuts the tail of the score voices after a given voice
@@ -62,13 +63,17 @@ class export vheadOperation :
 		*/
 		SARMusic operator() ( const SARMusic& score1, const SARMusic& score2 );
 
-     protected:
-		int			fVoiceNum, fCurrentVoice;
+ 		bool 	done () const	{ return !copy(); }
 
-		virtual bool copy  ();
+    protected:
+		int			fVoiceNum, fCurrentVoice;
+		tree_browser<guidoelement> fBrowser;
+
+		virtual bool copy  () const;
 
 		virtual void visitStart( SARStaff& elt );
 		virtual void visitStart( SARVoice& elt );
+		virtual void visitEnd  ( SARVoice& elt );
 };
 
 /*! @} */

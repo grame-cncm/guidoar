@@ -56,7 +56,7 @@ class export ARNote : public guidoelement
 	static std::map<std::string, std::pair<char, int> >	fNormalizeMap;
 
 	public:
-		enum { kUndefined = -99 };
+		enum { kUndefined = -99, kDefaultOctave=1 };
 		enum pitch { kNoPitch = -1, C, D, E, F, G, A, B };
 
 		static SMARTP<ARNote> create();

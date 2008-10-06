@@ -16,16 +16,18 @@
 using namespace std;
 using namespace guido;
 
-#define debug
+//#define debug
 
 //_______________________________________________________________________________
 static void usage(const char * name)
 {
-	cerr << "usage: " << name << " <file> <interval>"  << endl;
+	cerr << "usage: " << name << " <file> <interval | pscore>"  << endl;
 	cerr << "       transpose the input gmn files"  << endl;
 	cerr << "       file    : the file to be transposed"  << endl;
 	cerr << "                 use '-' for stdin input"  << endl;
 	cerr << "       interval: the transposing interval"  << endl;
+	cerr << "       pscore  : a score file used as a pitch specifier:"  << endl;
+	cerr << "                 uses first voice, first note, lowest pitch."  << endl;
 	exit (1);
 }
 
@@ -37,27 +39,50 @@ static void readErr(const char * name)
 }
 
 //_______________________________________________________________________________
+static SARMusic read (const char* file) 
+{
+	guidoparser r;
+	SARMusic score;
+	if (!strcmp(file, "-"))
+		score = r.parseFile(stdin);
+	else
+		score = r.parseFile(file);
+	if (!score) readErr(file);
+	return score;
+}
+
+//_______________________________________________________________________________
+static rational pitchArg (const char* vi) 
+{
+	int num=0;
+	int n = sscanf(vi, "%d", &num);
+	if (n != 1) num = -1;
+	return num;
+}
+
+//_______________________________________________________________________________
 int main(int argc, char *argv[]) 
 {
 #ifdef debug
 	argc = 3;
-	char * args[] = {"bach.gmn", "3", 0};
+	char * args[] = {"test.gmn", "a.gmn", 0};
 	char ** argsPtr = args;
 #else
 	if (argc != 3) usage(argv[0]);
 	char ** argsPtr = &argv[1];
 #endif
-	string file (*argsPtr++);
-	guidoparser r;
-	SARMusic gmn = (file == "-") ?  r.parseFile( stdin ) : r.parseFile( file.c_str() );
-	if (!gmn) readErr(file.c_str() );
+	SARMusic score = read (argsPtr[0]);
+	transposeOperation trsp;
+	Sguidoelement result;
 
-	int interval = strtol(*argsPtr, 0, 10);
-	Sguidoelement result = gmn;
-	if (interval) {
-		transposeOperation trsp;
-		result = trsp(gmn, interval);
+	int steps = pitchArg (argsPtr[1]);
+	if (steps >= 0) {
+		result = trsp(score, steps);
 	}
-	cout << result << endl;
+	else {
+		SARMusic pscore = read (argsPtr[1]);
+		result = trsp(score, pscore);
+	}
+	if (result) cout << result << endl;
 	return 0;
 }

@@ -28,15 +28,17 @@
 
 #include <iostream>
 
-#include "ARFactory.h"
+#include "AROthers.h"
 #include "ARTag.h"
 #include "vheadOperation.h"
-#include "tree_browser.h"
 
 using namespace std;
 
 namespace guido 
 {
+
+//_______________________________________________________________________________
+vheadOperation::vheadOperation() : fBrowser (this) {}
 
 //_______________________________________________________________________________
 Sguidoelement vheadOperation::operator() ( const Sguidoelement& score, int voicenum )
@@ -45,8 +47,7 @@ Sguidoelement vheadOperation::operator() ( const Sguidoelement& score, int voice
 	fCurrentVoice = 0;
 	Sguidoelement outscore;
 	if (score) {
-		tree_browser<guidoelement> tb(this);
-		tb.browse (*score);
+		fBrowser.browse (*score);
 		outscore = fStack.top();
 		fStack.pop();
 	}
@@ -61,7 +62,7 @@ SARMusic vheadOperation::operator() ( const SARMusic& score1, const SARMusic& sc
 }
 
 //________________________________________________________________________
-bool vheadOperation::copy  ()	{ return fCurrentVoice <= fVoiceNum; }
+bool vheadOperation::copy  () const	{ return fCurrentVoice <= fVoiceNum; }
 
 //________________________________________________________________________
 // The visit methods
@@ -73,9 +74,12 @@ void vheadOperation::visitStart ( SARVoice& elt )
 }
 
 //________________________________________________________________________
-void vheadOperation::visitStart ( SARStaff& elt )
-{
-// don't copy staff assignments
+void vheadOperation::visitEnd ( SARVoice& elt )	
+{ 	
+	clonevisitor::visitEnd (elt); 
+	if (fCurrentVoice > fVoiceNum) fBrowser.stop(); 
 }
+
+void vheadOperation::visitStart ( SARStaff& elt )	{ /* don't copy staff assignments */ }
 
 }

@@ -29,6 +29,7 @@
 #include "export.h"
 #include "ARTypes.h"
 #include "guidoelement.h"
+#include "operation.h"
 #include "visitor.h"
 
 
@@ -51,6 +52,7 @@ namespace guido
 \todo transposing ornaments elements
 */
 class export transposeOperation :
+	public operation,
 	public visitor<SARNote>,
 	public visitor<SARKey>,
 	public visitor<SARVoice> 
@@ -65,10 +67,17 @@ class export transposeOperation :
 		/*! computes a score transposition
 			\param score the score to transpose
 			\param steps the chromatic transposition step
-			\param addKey a flag to control automatic key addition when no key is present
 			\return a new transposed score
 		*/
 		Sguidoelement operator() ( const Sguidoelement& score, int steps );
+
+		/*! computes a score transposition
+			\param score1 the score to transpose
+			\param score2 a score as transposing interval specifier, 
+				  actually the difference between the first notes of the scores (uses the lowest note of chords)
+			\return a new transposed score
+		*/
+		SARMusic operator() ( const SARMusic& score1, const SARMusic& score2 );
 
 		/*! computes an octaves count from a chromatic interval
 			\param steps a chromatic steps count
