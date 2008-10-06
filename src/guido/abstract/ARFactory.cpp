@@ -50,6 +50,7 @@ class newTagFunctor : public functor<Sguidotag,long> {
 SARMusic ARFactory::createMusic() const
 {
 	SARMusic elt = ARMusic::create();
+	if (elt) elt->setName("music");
 	return elt;
 }
 
@@ -57,6 +58,7 @@ SARMusic ARFactory::createMusic() const
 SARVoice ARFactory::createVoice() const
 {
 	SARVoice elt = ARVoice::create();
+	if (elt) elt->setName("voice");
 	return elt;
 }
 
@@ -64,6 +66,7 @@ SARVoice ARFactory::createVoice() const
 SARChord ARFactory::createChord() const
 {
 	SARChord elt = ARChord::create();
+	if (elt) elt->setName("chord");
 	return elt;
 }
 
