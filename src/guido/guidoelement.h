@@ -82,6 +82,10 @@ class export guidoattribute : public smartable {
 		operator long () const;
 		//! returns the attribute value as a float
 		operator float () const;
+
+		//________________________________________________________________________
+		virtual bool operator ==(const Sguidoattribute& i) const;
+		virtual bool operator !=(const Sguidoattribute& i) const		{ return !(*this == i); }
 };
 
 typedef std::vector<Sguidoattribute> Sguidoattributes;
@@ -104,6 +108,9 @@ class export guidoelement : public ctree<guidoelement>, public visitable
     protected:
 		guidoelement() : fAuto(false) {}
 		virtual ~guidoelement() {}
+		// check if 2 elements have the same attributes
+		virtual bool operator ==(const Sguidoattributes& attributes) const;
+
 	public:
         static Sguidoelement create();
 
@@ -132,6 +139,10 @@ class export guidoelement : public ctree<guidoelement>, public visitable
 		long				getAttributeLongValue	(unsigned int index, long defaultvalue) const;
 		int					getAttributeIntValue	(unsigned int index, int defaultvalue) const;
 		float				getAttributeFloatValue	(unsigned int index, float defaultvalue) const;
+
+		//________________________________________________________________________
+		virtual bool operator ==(const Sguidoelement& i) const;
+		virtual bool operator !=(const Sguidoelement& i) const		{ return !(*this == i); }
 };
 
 export std::ostream& operator << (std::ostream& os, const Sguidoelement& elt);
