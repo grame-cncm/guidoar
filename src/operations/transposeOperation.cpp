@@ -290,11 +290,14 @@ void transposeOperation::visitStart ( SARKey& elt )
 	Sguidoattribute attr = elt->getAttribute(0);
 	if (attr) {
 		int key = 0;
-		map<string,int>::const_iterator i = fKeysMap.lower_bound(attr->getValue());
-		if (i != fKeysMap.end())
-			key = i->second;
-		else 
-			key = int(*attr);
+		
+		if (attr->quoteVal()) {		// key is specified as a string
+			pair<map<string,int>::const_iterator, map<string,int>::const_iterator>
+			krange = fKeysMap.equal_range( attr->getValue() );
+			if (krange.first == krange.second)
+				key = krange.first->second;
+		}
+		else  key = int(*attr);
 		int enharmonicChange;
 		int newkey = transposeKey (key, fChromaticSteps, enharmonicChange);
 		attr->setValue (long(newkey));
