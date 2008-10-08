@@ -126,7 +126,7 @@ rational& rational::operator -=(const rational &dur)
 
 rational& rational::operator *=(const rational &dur)
 {
-    fNumerator   *= dur.fNumerator;
+	fNumerator   *= dur.fNumerator;
     fDenominator *= dur.fDenominator;
     return (*this);
 }

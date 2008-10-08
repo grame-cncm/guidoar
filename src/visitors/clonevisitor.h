@@ -71,8 +71,9 @@ class export clonevisitor :
 		virtual bool copy  () const	{ return true; }
 
 		virtual void			push (const Sguidoelement& elt, bool stack=true);
-		virtual void			copyAttributes (const Sguidoelement& src, Sguidoelement& dst);
-		virtual Sguidoelement	copy (const Sguidoelement& elt, Sguidoelement& dst);
+		virtual void			copyAttributes (const Sguidoelement& src, Sguidoelement& dst) const;
+		virtual Sguidoelement	copy (const Sguidoelement& elt, Sguidoelement& dst) const;
+		virtual SARNote			copy (const SARNote& elt) const;
 
 		std::stack<Sguidoelement> fStack;
 };

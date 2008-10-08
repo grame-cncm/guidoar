@@ -55,7 +55,7 @@ Sguidoelement clonevisitor::clone(const Sguidoelement& elt)
 }
 
 //______________________________________________________________________________
-void clonevisitor::copyAttributes (const Sguidoelement& src, Sguidoelement& dst ) 
+void clonevisitor::copyAttributes (const Sguidoelement& src, Sguidoelement& dst ) const
 {
 	Sguidoattributes attr = src->attributes();
 	Sguidoattributes::const_iterator iter;
@@ -69,7 +69,7 @@ void clonevisitor::copyAttributes (const Sguidoelement& src, Sguidoelement& dst 
 }
 
 //______________________________________________________________________________
-Sguidoelement clonevisitor::copy (const Sguidoelement& src, Sguidoelement& dst) 
+Sguidoelement clonevisitor::copy (const Sguidoelement& src, Sguidoelement& dst) const
 {
 	if (dst) {
 		dst->setName( src->getName());
@@ -77,6 +77,19 @@ Sguidoelement clonevisitor::copy (const Sguidoelement& src, Sguidoelement& dst)
 		copyAttributes (src, dst);
 	}
 	return dst;
+}
+
+//______________________________________________________________________________
+SARNote clonevisitor::copy( const SARNote& elt ) const
+{
+	SARNote note = ARFactory::instance().createNote(elt->getName());
+	if (note) {
+		note->SetOctave (elt->GetOctave());
+		note->SetAccidental (elt->GetAccidental());
+		note->SetDots (elt->GetDots());
+		*note = elt->duration();
+	}
+	return note;
 }
 
 //______________________________________________________________________________
@@ -118,12 +131,7 @@ void clonevisitor::visitStart( SARChord& elt )
 void clonevisitor::visitStart( SARNote& elt )
 {
 	if (copy()) {
-		SARNote note = ARFactory::instance().createNote(elt->getName());
-		note->SetOctave (elt->GetOctave());
-		note->SetAccidental (elt->GetAccidental());
-		note->SetDots (elt->GetDots());
-		*note = elt->duration();
-		Sguidoelement cc = note;
+		Sguidoelement cc = copy(elt);
 		push( copy (elt, cc), false );
 	}
 }
