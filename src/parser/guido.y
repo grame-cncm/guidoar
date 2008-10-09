@@ -12,8 +12,8 @@
 #include "guidoparse.hpp"
 #include "guidolex.cpp"
 
-int guidoerror(const char*s);
-int	guidowrap()		{ return(1); }
+int guidoarerror(const char*s);
+int	guidoarwrap()		{ return(1); }
 
 extern guido::gmnreader* gReader;
 
@@ -24,7 +24,7 @@ static void vadd (std::vector<guido::Sguidoelement>* v1, std::vector<guido::Sgui
 }
 
 #include <math.h>
-float dotatof( const char * s ) 
+static float dotatof( const char * s ) 
 { 
 	const char * dotPos = strchr(s,'.');
 	if ( !dotPos )
@@ -193,19 +193,19 @@ positiontag	: tagid											{ debug("new position tag "); $$ = $1; }
 rangetag	: positiontag  STARTRANGE symbols ENDRANGE		{ debug("new range tag "); $$ = $1; (*$1)->push (*$3); delete $3; }
 			;
 
-tagname		: TAGNAME										{ debug("tag name "); $$ = new string(guidotext); }
+tagname		: TAGNAME										{ debug("tag name "); $$ = new string(guidoartext); }
 			;
 
-tagid		: tagname										{ vdebug("new tag", *$1); $$ = gReader->newTag(*$1, 0); delete $1; if (!$$) { guidoerror("unknown tag"); YYERROR;} }
-			| tagname IDSEP NUMBER							{ debug("new tag::id"); $$ = gReader->newTag(*$1, $2); delete $1; if (!$$) { guidoerror("unknown tag"); YYERROR;} }
+tagid		: tagname										{ vdebug("new tag", *$1); $$ = gReader->newTag(*$1, 0); delete $1; if (!$$) { guidoarerror("unknown tag"); YYERROR;} }
+			| tagname IDSEP NUMBER							{ debug("new tag::id"); $$ = gReader->newTag(*$1, $2); delete $1; if (!$$) { guidoarerror("unknown tag"); YYERROR;} }
 			| BAR											{ debug("new bar"); $$ = gReader->newTag("bar", 0); }
 			;
 
 tagarg		: signednumber									{ debug("new signednumber arg"); $$ = gReader->newAttribute($1); }
 			| floatn										{ debug("new FLOAT arg"); $$ = gReader->newAttribute($1); }
-			| signednumber UNIT								{ debug("new signednumber UNIT arg"); $$ = gReader->newAttribute($1); (*$$)->setUnit(guidotext); }
-			| floatn UNIT									{ debug("new FLOAT UNIT arg"); $$ = gReader->newAttribute($1); (*$$)->setUnit(guidotext); }
-			| STRING										{ debug("new STRING arg"); $$ = gReader->newAttribute(guidotext, true); }
+			| signednumber UNIT								{ debug("new signednumber UNIT arg"); $$ = gReader->newAttribute($1); (*$$)->setUnit(guidoartext); }
+			| floatn UNIT									{ debug("new FLOAT UNIT arg"); $$ = gReader->newAttribute($1); (*$$)->setUnit(guidoartext); }
+			| STRING										{ debug("new STRING arg"); $$ = gReader->newAttribute(guidoartext, true); }
 			| id											{ debug("new ID arg"); $$ = gReader->newAttribute(*$1, false); delete $1; }
 			;
 
@@ -264,10 +264,10 @@ noteid		: notename									{ vdebug("notename", *$1); $$ = $1; }
 			| notename STARTPARAM NUMBER ENDPARAM		{ $$ = $1; }
 			;
 			
-notename	: DIATONIC								{ debug("new diatonic note"); $$ = new string(guidotext); }
-			| CHROMATIC								{ debug("new chromatic note"); $$ = new string(guidotext); }
-			| SOLFEGE								{ debug("new solfege note"); $$ = new string(guidotext); }
-			| EMPTY									{ debug("new empty note"); $$ = new string(guidotext); }
+notename	: DIATONIC								{ debug("new diatonic note"); $$ = new string(guidoartext); }
+			| CHROMATIC								{ debug("new chromatic note"); $$ = new string(guidoartext); }
+			| SOLFEGE								{ debug("new solfege note"); $$ = new string(guidoartext); }
+			| EMPTY									{ debug("new empty note"); $$ = new string(guidoartext); }
 			;		
 
 accidentals	: accidental							{ debug("accidental"); $$ = $1; }
@@ -296,15 +296,15 @@ dots		:										{ debug("dots 0"); $$ = 0; }
 //_______________________________________________
 // misc
 
-id			: ID									{ $$ = new string(guidotext); }
+id			: ID									{ $$ = new string(guidoartext); }
 			;
-number		: NUMBER								{ vdebug("NUMBER", guidotext); $$ = atol(guidotext); }
+number		: NUMBER								{ vdebug("NUMBER", guidoartext); $$ = atol(guidoartext); }
 			;
-pnumber		: PNUMBER								{ vdebug("NUMBER", guidotext); $$ = atol(guidotext); }
+pnumber		: PNUMBER								{ vdebug("NUMBER", guidoartext); $$ = atol(guidoartext); }
 			;
-nnumber		: NNUMBER								{ vdebug("NUMBER", guidotext); $$ = atol(guidotext); }
+nnumber		: NNUMBER								{ vdebug("NUMBER", guidoartext); $$ = atol(guidoartext); }
 			;
-floatn		: FLOAT									{ $$ = dotatof(guidotext); }
+floatn		: FLOAT									{ $$ = dotatof(guidoartext); }
 			;
 signednumber: number								{ $$ = $1; }
 			| pnumber								{ $$ = $1; } 
@@ -314,7 +314,7 @@ signednumber: number								{ $$ = $1; }
 
 } // namespace
 
-int guidoerror(const char*s) {
+int guidoarerror(const char*s) {
 	YY_FLUSH_BUFFER;
-	return gReader->error(s, guidolineno);
+	return gReader->error(s, guidoarlineno);
 }

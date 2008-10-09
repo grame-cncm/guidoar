@@ -134,7 +134,7 @@ typedef unsigned int flex_uint32_t;
 #define YY_STATE_EOF(state) (YY_END_OF_BUFFER + state + 1)
 
 /* Special action meaning "start processing a new file". */
-#define YY_NEW_FILE guidorestart(guidoin  )
+#define YY_NEW_FILE guidoarrestart(guidoarin  )
 
 #define YY_END_OF_BUFFER_CHAR 0
 
@@ -152,9 +152,9 @@ typedef unsigned int flex_uint32_t;
 typedef struct yy_buffer_state *YY_BUFFER_STATE;
 #endif
 
-extern int guidoleng;
+extern int guidoarleng;
 
-extern FILE *guidoin, *guidoout;
+extern FILE *guidoarin, *guidoarout;
 
 #define EOB_ACT_CONTINUE_SCAN 0
 #define EOB_ACT_END_OF_FILE 1
@@ -162,30 +162,30 @@ extern FILE *guidoin, *guidoout;
 
     /* Note: We specifically omit the test for yy_rule_can_match_eol because it requires
      *       access to the local variable yy_act. Since yyless() is a macro, it would break
-     *       existing scanners that call yyless() from OUTSIDE guidolex. 
+     *       existing scanners that call yyless() from OUTSIDE guidoarlex. 
      *       One obvious solution it to make yy_act a global. I tried that, and saw
-     *       a 5% performance hit in a non-guidolineno scanner, because yy_act is
+     *       a 5% performance hit in a non-guidoarlineno scanner, because yy_act is
      *       normally declared as a register variable-- so it is not worth it.
      */
     #define  YY_LESS_LINENO(n) \
             do { \
                 int yyl;\
-                for ( yyl = n; yyl < guidoleng; ++yyl )\
-                    if ( guidotext[yyl] == '\n' )\
-                        --guidolineno;\
+                for ( yyl = n; yyl < guidoarleng; ++yyl )\
+                    if ( guidoartext[yyl] == '\n' )\
+                        --guidoarlineno;\
             }while(0)
     
 /* Return all but the first "n" matched characters back to the input stream. */
 #define yyless(n) \
 	do \
 		{ \
-		/* Undo effects of setting up guidotext. */ \
+		/* Undo effects of setting up guidoartext. */ \
         int yyless_macro_arg = (n); \
         YY_LESS_LINENO(yyless_macro_arg);\
 		*yy_cp = (yy_hold_char); \
 		YY_RESTORE_YY_MORE_OFFSET \
 		(yy_c_buf_p) = yy_cp = yy_bp + yyless_macro_arg - YY_MORE_ADJ; \
-		YY_DO_BEFORE_ACTION; /* set up guidotext again */ \
+		YY_DO_BEFORE_ACTION; /* set up guidoartext again */ \
 		} \
 	while ( 0 )
 
@@ -258,8 +258,8 @@ struct yy_buffer_state
 	 * possible backing-up.
 	 *
 	 * When we actually see the EOF, we change the status to "new"
-	 * (via guidorestart()), so that the user can continue scanning by
-	 * just pointing guidoin at a new input file.
+	 * (via guidoarrestart()), so that the user can continue scanning by
+	 * just pointing guidoarin at a new input file.
 	 */
 #define YY_BUFFER_EOF_PENDING 2
 
@@ -286,51 +286,51 @@ static YY_BUFFER_STATE * yy_buffer_stack = 0; /**< Stack as an array. */
  */
 #define YY_CURRENT_BUFFER_LVALUE (yy_buffer_stack)[(yy_buffer_stack_top)]
 
-/* yy_hold_char holds the character lost when guidotext is formed. */
+/* yy_hold_char holds the character lost when guidoartext is formed. */
 static char yy_hold_char;
 static int yy_n_chars;		/* number of characters read into yy_ch_buf */
-int guidoleng;
+int guidoarleng;
 
 /* Points to current character in buffer. */
 static char *yy_c_buf_p = (char *) 0;
 static int yy_init = 0;		/* whether we need to initialize */
 static int yy_start = 0;	/* start state number */
 
-/* Flag which is used to allow guidowrap()'s to do buffer switches
- * instead of setting up a fresh guidoin.  A bit of a hack ...
+/* Flag which is used to allow guidoarwrap()'s to do buffer switches
+ * instead of setting up a fresh guidoarin.  A bit of a hack ...
  */
 static int yy_did_buffer_switch_on_eof;
 
-void guidorestart (FILE *input_file  );
-void guido_switch_to_buffer (YY_BUFFER_STATE new_buffer  );
-YY_BUFFER_STATE guido_create_buffer (FILE *file,int size  );
-void guido_delete_buffer (YY_BUFFER_STATE b  );
-void guido_flush_buffer (YY_BUFFER_STATE b  );
-void guidopush_buffer_state (YY_BUFFER_STATE new_buffer  );
-void guidopop_buffer_state (void );
+void guidoarrestart (FILE *input_file  );
+void guidoar_switch_to_buffer (YY_BUFFER_STATE new_buffer  );
+YY_BUFFER_STATE guidoar_create_buffer (FILE *file,int size  );
+void guidoar_delete_buffer (YY_BUFFER_STATE b  );
+void guidoar_flush_buffer (YY_BUFFER_STATE b  );
+void guidoarpush_buffer_state (YY_BUFFER_STATE new_buffer  );
+void guidoarpop_buffer_state (void );
 
-static void guidoensure_buffer_stack (void );
-static void guido_load_buffer_state (void );
-static void guido_init_buffer (YY_BUFFER_STATE b,FILE *file  );
+static void guidoarensure_buffer_stack (void );
+static void guidoar_load_buffer_state (void );
+static void guidoar_init_buffer (YY_BUFFER_STATE b,FILE *file  );
 
-#define YY_FLUSH_BUFFER guido_flush_buffer(YY_CURRENT_BUFFER )
+#define YY_FLUSH_BUFFER guidoar_flush_buffer(YY_CURRENT_BUFFER )
 
-YY_BUFFER_STATE guido_scan_buffer (char *base,yy_size_t size  );
-YY_BUFFER_STATE guido_scan_string (yyconst char *yy_str  );
-YY_BUFFER_STATE guido_scan_bytes (yyconst char *bytes,int len  );
+YY_BUFFER_STATE guidoar_scan_buffer (char *base,yy_size_t size  );
+YY_BUFFER_STATE guidoar_scan_string (yyconst char *yy_str  );
+YY_BUFFER_STATE guidoar_scan_bytes (yyconst char *bytes,int len  );
 
-void *guidoalloc (yy_size_t  );
-void *guidorealloc (void *,yy_size_t  );
-void guidofree (void *  );
+void *guidoaralloc (yy_size_t  );
+void *guidoarrealloc (void *,yy_size_t  );
+void guidoarfree (void *  );
 
-#define yy_new_buffer guido_create_buffer
+#define yy_new_buffer guidoar_create_buffer
 
 #define yy_set_interactive(is_interactive) \
 	{ \
 	if ( ! YY_CURRENT_BUFFER ){ \
-        guidoensure_buffer_stack (); \
+        guidoarensure_buffer_stack (); \
 		YY_CURRENT_BUFFER_LVALUE =    \
-            guido_create_buffer(guidoin,YY_BUF_SIZE ); \
+            guidoar_create_buffer(guidoarin,YY_BUF_SIZE ); \
 	} \
 	YY_CURRENT_BUFFER_LVALUE->yy_is_interactive = is_interactive; \
 	}
@@ -338,9 +338,9 @@ void guidofree (void *  );
 #define yy_set_bol(at_bol) \
 	{ \
 	if ( ! YY_CURRENT_BUFFER ){\
-        guidoensure_buffer_stack (); \
+        guidoarensure_buffer_stack (); \
 		YY_CURRENT_BUFFER_LVALUE =    \
-            guido_create_buffer(guidoin,YY_BUF_SIZE ); \
+            guidoar_create_buffer(guidoarin,YY_BUF_SIZE ); \
 	} \
 	YY_CURRENT_BUFFER_LVALUE->yy_at_bol = at_bol; \
 	}
@@ -349,16 +349,16 @@ void guidofree (void *  );
 
 typedef unsigned char YY_CHAR;
 
-FILE *guidoin = (FILE *) 0, *guidoout = (FILE *) 0;
+FILE *guidoarin = (FILE *) 0, *guidoarout = (FILE *) 0;
 
 typedef int yy_state_type;
 
-extern int guidolineno;
+extern int guidoarlineno;
 
-int guidolineno = 1;
+int guidoarlineno = 1;
 
-extern char *guidotext;
-#define yytext_ptr guidotext
+extern char *guidoartext;
+#define yytext_ptr guidoartext
 
 static yy_state_type yy_get_previous_state (void );
 static yy_state_type yy_try_NUL_trans (yy_state_type current_state  );
@@ -366,11 +366,11 @@ static int yy_get_next_buffer (void );
 static void yy_fatal_error (yyconst char msg[]  );
 
 /* Done after the current pattern has been matched and before the
- * corresponding action - sets up guidotext.
+ * corresponding action - sets up guidoartext.
  */
 #define YY_DO_BEFORE_ACTION \
 	(yytext_ptr) = yy_bp; \
-	guidoleng = (size_t) (yy_cp - yy_bp); \
+	guidoarleng = (size_t) (yy_cp - yy_bp); \
 	(yy_hold_char) = *yy_cp; \
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
@@ -560,8 +560,8 @@ static yyconst flex_int32_t yy_rule_can_match_eol[46] =
 static yy_state_type yy_last_accepting_state;
 static char *yy_last_accepting_cpos;
 
-extern int guido_flex_debug;
-int guido_flex_debug = 0;
+extern int guidoar_flex_debug;
+int guidoar_flex_debug = 0;
 
 /* The intent behind this definition is that it'll catch
  * any uses of REJECT which flex missed.
@@ -570,7 +570,7 @@ int guido_flex_debug = 0;
 #define yymore() yymore_used_but_not_detected
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
-char *guidotext;
+char *guidoartext;
 #line 1 "guido.l"
 #line 2 "guido.l"
 
@@ -578,7 +578,7 @@ char *guidotext;
 #include <string.h>
 
 #define YY_NO_UNISTD_H
-extern YYSTYPE guidolval;
+extern YYSTYPE guidoarlval;
 
 static int nested;
 
@@ -643,9 +643,9 @@ static int yy_init_globals (void );
 
 #ifndef YY_SKIP_YYWRAP
 #ifdef __cplusplus
-extern "C" int guidowrap (void );
+extern "C" int guidoarwrap (void );
 #else
-extern int guidowrap (void );
+extern int guidoarwrap (void );
 #endif
 #endif
 
@@ -679,7 +679,7 @@ static int input (void );
 /* This used to be an fputs(), but since the string might contain NUL's,
  * we now use fwrite().
  */
-#define ECHO (void) fwrite( guidotext, guidoleng, 1, guidoout )
+#define ECHO (void) fwrite( guidoartext, guidoarleng, 1, guidoarout )
 #endif
 
 /* Gets input and stuffs it into "buf".  number of characters read, or YY_NULL,
@@ -692,18 +692,18 @@ static int input (void );
 		int c = '*'; \
 		size_t n; \
 		for ( n = 0; n < max_size && \
-			     (c = getc( guidoin )) != EOF && c != '\n'; ++n ) \
+			     (c = getc( guidoarin )) != EOF && c != '\n'; ++n ) \
 			buf[n] = (char) c; \
 		if ( c == '\n' ) \
 			buf[n++] = (char) c; \
-		if ( c == EOF && ferror( guidoin ) ) \
+		if ( c == EOF && ferror( guidoarin ) ) \
 			YY_FATAL_ERROR( "input in flex scanner failed" ); \
 		result = n; \
 		} \
 	else \
 		{ \
 		errno=0; \
-		while ( (result = fread(buf, 1, max_size, guidoin))==0 && ferror(guidoin)) \
+		while ( (result = fread(buf, 1, max_size, guidoarin))==0 && ferror(guidoarin)) \
 			{ \
 			if( errno != EINTR) \
 				{ \
@@ -711,7 +711,7 @@ static int input (void );
 				break; \
 				} \
 			errno=0; \
-			clearerr(guidoin); \
+			clearerr(guidoarin); \
 			} \
 		}\
 \
@@ -744,12 +744,12 @@ static int input (void );
 #ifndef YY_DECL
 #define YY_DECL_IS_OURS 1
 
-extern int guidolex (void);
+extern int guidoarlex (void);
 
-#define YY_DECL int guidolex (void)
+#define YY_DECL int guidoarlex (void)
 #endif /* !YY_DECL */
 
-/* Code executed at the beginning of each rule, after guidotext and guidoleng
+/* Code executed at the beginning of each rule, after guidoartext and guidoarleng
  * have been set up.
  */
 #ifndef YY_USER_ACTION
@@ -787,26 +787,26 @@ YY_DECL
 		if ( ! (yy_start) )
 			(yy_start) = 1;	/* first start state */
 
-		if ( ! guidoin )
-			guidoin = stdin;
+		if ( ! guidoarin )
+			guidoarin = stdin;
 
-		if ( ! guidoout )
-			guidoout = stdout;
+		if ( ! guidoarout )
+			guidoarout = stdout;
 
 		if ( ! YY_CURRENT_BUFFER ) {
-			guidoensure_buffer_stack ();
+			guidoarensure_buffer_stack ();
 			YY_CURRENT_BUFFER_LVALUE =
-				guido_create_buffer(guidoin,YY_BUF_SIZE );
+				guidoar_create_buffer(guidoarin,YY_BUF_SIZE );
 		}
 
-		guido_load_buffer_state( );
+		guidoar_load_buffer_state( );
 		}
 
 	while ( 1 )		/* loops until end-of-file is reached */
 		{
 		yy_cp = (yy_c_buf_p);
 
-		/* Support of guidotext. */
+		/* Support of guidoartext. */
 		*yy_cp = (yy_hold_char);
 
 		/* yy_bp points to the position in yy_ch_buf of the start of
@@ -845,10 +845,10 @@ yy_find_action:
 		if ( yy_act != YY_END_OF_BUFFER && yy_rule_can_match_eol[yy_act] )
 			{
 			int yyl;
-			for ( yyl = 0; yyl < guidoleng; ++yyl )
-				if ( guidotext[yyl] == '\n' )
+			for ( yyl = 0; yyl < guidoarleng; ++yyl )
+				if ( guidoartext[yyl] == '\n' )
 					   
-    guidolineno++;
+    guidoarlineno++;
 ;
 			}
 
@@ -1045,7 +1045,7 @@ BEGIN INITIAL; return ENDPARAM;
 case 36:
 YY_RULE_SETUP
 #line 102 "guido.l"
-untag(guidotext); return TAGNAME;
+untag(guidoartext); return TAGNAME;
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
@@ -1076,7 +1076,7 @@ case 42:
 /* rule 42 can match eol */
 YY_RULE_SETUP
 #line 110 "guido.l"
-unescape(guidotext); unquote(guidotext); return STRING;
+unescape(guidoartext); unquote(guidoartext); return STRING;
 	YY_BREAK
 case 43:
 /* rule 43 can match eol */
@@ -1087,7 +1087,7 @@ YY_RULE_SETUP
 case 44:
 YY_RULE_SETUP
 #line 113 "guido.l"
-printf("guido extra text is : %s\n", guidotext); return EXTRA;
+printf("guido extra text is : %s\n", guidoartext); return EXTRA;
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
@@ -1114,15 +1114,15 @@ case YY_STATE_EOF(PARAM):
 			{
 			/* We're scanning a new file or input source.  It's
 			 * possible that this happened because the user
-			 * just pointed guidoin at a new source and called
-			 * guidolex().  If so, then we have to assure
+			 * just pointed guidoarin at a new source and called
+			 * guidoarlex().  If so, then we have to assure
 			 * consistency between YY_CURRENT_BUFFER and our
 			 * globals.  Here is the right place to do so, because
 			 * this is the first action (other than possibly a
 			 * back-up) that will match for the new input source.
 			 */
 			(yy_n_chars) = YY_CURRENT_BUFFER_LVALUE->yy_n_chars;
-			YY_CURRENT_BUFFER_LVALUE->yy_input_file = guidoin;
+			YY_CURRENT_BUFFER_LVALUE->yy_input_file = guidoarin;
 			YY_CURRENT_BUFFER_LVALUE->yy_buffer_status = YY_BUFFER_NORMAL;
 			}
 
@@ -1176,11 +1176,11 @@ case YY_STATE_EOF(PARAM):
 				{
 				(yy_did_buffer_switch_on_eof) = 0;
 
-				if ( guidowrap( ) )
+				if ( guidoarwrap( ) )
 					{
 					/* Note: because we've taken care in
 					 * yy_get_next_buffer() to have set up
-					 * guidotext, we can now set up
+					 * guidoartext, we can now set up
 					 * yy_c_buf_p so that if some total
 					 * hoser (like flex itself) wants to
 					 * call the scanner after we return the
@@ -1229,7 +1229,7 @@ case YY_STATE_EOF(PARAM):
 			"fatal flex scanner internal error--no action found" );
 	} /* end of action switch */
 		} /* end of scanning one token */
-} /* end of guidolex */
+} /* end of guidoarlex */
 
 /* yy_get_next_buffer - try to read in a new buffer
  *
@@ -1307,7 +1307,7 @@ static int yy_get_next_buffer (void)
 
 				b->yy_ch_buf = (char *)
 					/* Include room in for 2 EOB chars. */
-					guidorealloc((void *) b->yy_ch_buf,b->yy_buf_size + 2  );
+					guidoarrealloc((void *) b->yy_ch_buf,b->yy_buf_size + 2  );
 				}
 			else
 				/* Can't grow it, we don't own it. */
@@ -1339,7 +1339,7 @@ static int yy_get_next_buffer (void)
 		if ( number_to_move == YY_MORE_ADJ )
 			{
 			ret_val = EOB_ACT_END_OF_FILE;
-			guidorestart(guidoin  );
+			guidoarrestart(guidoarin  );
 			}
 
 		else
@@ -1425,7 +1425,7 @@ static int yy_get_next_buffer (void)
     
     yy_cp = (yy_c_buf_p);
 
-	/* undo effects of setting up guidotext */
+	/* undo effects of setting up guidoartext */
 	*yy_cp = (yy_hold_char);
 
 	if ( yy_cp < YY_CURRENT_BUFFER_LVALUE->yy_ch_buf + 2 )
@@ -1452,7 +1452,7 @@ static int yy_get_next_buffer (void)
 	*--yy_cp = (char) c;
 
     if ( c == '\n' ){
-        --guidolineno;
+        --guidoarlineno;
     }
 
 	(yytext_ptr) = yy_bp;
@@ -1501,14 +1501,14 @@ static int yy_get_next_buffer (void)
 					 */
 
 					/* Reset buffer status. */
-					guidorestart(guidoin );
+					guidoarrestart(guidoarin );
 
 					/*FALLTHROUGH*/
 
 				case EOB_ACT_END_OF_FILE:
 					{
-					if ( guidowrap( ) )
-						return 0;
+					if ( guidoarwrap( ) )
+						return EOF;
 
 					if ( ! (yy_did_buffer_switch_on_eof) )
 						YY_NEW_FILE;
@@ -1527,12 +1527,12 @@ static int yy_get_next_buffer (void)
 		}
 
 	c = *(unsigned char *) (yy_c_buf_p);	/* cast for 8-bit char's */
-	*(yy_c_buf_p) = '\0';	/* preserve guidotext */
+	*(yy_c_buf_p) = '\0';	/* preserve guidoartext */
 	(yy_hold_char) = *++(yy_c_buf_p);
 
 	if ( c == '\n' )
 		   
-    guidolineno++;
+    guidoarlineno++;
 ;
 
 	return c;
@@ -1544,32 +1544,32 @@ static int yy_get_next_buffer (void)
  * 
  * @note This function does not reset the start condition to @c INITIAL .
  */
-    void guidorestart  (FILE * input_file )
+    void guidoarrestart  (FILE * input_file )
 {
     
 	if ( ! YY_CURRENT_BUFFER ){
-        guidoensure_buffer_stack ();
+        guidoarensure_buffer_stack ();
 		YY_CURRENT_BUFFER_LVALUE =
-            guido_create_buffer(guidoin,YY_BUF_SIZE );
+            guidoar_create_buffer(guidoarin,YY_BUF_SIZE );
 	}
 
-	guido_init_buffer(YY_CURRENT_BUFFER,input_file );
-	guido_load_buffer_state( );
+	guidoar_init_buffer(YY_CURRENT_BUFFER,input_file );
+	guidoar_load_buffer_state( );
 }
 
 /** Switch to a different input buffer.
  * @param new_buffer The new input buffer.
  * 
  */
-    void guido_switch_to_buffer  (YY_BUFFER_STATE  new_buffer )
+    void guidoar_switch_to_buffer  (YY_BUFFER_STATE  new_buffer )
 {
     
 	/* TODO. We should be able to replace this entire function body
 	 * with
-	 *		guidopop_buffer_state();
-	 *		guidopush_buffer_state(new_buffer);
+	 *		guidoarpop_buffer_state();
+	 *		guidoarpush_buffer_state(new_buffer);
      */
-	guidoensure_buffer_stack ();
+	guidoarensure_buffer_stack ();
 	if ( YY_CURRENT_BUFFER == new_buffer )
 		return;
 
@@ -1582,21 +1582,21 @@ static int yy_get_next_buffer (void)
 		}
 
 	YY_CURRENT_BUFFER_LVALUE = new_buffer;
-	guido_load_buffer_state( );
+	guidoar_load_buffer_state( );
 
 	/* We don't actually know whether we did this switch during
-	 * EOF (guidowrap()) processing, but the only time this flag
-	 * is looked at is after guidowrap() is called, so it's safe
+	 * EOF (guidoarwrap()) processing, but the only time this flag
+	 * is looked at is after guidoarwrap() is called, so it's safe
 	 * to go ahead and always set it.
 	 */
 	(yy_did_buffer_switch_on_eof) = 1;
 }
 
-static void guido_load_buffer_state  (void)
+static void guidoar_load_buffer_state  (void)
 {
     	(yy_n_chars) = YY_CURRENT_BUFFER_LVALUE->yy_n_chars;
 	(yytext_ptr) = (yy_c_buf_p) = YY_CURRENT_BUFFER_LVALUE->yy_buf_pos;
-	guidoin = YY_CURRENT_BUFFER_LVALUE->yy_input_file;
+	guidoarin = YY_CURRENT_BUFFER_LVALUE->yy_input_file;
 	(yy_hold_char) = *(yy_c_buf_p);
 }
 
@@ -1606,35 +1606,35 @@ static void guido_load_buffer_state  (void)
  * 
  * @return the allocated buffer state.
  */
-    YY_BUFFER_STATE guido_create_buffer  (FILE * file, int  size )
+    YY_BUFFER_STATE guidoar_create_buffer  (FILE * file, int  size )
 {
 	YY_BUFFER_STATE b;
     
-	b = (YY_BUFFER_STATE) guidoalloc(sizeof( struct yy_buffer_state )  );
+	b = (YY_BUFFER_STATE) guidoaralloc(sizeof( struct yy_buffer_state )  );
 	if ( ! b )
-		YY_FATAL_ERROR( "out of dynamic memory in guido_create_buffer()" );
+		YY_FATAL_ERROR( "out of dynamic memory in guidoar_create_buffer()" );
 
 	b->yy_buf_size = size;
 
 	/* yy_ch_buf has to be 2 characters longer than the size given because
 	 * we need to put in 2 end-of-buffer characters.
 	 */
-	b->yy_ch_buf = (char *) guidoalloc(b->yy_buf_size + 2  );
+	b->yy_ch_buf = (char *) guidoaralloc(b->yy_buf_size + 2  );
 	if ( ! b->yy_ch_buf )
-		YY_FATAL_ERROR( "out of dynamic memory in guido_create_buffer()" );
+		YY_FATAL_ERROR( "out of dynamic memory in guidoar_create_buffer()" );
 
 	b->yy_is_our_buffer = 1;
 
-	guido_init_buffer(b,file );
+	guidoar_init_buffer(b,file );
 
 	return b;
 }
 
 /** Destroy the buffer.
- * @param b a buffer created with guido_create_buffer()
+ * @param b a buffer created with guidoar_create_buffer()
  * 
  */
-    void guido_delete_buffer (YY_BUFFER_STATE  b )
+    void guidoar_delete_buffer (YY_BUFFER_STATE  b )
 {
     
 	if ( ! b )
@@ -1644,27 +1644,27 @@ static void guido_load_buffer_state  (void)
 		YY_CURRENT_BUFFER_LVALUE = (YY_BUFFER_STATE) 0;
 
 	if ( b->yy_is_our_buffer )
-		guidofree((void *) b->yy_ch_buf  );
+		guidoarfree((void *) b->yy_ch_buf  );
 
-	guidofree((void *) b  );
+	guidoarfree((void *) b  );
 }
 
 /* Initializes or reinitializes a buffer.
  * This function is sometimes called more than once on the same buffer,
- * such as during a guidorestart() or at EOF.
+ * such as during a guidoarrestart() or at EOF.
  */
-    static void guido_init_buffer  (YY_BUFFER_STATE  b, FILE * file )
+    static void guidoar_init_buffer  (YY_BUFFER_STATE  b, FILE * file )
 
 {
 	int oerrno = errno;
     
-	guido_flush_buffer(b );
+	guidoar_flush_buffer(b );
 
 	b->yy_input_file = file;
 	b->yy_fill_buffer = 1;
 
-    /* If b is the current buffer, then guido_init_buffer was _probably_
-     * called from guidorestart() or through yy_get_next_buffer.
+    /* If b is the current buffer, then guidoar_init_buffer was _probably_
+     * called from guidoarrestart() or through yy_get_next_buffer.
      * In that case, we don't want to reset the lineno or column.
      */
     if (b != YY_CURRENT_BUFFER){
@@ -1681,7 +1681,7 @@ static void guido_load_buffer_state  (void)
  * @param b the buffer state to be flushed, usually @c YY_CURRENT_BUFFER.
  * 
  */
-    void guido_flush_buffer (YY_BUFFER_STATE  b )
+    void guidoar_flush_buffer (YY_BUFFER_STATE  b )
 {
     	if ( ! b )
 		return;
@@ -1701,7 +1701,7 @@ static void guido_load_buffer_state  (void)
 	b->yy_buffer_status = YY_BUFFER_NEW;
 
 	if ( b == YY_CURRENT_BUFFER )
-		guido_load_buffer_state( );
+		guidoar_load_buffer_state( );
 }
 
 /** Pushes the new state onto the stack. The new state becomes
@@ -1710,14 +1710,14 @@ static void guido_load_buffer_state  (void)
  *  @param new_buffer The new state.
  *  
  */
-void guidopush_buffer_state (YY_BUFFER_STATE new_buffer )
+void guidoarpush_buffer_state (YY_BUFFER_STATE new_buffer )
 {
     	if (new_buffer == NULL)
 		return;
 
-	guidoensure_buffer_stack();
+	guidoarensure_buffer_stack();
 
-	/* This block is copied from guido_switch_to_buffer. */
+	/* This block is copied from guidoar_switch_to_buffer. */
 	if ( YY_CURRENT_BUFFER )
 		{
 		/* Flush out information for old buffer. */
@@ -1731,8 +1731,8 @@ void guidopush_buffer_state (YY_BUFFER_STATE new_buffer )
 		(yy_buffer_stack_top)++;
 	YY_CURRENT_BUFFER_LVALUE = new_buffer;
 
-	/* copied from guido_switch_to_buffer. */
-	guido_load_buffer_state( );
+	/* copied from guidoar_switch_to_buffer. */
+	guidoar_load_buffer_state( );
 	(yy_did_buffer_switch_on_eof) = 1;
 }
 
@@ -1740,18 +1740,18 @@ void guidopush_buffer_state (YY_BUFFER_STATE new_buffer )
  *  The next element becomes the new top.
  *  
  */
-void guidopop_buffer_state (void)
+void guidoarpop_buffer_state (void)
 {
     	if (!YY_CURRENT_BUFFER)
 		return;
 
-	guido_delete_buffer(YY_CURRENT_BUFFER );
+	guidoar_delete_buffer(YY_CURRENT_BUFFER );
 	YY_CURRENT_BUFFER_LVALUE = NULL;
 	if ((yy_buffer_stack_top) > 0)
 		--(yy_buffer_stack_top);
 
 	if (YY_CURRENT_BUFFER) {
-		guido_load_buffer_state( );
+		guidoar_load_buffer_state( );
 		(yy_did_buffer_switch_on_eof) = 1;
 	}
 }
@@ -1759,7 +1759,7 @@ void guidopop_buffer_state (void)
 /* Allocates the stack if it does not exist.
  *  Guarantees space for at least one push.
  */
-static void guidoensure_buffer_stack (void)
+static void guidoarensure_buffer_stack (void)
 {
 	int num_to_alloc;
     
@@ -1770,7 +1770,7 @@ static void guidoensure_buffer_stack (void)
 		 * immediate realloc on the next call.
          */
 		num_to_alloc = 1;
-		(yy_buffer_stack) = (struct yy_buffer_state**)guidoalloc
+		(yy_buffer_stack) = (struct yy_buffer_state**)guidoaralloc
 								(num_to_alloc * sizeof(struct yy_buffer_state*)
 								);
 		
@@ -1787,7 +1787,7 @@ static void guidoensure_buffer_stack (void)
 		int grow_size = 8 /* arbitrary grow size */;
 
 		num_to_alloc = (yy_buffer_stack_max) + grow_size;
-		(yy_buffer_stack) = (struct yy_buffer_state**)guidorealloc
+		(yy_buffer_stack) = (struct yy_buffer_state**)guidoarrealloc
 								((yy_buffer_stack),
 								num_to_alloc * sizeof(struct yy_buffer_state*)
 								);
@@ -1804,7 +1804,7 @@ static void guidoensure_buffer_stack (void)
  * 
  * @return the newly allocated buffer state object. 
  */
-YY_BUFFER_STATE guido_scan_buffer  (char * base, yy_size_t  size )
+YY_BUFFER_STATE guidoar_scan_buffer  (char * base, yy_size_t  size )
 {
 	YY_BUFFER_STATE b;
     
@@ -1814,9 +1814,9 @@ YY_BUFFER_STATE guido_scan_buffer  (char * base, yy_size_t  size )
 		/* They forgot to leave room for the EOB's. */
 		return 0;
 
-	b = (YY_BUFFER_STATE) guidoalloc(sizeof( struct yy_buffer_state )  );
+	b = (YY_BUFFER_STATE) guidoaralloc(sizeof( struct yy_buffer_state )  );
 	if ( ! b )
-		YY_FATAL_ERROR( "out of dynamic memory in guido_scan_buffer()" );
+		YY_FATAL_ERROR( "out of dynamic memory in guidoar_scan_buffer()" );
 
 	b->yy_buf_size = size - 2;	/* "- 2" to take care of EOB's */
 	b->yy_buf_pos = b->yy_ch_buf = base;
@@ -1828,33 +1828,33 @@ YY_BUFFER_STATE guido_scan_buffer  (char * base, yy_size_t  size )
 	b->yy_fill_buffer = 0;
 	b->yy_buffer_status = YY_BUFFER_NEW;
 
-	guido_switch_to_buffer(b  );
+	guidoar_switch_to_buffer(b  );
 
 	return b;
 }
 
-/** Setup the input buffer state to scan a string. The next call to guidolex() will
+/** Setup the input buffer state to scan a string. The next call to guidoarlex() will
  * scan from a @e copy of @a str.
  * @param str a NUL-terminated string to scan
  * 
  * @return the newly allocated buffer state object.
  * @note If you want to scan bytes that may contain NUL values, then use
- *       guido_scan_bytes() instead.
+ *       guidoar_scan_bytes() instead.
  */
-YY_BUFFER_STATE guido_scan_string (yyconst char * yystr )
+YY_BUFFER_STATE guidoar_scan_string (yyconst char * yystr )
 {
     
-	return guido_scan_bytes(yystr,strlen(yystr) );
+	return guidoar_scan_bytes(yystr,strlen(yystr) );
 }
 
-/** Setup the input buffer state to scan the given bytes. The next call to guidolex() will
+/** Setup the input buffer state to scan the given bytes. The next call to guidoarlex() will
  * scan from a @e copy of @a bytes.
  * @param bytes the byte buffer to scan
  * @param len the number of bytes in the buffer pointed to by @a bytes.
  * 
  * @return the newly allocated buffer state object.
  */
-YY_BUFFER_STATE guido_scan_bytes  (yyconst char * yybytes, int  _yybytes_len )
+YY_BUFFER_STATE guidoar_scan_bytes  (yyconst char * yybytes, int  _yybytes_len )
 {
 	YY_BUFFER_STATE b;
 	char *buf;
@@ -1863,18 +1863,18 @@ YY_BUFFER_STATE guido_scan_bytes  (yyconst char * yybytes, int  _yybytes_len )
     
 	/* Get memory for full buffer, including space for trailing EOB's. */
 	n = _yybytes_len + 2;
-	buf = (char *) guidoalloc(n  );
+	buf = (char *) guidoaralloc(n  );
 	if ( ! buf )
-		YY_FATAL_ERROR( "out of dynamic memory in guido_scan_bytes()" );
+		YY_FATAL_ERROR( "out of dynamic memory in guidoar_scan_bytes()" );
 
 	for ( i = 0; i < _yybytes_len; ++i )
 		buf[i] = yybytes[i];
 
 	buf[_yybytes_len] = buf[_yybytes_len+1] = YY_END_OF_BUFFER_CHAR;
 
-	b = guido_scan_buffer(buf,n );
+	b = guidoar_scan_buffer(buf,n );
 	if ( ! b )
-		YY_FATAL_ERROR( "bad buffer in guido_scan_bytes()" );
+		YY_FATAL_ERROR( "bad buffer in guidoar_scan_bytes()" );
 
 	/* It's okay to grow etc. this buffer, and we should throw it
 	 * away when we're done.
@@ -1900,14 +1900,14 @@ static void yy_fatal_error (yyconst char* msg )
 #define yyless(n) \
 	do \
 		{ \
-		/* Undo effects of setting up guidotext. */ \
+		/* Undo effects of setting up guidoartext. */ \
         int yyless_macro_arg = (n); \
         YY_LESS_LINENO(yyless_macro_arg);\
-		guidotext[guidoleng] = (yy_hold_char); \
-		(yy_c_buf_p) = guidotext + yyless_macro_arg; \
+		guidoartext[guidoarleng] = (yy_hold_char); \
+		(yy_c_buf_p) = guidoartext + yyless_macro_arg; \
 		(yy_hold_char) = *(yy_c_buf_p); \
 		*(yy_c_buf_p) = '\0'; \
-		guidoleng = yyless_macro_arg; \
+		guidoarleng = yyless_macro_arg; \
 		} \
 	while ( 0 )
 
@@ -1916,89 +1916,89 @@ static void yy_fatal_error (yyconst char* msg )
 /** Get the current line number.
  * 
  */
-int guidoget_lineno  (void)
+int guidoarget_lineno  (void)
 {
         
-    return guidolineno;
+    return guidoarlineno;
 }
 
 /** Get the input stream.
  * 
  */
-FILE *guidoget_in  (void)
+FILE *guidoarget_in  (void)
 {
-        return guidoin;
+        return guidoarin;
 }
 
 /** Get the output stream.
  * 
  */
-FILE *guidoget_out  (void)
+FILE *guidoarget_out  (void)
 {
-        return guidoout;
+        return guidoarout;
 }
 
 /** Get the length of the current token.
  * 
  */
-int guidoget_leng  (void)
+int guidoarget_leng  (void)
 {
-        return guidoleng;
+        return guidoarleng;
 }
 
 /** Get the current token.
  * 
  */
 
-char *guidoget_text  (void)
+char *guidoarget_text  (void)
 {
-        return guidotext;
+        return guidoartext;
 }
 
 /** Set the current line number.
  * @param line_number
  * 
  */
-void guidoset_lineno (int  line_number )
+void guidoarset_lineno (int  line_number )
 {
     
-    guidolineno = line_number;
+    guidoarlineno = line_number;
 }
 
 /** Set the input stream. This does not discard the current
  * input buffer.
  * @param in_str A readable stream.
  * 
- * @see guido_switch_to_buffer
+ * @see guidoar_switch_to_buffer
  */
-void guidoset_in (FILE *  in_str )
+void guidoarset_in (FILE *  in_str )
 {
-        guidoin = in_str ;
+        guidoarin = in_str ;
 }
 
-void guidoset_out (FILE *  out_str )
+void guidoarset_out (FILE *  out_str )
 {
-        guidoout = out_str ;
+        guidoarout = out_str ;
 }
 
-int guidoget_debug  (void)
+int guidoarget_debug  (void)
 {
-        return guido_flex_debug;
+        return guidoar_flex_debug;
 }
 
-void guidoset_debug (int  bdebug )
+void guidoarset_debug (int  bdebug )
 {
-        guido_flex_debug = bdebug ;
+        guidoar_flex_debug = bdebug ;
 }
 
 static int yy_init_globals (void)
 {
         /* Initialization is the same as for the non-reentrant scanner.
-     * This function is called from guidolex_destroy(), so don't allocate here.
+     * This function is called from guidoarlex_destroy(), so don't allocate here.
      */
 
-    /* We do not touch guidolineno unless the option is enabled. */
-    guidolineno =  1;
+    /* We do not touch guidoarlineno unless the option is enabled. */
+    guidoarlineno =  1;
     
     (yy_buffer_stack) = 0;
     (yy_buffer_stack_top) = 0;
@@ -2009,36 +2009,36 @@ static int yy_init_globals (void)
 
 /* Defined in main.c */
 #ifdef YY_STDINIT
-    guidoin = stdin;
-    guidoout = stdout;
+    guidoarin = stdin;
+    guidoarout = stdout;
 #else
-    guidoin = (FILE *) 0;
-    guidoout = (FILE *) 0;
+    guidoarin = (FILE *) 0;
+    guidoarout = (FILE *) 0;
 #endif
 
     /* For future reference: Set errno on error, since we are called by
-     * guidolex_init()
+     * guidoarlex_init()
      */
     return 0;
 }
 
-/* guidolex_destroy is for both reentrant and non-reentrant scanners. */
-int guidolex_destroy  (void)
+/* guidoarlex_destroy is for both reentrant and non-reentrant scanners. */
+int guidoarlex_destroy  (void)
 {
     
     /* Pop the buffer stack, destroying each element. */
 	while(YY_CURRENT_BUFFER){
-		guido_delete_buffer(YY_CURRENT_BUFFER  );
+		guidoar_delete_buffer(YY_CURRENT_BUFFER  );
 		YY_CURRENT_BUFFER_LVALUE = NULL;
-		guidopop_buffer_state();
+		guidoarpop_buffer_state();
 	}
 
 	/* Destroy the stack itself. */
-	guidofree((yy_buffer_stack) );
+	guidoarfree((yy_buffer_stack) );
 	(yy_buffer_stack) = NULL;
 
     /* Reset the globals. This is important in a non-reentrant scanner so the next time
-     * guidolex() is called, initialization will occur. */
+     * guidoarlex() is called, initialization will occur. */
     yy_init_globals( );
 
     return 0;
@@ -2068,12 +2068,12 @@ static int yy_flex_strlen (yyconst char * s )
 }
 #endif
 
-void *guidoalloc (yy_size_t  size )
+void *guidoaralloc (yy_size_t  size )
 {
 	return (void *) malloc( size );
 }
 
-void *guidorealloc  (void * ptr, yy_size_t  size )
+void *guidoarrealloc  (void * ptr, yy_size_t  size )
 {
 	/* The cast to (char *) in the following accommodates both
 	 * implementations that use char* generic pointers, and those
@@ -2085,9 +2085,9 @@ void *guidorealloc  (void * ptr, yy_size_t  size )
 	return (void *) realloc( (char *) ptr, size );
 }
 
-void guidofree (void * ptr )
+void guidoarfree (void * ptr )
 {
-	free( (char *) ptr );	/* see guidorealloc() for (char *) cast */
+	free( (char *) ptr );	/* see guidoarrealloc() for (char *) cast */
 }
 
 #define YYTABLES_NAME "yytables"

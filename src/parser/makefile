@@ -2,7 +2,7 @@
 OUT  = guidolex.cpp guidoparse.cpp guidoparse.hpp
 YACC = bison
 LEX = flex
-PREFIX := guido
+PREFIX := guidoar
 
 code : $(OUT)
 

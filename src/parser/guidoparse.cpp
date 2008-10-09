@@ -59,13 +59,13 @@
 #define YYLSP_NEEDED 0
 
 /* Substitute the variable and function names.  */
-#define yyparse guidoparse
-#define yylex   guidolex
-#define yyerror guidoerror
-#define yylval  guidolval
-#define yychar  guidochar
-#define yydebug guidodebug
-#define yynerrs guidonerrs
+#define yyparse guidoarparse
+#define yylex   guidoarlex
+#define yyerror guidoarerror
+#define yylval  guidoarlval
+#define yychar  guidoarchar
+#define yydebug guidoardebug
+#define yynerrs guidoarnerrs
 
 
 /* Tokens.  */
@@ -165,8 +165,8 @@
 #include "guidoparse.hpp"
 #include "guidolex.cpp"
 
-int guidoerror(const char*s);
-int	guidowrap()		{ return(1); }
+int guidoarerror(const char*s);
+int	guidoarwrap()		{ return(1); }
 
 extern guido::gmnreader* gReader;
 
@@ -177,7 +177,7 @@ static void vadd (std::vector<guido::Sguidoelement>* v1, std::vector<guido::Sgui
 }
 
 #include <math.h>
-float dotatof( const char * s ) 
+static float dotatof( const char * s ) 
 { 
 	const char * dotPos = strchr(s,'.');
 	if ( !dotPos )
@@ -268,7 +268,7 @@ typedef union YYSTYPE
 	std::vector<guido::Sguidoattribute>* vattr;
 	rational *		r;
 }
-/* Line 193 of yacc.c.  */
+/* Line 187 of yacc.c.  */
 #line 273 "guidoparse.cpp"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -332,7 +332,7 @@ typedef short int yytype_int16;
 #define YYSIZE_MAXIMUM ((YYSIZE_T) -1)
 
 #ifndef YY_
-# if defined YYENABLE_NLS && YYENABLE_NLS
+# if YYENABLE_NLS
 #  if ENABLE_NLS
 #   include <libintl.h> /* INFRINGES ON USER NAME SPACE */
 #   define YY_(msgid) dgettext ("bison-runtime", msgid)
@@ -842,7 +842,7 @@ while (YYID (0))
    we won't break user code: when these are the locations we know.  */
 
 #ifndef YY_LOCATION_PRINT
-# if defined YYLTYPE_IS_TRIVIAL && YYLTYPE_IS_TRIVIAL
+# if YYLTYPE_IS_TRIVIAL
 #  define YY_LOCATION_PRINT(File, Loc)			\
      fprintf (File, "%d.%d-%d.%d",			\
 	      (Loc).first_line, (Loc).first_column,	\
@@ -1659,17 +1659,17 @@ yyreduce:
 
   case 17:
 #line 196 "guido.y"
-    { debug("tag name "); (yyval.str) = new string(guidotext); ;}
+    { debug("tag name "); (yyval.str) = new string(guidoartext); ;}
     break;
 
   case 18:
 #line 199 "guido.y"
-    { vdebug("new tag", *(yyvsp[(1) - (1)].str)); (yyval.elt) = gReader->newTag(*(yyvsp[(1) - (1)].str), 0); delete (yyvsp[(1) - (1)].str); if (!(yyval.elt)) { guidoerror("unknown tag"); YYERROR;} ;}
+    { vdebug("new tag", *(yyvsp[(1) - (1)].str)); (yyval.elt) = gReader->newTag(*(yyvsp[(1) - (1)].str), 0); delete (yyvsp[(1) - (1)].str); if (!(yyval.elt)) { guidoarerror("unknown tag"); YYERROR;} ;}
     break;
 
   case 19:
 #line 200 "guido.y"
-    { debug("new tag::id"); (yyval.elt) = gReader->newTag(*(yyvsp[(1) - (3)].str), (yyvsp[(2) - (3)].c)); delete (yyvsp[(1) - (3)].str); if (!(yyval.elt)) { guidoerror("unknown tag"); YYERROR;} ;}
+    { debug("new tag::id"); (yyval.elt) = gReader->newTag(*(yyvsp[(1) - (3)].str), (yyvsp[(2) - (3)].c)); delete (yyvsp[(1) - (3)].str); if (!(yyval.elt)) { guidoarerror("unknown tag"); YYERROR;} ;}
     break;
 
   case 20:
@@ -1689,17 +1689,17 @@ yyreduce:
 
   case 23:
 #line 206 "guido.y"
-    { debug("new signednumber UNIT arg"); (yyval.attr) = gReader->newAttribute((yyvsp[(1) - (2)].num)); (*(yyval.attr))->setUnit(guidotext); ;}
+    { debug("new signednumber UNIT arg"); (yyval.attr) = gReader->newAttribute((yyvsp[(1) - (2)].num)); (*(yyval.attr))->setUnit(guidoartext); ;}
     break;
 
   case 24:
 #line 207 "guido.y"
-    { debug("new FLOAT UNIT arg"); (yyval.attr) = gReader->newAttribute((yyvsp[(1) - (2)].real)); (*(yyval.attr))->setUnit(guidotext); ;}
+    { debug("new FLOAT UNIT arg"); (yyval.attr) = gReader->newAttribute((yyvsp[(1) - (2)].real)); (*(yyval.attr))->setUnit(guidoartext); ;}
     break;
 
   case 25:
 #line 208 "guido.y"
-    { debug("new STRING arg"); (yyval.attr) = gReader->newAttribute(guidotext, true); ;}
+    { debug("new STRING arg"); (yyval.attr) = gReader->newAttribute(guidoartext, true); ;}
     break;
 
   case 26:
@@ -1829,22 +1829,22 @@ yyreduce:
 
   case 51:
 #line 267 "guido.y"
-    { debug("new diatonic note"); (yyval.str) = new string(guidotext); ;}
+    { debug("new diatonic note"); (yyval.str) = new string(guidoartext); ;}
     break;
 
   case 52:
 #line 268 "guido.y"
-    { debug("new chromatic note"); (yyval.str) = new string(guidotext); ;}
+    { debug("new chromatic note"); (yyval.str) = new string(guidoartext); ;}
     break;
 
   case 53:
 #line 269 "guido.y"
-    { debug("new solfege note"); (yyval.str) = new string(guidotext); ;}
+    { debug("new solfege note"); (yyval.str) = new string(guidoartext); ;}
     break;
 
   case 54:
 #line 270 "guido.y"
-    { debug("new empty note"); (yyval.str) = new string(guidotext); ;}
+    { debug("new empty note"); (yyval.str) = new string(guidoartext); ;}
     break;
 
   case 55:
@@ -1914,27 +1914,27 @@ yyreduce:
 
   case 68:
 #line 299 "guido.y"
-    { (yyval.str) = new string(guidotext); ;}
+    { (yyval.str) = new string(guidoartext); ;}
     break;
 
   case 69:
 #line 301 "guido.y"
-    { vdebug("NUMBER", guidotext); (yyval.num) = atol(guidotext); ;}
+    { vdebug("NUMBER", guidoartext); (yyval.num) = atol(guidoartext); ;}
     break;
 
   case 70:
 #line 303 "guido.y"
-    { vdebug("NUMBER", guidotext); (yyval.num) = atol(guidotext); ;}
+    { vdebug("NUMBER", guidoartext); (yyval.num) = atol(guidoartext); ;}
     break;
 
   case 71:
 #line 305 "guido.y"
-    { vdebug("NUMBER", guidotext); (yyval.num) = atol(guidotext); ;}
+    { vdebug("NUMBER", guidoartext); (yyval.num) = atol(guidoartext); ;}
     break;
 
   case 72:
 #line 307 "guido.y"
-    { (yyval.real) = dotatof(guidotext); ;}
+    { (yyval.real) = dotatof(guidoartext); ;}
     break;
 
   case 73:
@@ -2173,8 +2173,8 @@ yyreturn:
 
 } // namespace
 
-int guidoerror(const char*s) {
+int guidoarerror(const char*s) {
 	YY_FLUSH_BUFFER;
-	return gReader->error(s, guidolineno);
+	return gReader->error(s, guidoarlineno);
 }
 

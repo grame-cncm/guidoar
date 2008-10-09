@@ -32,11 +32,12 @@
 #include "gmnreader.h"
 guido::gmnreader * gReader;
 
-#define yyleng		guidoleng
-#define yyin		guidoin
-#define yyrestart	guidorestart
-#define yy_current_buffer	guido_current_buffer
-#define yy_delete_buffer	guido_delete_buffer
+#define yyleng			guidoarleng
+#define yyin			guidoarin
+#define yyrestart		guidoarrestart
+#define yy_current_buffer	guidoar_current_buffer
+#define yy_delete_buffer	guidoar_delete_buffer
+#define yy_scan_string		guidoar_scan_string
 
 //#define yyDebug
 #ifdef yyDebug
@@ -93,13 +94,13 @@ bool readstring (const char * buffer, gmnreader * r)
 
 	YY_BUFFER_STATE b;
     /*Copy string into new buffer and Switch buffers*/
-    b = guido_scan_string (buffer);
+    b = yy_scan_string (buffer);
 
     /*Parse the string*/
     int ret = yyparse();
 
     /*Delete the new buffer*/
-    guido_delete_buffer(b);
+    yy_delete_buffer(b);
 
 	BEGIN(INITIAL);
  	return ret==0;

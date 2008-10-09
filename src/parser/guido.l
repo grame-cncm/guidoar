@@ -4,7 +4,7 @@
 #include <string.h>
 
 #define YY_NO_UNISTD_H
-extern YYSTYPE guidolval;
+extern YYSTYPE guidoarlval;
 
 static int nested;
 
