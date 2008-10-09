@@ -35,8 +35,8 @@ class export rational {
 
    private:    
    
-        long long int fNumerator;
-        long long int fDenominator;        
+        long int fNumerator;
+        long int fDenominator;        
         
         // Used by rationalise()
         long int gcd(long int a, long int b); 
@@ -47,8 +47,8 @@ class export rational {
         rational(const rational& d);
         rational(const std::string &str);
     
-        long long int getNumerator()	const		{ return fNumerator; }
-        long long int getDenominator() const		{ return fDenominator; }
+        long int getNumerator()	const		{ return fNumerator; }
+        long int getDenominator() const		{ return fDenominator; }
         void setNumerator(long int d)		{ fNumerator = d; }
         void setDenominator(long int d) 	{ fDenominator = d; }
 		void set(long int n, long int d)  { fNumerator = n; fDenominator = d; }
