@@ -75,6 +75,15 @@ durationOperation::durationOperation() : fFactor(1)
 	fPrimeNumbers[149] = true;
 	fPrimeNumbers[151] = true;
 	fPrimeNumbers[157] = true;
+	fPrimeNumbers[163] = true;
+	fPrimeNumbers[167] = true;
+	fPrimeNumbers[173] = true;
+	fPrimeNumbers[179] = true;
+	fPrimeNumbers[181] = true;
+	fPrimeNumbers[191] = true;
+	fPrimeNumbers[193] = true;
+	fPrimeNumbers[197] = true;
+	fPrimeNumbers[199] = true;
 }
 
 //_______________________________________________________________________________
@@ -101,7 +110,7 @@ Sguidoelement durationOperation::operator() ( const Sguidoelement& score, const 
 
 	durationvisitor dv;
 	rational dur = dv.duration (score);
-	rational r = safeDiv (dur, targetDuration);
+	rational r = dur / targetDuration;
 	Sguidoelement elt = (*this)(score, float(r));
 	return dynamic_cast<ARMusic*>((guidoelement*)elt);
 }
@@ -133,75 +142,6 @@ rational durationOperation::float2rational ( float val ) const
 	r.rationalise();
 	return r;
 }
-
-//________________________________________________________________________
-rational durationOperation::safeDiv ( const rational& dur1, const rational& dur2 ) const
-{
-	rational result = dur1 / dur2;
-	const rational null(0,1);
-
-	if (result < null) {		// overflow has occured, try another way
-cerr << "safeDiv try swap " << string(dur1) << " - " << string(dur2) << " ";
-		rational swap1 (dur1.getNumerator(), dur2.getDenominator());
-		rational swap2 (dur1.getDenominator(), dur2.getNumerator());
-		swap1.rationalise();
-		swap2.rationalise();
-		result = swap1 / swap2;
-cerr << ((result < null) ? "failed" : "ok") << endl;
-	}
-
-	if (result < null) {		// still overflow, try to approximate
-cerr << "safeDiv try approximate ";
-		rational approximation = dur1;
-		while (result.getNumerator() < 0) {
-			approximation.set(approximation.getNumerator()/2, approximation.getDenominator()/2);
-			if (!approximation.getDenominator() || !approximation.getNumerator()) {
-				result.set(0,1);		// no solution found
-				break;
-			}
-			else result = approximation / dur2;
-		}
-cerr << ((result < null) ? "failed" : "ok ") << string(result) << endl;
-	}
-	result.rationalise();
-	return result;
-}
-/*
-
-//________________________________________________________________________
-rational durationOperation::safeMult ( const rational& dur1, const rational& dur2 ) const
-{
-	rational result = dur1 * dur2;
-	const rational null(0,1);
-	
-	if (result < null) {		// overflow has occured, try another way
-cerr << "safeMult try swap " << string(dur1) << " - " << string(dur2) << " ";
-		rational swap1 (dur1.getNumerator(), dur2.getDenominator());
-		rational swap2 (dur1.getDenominator(), dur2.getNumerator());
-		swap1.rationalise();
-		swap2.rationalise();
-		result = swap1 * swap2;
-cerr << ((result < null) ? "failed" : "ok") << endl;
-	}
-
-	if (result < null) {		// still overflow, try to approximate
-cerr << "safeMult try approximate ";
-		rational approximation = dur1;
-		while (result < null) {
-			approximation.set(approximation.getNumerator()/2, approximation.getDenominator()/2);
-			if (!approximation.getDenominator() || !approximation.getNumerator()) {
-				result.set(0,1);		// no solution found
-				break;
-			}
-			else result = approximation * dur2;
-		}
-cerr << ((result < null) ? "failed" : "ok") << endl;
-	}
-
-	result.rationalise();
-	return result;
-}
-*/
 
 //________________________________________________________________________
 // a bounded multiplication operation:
@@ -259,45 +199,6 @@ rational durationOperation::stretch ( const rational& duration )
 }
 
 //________________________________________________________________________
-// normalize meter to get a pow(2) denominator 
-rational durationOperation::normalizeMeter (const rational& meter) const
-{
-	rational normalized = meter;
-	normalized.rationalise();
-	switch ( meter.getDenominator()) {
-		case 1:
-			normalized.set (2*meter.getNumerator(), 2*meter.getDenominator());
-			break;
-#if 0
-		case 2:
-		case 4:
-		case 8:
-		case 16:
-		case 32:
-		case 64:
-			break;
-		default:
-			normalized.set(0,1);
-#endif
-	}
-	if (meter.getNumerator() == 1)
-		normalized.set (2*meter.getNumerator(), 2*meter.getDenominator());
-	return normalized;
-}
-
-//________________________________________________________________________
-Sguidoattribute	durationOperation::stretchMeter (const rational& meter) const
-{
-	Sguidoattribute attr;
-	rational newMeter = normalizeMeter (boundedMult(meter, fFactor, 64));
-	if (newMeter.getNumerator()) {
-		attr = guidoattribute::create();
-		if (attr) attr->setValue (string(newMeter), true);
-	}
-	return attr;
-}
-
-//________________________________________________________________________
 // The visit methods
 //________________________________________________________________________
 void durationOperation::visitStart ( SARNote& elt )
@@ -316,38 +217,6 @@ void durationOperation::visitStart ( SARVoice& elt )
 {
 	fCurrentDurationIn = fCurrentDurationOut = rational(1,4);
 	clonevisitor::visitStart(elt);
-}
-
-//________________________________________________________________________
-void durationOperation::visitStart ( SARMeter& elt )
-{
-	rational meter;
-	Sguidotag tag = elt;
-	clonevisitor::visitStart(tag);
-	return;
-	
-	if (fFactor != rational(1,1)) {
-		Sguidoattribute attr = elt->getAttribute(0);
-		if (attr) {
-			string meterStr = attr->getValue();
-			if (meterStr.size()) {
-				if (meterStr == "C") attr = stretchMeter(rational(4,4));
-				else if (meterStr == "C/") attr = stretchMeter(rational(2,2));
-				else if (meterStr == "c/") attr = stretchMeter(rational(2,2));
-				else {
-					int num, denum;
-					int n = sscanf (meterStr.c_str(), "%d/%d", &num, &denum);
-					if (n == 2)
-						attr = stretchMeter(rational(num,denum));
-				}
-			}
-			if (attr) {
-				tag = ARFactory::instance().createTag("meter");
-				if (tag) tag->add(attr);
-			}
-		}
-	}
-	clonevisitor::visitStart(tag);
 }
 
 }

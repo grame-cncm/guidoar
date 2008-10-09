@@ -41,8 +41,7 @@ namespace guido
 */
 class export durationOperation : 
 	public operation,
-	public clonevisitor,
-	public visitor<SARMeter>
+	public clonevisitor
 {		
     public:
  				 durationOperation();
@@ -70,23 +69,19 @@ class export durationOperation :
 		SARMusic operator() ( const SARMusic& score1, const SARMusic& score2 );
  
      protected:
-		enum { kMaxDivider = 160 };
+		enum { kMaxDivider = 200 };
 		bool fPrimeNumbers[kMaxDivider];
 		
 		rational	fFactor;
 		rational	fCurrentDurationIn;
 		rational	fCurrentDurationOut;
 
-		rational			float2rational ( float val ) const;
-		rational			normalizeMeter (const rational& meter) const;
-		rational			safeDiv ( const rational& dur1, const rational& dur2 ) const;
-//		rational			safeMult ( const rational& dur1, const rational& dur2 ) const;
-		rational			boundedMult ( const rational& dur1, const rational& dur2, int maxDenom=kMaxDivider ) const;
-		Sguidoattribute		stretchMeter (const rational& meter) const;
+		rational		float2rational ( float val ) const;
+		rational		safeDiv ( const rational& dur1, const rational& dur2 ) const;
+		rational		boundedMult ( const rational& dur1, const rational& dur2, int maxDenom=kMaxDivider ) const;
 		virtual rational stretch ( const rational& duration );
 		virtual void visitStart ( SARNote& elt );
 		virtual void visitStart ( SARVoice& elt );
-		virtual void visitStart ( SARMeter& elt );
 };
 
 /*! @} */
