@@ -109,6 +109,10 @@ SOURCE=..\..\src\lib\streambeautifuller.cpp
 # PROP Default_Filter ""
 # Begin Source File
 
+SOURCE=..\..\src\operations\durationOperation.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\operations\headOperation.cpp
 # End Source File
 # Begin Source File
