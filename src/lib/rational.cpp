@@ -28,9 +28,7 @@ using namespace std;
 string rational::toString() const
 {
     ostringstream res;
-    res << fNumerator;
-    res << "/";
-    res << fDenominator;
+    res << fNumerator << "/" << fDenominator;
     return res.str();
 }
 

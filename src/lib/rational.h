@@ -97,7 +97,6 @@ class export rational {
 		operator float () const;
 		operator int () const; 
 
-        //virtual string toString() const;  Why ?? SL
 		std::string toString() const;
         double	toDouble() const;
         float	toFloat() const;
