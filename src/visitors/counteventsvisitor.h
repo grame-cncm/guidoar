@@ -46,8 +46,7 @@ namespace guido
 		A chord counts for 1 and notes inside a chord are ignored.
 */
 class export counteventsvisitor :
-	public visitor<SARNote>,
-	public visitor<SARChord>
+	public visitor<SARNote>
 {
     public: 
 				 counteventsvisitor() { fBrowser.set(this); }
@@ -85,8 +84,8 @@ class export countvoiceseventsvisitor :
 		virtual void reset()	{ fCurrentVoice = fTargetVoice = 0; fVoiceCount=-1; counteventsvisitor::reset(); }
 
 	protected:
-		void visitStart ( SARVoice& elt );
-		void visitEnd	( SARVoice& elt );
+		virtual void visitStart ( SARVoice& elt );
+		virtual void visitEnd	( SARVoice& elt );
 
 		unsigned int	fTargetVoice;
 		unsigned int	fCurrentVoice;

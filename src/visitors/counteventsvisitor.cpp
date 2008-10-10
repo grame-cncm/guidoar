@@ -58,14 +58,16 @@ int countvoiceseventsvisitor::count(const Sguidoelement& elt, unsigned int voice
 }
 
 void countvoiceseventsvisitor::visitStart(SARVoice& elt)	{ 
-	if (fCurrentVoice == fTargetVoice)
+	if (fCurrentVoice == fTargetVoice) {
 		fCount = 0;
+	}
 	else fBrowser.stop();
 }
 void countvoiceseventsvisitor::visitEnd  (SARVoice& elt)	{ 
 	if (fCurrentVoice == fTargetVoice)
 		fVoiceCount = fCount;
 	fBrowser.stop(false);
+	fCurrentVoice++;
 }
 
 
