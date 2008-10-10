@@ -30,6 +30,7 @@
 #include "clonevisitor.h"
 #include "durationvisitor.h"
 #include "interleaveOperation.h"
+#include "counteventsvisitor.h"
 #include "ARFactory.h"
 #include "ARNote.h"
 #include "AROthers.h"
@@ -40,38 +41,6 @@ using namespace std;
 
 namespace guido 
 {
-
-//_______________________________________________________________________________
-// a visitor to count the number of notes and chords
-// a chord counts for 1 and notes inside a chord are ignored
-class stepsCounter :
-	public visitor<SARNote>,
-	public visitor<SARChord>
-{
-    public: stepsCounter() {}
-		int count(const Sguidoelement&);
-	protected:
-		void visitStart( SARNote& elt );
-		void visitStart( SARChord& elt );
-		void visitEnd  ( SARChord& elt );
-		bool	fInChord;
-		int		fCount;
-};
-
-int stepsCounter::count(const Sguidoelement& elt)
-{
-	fInChord = false;
-	fCount = 0;
-	if (elt) {
-		tree_browser<guidoelement> tb(this);
-		tb.browse (*elt);
-	}
-	return fCount;
-}
-
-void stepsCounter::visitStart(SARNote& elt)		{ if (!fInChord) fCount++; }
-void stepsCounter::visitStart(SARChord& elt)	{ fInChord = true; fCount++; }
-void stepsCounter::visitEnd  (SARChord& elt)	{ fInChord = false; }
 
 //_______________________________________________________________________________
 SARVoice interleaveOperation::interleave ( const Sguidoelement& voice1, const Sguidoelement& voice2, int offset )
@@ -97,8 +66,8 @@ SARMusic interleaveOperation::operator() ( const SARMusic& score1, const SARMusi
 			// interleaves voice by voice with a start offset depending on the requested alignment
 			int offset = 0;
 			if (fMode == kRight) {
-				stepsCounter sc;
-				offset = sc.count (*i1) - sc.count (*i2);
+				counteventsvisitor evc;
+				offset = evc.count (*i1) - evc.count (*i2);
 			} 
 			cout << "offset is " << offset << endl;		
 			elt->push (interleave (*i1, *i2, offset));

@@ -20,17 +20,13 @@
 
 */
 
-#ifndef __headOperation__
-#define __headOperation__
+#ifndef __etailOperation__
+#define __etailOperation__
 
 #include <map>
 #include <string>
 
-#include "export.h"
-#include "guidoelement.h"
-#include "clonevisitor.h"
-#include "durationvisitor.h"
-#include "operation.h"
+#include "tailoperation.h"
 
 namespace guido 
 {
@@ -41,48 +37,28 @@ namespace guido
 */
 
 /*!
-\brief A visitor that cuts the tail of a score.
+\brief A visitor that cuts the head of a score before a given event number.
 */
-class export headOperation : 
-	public operation,
-	public clonevisitor
+class export etailOperation : public tailOperation
 {		
     public:
- 				 headOperation()	{}
-		virtual ~headOperation()	{}
+ 				 etailOperation()	{}
+		virtual ~etailOperation()	{}
 
-		/*! cuts the tail of a score after a given duration
+		/*! cuts the head of a score after a given duration
 			\param score the score to be cut
-			\param duration the score duration to preserve
+			\param evIndex the number of events to cut
 			\return a new score
 		*/
-		Sguidoelement operator() ( const Sguidoelement& score, const rational& duration );
+		Sguidoelement operator() ( const Sguidoelement& score, unsigned int evIndex, unsigned int voiceIndex=0 );
  
-		/*! cuts the tail of a score after a given duration
+		/*! cuts the head of a score after a given duration
 			\param score1 the score to be cut
-			\param score2 a score which duration is used as cut point
+			\param score2 a score which events count is used as cut point. 
 			\return a new score
 		*/
 		virtual SARMusic operator() ( const SARMusic& score1, const SARMusic& score2 );
 
-     protected:
-		rational		fCutPoint;
-		durationvisitor	fDuration;
-		bool			fCopy;
-
-		virtual void visitStart( SARVoice& elt );
-		virtual void visitStart( SARChord& elt );
-		virtual void visitStart( SARNote& elt );
-		virtual void visitStart( Sguidotag& elt );
-
-		virtual void visitEnd  ( SARVoice& elt );
-		virtual void visitEnd  ( SARChord& elt );
-		virtual void visitEnd  ( Sguidotag& elt );
-		virtual void visitEnd  ( SARNote& elt );
-
-     private:
-		std::map<std::string,int> fOpenedTagsMap;
-		void checkOpenedTags ();
 };
 
 /*! @} */

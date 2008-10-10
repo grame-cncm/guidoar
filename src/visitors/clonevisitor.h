@@ -70,6 +70,7 @@ class export clonevisitor :
 		// the copy method may be used by derived classes to filter the elements
 		virtual bool copy  () const	{ return true; }
 
+		virtual void			push (const SARNote& elt, bool stack=false);
 		virtual void			push (const Sguidoelement& elt, bool stack=true);
 		virtual void			copyAttributes (const Sguidoelement& src, Sguidoelement& dst) const;
 		virtual Sguidoelement	copy (const Sguidoelement& elt, Sguidoelement& dst) const;

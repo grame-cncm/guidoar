@@ -88,8 +88,18 @@ SARNote clonevisitor::copy( const SARNote& elt ) const
 		note->SetAccidental (elt->GetAccidental());
 		note->SetDots (elt->GetDots());
 		*note = elt->duration();
+		const Sguidoelement src = elt;
+		Sguidoelement dst = note;
+		copy (src, dst);
 	}
 	return note;
+}
+
+//______________________________________________________________________________
+void clonevisitor::push( const SARNote& note, bool stack )
+{
+	Sguidoelement elt = note;
+	push (elt, stack);
 }
 
 //______________________________________________________________________________
@@ -131,8 +141,7 @@ void clonevisitor::visitStart( SARChord& elt )
 void clonevisitor::visitStart( SARNote& elt )
 {
 	if (copy()) {
-		Sguidoelement cc = copy(elt);
-		push( copy (elt, cc), false );
+		push( copy(elt), false );
 	}
 }
 

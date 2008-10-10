@@ -31,8 +31,6 @@
 				D39097360E1B86BA00693853 /* PBXTargetDependency */,
 				D386D4720E0942D400231224 /* PBXTargetDependency */,
 				D39096A30E1B713E00693853 /* PBXTargetDependency */,
-				D390CC670E5C780200C6FB95 /* PBXTargetDependency */,
-				D390CC8F0E5C7BCD00C6FB95 /* PBXTargetDependency */,
 				D3B095BC0E83D63500262449 /* PBXTargetDependency */,
 				D307D8A30E8BE52D00B3555D /* PBXTargetDependency */,
 				D3D3E1010E94C3C400A93F41 /* PBXTargetDependency */,
@@ -40,6 +38,10 @@
 				D3D3E4B90E95425B00A93F41 /* PBXTargetDependency */,
 				D3D3E4BB0E95425E00A93F41 /* PBXTargetDependency */,
 				D3BC569B0E9CBD6C0088746E /* PBXTargetDependency */,
+				D3A472B80E9E65260062E209 /* PBXTargetDependency */,
+				D39419120E9F4CD90002FD03 /* PBXTargetDependency */,
+				D39419EA0E9F63100002FD03 /* PBXTargetDependency */,
+				D39419E80E9F63100002FD03 /* PBXTargetDependency */,
 			);
 			name = all;
 			productName = all;
@@ -101,21 +103,33 @@
 		D39096920E1B6FF100693853 /* durationvisitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D39096900E1B6FF100693853 /* durationvisitor.cpp */; };
 		D39096930E1B6FF100693853 /* durationvisitor.h in Headers */ = {isa = PBXBuildFile; fileRef = D39096910E1B6FF100693853 /* durationvisitor.h */; };
 		D39096A40E1B714B00693853 /* libguidoengine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoengine.framework */; };
-		D39096A60E1B715C00693853 /* guidoduration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D39096A50E1B715C00693853 /* guidoduration.cpp */; };
+		D39096A60E1B715C00693853 /* guidoinfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D39096A50E1B715C00693853 /* guidoinfo.cpp */; };
 		D390973A0E1B86DF00693853 /* guidorpar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D39097390E1B86DF00693853 /* guidorpar.cpp */; };
 		D390973B0E1B86E700693853 /* libguidoengine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoengine.framework */; };
 		D39097C80E1BCD4900693853 /* export.h in Headers */ = {isa = PBXBuildFile; fileRef = D39097C70E1BCD4900693853 /* export.h */; };
 		D390CC280E5C6F0C00C6FB95 /* interleaveOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D390CC260E5C6F0C00C6FB95 /* interleaveOperation.cpp */; };
 		D390CC290E5C6F0C00C6FB95 /* interleaveOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = D390CC270E5C6F0C00C6FB95 /* interleaveOperation.h */; };
-		D390CC690E5C781300C6FB95 /* libguidoengine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoengine.framework */; };
-		D390CC6B0E5C783200C6FB95 /* guidointerleave.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D390CC6A0E5C783200C6FB95 /* guidointerleave.cpp */; };
-		D390CC900E5C7BD700C6FB95 /* libguidoengine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoengine.framework */; };
-		D390CC920E5C7BEB00C6FB95 /* guidorinterleave.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D390CC910E5C7BEB00C6FB95 /* guidorinterleave.cpp */; };
+		D394190D0E9F4CC00002FD03 /* libguidoengine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoengine.framework */; };
+		D394190F0E9F4CD30002FD03 /* guidotime2ev.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D394190E0E9F4CD30002FD03 /* guidotime2ev.cpp */; };
+		D39419CF0E9F61E50002FD03 /* etailOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D39419CD0E9F61E50002FD03 /* etailOperation.cpp */; };
+		D39419D00E9F61E50002FD03 /* etailOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = D39419CE0E9F61E50002FD03 /* etailOperation.h */; };
+		D39419EB0E9F63250002FD03 /* libguidoengine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoengine.framework */; };
+		D39419EC0E9F63290002FD03 /* libguidoengine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoengine.framework */; };
+		D39419EE0E9F63420002FD03 /* guidoevhead.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D39419ED0E9F63420002FD03 /* guidoevhead.cpp */; };
+		D39419F20E9F63510002FD03 /* guidoevtail.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D39419F10E9F63510002FD03 /* guidoevtail.cpp */; };
+		D3A470CA0E9E06FE0062E209 /* eheadOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3A470C80E9E06FE0062E209 /* eheadOperation.cpp */; };
+		D3A470CB0E9E06FE0062E209 /* eheadOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = D3A470C90E9E06FE0062E209 /* eheadOperation.h */; };
+		D3A470D20E9E09D80062E209 /* counteventsvisitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3A470D00E9E09D80062E209 /* counteventsvisitor.cpp */; };
+		D3A470D30E9E09D80062E209 /* counteventsvisitor.h in Headers */ = {isa = PBXBuildFile; fileRef = D3A470D10E9E09D80062E209 /* counteventsvisitor.h */; };
+		D3A471240E9E3C1C0062E209 /* event2timevisitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3A471220E9E3C1C0062E209 /* event2timevisitor.cpp */; };
+		D3A471250E9E3C1C0062E209 /* event2timevisitor.h in Headers */ = {isa = PBXBuildFile; fileRef = D3A471230E9E3C1C0062E209 /* event2timevisitor.h */; };
+		D3A472B00E9E64EB0062E209 /* guidoev2time.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3A471460E9E47F30062E209 /* guidoev2time.cpp */; };
+		D3A472B10E9E64EF0062E209 /* libguidoengine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoengine.framework */; };
 		D3B095500E838A9800262449 /* midicontextvisitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3B0954E0E838A9800262449 /* midicontextvisitor.cpp */; };
 		D3B095510E838A9800262449 /* midicontextvisitor.h in Headers */ = {isa = PBXBuildFile; fileRef = D3B0954F0E838A9800262449 /* midicontextvisitor.h */; };
 		D3B095BD0E83D64400262449 /* libguidoengine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoengine.framework */; };
 		D3B095BF0E83D65A00262449 /* guido2midi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3B095BE0E83D65A00262449 /* guido2midi.cpp */; };
-		D3BC569E0E9CBD860088746E /* guidosetdur.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3BC569D0E9CBD860088746E /* guidosetdur.cpp */; };
+		D3BC569E0E9CBD860088746E /* guidoduration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3BC569D0E9CBD860088746E /* guidoduration.cpp */; };
 		D3BC56A00E9CBD940088746E /* libguidoengine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoengine.framework */; };
 		D3C5BD540E87DC2000E11354 /* unrolled_guido_browser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3C5BD520E87DC1F00E11354 /* unrolled_guido_browser.cpp */; };
 		D3C5BD550E87DC2000E11354 /* unrolled_guido_browser.h in Headers */ = {isa = PBXBuildFile; fileRef = D3C5BD530E87DC1F00E11354 /* unrolled_guido_browser.h */; };
@@ -196,19 +210,33 @@
 			remoteGlobalIDString = D39097300E1B86B200693853;
 			remoteInfo = guidorpar;
 		};
-		D390CC660E5C780200C6FB95 /* PBXContainerItemProxy */ = {
+		D39419110E9F4CD90002FD03 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = D390CC600E5C77DE00C6FB95;
-			remoteInfo = guidointerleave;
+			remoteGlobalIDString = D39419080E9F4CB30002FD03 /* guidotime2ev */;
+			remoteInfo = guidotime2ev;
 		};
-		D390CC8E0E5C7BCD00C6FB95 /* PBXContainerItemProxy */ = {
+		D39419E70E9F63100002FD03 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = D390CC890E5C7BB300C6FB95;
-			remoteInfo = guidorinterleave;
+			remoteGlobalIDString = D39419E20E9F63010002FD03 /* guidoevtail */;
+			remoteInfo = guidoevtail;
+		};
+		D39419E90E9F63100002FD03 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D39419DA0E9F62F40002FD03 /* guidoevhead */;
+			remoteInfo = guidoevhead;
+		};
+		D3A472B70E9E65260062E209 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D3A472AB0E9E64D50062E209;
+			remoteInfo = guidoev2time;
 		};
 		D3B095BB0E83D63500262449 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -314,23 +342,37 @@
 		D386D4730E0942E600231224 /* guidoseq.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = guidoseq.cpp; path = ../tools/guidoseq.cpp; sourceTree = SOURCE_ROOT; };
 		D39096900E1B6FF100693853 /* durationvisitor.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = durationvisitor.cpp; path = ../src/visitors/durationvisitor.cpp; sourceTree = SOURCE_ROOT; };
 		D39096910E1B6FF100693853 /* durationvisitor.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = durationvisitor.h; path = ../src/visitors/durationvisitor.h; sourceTree = SOURCE_ROOT; };
-		D390969E0E1B712F00693853 /* guidodur */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = guidodur; sourceTree = BUILT_PRODUCTS_DIR; };
-		D39096A50E1B715C00693853 /* guidoduration.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = guidoduration.cpp; path = ../tools/guidoduration.cpp; sourceTree = SOURCE_ROOT; };
+		D390969E0E1B712F00693853 /* guidoinfo */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = guidoinfo; sourceTree = BUILT_PRODUCTS_DIR; };
+		D39096A50E1B715C00693853 /* guidoinfo.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = guidoinfo.cpp; path = ../tools/guidoinfo.cpp; sourceTree = SOURCE_ROOT; };
 		D39097310E1B86B200693853 /* guidorpar */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = guidorpar; sourceTree = BUILT_PRODUCTS_DIR; };
 		D39097390E1B86DF00693853 /* guidorpar.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = guidorpar.cpp; path = ../tools/guidorpar.cpp; sourceTree = SOURCE_ROOT; };
 		D39097C70E1BCD4900693853 /* export.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = export.h; path = ../src/lib/export.h; sourceTree = SOURCE_ROOT; };
 		D390CC260E5C6F0C00C6FB95 /* interleaveOperation.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = interleaveOperation.cpp; path = ../src/operations/interleaveOperation.cpp; sourceTree = SOURCE_ROOT; };
 		D390CC270E5C6F0C00C6FB95 /* interleaveOperation.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = interleaveOperation.h; path = ../src/operations/interleaveOperation.h; sourceTree = SOURCE_ROOT; };
-		D390CC610E5C77DE00C6FB95 /* guidointerleave */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = guidointerleave; sourceTree = BUILT_PRODUCTS_DIR; };
 		D390CC6A0E5C783200C6FB95 /* guidointerleave.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = guidointerleave.cpp; path = ../tools/guidointerleave.cpp; sourceTree = SOURCE_ROOT; };
-		D390CC8A0E5C7BB300C6FB95 /* guidorinterleave */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = guidorinterleave; sourceTree = BUILT_PRODUCTS_DIR; };
 		D390CC910E5C7BEB00C6FB95 /* guidorinterleave.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = guidorinterleave.cpp; path = ../tools/guidorinterleave.cpp; sourceTree = SOURCE_ROOT; };
+		D39419090E9F4CB30002FD03 /* guidotime2ev */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = guidotime2ev; sourceTree = BUILT_PRODUCTS_DIR; };
+		D394190E0E9F4CD30002FD03 /* guidotime2ev.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = guidotime2ev.cpp; path = ../tools/guidotime2ev.cpp; sourceTree = SOURCE_ROOT; };
+		D39419CD0E9F61E50002FD03 /* etailOperation.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = etailOperation.cpp; path = ../src/operations/etailOperation.cpp; sourceTree = SOURCE_ROOT; };
+		D39419CE0E9F61E50002FD03 /* etailOperation.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = etailOperation.h; path = ../src/operations/etailOperation.h; sourceTree = SOURCE_ROOT; };
+		D39419DB0E9F62F40002FD03 /* guidoevhead */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = guidoevhead; sourceTree = BUILT_PRODUCTS_DIR; };
+		D39419E30E9F63010002FD03 /* guidoevtail */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = guidoevtail; sourceTree = BUILT_PRODUCTS_DIR; };
+		D39419ED0E9F63420002FD03 /* guidoevhead.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = guidoevhead.cpp; path = ../tools/guidoevhead.cpp; sourceTree = SOURCE_ROOT; };
+		D39419F10E9F63510002FD03 /* guidoevtail.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = guidoevtail.cpp; path = ../tools/guidoevtail.cpp; sourceTree = SOURCE_ROOT; };
+		D3A470C80E9E06FE0062E209 /* eheadOperation.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = eheadOperation.cpp; sourceTree = "<group>"; };
+		D3A470C90E9E06FE0062E209 /* eheadOperation.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = eheadOperation.h; sourceTree = "<group>"; };
+		D3A470D00E9E09D80062E209 /* counteventsvisitor.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = counteventsvisitor.cpp; sourceTree = "<group>"; };
+		D3A470D10E9E09D80062E209 /* counteventsvisitor.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = counteventsvisitor.h; sourceTree = "<group>"; };
+		D3A471220E9E3C1C0062E209 /* event2timevisitor.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = event2timevisitor.cpp; sourceTree = "<group>"; };
+		D3A471230E9E3C1C0062E209 /* event2timevisitor.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = event2timevisitor.h; sourceTree = "<group>"; };
+		D3A471460E9E47F30062E209 /* guidoev2time.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = guidoev2time.cpp; path = ../tools/guidoev2time.cpp; sourceTree = "<group>"; };
+		D3A472AC0E9E64D50062E209 /* guidoev2time */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = guidoev2time; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3B0954E0E838A9800262449 /* midicontextvisitor.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = midicontextvisitor.cpp; path = ../src/visitors/midicontextvisitor.cpp; sourceTree = SOURCE_ROOT; };
 		D3B0954F0E838A9800262449 /* midicontextvisitor.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = midicontextvisitor.h; path = ../src/visitors/midicontextvisitor.h; sourceTree = SOURCE_ROOT; };
 		D3B095B70E83D62B00262449 /* guido2midi */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = guido2midi; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3B095BE0E83D65A00262449 /* guido2midi.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = guido2midi.cpp; path = ../tools/guido2midi.cpp; sourceTree = SOURCE_ROOT; };
-		D3BC56940E9CBD520088746E /* guidosetdur */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = guidosetdur; sourceTree = BUILT_PRODUCTS_DIR; };
-		D3BC569D0E9CBD860088746E /* guidosetdur.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = guidosetdur.cpp; path = ../tools/guidosetdur.cpp; sourceTree = "<group>"; };
+		D3BC56940E9CBD520088746E /* guidoduration */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = guidoduration; sourceTree = BUILT_PRODUCTS_DIR; };
+		D3BC569D0E9CBD860088746E /* guidoduration.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = guidoduration.cpp; path = ../tools/guidoduration.cpp; sourceTree = "<group>"; };
 		D3C5BD520E87DC1F00E11354 /* unrolled_guido_browser.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = unrolled_guido_browser.cpp; path = ../src/visitors/unrolled_guido_browser.cpp; sourceTree = SOURCE_ROOT; };
 		D3C5BD530E87DC1F00E11354 /* unrolled_guido_browser.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = unrolled_guido_browser.h; path = ../src/visitors/unrolled_guido_browser.h; sourceTree = SOURCE_ROOT; };
 		D3D1E4440E9BC51800ADD40D /* durationOperation.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = durationOperation.cpp; path = ../src/operations/durationOperation.cpp; sourceTree = SOURCE_ROOT; };
@@ -409,19 +451,35 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D390CC5F0E5C77DE00C6FB95 /* Frameworks */ = {
+		D39419070E9F4CB30002FD03 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D390CC690E5C781300C6FB95 /* libguidoengine.framework in Frameworks */,
+				D394190D0E9F4CC00002FD03 /* libguidoengine.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D390CC880E5C7BB300C6FB95 /* Frameworks */ = {
+		D39419D90E9F62F40002FD03 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D390CC900E5C7BD700C6FB95 /* libguidoengine.framework in Frameworks */,
+				D39419EB0E9F63250002FD03 /* libguidoengine.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D39419E10E9F63010002FD03 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D39419EC0E9F63290002FD03 /* libguidoengine.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D3A472AA0E9E64D50062E209 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D3A472B10E9E64EF0062E209 /* libguidoengine.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -483,17 +541,19 @@
 				D34739A30DEE096F00BE54BE /* guidoread */,
 				D31E255C0E083150001406DF /* guidopar */,
 				D386D46D0E0942C800231224 /* guidoseq */,
-				D390969E0E1B712F00693853 /* guidodur */,
+				D390969E0E1B712F00693853 /* guidoinfo */,
 				D39097310E1B86B200693853 /* guidorpar */,
-				D390CC610E5C77DE00C6FB95 /* guidointerleave */,
-				D390CC8A0E5C7BB300C6FB95 /* guidorinterleave */,
 				D3B095B70E83D62B00262449 /* guido2midi */,
 				D307D89E0E8BE52300B3555D /* guidotranspose */,
 				D3D3E0FC0E94C3B400A93F41 /* guidohead */,
 				D3D3E2A90E94F64800A93F41 /* guidotail */,
 				D3D3E4190E95344800A93F41 /* guidovhead */,
 				D3D3E4A90E95418200A93F41 /* guidovtail */,
-				D3BC56940E9CBD520088746E /* guidosetdur */,
+				D3BC56940E9CBD520088746E /* guidoduration */,
+				D3A472AC0E9E64D50062E209 /* guidoev2time */,
+				D39419090E9F4CB30002FD03 /* guidotime2ev */,
+				D39419DB0E9F62F40002FD03 /* guidoevhead */,
+				D39419E30E9F63010002FD03 /* guidoevtail */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -542,6 +602,10 @@
 		D31E252D0E082FBF001406DF /* operations */ = {
 			isa = PBXGroup;
 			children = (
+				D39419CD0E9F61E50002FD03 /* etailOperation.cpp */,
+				D39419CE0E9F61E50002FD03 /* etailOperation.h */,
+				D3A470C80E9E06FE0062E209 /* eheadOperation.cpp */,
+				D3A470C90E9E06FE0062E209 /* eheadOperation.h */,
 				D3D1E4440E9BC51800ADD40D /* durationOperation.cpp */,
 				D3D1E4450E9BC51800ADD40D /* durationOperation.h */,
 				D3573AEF0E965834000525C7 /* operation.h */,
@@ -634,6 +698,10 @@
 		D34737BD0DED7A5800BE54BE /* visitors */ = {
 			isa = PBXGroup;
 			children = (
+				D3A471220E9E3C1C0062E209 /* event2timevisitor.cpp */,
+				D3A471230E9E3C1C0062E209 /* event2timevisitor.h */,
+				D3A470D00E9E09D80062E209 /* counteventsvisitor.cpp */,
+				D3A470D10E9E09D80062E209 /* counteventsvisitor.h */,
 				D3C5BD520E87DC1F00E11354 /* unrolled_guido_browser.cpp */,
 				D3C5BD530E87DC1F00E11354 /* unrolled_guido_browser.h */,
 				D3B0954E0E838A9800262449 /* midicontextvisitor.cpp */,
@@ -655,20 +723,24 @@
 		D34739A80DEE097D00BE54BE /* Tools */ = {
 			isa = PBXGroup;
 			children = (
-				D3BC569D0E9CBD860088746E /* guidosetdur.cpp */,
-				D3D3E4AD0E95419700A93F41 /* guidovtail.cpp */,
-				D3D3E4280E95347C00A93F41 /* guidovhead.cpp */,
-				D3D3E2AF0E94F66200A93F41 /* guidotail.cpp */,
-				D3D3E1050E94C3E600A93F41 /* guidohead.cpp */,
-				D307D8A50E8BE55E00B3555D /* guidotranspose.cpp */,
 				D3B095BE0E83D65A00262449 /* guido2midi.cpp */,
-				D390CC910E5C7BEB00C6FB95 /* guidorinterleave.cpp */,
+				D3A471460E9E47F30062E209 /* guidoev2time.cpp */,
+				D3BC569D0E9CBD860088746E /* guidoduration.cpp */,
+				D39419ED0E9F63420002FD03 /* guidoevhead.cpp */,
+				D39419F10E9F63510002FD03 /* guidoevtail.cpp */,
+				D3D3E1050E94C3E600A93F41 /* guidohead.cpp */,
+				D39096A50E1B715C00693853 /* guidoinfo.cpp */,
 				D390CC6A0E5C783200C6FB95 /* guidointerleave.cpp */,
-				D39097390E1B86DF00693853 /* guidorpar.cpp */,
-				D39096A50E1B715C00693853 /* guidoduration.cpp */,
-				D386D4730E0942E600231224 /* guidoseq.cpp */,
 				D31E25620E083191001406DF /* guidopar.cpp */,
 				D34739AA0DEE099400BE54BE /* guidoread.cpp */,
+				D390CC910E5C7BEB00C6FB95 /* guidorinterleave.cpp */,
+				D39097390E1B86DF00693853 /* guidorpar.cpp */,
+				D386D4730E0942E600231224 /* guidoseq.cpp */,
+				D3D3E2AF0E94F66200A93F41 /* guidotail.cpp */,
+				D394190E0E9F4CD30002FD03 /* guidotime2ev.cpp */,
+				D307D8A50E8BE55E00B3555D /* guidotranspose.cpp */,
+				D3D3E4280E95347C00A93F41 /* guidovhead.cpp */,
+				D3D3E4AD0E95419700A93F41 /* guidovtail.cpp */,
 			);
 			name = Tools;
 			sourceTree = "<group>";
@@ -717,6 +789,10 @@
 				D3D3E4A50E95417500A93F41 /* vtailOperation.h in Headers */,
 				D3573AF00E965834000525C7 /* operation.h in Headers */,
 				D3D1E4470E9BC51800ADD40D /* durationOperation.h in Headers */,
+				D3A470CB0E9E06FE0062E209 /* eheadOperation.h in Headers */,
+				D3A470D30E9E09D80062E209 /* counteventsvisitor.h in Headers */,
+				D3A471250E9E3C1C0062E209 /* event2timevisitor.h in Headers */,
+				D39419D00E9F61E50002FD03 /* etailOperation.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -807,9 +883,9 @@
 			productReference = D386D46D0E0942C800231224 /* guidoseq */;
 			productType = "com.apple.product-type.tool";
 		};
-		D390969D0E1B712F00693853 /* guidodur */ = {
+		D390969D0E1B712F00693853 /* guidoinfo */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D39096A70E1B715C00693853 /* Build configuration list for PBXNativeTarget "guidodur" */;
+			buildConfigurationList = D39096A70E1B715C00693853 /* Build configuration list for PBXNativeTarget "guidoinfo" */;
 			buildPhases = (
 				D390969B0E1B712F00693853 /* Sources */,
 				D390969C0E1B712F00693853 /* Frameworks */,
@@ -818,9 +894,9 @@
 			);
 			dependencies = (
 			);
-			name = guidodur;
+			name = guidoinfo;
 			productName = guidodur;
-			productReference = D390969E0E1B712F00693853 /* guidodur */;
+			productReference = D390969E0E1B712F00693853 /* guidoinfo */;
 			productType = "com.apple.product-type.tool";
 		};
 		D39097300E1B86B200693853 /* guidorpar */ = {
@@ -839,36 +915,68 @@
 			productReference = D39097310E1B86B200693853 /* guidorpar */;
 			productType = "com.apple.product-type.tool";
 		};
-		D390CC600E5C77DE00C6FB95 /* guidointerleave */ = {
+		D39419080E9F4CB30002FD03 /* guidotime2ev */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D390CC650E5C77FC00C6FB95 /* Build configuration list for PBXNativeTarget "guidointerleave" */;
+			buildConfigurationList = D39419100E9F4CD30002FD03 /* Build configuration list for PBXNativeTarget "guidotime2ev" */;
 			buildPhases = (
-				D390CC5E0E5C77DE00C6FB95 /* Sources */,
-				D390CC5F0E5C77DE00C6FB95 /* Frameworks */,
+				D39419060E9F4CB30002FD03 /* Sources */,
+				D39419070E9F4CB30002FD03 /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = guidointerleave;
-			productName = guidointerleave;
-			productReference = D390CC610E5C77DE00C6FB95 /* guidointerleave */;
+			name = guidotime2ev;
+			productName = guidotime2ev;
+			productReference = D39419090E9F4CB30002FD03 /* guidotime2ev */;
 			productType = "com.apple.product-type.tool";
 		};
-		D390CC890E5C7BB300C6FB95 /* guidorinterleave */ = {
+		D39419DA0E9F62F40002FD03 /* guidoevhead */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D390CC930E5C7BEB00C6FB95 /* Build configuration list for PBXNativeTarget "guidorinterleave" */;
+			buildConfigurationList = D39419EF0E9F63420002FD03 /* Build configuration list for PBXNativeTarget "guidoevhead" */;
 			buildPhases = (
-				D390CC870E5C7BB300C6FB95 /* Sources */,
-				D390CC880E5C7BB300C6FB95 /* Frameworks */,
+				D39419D80E9F62F40002FD03 /* Sources */,
+				D39419D90E9F62F40002FD03 /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = guidorinterleave;
-			productName = guidorinterleave;
-			productReference = D390CC8A0E5C7BB300C6FB95 /* guidorinterleave */;
+			name = guidoevhead;
+			productName = guidoevhead;
+			productReference = D39419DB0E9F62F40002FD03 /* guidoevhead */;
+			productType = "com.apple.product-type.tool";
+		};
+		D39419E20E9F63010002FD03 /* guidoevtail */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D39419F00E9F63420002FD03 /* Build configuration list for PBXNativeTarget "guidoevtail" */;
+			buildPhases = (
+				D39419E00E9F63010002FD03 /* Sources */,
+				D39419E10E9F63010002FD03 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = guidoevtail;
+			productName = guidoevtail;
+			productReference = D39419E30E9F63010002FD03 /* guidoevtail */;
+			productType = "com.apple.product-type.tool";
+		};
+		D3A472AB0E9E64D50062E209 /* guidoev2time */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D3A472BB0E9E65360062E209 /* Build configuration list for PBXNativeTarget "guidoev2time" */;
+			buildPhases = (
+				D3A472A90E9E64D50062E209 /* Sources */,
+				D3A472AA0E9E64D50062E209 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = guidoev2time;
+			productName = guidoev2time;
+			productReference = D3A472AC0E9E64D50062E209 /* guidoev2time */;
 			productType = "com.apple.product-type.tool";
 		};
 		D3B095B60E83D62B00262449 /* guido2midi */ = {
@@ -887,9 +995,9 @@
 			productReference = D3B095B70E83D62B00262449 /* guido2midi */;
 			productType = "com.apple.product-type.tool";
 		};
-		D3BC56930E9CBD520088746E /* guidosetdur */ = {
+		D3BC56930E9CBD520088746E /* guidoduration */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D3BC569F0E9CBD860088746E /* Build configuration list for PBXNativeTarget "guidosetdur" */;
+			buildConfigurationList = D3BC569F0E9CBD860088746E /* Build configuration list for PBXNativeTarget "guidoduration" */;
 			buildPhases = (
 				D3BC56910E9CBD520088746E /* Sources */,
 				D3BC56920E9CBD520088746E /* Frameworks */,
@@ -898,9 +1006,9 @@
 			);
 			dependencies = (
 			);
-			name = guidosetdur;
+			name = guidoduration;
 			productName = guidosetdur;
-			productReference = D3BC56940E9CBD520088746E /* guidosetdur */;
+			productReference = D3BC56940E9CBD520088746E /* guidoduration */;
 			productType = "com.apple.product-type.tool";
 		};
 		D3D3E0FB0E94C3B400A93F41 /* guidohead */ = {
@@ -986,17 +1094,19 @@
 				D34739A20DEE096F00BE54BE /* guidoread */,
 				D31E255B0E083150001406DF /* guidopar */,
 				D386D46C0E0942C800231224 /* guidoseq */,
-				D390969D0E1B712F00693853 /* guidodur */,
+				D390969D0E1B712F00693853 /* guidoinfo */,
 				D39097300E1B86B200693853 /* guidorpar */,
-				D390CC600E5C77DE00C6FB95 /* guidointerleave */,
-				D390CC890E5C7BB300C6FB95 /* guidorinterleave */,
 				D3B095B60E83D62B00262449 /* guido2midi */,
 				D307D89D0E8BE52300B3555D /* guidotranspose */,
 				D3D3E0FB0E94C3B400A93F41 /* guidohead */,
 				D3D3E2A80E94F64800A93F41 /* guidotail */,
 				D3D3E4180E95344800A93F41 /* guidovhead */,
 				D3D3E4A80E95418200A93F41 /* guidovtail */,
-				D3BC56930E9CBD520088746E /* guidosetdur */,
+				D3BC56930E9CBD520088746E /* guidoduration */,
+				D3A472AB0E9E64D50062E209 /* guidoev2time */,
+				D39419080E9F4CB30002FD03 /* guidotime2ev */,
+				D39419DA0E9F62F40002FD03 /* guidoevhead */,
+				D39419E20E9F63010002FD03 /* guidoevtail */,
 			);
 		};
 /* End PBXProject section */
@@ -1067,6 +1177,10 @@
 				D3D3E4120E95343000A93F41 /* vheadOperation.cpp in Sources */,
 				D3D3E4A40E95417500A93F41 /* vtailOperation.cpp in Sources */,
 				D3D1E4460E9BC51800ADD40D /* durationOperation.cpp in Sources */,
+				D3A470CA0E9E06FE0062E209 /* eheadOperation.cpp in Sources */,
+				D3A470D20E9E09D80062E209 /* counteventsvisitor.cpp in Sources */,
+				D3A471240E9E3C1C0062E209 /* event2timevisitor.cpp in Sources */,
+				D39419CF0E9F61E50002FD03 /* etailOperation.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1106,7 +1220,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D39096A60E1B715C00693853 /* guidoduration.cpp in Sources */,
+				D39096A60E1B715C00693853 /* guidoinfo.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1118,19 +1232,35 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D390CC5E0E5C77DE00C6FB95 /* Sources */ = {
+		D39419060E9F4CB30002FD03 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D390CC6B0E5C783200C6FB95 /* guidointerleave.cpp in Sources */,
+				D394190F0E9F4CD30002FD03 /* guidotime2ev.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		D390CC870E5C7BB300C6FB95 /* Sources */ = {
+		D39419D80E9F62F40002FD03 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D390CC920E5C7BEB00C6FB95 /* guidorinterleave.cpp in Sources */,
+				D39419EE0E9F63420002FD03 /* guidoevhead.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D39419E00E9F63010002FD03 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D39419F20E9F63510002FD03 /* guidoevtail.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D3A472A90E9E64D50062E209 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D3A472B00E9E64EB0062E209 /* guidoev2time.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1146,7 +1276,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D3BC569E0E9CBD860088746E /* guidosetdur.cpp in Sources */,
+				D3BC569E0E9CBD860088746E /* guidoduration.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1217,7 +1347,7 @@
 		};
 		D39096A30E1B713E00693853 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D390969D0E1B712F00693853 /* guidodur */;
+			target = D390969D0E1B712F00693853 /* guidoinfo */;
 			targetProxy = D39096A20E1B713E00693853 /* PBXContainerItemProxy */;
 		};
 		D39097360E1B86BA00693853 /* PBXTargetDependency */ = {
@@ -1225,15 +1355,25 @@
 			target = D39097300E1B86B200693853 /* guidorpar */;
 			targetProxy = D39097350E1B86BA00693853 /* PBXContainerItemProxy */;
 		};
-		D390CC670E5C780200C6FB95 /* PBXTargetDependency */ = {
+		D39419120E9F4CD90002FD03 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D390CC600E5C77DE00C6FB95 /* guidointerleave */;
-			targetProxy = D390CC660E5C780200C6FB95 /* PBXContainerItemProxy */;
+			target = D39419080E9F4CB30002FD03 /* guidotime2ev */;
+			targetProxy = D39419110E9F4CD90002FD03 /* PBXContainerItemProxy */;
 		};
-		D390CC8F0E5C7BCD00C6FB95 /* PBXTargetDependency */ = {
+		D39419E80E9F63100002FD03 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D390CC890E5C7BB300C6FB95 /* guidorinterleave */;
-			targetProxy = D390CC8E0E5C7BCD00C6FB95 /* PBXContainerItemProxy */;
+			target = D39419E20E9F63010002FD03 /* guidoevtail */;
+			targetProxy = D39419E70E9F63100002FD03 /* PBXContainerItemProxy */;
+		};
+		D39419EA0E9F63100002FD03 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D39419DA0E9F62F40002FD03 /* guidoevhead */;
+			targetProxy = D39419E90E9F63100002FD03 /* PBXContainerItemProxy */;
+		};
+		D3A472B80E9E65260062E209 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D3A472AB0E9E64D50062E209 /* guidoev2time */;
+			targetProxy = D3A472B70E9E65260062E209 /* PBXContainerItemProxy */;
 		};
 		D3B095BC0E83D63500262449 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1242,7 +1382,7 @@
 		};
 		D3BC569B0E9CBD6C0088746E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D3BC56930E9CBD520088746E /* guidosetdur */;
+			target = D3BC56930E9CBD520088746E /* guidoduration */;
 			targetProxy = D3BC569A0E9CBD6C0088746E /* PBXContainerItemProxy */;
 		};
 		D3D3E1010E94C3C400A93F41 /* PBXTargetDependency */ = {
@@ -1570,7 +1710,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INSTALL_PATH = /usr/local/bin;
 				PREBINDING = NO;
-				PRODUCT_NAME = guidodur;
+				PRODUCT_NAME = guidoinfo;
 				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				ZERO_LINK = YES;
 			};
@@ -1590,7 +1730,7 @@
 				GCC_MODEL_TUNING = G5;
 				INSTALL_PATH = /usr/local/bin;
 				PREBINDING = NO;
-				PRODUCT_NAME = guidodur;
+				PRODUCT_NAME = guidoinfo;
 				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				ZERO_LINK = NO;
 			};
@@ -1637,7 +1777,7 @@
 			};
 			name = Release;
 		};
-		D390CC630E5C77DE00C6FB95 /* Debug */ = {
+		D394190B0E9F4CB40002FD03 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
@@ -1652,13 +1792,12 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INSTALL_PATH = /usr/local/bin;
 				PREBINDING = NO;
-				PRODUCT_NAME = guidointerleave;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+				PRODUCT_NAME = guidotime2ev;
 				ZERO_LINK = YES;
 			};
 			name = Debug;
 		};
-		D390CC640E5C77DE00C6FB95 /* Release */ = {
+		D394190C0E9F4CB40002FD03 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
@@ -1672,13 +1811,12 @@
 				GCC_MODEL_TUNING = G5;
 				INSTALL_PATH = /usr/local/bin;
 				PREBINDING = NO;
-				PRODUCT_NAME = guidointerleave;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+				PRODUCT_NAME = guidotime2ev;
 				ZERO_LINK = NO;
 			};
 			name = Release;
 		};
-		D390CC8C0E5C7BB300C6FB95 /* Debug */ = {
+		D39419DD0E9F62F40002FD03 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
@@ -1693,13 +1831,12 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INSTALL_PATH = /usr/local/bin;
 				PREBINDING = NO;
-				PRODUCT_NAME = guidorinterleave;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+				PRODUCT_NAME = guidoevhead;
 				ZERO_LINK = YES;
 			};
 			name = Debug;
 		};
-		D390CC8D0E5C7BB300C6FB95 /* Release */ = {
+		D39419DE0E9F62F40002FD03 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COPY_PHASE_STRIP = YES;
@@ -1713,8 +1850,85 @@
 				GCC_MODEL_TUNING = G5;
 				INSTALL_PATH = /usr/local/bin;
 				PREBINDING = NO;
-				PRODUCT_NAME = guidorinterleave;
-				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+				PRODUCT_NAME = guidoevhead;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		D39419E50E9F63010002FD03 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../../../../../Library/Frameworks\"";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INSTALL_PATH = /usr/local/bin;
+				PREBINDING = NO;
+				PRODUCT_NAME = guidoevtail;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		D39419E60E9F63010002FD03 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../../../../../Library/Frameworks\"";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				INSTALL_PATH = /usr/local/bin;
+				PREBINDING = NO;
+				PRODUCT_NAME = guidoevtail;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		D3A472AE0E9E64D50062E209 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../../../../../Library/Frameworks\"";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INSTALL_PATH = /usr/local/bin;
+				PREBINDING = NO;
+				PRODUCT_NAME = guidoev2time;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		D3A472AF0E9E64D50062E209 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1)",
+				);
+				FRAMEWORK_SEARCH_PATHS_QUOTED_FOR_TARGET_1 = "\"$(SRCROOT)/../../../../../../Library/Frameworks\"";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				INSTALL_PATH = /usr/local/bin;
+				PREBINDING = NO;
+				PRODUCT_NAME = guidoev2time;
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -1773,7 +1987,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INSTALL_PATH = /usr/local/bin;
 				PREBINDING = NO;
-				PRODUCT_NAME = guidosetdur;
+				PRODUCT_NAME = guidoduration;
 				ZERO_LINK = YES;
 			};
 			name = Debug;
@@ -1792,7 +2006,7 @@
 				GCC_MODEL_TUNING = G5;
 				INSTALL_PATH = /usr/local/bin;
 				PREBINDING = NO;
-				PRODUCT_NAME = guidosetdur;
+				PRODUCT_NAME = guidoduration;
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -2028,7 +2242,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D39096A70E1B715C00693853 /* Build configuration list for PBXNativeTarget "guidodur" */ = {
+		D39096A70E1B715C00693853 /* Build configuration list for PBXNativeTarget "guidoinfo" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D39096A00E1B712F00693853 /* Debug */,
@@ -2046,20 +2260,38 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D390CC650E5C77FC00C6FB95 /* Build configuration list for PBXNativeTarget "guidointerleave" */ = {
+		D39419100E9F4CD30002FD03 /* Build configuration list for PBXNativeTarget "guidotime2ev" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				D390CC630E5C77DE00C6FB95 /* Debug */,
-				D390CC640E5C77DE00C6FB95 /* Release */,
+				D394190B0E9F4CB40002FD03 /* Debug */,
+				D394190C0E9F4CB40002FD03 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D390CC930E5C7BEB00C6FB95 /* Build configuration list for PBXNativeTarget "guidorinterleave" */ = {
+		D39419EF0E9F63420002FD03 /* Build configuration list for PBXNativeTarget "guidoevhead" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				D390CC8C0E5C7BB300C6FB95 /* Debug */,
-				D390CC8D0E5C7BB300C6FB95 /* Release */,
+				D39419DD0E9F62F40002FD03 /* Debug */,
+				D39419DE0E9F62F40002FD03 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D39419F00E9F63420002FD03 /* Build configuration list for PBXNativeTarget "guidoevtail" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D39419E50E9F63010002FD03 /* Debug */,
+				D39419E60E9F63010002FD03 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D3A472BB0E9E65360062E209 /* Build configuration list for PBXNativeTarget "guidoev2time" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D3A472AE0E9E64D50062E209 /* Debug */,
+				D3A472AF0E9E64D50062E209 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -2073,7 +2305,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D3BC569F0E9CBD860088746E /* Build configuration list for PBXNativeTarget "guidosetdur" */ = {
+		D3BC569F0E9CBD860088746E /* Build configuration list for PBXNativeTarget "guidoduration" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D3BC56960E9CBD530088746E /* Debug */,

@@ -207,8 +207,7 @@ void durationOperation::visitStart ( SARNote& elt )
 	rational duration = stretch(elt->duration());
 	if (note) {
 		*note = duration;
-		Sguidoelement cc = note;
-		push( copy (elt, cc), false );
+		push( note );
 	}
 }
 

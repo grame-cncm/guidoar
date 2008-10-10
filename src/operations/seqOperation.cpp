@@ -26,6 +26,7 @@
 #include "clonevisitor.h"
 #include "seqOperation.h"
 #include "ARFactory.h"
+#include "ARNote.h"
 #include "AROthers.h"
 #include "tree_browser.h"
 
@@ -37,9 +38,10 @@ namespace guido
 //_______________________________________________________________________________
 SARMusic seqOperation::operator() ( const SARMusic& score1, const SARMusic& score2 )
 {
+	fCurrentDuration = rational(1,4);
 	SARMusic outscore = ARFactory::instance().createMusic();
 	if (outscore) {
-		push (outscore);
+		push (Sguidoelement(outscore));
 		
 		Sguidoelement sc1 = score1 ? score1 : outscore;
 		Sguidoelement sc2 = score2 ? score2 : outscore;
@@ -90,6 +92,32 @@ void seqOperation::checkHeader(Sguidotag tag, Sguidotag& target)
 void seqOperation::visitStart ( SARClef& elt )		{ checkHeader (elt, fCurrentClef); }
 void seqOperation::visitStart ( SARKey& elt )		{ checkHeader (elt, fCurrentKey); }
 void seqOperation::visitStart ( SARMeter& elt )		{ checkHeader (elt, fCurrentMeter); }
+
+// notes are visited only for correct duration link
+void seqOperation::visitStart ( SARNote& elt ) 
+{ 
+	bool done = false;
+	rational duration = elt->duration();
+
+	if (fState == kInFirstScore) {
+		// maintain the current duration status while in the first score
+		if (duration.getNumerator() != ARNote::kUndefined)
+			fCurrentDuration = duration;
+	}
+	else if (fState = kInSecondScore) {
+		if (fCurrentDuration.getNumerator() != ARNote::kUndefined) {
+			if ((duration.getNumerator() == ARNote::kUndefined) && (fCurrentDuration != rational(1,4))) {
+				// here we need to force implicit duration
+				SARNote	note = copy (elt);
+				*note = rational(1,4);
+				push( note );
+				fCurrentDuration = ARNote::getImplicitDuration();
+				done = true;
+			}
+		}
+	}
+	if (!done) clonevisitor::visitStart (elt);
+}
 
 // end bars are skipped for the first score
 void seqOperation::visitStart ( SAREndBar& elt ) 

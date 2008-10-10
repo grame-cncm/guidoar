@@ -125,19 +125,6 @@ void headOperation::visitStart ( Sguidotag& elt )
 		else if (elt->endTag()) {
 			fOpenedTagsMap[elt->matchTag()] -= 1;
 		}
-/*
-		string name = elt->getName();
-		if ( name.find("Begin", 0) !=string::npos) {
-			fOpenedTagsMap[name] += 1;
-		}
-		else if ( name.find("End", 0) !=string::npos) {
-			size_t n = name.find("End", 0);
-			if (n !=string::npos) {
-				name.replace (n, name.length(), "Begin");
-				fOpenedTagsMap[name] -= 1;
-			}
-		}
-*/
 	}
 }
 

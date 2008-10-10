@@ -38,15 +38,20 @@ namespace guido
 //______________________________________________________________________________
 rational durationvisitor::duration(const Sguidoelement& elt)
 { 
-	fDuration = fCurrentChordDuration = fCurrentVoiceDuration = rational(0,1);
-	fInChord = false;
-	if (elt) {
-		tree_browser<guidoelement> tb(this);
-		tb.browse (*elt);
-	}
+	reset();
+	if (elt) fBrowser.browse (*elt);
 	return fDuration;
 }
 
+//______________________________________________________________________________
+void durationvisitor::reset()
+{
+	fDuration = fCurrentChordDuration = fCurrentVoiceDuration = rational(0,1);
+	fInChord = false;
+}
+
+//______________________________________________________________________________
+// the visit methods
 //______________________________________________________________________________
 void durationvisitor::visitStart( SARVoice& elt )
 {

@@ -25,12 +25,12 @@
 #define __seqOperation__
 
 #include "export.h"
-#include "guidoelement.h"
-#include "operation.h"
 #include "ARTypes.h"
 #include "ARTag.h"
-
 #include "clonevisitor.h"
+#include "guidoelement.h"
+#include "operation.h"
+#include "rational.h"
 
 namespace guido 
 {
@@ -53,6 +53,7 @@ class export seqOperation :
 	public visitor<SARMeter>
 {
     private:
+		rational fCurrentDuration;
 		// current key, meter and clef are maintained to be avoid useless repetitions
 		Sguidotag	fCurrentKey, fCurrentMeter, fCurrentClef;
 		void checkHeader(Sguidotag tag, Sguidotag& target);
@@ -65,6 +66,7 @@ class export seqOperation :
 		void visitStart ( SAREndBar& elt );
 		void visitStart ( SARKey& elt );
 		void visitStart ( SARMeter& elt );
+		void visitStart ( SARNote& elt );
 		void visitStart ( SARVoice& elt );
 		void visitEnd	( SARVoice& elt );
 

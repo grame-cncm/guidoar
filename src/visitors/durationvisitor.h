@@ -30,6 +30,7 @@
 #include "guidoelement.h"
 #include "ARTypes.h"
 #include "rational.h"
+#include "tree_browser.h"
 #include "visitor.h"
 
 namespace guido 
@@ -50,10 +51,17 @@ class export durationvisitor :
 	public visitor<SARNote>
 {
     public:
-				 durationvisitor() {}
+				 durationvisitor() { fBrowser.set(this); }
        	virtual ~durationvisitor() {}
               
-		virtual rational duration(const Sguidoelement&);
+		/*!
+			\brief computes the duration of a score
+			\param score an input score
+			\return the total duration of the input score expressed as a rational (where 1 is a whole note)
+		*/
+		virtual rational duration(const Sguidoelement& score);
+ 
+		virtual void reset();
 
 		virtual void visitStart( SARVoice& elt );
 		virtual void visitStart( SARChord& elt );
@@ -61,16 +69,19 @@ class export durationvisitor :
 
 		virtual void visitEnd  ( SARVoice& elt );
 		virtual void visitEnd  ( SARChord& elt );
-		
-		virtual rational  currentVoiceDate()	{ return fCurrentVoiceDuration; }
 
-	protected:
-		
+		virtual rational  currentVoiceDate() const	{ return fCurrentVoiceDuration; }
+
+	protected:		
+		virtual void stop (bool state=true)	{ fBrowser.stop (state); }
+
 		rational	fCurrentVoiceDuration;
 		rational	fCurrentChordDuration;
 		rational	fCurrentNoteDuration;
 		rational	fDuration;
 		bool		fInChord;
+
+		tree_browser<guidoelement> fBrowser;
 };
 
 /*! @} */
