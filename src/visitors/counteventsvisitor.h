@@ -46,6 +46,7 @@ namespace guido
 		A chord counts for 1 and notes inside a chord are ignored.
 */
 class export counteventsvisitor :
+	public visitor<SARChord>,
 	public visitor<SARNote>
 {
     public: 
