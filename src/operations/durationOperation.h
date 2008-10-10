@@ -82,6 +82,8 @@ class export durationOperation :
 		virtual rational stretch ( const rational& duration );
 		virtual void visitStart ( SARNote& elt );
 		virtual void visitStart ( SARVoice& elt );
+
+		virtual Sguidoelement stretch ( const Sguidoelement& score, const rational& stretchFactor );
 };
 
 /*! @} */

@@ -90,17 +90,7 @@ durationOperation::durationOperation() : fFactor(1)
 Sguidoelement durationOperation::operator() ( const Sguidoelement& score, float factor )
 {
 	if (!score) return 0;
-	fFactor = float2rational(factor);
-cerr << "durationOperation stretching factor " << string(fFactor) << endl;
-	Sguidoelement outscore;
-	if (score) {
-		fCurrentDurationIn = fCurrentDurationOut = rational(1,4);
-		tree_browser<guidoelement> browser(this);
-		browser.browse (*score);
-		outscore = fStack.top();
-		fStack.pop();
-	}
-	return outscore;
+	return stretch (score, float2rational(factor));
 }
 
 //_______________________________________________________________________________
@@ -111,26 +101,37 @@ Sguidoelement durationOperation::operator() ( const Sguidoelement& score, const 
 	durationvisitor dv;
 	rational dur = dv.duration (score);
 	rational r = dur / targetDuration;
-	Sguidoelement elt = (*this)(score, float(r));
-	return dynamic_cast<ARMusic*>((guidoelement*)elt);
+	return stretch (score, r.rationalise());
 }
 
 //_______________________________________________________________________________
 SARMusic durationOperation::operator() ( const SARMusic& score1, const SARMusic& score2 )
 {
 	if (!score1) return 0;
+	if (!score2) return 0;
 
-	Sguidoelement elt;
-	if (!score2) 
-		elt = (*this)(score1, 1.0f);
-	else {
-		durationvisitor dv;
-		rational s1d = dv.duration (score1);
-		rational s2d = dv.duration (score2);
-		rational r = s2d / s1d;
-		elt = (*this)(score1, float(r));
-	}
+	durationvisitor dv;
+	rational s1d = dv.duration (score1);
+	rational s2d = dv.duration (score2);
+	rational r = s2d / s1d;
+	Sguidoelement elt = stretch (score1, r.rationalise());
 	return dynamic_cast<ARMusic*>((guidoelement*)elt);
+}
+
+//_______________________________________________________________________________
+Sguidoelement durationOperation::stretch ( const Sguidoelement& score, const rational& stretchFactor )
+{
+	if (!score) return 0;
+	fFactor = stretchFactor;
+	Sguidoelement outscore;
+	if (score) {
+		fCurrentDurationIn = fCurrentDurationOut = rational(1,4);
+		tree_browser<guidoelement> browser(this);
+		browser.browse (*score);
+		outscore = fStack.top();
+		fStack.pop();
+	}
+	return outscore;
 }
 
 //________________________________________________________________________
