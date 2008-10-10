@@ -14,7 +14,9 @@ SRC = $(wildcard $(BASE)/guido/*.cpp $(BASE)/guido/abstract/*.cpp $(BASE)/lib/*.
 OBJ = $(patsubst %.cpp, %.o, $(SRC))
 CXXFLAGS = $(addprefix -I, $(subprojects))
 
-TOOLS = guidoread guidopar guidorpar guidoseq guidodur guido2midi
+TOOLS = guidoread guidopar guidorpar guidoseq guidodur guido2midi guidoinfo \
+	guidoev2time guidotime2ev guidoevhead guidoevtail guidovhead guidovtail \
+	guidohead guidotail guidotranspose
 
 .PHONY: $(TARGET)
 
@@ -23,6 +25,36 @@ all : $(TARGET) $(TOOLS)
 $(TARGET) : $(OBJ)
 	ar -ru $(TARGET) $(OBJ)
 	ranlib  $(TARGET)
+
+guidotranspose : ../tools/guidotranspose.cpp
+	g++ ../tools/guidotranspose.cpp $(CXXFLAGS) libguidoar.a -o guidotranspose
+
+guidotail : ../tools/guidotail.cpp
+	g++ ../tools/guidotail.cpp $(CXXFLAGS) libguidoar.a -o guidotail
+
+guidohead : ../tools/guidohead.cpp
+	g++ ../tools/guidohead.cpp $(CXXFLAGS) libguidoar.a -o guidohead
+
+guidovtail : ../tools/guidovtail.cpp
+	g++ ../tools/guidovtail.cpp $(CXXFLAGS) libguidoar.a -o guidovtail
+
+guidovhead : ../tools/guidovhead.cpp
+	g++ ../tools/guidovhead.cpp $(CXXFLAGS) libguidoar.a -o guidovhead
+
+guidoevtail : ../tools/guidoevtail.cpp
+	g++ ../tools/guidoevtail.cpp $(CXXFLAGS) libguidoar.a -o guidoevtail
+
+guidoevhead : ../tools/guidoevhead.cpp
+	g++ ../tools/guidoevhead.cpp $(CXXFLAGS) libguidoar.a -o guidoevhead
+
+guidotime2ev : ../tools/guidotime2ev.cpp
+	g++ ../tools/guidotime2ev.cpp $(CXXFLAGS) libguidoar.a -o guidotime2ev
+
+guidoev2time : ../tools/guidoev2time.cpp
+	g++ ../tools/guidoev2time.cpp $(CXXFLAGS) libguidoar.a -o guidoev2time
+
+guidoinfo : ../tools/guidoinfo.cpp
+	g++ ../tools/guidoinfo.cpp $(CXXFLAGS) libguidoar.a -o guidoinfo
 
 guido2midi : ../tools/guido2midi.cpp
 	g++ ../tools/guido2midi.cpp $(CXXFLAGS) libguidoar.a -o guido2midi
