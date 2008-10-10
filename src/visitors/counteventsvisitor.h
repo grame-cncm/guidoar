@@ -29,6 +29,7 @@
 #include "export.h"
 #include "guidoelement.h"
 #include "ARTypes.h"
+#include "tree_browser.h"
 #include "visitor.h"
 
 namespace guido 
@@ -49,7 +50,7 @@ class export counteventsvisitor :
 	public visitor<SARChord>
 {
     public: 
-				 counteventsvisitor() {}
+				 counteventsvisitor() { fBrowser.set(this); }
 		virtual ~counteventsvisitor() {}
 
 		int count (const Sguidoelement&);
@@ -62,6 +63,7 @@ class export counteventsvisitor :
 		virtual void visitEnd  ( SARChord& elt );
 
 	protected:
+		tree_browser<guidoelement> fBrowser;
 		bool	fInChord;
 		int		fCount;
 };
@@ -78,15 +80,17 @@ class export countvoiceseventsvisitor :
 				 countvoiceseventsvisitor() {}
 		virtual ~countvoiceseventsvisitor() {}
 
-		std::vector<int> count (const Sguidoelement&);
+		int count (const Sguidoelement&, unsigned int voice);
 
-		virtual void reset()	{ fVoicesCount.clear(); counteventsvisitor::reset(); }
+		virtual void reset()	{ fCurrentVoice = fTargetVoice = 0; fVoiceCount=-1; counteventsvisitor::reset(); }
 
 	protected:
 		void visitStart ( SARVoice& elt );
 		void visitEnd	( SARVoice& elt );
 
-		std::vector<int>	fVoicesCount;
+		unsigned int	fTargetVoice;
+		unsigned int	fCurrentVoice;
+		int				fVoiceCount;
 };
 
 /*! @} */

@@ -39,10 +39,7 @@ int counteventsvisitor::count(const Sguidoelement& elt)
 {
 	fInChord = false;
 	fCount = 0;
-	if (elt) {
-		tree_browser<guidoelement> tb(this);
-		tb.browse (*elt);
-	}
+	if (elt) fBrowser.browse (*elt);
 	return fCount;
 }
 
@@ -52,15 +49,24 @@ void counteventsvisitor::visitEnd  (SARChord& elt)	{ fInChord = false; fCount++;
 
 
 //______________________________________________________________________________
-std::vector<int> countvoiceseventsvisitor::count(const Sguidoelement& elt)
+int countvoiceseventsvisitor::count(const Sguidoelement& elt, unsigned int voice)
 {
-	fVoicesCount.clear();
+	reset();
+	fTargetVoice = voice;
 	counteventsvisitor::count(elt);
-	return fVoicesCount;
+	return fVoiceCount;
 }
 
-void countvoiceseventsvisitor::visitStart(SARVoice& elt)	{ fCount = 0; }
-void countvoiceseventsvisitor::visitEnd  (SARVoice& elt)	{ fVoicesCount.push_back(fCount); }
+void countvoiceseventsvisitor::visitStart(SARVoice& elt)	{ 
+	if (fCurrentVoice == fTargetVoice)
+		fCount = 0;
+	else fBrowser.stop();
+}
+void countvoiceseventsvisitor::visitEnd  (SARVoice& elt)	{ 
+	if (fCurrentVoice == fTargetVoice)
+		fVoiceCount = fCount;
+	fBrowser.stop(false);
+}
 
 
 }
