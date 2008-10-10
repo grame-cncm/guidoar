@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8,00"
-	Name="guidovtail"
-	ProjectGUID="{F054EB62-2646-4056-81AF-84C8E46C5C89}"
-	RootNamespace="guidovtail"
+	Name="guidoinfo"
+	ProjectGUID="{25446C74-C6F5-40ED-8FE1-46BE1523E98F}"
+	RootNamespace="guidoinfo"
 	Keyword="Win32Proj"
 	>
 	<Platforms>
@@ -178,8 +178,24 @@
 			>
 		</File>
 		<File
-			RelativePath="..\..\tools\guidovtail.cpp"
+			RelativePath="..\..\tools\guidoinfo.cpp"
 			>
+			<FileConfiguration
+				Name="Debug|Win32"
+				>
+				<Tool
+					Name="VCCLCompilerTool"
+					AdditionalIncludeDirectories=""
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|Win32"
+				>
+				<Tool
+					Name="VCCLCompilerTool"
+					AdditionalIncludeDirectories=""
+				/>
+			</FileConfiguration>
 		</File>
 	</Files>
 	<Globals>

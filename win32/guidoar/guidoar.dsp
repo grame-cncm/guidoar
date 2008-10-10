@@ -113,6 +113,14 @@ SOURCE=..\..\src\operations\durationOperation.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\operations\eheadOperation.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\operations\etailOperation.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\operations\headOperation.cpp
 # End Source File
 # Begin Source File
@@ -191,7 +199,15 @@ SOURCE=..\..\src\visitors\clonevisitor.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\visitors\counteventsvisitor.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\visitors\durationvisitor.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\visitors\event2timevisitor.cpp
 # End Source File
 # Begin Source File
 

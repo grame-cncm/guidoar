@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="8,00"
-	Name="guidovtail"
-	ProjectGUID="{F054EB62-2646-4056-81AF-84C8E46C5C89}"
-	RootNamespace="guidovtail"
+	Name="guidoevhead"
+	ProjectGUID="{AE716354-93AD-4E35-9B14-EBE889D4DD88}"
+	RootNamespace="guidoevhead"
 	Keyword="Win32Proj"
 	>
 	<Platforms>
@@ -178,7 +178,7 @@
 			>
 		</File>
 		<File
-			RelativePath="..\..\tools\guidovtail.cpp"
+			RelativePath="..\..\tools\guidoevhead.cpp"
 			>
 		</File>
 	</Files>

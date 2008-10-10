@@ -39,7 +39,43 @@ Package=<4>
 
 ###############################################################################
 
+Project: "guidoevhead"=.\guidoevhead\guidoevhead.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "guidoevtail"=.\guidoevtail\guidoevtail.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
 Project: "guidohead"=.\guidohead\guidohead.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "guidoinfo"=.\guidoinfo\guidoinfo.dsp - Package Owner=<4>
 
 Package=<5>
 {{{
