@@ -96,7 +96,7 @@ SARMusic parOperation::extend ( SARMusic& score, const rational& duration )
 		fnc.check(*i);			// check for first note implicit duration and force to default
 
 		rational vdur = dv.duration(*i);
-		SARNote note = ARFactory::instance().createNote("empty");
+		SARNote note = ARFactory::instance().createNote("_");
 		*note = duration + total - vdur;
 		(*i)->elements().insert((*i)->elements().begin(), note);
 	}
