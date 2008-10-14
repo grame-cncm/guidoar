@@ -19,9 +19,11 @@
   
 */
 
-#include "rational.h"
+#include <stdlib.h>
+#include <string.h>
 #include <sstream>
 #include <cmath>
+#include "rational.h"
 
 using namespace std;
 
@@ -190,8 +192,8 @@ long int rational::gcd(long int a1, long int b1)
 {
     long int r;
 
-    long int a = abs(a1);
-    long int b = abs(b1);
+    long int a = (long int)abs(double(a1));
+    long int b = (long int)abs(double(b1));
 
     if (!(a == 0) || (b == 0)){
         while (b > 0){

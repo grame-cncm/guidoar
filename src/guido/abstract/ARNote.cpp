@@ -25,6 +25,7 @@
 #pragma warning (disable : 4786)
 #endif
 
+#include <stdlib.h>
 #include <sstream>
 #include "ARNote.h"
 #include "visitor.h"

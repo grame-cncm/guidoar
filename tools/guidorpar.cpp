@@ -4,6 +4,8 @@
 #endif
 
 #include <iostream>
+#include <stdlib.h>
+
 
 #include "AROthers.h"
 #include "guidoelement.h"

@@ -11,6 +11,7 @@
 # pragma warning (disable : 4786)
 #endif
 
+#include <stdlib.h>
 #include <iostream>
 
 #include "guidoparser.h"

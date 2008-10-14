@@ -4,6 +4,9 @@
 #endif
 
 #include <iostream>
+#include <stdlib.h>
+#include <string.h>
+
 #include "guidoelement.h"
 #include "guidoparser.h"
 #include "counteventsvisitor.h"

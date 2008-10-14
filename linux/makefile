@@ -11,8 +11,9 @@ HEADERS = $(wildcard $(BASE)/include/GUIDO*.h) \
 SRC = $(wildcard $(BASE)/guido/*.cpp $(BASE)/guido/abstract/*.cpp $(BASE)/lib/*.cpp $(BASE)/visitors/*.cpp \
 			$(BASE)/operations/*.cpp) $(BASE)/parser/parser.cpp $(BASE)/parser/guidoparser.cpp
 
+GCC=gcc
 OBJ = $(patsubst %.cpp, %.o, $(SRC))
-CXXFLAGS = $(addprefix -I, $(subprojects))
+CXXFLAGS = $(addprefix -I, $(subprojects)) -lstdc++
 
 TOOLS = guidoread guidopar guidorpar guidoseq guidodur guido2midi guidoinfo \
 	guidoev2time guidotime2ev guidoevhead guidoevtail guidovhead guidovtail \
@@ -27,52 +28,52 @@ $(TARGET) : $(OBJ)
 	ranlib  $(TARGET)
 
 guidotranspose : ../tools/guidotranspose.cpp $(TARGET)
-	g++ ../tools/guidotranspose.cpp $(CXXFLAGS) libguidoar.a -o guidotranspose
+	$(GCC) ../tools/guidotranspose.cpp $(CXXFLAGS) libguidoar.a -o guidotranspose
 
 guidotail : ../tools/guidotail.cpp $(TARGET)
-	g++ ../tools/guidotail.cpp $(CXXFLAGS) libguidoar.a -o guidotail
+	$(GCC) ../tools/guidotail.cpp $(CXXFLAGS) libguidoar.a -o guidotail
 
 guidohead : ../tools/guidohead.cpp $(TARGET)
-	g++ ../tools/guidohead.cpp $(CXXFLAGS) libguidoar.a -o guidohead
+	$(GCC) ../tools/guidohead.cpp $(CXXFLAGS) libguidoar.a -o guidohead
 
 guidovtail : ../tools/guidovtail.cpp $(TARGET)
-	g++ ../tools/guidovtail.cpp $(CXXFLAGS) libguidoar.a -o guidovtail
+	$(GCC) ../tools/guidovtail.cpp $(CXXFLAGS) libguidoar.a -o guidovtail
 
 guidovhead : ../tools/guidovhead.cpp $(TARGET)
-	g++ ../tools/guidovhead.cpp $(CXXFLAGS) libguidoar.a -o guidovhead
+	$(GCC) ../tools/guidovhead.cpp $(CXXFLAGS) libguidoar.a -o guidovhead
 
 guidoevtail : ../tools/guidoevtail.cpp $(TARGET)
-	g++ ../tools/guidoevtail.cpp $(CXXFLAGS) libguidoar.a -o guidoevtail
+	$(GCC) ../tools/guidoevtail.cpp $(CXXFLAGS) libguidoar.a -o guidoevtail
 
 guidoevhead : ../tools/guidoevhead.cpp $(TARGET)
-	g++ ../tools/guidoevhead.cpp $(CXXFLAGS) libguidoar.a -o guidoevhead
+	$(GCC) ../tools/guidoevhead.cpp $(CXXFLAGS) libguidoar.a -o guidoevhead
 
 guidotime2ev : ../tools/guidotime2ev.cpp $(TARGET)
-	g++ ../tools/guidotime2ev.cpp $(CXXFLAGS) libguidoar.a -o guidotime2ev
+	$(GCC) ../tools/guidotime2ev.cpp $(CXXFLAGS) libguidoar.a -o guidotime2ev
 
 guidoev2time : ../tools/guidoev2time.cpp $(TARGET)
-	g++ ../tools/guidoev2time.cpp $(CXXFLAGS) libguidoar.a -o guidoev2time
+	$(GCC) ../tools/guidoev2time.cpp $(CXXFLAGS) libguidoar.a -o guidoev2time
 
 guidoinfo : ../tools/guidoinfo.cpp $(TARGET)
-	g++ ../tools/guidoinfo.cpp $(CXXFLAGS) libguidoar.a -o guidoinfo
+	$(GCC) ../tools/guidoinfo.cpp $(CXXFLAGS) libguidoar.a -o guidoinfo
 
 guido2midi : ../tools/guido2midi.cpp $(TARGET)
-	g++ ../tools/guido2midi.cpp $(CXXFLAGS) libguidoar.a -o guido2midi
+	$(GCC) ../tools/guido2midi.cpp $(CXXFLAGS) libguidoar.a -o guido2midi
 
 guidoread : ../tools/guidoread.cpp $(TARGET)
-	g++ ../tools/guidoread.cpp $(CXXFLAGS) libguidoar.a -o guidoread
+	$(GCC) ../tools/guidoread.cpp $(CXXFLAGS) libguidoar.a -o guidoread
 
 guidopar : ../tools/guidopar.cpp $(TARGET)
-	g++ ../tools/guidopar.cpp $(CXXFLAGS) libguidoar.a -o guidopar
+	$(GCC) ../tools/guidopar.cpp $(CXXFLAGS) libguidoar.a -o guidopar
 
 guidorpar : ../tools/guidorpar.cpp $(TARGET)
-	g++ ../tools/guidorpar.cpp $(CXXFLAGS) libguidoar.a -o guidorpar
+	$(GCC) ../tools/guidorpar.cpp $(CXXFLAGS) libguidoar.a -o guidorpar
 
 guidoseq : ../tools/guidoseq.cpp $(TARGET)
-	g++ ../tools/guidoseq.cpp $(CXXFLAGS) libguidoar.a -o guidoseq
+	$(GCC) ../tools/guidoseq.cpp $(CXXFLAGS) libguidoar.a -o guidoseq
 
 guidodur : ../tools/guidoduration.cpp $(TARGET)
-	g++ ../tools/guidoduration.cpp $(CXXFLAGS) libguidoar.a -o guidodur
+	$(GCC) ../tools/guidoduration.cpp $(CXXFLAGS) libguidoar.a -o guidodur
 
 dep:
 	makedepend -- $(CXXFLAGS) -- $(SRC)
@@ -517,7 +518,6 @@ clean:
 ../src/parser/parser.o: /usr/include/bits/types.h
 ../src/parser/parser.o: /usr/include/bits/typesizes.h /usr/include/libio.h
 ../src/parser/parser.o: /usr/include/_G_config.h /usr/include/wchar.h
-../src/parser/parser.o: /usr/include/bits/wchar.h /usr/include/gconv.h
 ../src/parser/parser.o: /usr/include/bits/stdio_lim.h
 ../src/parser/parser.o: /usr/include/bits/sys_errlist.h /usr/include/string.h
 ../src/parser/parser.o: /usr/include/errno.h /usr/include/bits/errno.h
@@ -543,8 +543,7 @@ clean:
 ../src/parser/guidoparser.o: /usr/include/bits/types.h
 ../src/parser/guidoparser.o: /usr/include/bits/typesizes.h
 ../src/parser/guidoparser.o: /usr/include/libio.h /usr/include/_G_config.h
-../src/parser/guidoparser.o: /usr/include/wchar.h /usr/include/bits/wchar.h
-../src/parser/guidoparser.o: /usr/include/gconv.h
+../src/parser/guidoparser.o: /usr/include/wchar.h
 ../src/parser/guidoparser.o: /usr/include/bits/stdio_lim.h
 ../src/parser/guidoparser.o: /usr/include/bits/sys_errlist.h
 ../src/parser/guidoparser.o: ../src/lib/export.h ../src/parser/gmnreader.h

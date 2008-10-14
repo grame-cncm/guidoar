@@ -9,6 +9,9 @@
 
 #include <iostream>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 
 #include "guidoelement.h"
 #include "guidoparser.h"
