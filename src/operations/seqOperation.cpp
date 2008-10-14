@@ -115,9 +115,9 @@ void seqOperation::visitStart ( SARNote& elt )
 				SARNote	note = copy (elt);
 				*note = rational(1,4);
 				push( note );
-				fCurrentDuration = ARNote::getImplicitDuration();
 				done = true;
 			}
+			fCurrentDuration = ARNote::getImplicitDuration();
 		}
 	}
 	if (!done) clonevisitor::visitStart (elt);
