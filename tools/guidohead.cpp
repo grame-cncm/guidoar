@@ -36,13 +36,6 @@ static void usage(char * name)
 }
 
 //_______________________________________________________________________________
-static void readErr(const char * name)
-{
-	cerr << name << ": read failed"  << endl;
-	exit (1);
-}
-
-//_______________________________________________________________________________
 static SARMusic read (const char* file) 
 {
 	guidoparser r;
@@ -51,7 +44,10 @@ static SARMusic read (const char* file)
 		score = r.parseFile(stdin);
 	else
 		score = r.parseFile(file);
-	if (!score) readErr(file);
+	if (!score) {
+		cerr << file << ": read failed"  << endl;
+		exit (1);
+	}
 	return score;
 }
 

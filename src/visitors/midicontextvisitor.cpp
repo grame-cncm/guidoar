@@ -93,8 +93,8 @@ int midicontextvisitor::midiPitch (const SARNote& elt)  const
 	int alter; int midi = -1;
 	ARNote::pitch pitch = elt->GetPitch (alter);
 	if (pitch != ARNote::kNoPitch) {
-		// offset in octave numeration between guido and midi is 3
-		int midioctave = (fCurrentOctave + 3) * 12;
+		// offset in octave numeration between guido and midi is 4
+		int midioctave = (fCurrentOctave + 4) * 12;
 		midi = midioctave + (pitch*2) + alter;
 		if (pitch > ARNote::E) midi--;
 	}
@@ -114,7 +114,7 @@ rational midicontextvisitor::noteduration (const SARNote& elt, rational& current
 	dur = currentDuration;
 	dots = currentDots;
 	rational dotmult (1,1);
-	while (dots) {
+	while (dots--) {
 		dotmult /= 2;
 		dotmult.rationalise();
 		dur *= dotmult;

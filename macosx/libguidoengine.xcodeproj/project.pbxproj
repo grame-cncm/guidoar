@@ -54,6 +54,12 @@
 		D307D8580E8BDB4F00B3555D /* transposeOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = D307D8050E8BB77500B3555D /* transposeOperation.h */; };
 		D307D8A60E8BE55E00B3555D /* guidotranspose.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D307D8A50E8BE55E00B3555D /* guidotranspose.cpp */; };
 		D307D8A80E8BE56600B3555D /* libguidoengine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoengine.framework */; };
+		D31D8F8F0EA3622F00F45B50 /* Player.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D31D8F8E0EA3622F00F45B50 /* Player.framework */; };
+		D31D8FA70EA3819E00F45B50 /* midiconverter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D31D8FA50EA3819E00F45B50 /* midiconverter.cpp */; };
+		D31D8FA80EA3819E00F45B50 /* midiconverter.h in Headers */ = {isa = PBXBuildFile; fileRef = D31D8FA60EA3819E00F45B50 /* midiconverter.h */; };
+		D31D8FC30EA3829700F45B50 /* Player.h in Headers */ = {isa = PBXBuildFile; fileRef = D31D8FC20EA3829700F45B50 /* Player.h */; };
+		D31D8FC60EA382B200F45B50 /* MidiShare.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D31D8FC50EA382B200F45B50 /* MidiShare.framework */; };
+		D31D8FD20EA382DF00F45B50 /* MidiShare.h in Headers */ = {isa = PBXBuildFile; fileRef = D31D8FD10EA382DF00F45B50 /* MidiShare.h */; };
 		D31E25300E082FBF001406DF /* parOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D31E252E0E082FBF001406DF /* parOperation.cpp */; };
 		D31E25310E082FBF001406DF /* parOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = D31E252F0E082FBF001406DF /* parOperation.h */; };
 		D31E25630E083191001406DF /* guidopar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D31E25620E083191001406DF /* guidopar.cpp */; };
@@ -290,6 +296,12 @@
 		D307D8050E8BB77500B3555D /* transposeOperation.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = transposeOperation.h; path = ../src/operations/transposeOperation.h; sourceTree = SOURCE_ROOT; };
 		D307D89E0E8BE52300B3555D /* guidotranspose */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = guidotranspose; sourceTree = BUILT_PRODUCTS_DIR; };
 		D307D8A50E8BE55E00B3555D /* guidotranspose.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = guidotranspose.cpp; path = ../tools/guidotranspose.cpp; sourceTree = SOURCE_ROOT; };
+		D31D8F8E0EA3622F00F45B50 /* Player.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Player.framework; path = /System/Library/Frameworks/Player.framework; sourceTree = "<absolute>"; };
+		D31D8FA50EA3819E00F45B50 /* midiconverter.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = midiconverter.cpp; path = ../src/midi/midiconverter.cpp; sourceTree = SOURCE_ROOT; };
+		D31D8FA60EA3819E00F45B50 /* midiconverter.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = midiconverter.h; path = ../src/midi/midiconverter.h; sourceTree = SOURCE_ROOT; };
+		D31D8FC20EA3829700F45B50 /* Player.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = Player.h; path = ../../../../../../../System/Library/Frameworks/Player.framework/Headers/Player.h; sourceTree = SOURCE_ROOT; };
+		D31D8FC50EA382B200F45B50 /* MidiShare.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MidiShare.framework; path = /System/Library/Frameworks/MidiShare.framework; sourceTree = "<absolute>"; };
+		D31D8FD10EA382DF00F45B50 /* MidiShare.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = MidiShare.h; path = ../../../../../../../System/Library/Frameworks/MidiShare.framework/Headers/MidiShare.h; sourceTree = SOURCE_ROOT; };
 		D31E252E0E082FBF001406DF /* parOperation.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = parOperation.cpp; path = ../src/operations/parOperation.cpp; sourceTree = SOURCE_ROOT; };
 		D31E252F0E082FBF001406DF /* parOperation.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = parOperation.h; path = ../src/operations/parOperation.h; sourceTree = SOURCE_ROOT; };
 		D31E255C0E083150001406DF /* guidopar */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = guidopar; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -335,7 +347,7 @@
 		D3573AEF0E965834000525C7 /* operation.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = operation.h; path = ../src/operations/operation.h; sourceTree = SOURCE_ROOT; };
 		D36415890E1A912800E4E545 /* clonevisitor.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = clonevisitor.cpp; path = ../src/visitors/clonevisitor.cpp; sourceTree = SOURCE_ROOT; };
 		D364158A0E1A912800E4E545 /* clonevisitor.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = clonevisitor.h; path = ../src/visitors/clonevisitor.h; sourceTree = SOURCE_ROOT; };
-		D37EF9F00DEE0B5800A3AB8A /* libguidoengine.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = libguidoengine.framework; path = ../../../../../../Library/Frameworks/libguidoengine.framework; sourceTree = SOURCE_ROOT; };
+		D37EF9F00DEE0B5800A3AB8A /* libguidoengine.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = libguidoengine.framework; path = ../../../../../Library/Frameworks/libguidoengine.framework; sourceTree = SOURCE_ROOT; };
 		D386D4490E093EEF00231224 /* seqOperation.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = seqOperation.cpp; path = ../src/operations/seqOperation.cpp; sourceTree = SOURCE_ROOT; };
 		D386D44A0E093EEF00231224 /* seqOperation.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = seqOperation.h; path = ../src/operations/seqOperation.h; sourceTree = SOURCE_ROOT; };
 		D386D46D0E0942C800231224 /* guidoseq */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = guidoseq; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -400,6 +412,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D31D8F8F0EA3622F00F45B50 /* Player.framework in Frameworks */,
+				D31D8FC60EA382B200F45B50 /* MidiShare.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -573,6 +587,8 @@
 		0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				D31D8FC50EA382B200F45B50 /* MidiShare.framework */,
+				D31D8F8E0EA3622F00F45B50 /* Player.framework */,
 				D37EF9F00DEE0B5800A3AB8A /* libguidoengine.framework */,
 			);
 			name = "External Frameworks and Libraries";
@@ -590,6 +606,7 @@
 		08FB77ACFE841707C02AAC07 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				D31D8FA40EA3819E00F45B50 /* midi */,
 				D31E252D0E082FBF001406DF /* operations */,
 				D34737BD0DED7A5800BE54BE /* visitors */,
 				D347378E0DED784900BE54BE /* guido */,
@@ -598,6 +615,18 @@
 			);
 			name = Source;
 			sourceTree = "<group>";
+		};
+		D31D8FA40EA3819E00F45B50 /* midi */ = {
+			isa = PBXGroup;
+			children = (
+				D31D8FA50EA3819E00F45B50 /* midiconverter.cpp */,
+				D31D8FA60EA3819E00F45B50 /* midiconverter.h */,
+				D31D8FD10EA382DF00F45B50 /* MidiShare.h */,
+				D31D8FC20EA3829700F45B50 /* Player.h */,
+			);
+			name = midi;
+			path = ../src/midi;
+			sourceTree = SOURCE_ROOT;
 		};
 		D31E252D0E082FBF001406DF /* operations */ = {
 			isa = PBXGroup;
@@ -793,6 +822,9 @@
 				D3A470D30E9E09D80062E209 /* counteventsvisitor.h in Headers */,
 				D3A471250E9E3C1C0062E209 /* event2timevisitor.h in Headers */,
 				D39419D00E9F61E50002FD03 /* etailOperation.h in Headers */,
+				D31D8FA80EA3819E00F45B50 /* midiconverter.h in Headers */,
+				D31D8FC30EA3829700F45B50 /* Player.h in Headers */,
+				D31D8FD20EA382DF00F45B50 /* MidiShare.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1181,6 +1213,7 @@
 				D3A470D20E9E09D80062E209 /* counteventsvisitor.cpp in Sources */,
 				D3A471240E9E3C1C0062E209 /* event2timevisitor.cpp in Sources */,
 				D39419CF0E9F61E50002FD03 /* etailOperation.cpp in Sources */,
+				D31D8FA70EA3819E00F45B50 /* midiconverter.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1432,6 +1465,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
+				GCC_PREPROCESSOR_DEFINITIONS = USEMidiShare;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/Frameworks";
 				LIBRARY_STYLE = DYNAMIC;
@@ -1457,6 +1491,7 @@
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = NO;
 				GCC_PREFIX_HEADER = "";
+				GCC_PREPROCESSOR_DEFINITIONS = USEMidiShare;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/Frameworks";
 				LIBRARY_STYLE = DYNAMIC;
