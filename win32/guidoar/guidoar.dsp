@@ -43,7 +43,7 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "GUIDOAR_EXPORTS" /YX /FD /c
-# ADD CPP /nologo /MT /W3 /GR /GX /O2 /I "../../src/guido" /I "../../src/guido/abstract" /I "../../src/visitors" /I "../../src/lib" /I "../../src/parser" /I "../../src/operations" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "GUIDOAR_EXPORTS" /D "USEMidiShare" /FR /YX /FD /c
+# ADD CPP /nologo /MT /W3 /GR /GX /O2 /I "../../src/guido" /I "../../src/guido/abstract" /I "../../src/visitors" /I "../../src/lib" /I "../../src/parser" /I "../../src/operations" /I "../lib" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "GUIDOAR_EXPORTS" /D "USEMidiShare" /FR /YX /FD /c
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x40c /d "NDEBUG"
@@ -70,7 +70,7 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "GUIDOAR_EXPORTS" /YX /FD /GZ /c
-# ADD CPP /nologo /MTd /W3 /Gm /GR /GX /ZI /Od /I "../../src/guido" /I "../../src/guido/abstract" /I "../../src/visitors" /I "../../src/lib" /I "../../src/parser" /I "../../src/operations" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "GUIDOAR_EXPORTS" /D "USEMidiShare" /YX /FD /GZ /c
+# ADD CPP /nologo /MTd /W3 /Gm /GR /GX /ZI /Od /I "../../src/guido" /I "../../src/guido/abstract" /I "../../src/visitors" /I "../../src/lib" /I "../../src/parser" /I "../../src/operations" /I "../lib" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "GUIDOAR_EXPORTS" /D "USEMidiShare" /YX /FD /GZ /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x40c /d "_DEBUG"
@@ -267,5 +267,13 @@ SOURCE=..\..\src\midi\midiconverter.cpp
 
 # PROP Default_Filter "ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
 # End Group
+# Begin Source File
+
+SOURCE=..\lib\mshare32.lib
+# End Source File
+# Begin Source File
+
+SOURCE=..\lib\Player32.lib
+# End Source File
 # End Target
 # End Project
