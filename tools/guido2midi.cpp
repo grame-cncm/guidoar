@@ -16,6 +16,7 @@
 #endif
 
 #include <stdlib.h>
+#include <unistd.h>
 #include <iostream>
 
 #define USEMidiShare
@@ -94,9 +95,9 @@ static char* gmn2mid (const char* file)
 //_______________________________________________________________________________
 int main(int argc, char *argv[]) {
 #ifdef debug
-	char * file = "test.gmn";
+	char * file = "Dichter.gmn";
 	char * outfile = gmn2mid(file);
-	bool play = false;
+	bool play = true;
 #else
 	if (argc < 2) usage(argv[0]);
 	char * file = argv[1];
@@ -116,13 +117,12 @@ int main(int argc, char *argv[]) {
 		if (play) {
 			short ref = mc.score2player(score, file);
 			if (ref > 0) {
+				cout << "Playing with Player library version " << Version() << endl;
 				MidiConnect (ref, 0, true);
 				StartPlayer(ref);
 				PlayerState info;
-				do {
-					GetStatePlayer(ref, &info);					
-				} while (info.state != kIdle);
-//				StopPlayer(ref);
+				do { GetStatePlayer(ref, &info); } while (info.state != kIdle);
+				StopPlayer(ref);
 				ClosePlayer (ref);
 			}
 			else cerr << "error while convertir " << file << endl;

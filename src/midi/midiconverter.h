@@ -48,7 +48,7 @@ namespace guido
 */
 class midiconverter : public midiwriter {
 	public:
-				 midiconverter(long tpq=480) : fTPQ(tpq), fSeq(0), fVoiceNumber(0) {}
+				 midiconverter(long tpq=480) : fTPQ(tpq), fSeq(0), fTimeSignDone(false), fVoiceNumber(0) {}
 		virtual ~midiconverter();
 		
 		// main services are provided under the form of a midifile export or a midishare player
@@ -71,6 +71,7 @@ class midiconverter : public midiwriter {
 		
 		long		fTPQ;
 		TMidiSeq *	fSeq;
+		bool		fTimeSignDone;
 		short		fVoiceNumber;
 };
 

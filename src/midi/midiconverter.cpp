@@ -83,6 +83,8 @@ bool midiconverter::getMidi (Sguidoelement& score)
 	if (fSeq) MidiClearSeq (fSeq);
 	else fSeq = MidiNewSeq();
 	if (fSeq) {
+		fTimeSignDone = false;
+		fVoiceNumber  = 0;
 		midicontextvisitor midivisitor (fTPQ, this);
 		midivisitor.visit (score);
 		return true;
@@ -155,6 +157,8 @@ void midiconverter::progChange (long date, int prog)
 
 void midiconverter::timeSignChange (long date, unsigned int num, unsigned int denom)
 {
+	if (fTimeSignDone) return;
+	
 	MidiEvPtr ev = MidiNewEv(typeTimeSign);
 	if (ev) {
 		setCommon(ev, date);
@@ -169,6 +173,7 @@ void midiconverter::timeSignChange (long date, unsigned int num, unsigned int de
 		TSClocks(ev)= 96 / clocksDiv;	
 		TS32nd(ev)	= 8;		// number of 32th note in a quarter note
 		MidiAddSeq (fSeq, ev);
+		fTimeSignDone = true;
 	}	
 }
 

@@ -317,7 +317,16 @@ void midicontextvisitor::visitStart( SARNote& elt )
 	}
 	else dur = noteDuration;
 	int pitch = midiPitch(elt);
-	if (pitch >= 0)	playNote (fCurrentDate, pitch, dur);
+	if (pitch >= 0)	{
+		if (fInGrace) {
+			// play grace notes ahead of current position
+			playNote (fCurrentDate - (noteDuration/2), pitch, dur);
+			// and do not move time
+			noteDuration = 0;
+		}
+		else
+			playNote (fCurrentDate, pitch, dur);
+	}
 	fCurrentDate += moveTime (noteDuration);
 }
 
