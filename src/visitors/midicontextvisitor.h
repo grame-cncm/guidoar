@@ -56,6 +56,8 @@ class midiwriter {
 		virtual void newNote (long date, int pitch, int vel, int duration, int art) = 0;
 		virtual void tempoChange (long date, int bpm) = 0;
 		virtual void progChange (long date, int prog) = 0;
+		virtual void timeSignChange (long date, unsigned int num, unsigned int denom) = 0;
+		virtual void keySignChange (long date, int signature, bool major=true) = 0;
 };
 
 
@@ -75,6 +77,10 @@ class export midicontextvisitor :
 	public visitor<SARTie>,
 	public visitor<SARTieBegin>,
 	public visitor<SARTieEnd>,
+
+	// score information
+	public visitor<SARKey>,
+	public visitor<SARMeter>,
 
 	// nuances rendering
 	public visitor<SARIntens>,
@@ -128,6 +134,8 @@ class export midicontextvisitor :
  		virtual void playNote (long date, int pitch, int duration);
  		virtual void playTempoChange (long bmp);
  		virtual void playProgChange (long prog);
+ 		virtual void playMeterChange (unsigned int num, unsigned int denum);
+ 		virtual void playKeySignChange (int sign, bool major=true);
 
 		virtual void visitStart( SARChord& elt );
 		virtual void visitEnd  ( SARChord& elt );
@@ -160,6 +168,10 @@ class export midicontextvisitor :
 
 	// nuances rendering
 		virtual void visitStart( SARIntens& elt );
+
+	// score information
+		virtual void visitStart( SARKey& elt );
+		virtual void visitStart( SARMeter& elt );
 
     public:  
 				 midicontextvisitor(long tpq, midiwriter* writer=0);

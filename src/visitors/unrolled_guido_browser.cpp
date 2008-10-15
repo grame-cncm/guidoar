@@ -39,6 +39,20 @@ namespace guido
 {
 
 //______________________________________________________________________________
+unrolled_guido_browser::unrolled_guido_browser(basevisitor* v) : fVisitor(v)	{ reset(); }
+
+//______________________________________________________________________________
+void unrolled_guido_browser::reset()
+{
+	fRepeatMap.clear();					// clear the map of backward repeat measures
+	fJumpsMap.clear();					// clear the map of jumps locations
+	fWriteImplicit = true;				// for repeat bars to the top of the score 
+	fCurrentNoteState.duration = rational(1,4);
+	fCurrentNoteState.dots = 0;
+	fCurrentNoteState.octave = 1;
+}
+
+//______________________________________________________________________________
 void unrolled_guido_browser::browse (Sguidoelement& elt) { elt->acceptIn(*this); }
 
 void unrolled_guido_browser::visitStart( Sguidoelement& elt)
@@ -147,23 +161,6 @@ void unrolled_guido_browser::visitStart( SARCoda& elt )
 //______________________________________________________________________________
 void unrolled_guido_browser::visitStart( SARFine& elt )			{ fStoreIterator = &fFineIterator; }
 
-
-/*
-		virtual void visitStart( SARVolta& elt )		{}
-		virtual void visitStart( SARVoltaBegin& elt )	{}
-		virtual void visitStart( SARVoltaEnd& elt )		{}
-*/
-
-//______________________________________________________________________________
-void unrolled_guido_browser::reset()
-{
-	fRepeatMap.clear();					// clear the map of backward repeat measures
-	fJumpsMap.clear();					// clear the map of jumps locations
-	fWriteImplicit = true;				// for repeat bars to the top of the score 
-	fCurrentNoteState.duration = rational(1,4);
-	fCurrentNoteState.dots = 0;
-	fCurrentNoteState.octave = 1;
-}
 
 //______________________________________________________________________________
 // control all of the tree browsing is in charge of the SARVoice visit.

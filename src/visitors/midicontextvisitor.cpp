@@ -26,12 +26,14 @@
 #endif
 
 #include <algorithm>
+#include <ctype.h>
 
 #include "ARChord.h"
 #include "ARNote.h"
 #include "AROthers.h"
 #include "ARTag.h"
 #include "midicontextvisitor.h"
+#include "transposeOperation.h"
 #include "unrolled_guido_browser.h"
 
 using namespace std;
@@ -54,6 +56,7 @@ midicontextvisitor::midicontextvisitor(long tpq, midiwriter* writer)
 void midicontextvisitor::visit(Sguidoelement& elt) 
 { 
 	reset();
+	fEndTie = elt->end();
 	unrolled_guido_browser tb(this);
 	tb.browse (elt);
 }
@@ -69,6 +72,7 @@ void midicontextvisitor::reset()
     fTranspose = fCurrentDots = 0;
 	fCurrentOctave = 1;
 	fCurrentVel = 90;
+	fTiedMap.clear();
 }
 
 //________________________________________________________________________
@@ -113,11 +117,11 @@ rational midicontextvisitor::noteduration (const SARNote& elt, rational& current
 	if (dots) currentDots = dots;
 	dur = currentDuration;
 	dots = currentDots;
-	rational dotmult (1,1);
+	rational dotdur = dur;
 	while (dots--) {
-		dotmult /= 2;
-		dotmult.rationalise();
-		dur *= dotmult;
+		dotdur /= 2;
+		dotdur.rationalise();
+		dur += dotdur;
 		dur.rationalise();
 	}
 	return dur;
@@ -156,6 +160,23 @@ void midicontextvisitor::playMidiInstrument (int progChange)
 		fMidiWriter->progChange (fCurrentDate, progChange);
 	}
 }
+
+//________________________________________________________________________
+void midicontextvisitor::playMeterChange (unsigned int num, unsigned int denum)
+{
+	if (fMidiWriter) {
+		fMidiWriter->timeSignChange (fCurrentDate, num, denum);
+	}
+}
+
+//________________________________________________________________________
+void midicontextvisitor::playKeySignChange (int sign, bool major)
+{
+	if (fMidiWriter) {
+		fMidiWriter->keySignChange (fCurrentDate, sign, major);
+	}
+}
+
 
 //________________________________________________________________________
 // ties management
@@ -294,7 +315,7 @@ void midicontextvisitor::visitStart( SARNote& elt )
 			dur = rational2ticks (totalDuration(list));		// and compute the total duration
 		}
 	}
-	else dur = rational2ticks (noteduration(elt, fCurrentDuration, fCurrentDots));
+	else dur = noteDuration;
 	int pitch = midiPitch(elt);
 	if (pitch >= 0)	playNote (fCurrentDate, pitch, dur);
 	fCurrentDate += moveTime (noteDuration);
@@ -333,7 +354,7 @@ void midicontextvisitor::visitEnd  ( SARChord& elt )	{ fInChord = false; fCurren
 //________________________________________________________________________
 void midicontextvisitor::visitStart( SARTempo& elt )
 {
-	string val = elt->getAttributeValue("bpm");
+	string val = elt->getAttributeValue(1);
 	int num, denum, tempo;
 	if (sscanf ( val.c_str(), "%d/%d=%d", &num, &denum, &tempo) == 3) {
 		rational beat(num, denum);
@@ -370,5 +391,42 @@ void midicontextvisitor::visitStart( SARInstr& elt )
 	if (sscanf ( midi.c_str(), "MIDI %d", &prog) == 1)
 		playProgChange (prog);
 }
+
+//________________________________________________________________________
+void midicontextvisitor::visitStart( SARKey& elt )
+{
+	Sguidoattribute attr = elt->getAttribute(0);
+	if (attr) {
+		if (attr->quoteVal()) {		// key is specified as a string
+			string val = attr->getValue();
+			int key = transposeOperation::convertKey (val);
+			if (key != transposeOperation::kUndefinedKey) {
+				playKeySignChange (key, isupper (val[0]));				
+			}
+		}
+		else playKeySignChange (int(*attr));
+	}
+}
+
+//________________________________________________________________________
+void midicontextvisitor::visitStart( SARMeter& elt )
+{
+	const string val = elt->getAttributeValue(0);
+	unsigned int num, denum;
+	if (val == "C")
+		num = denum = 4;
+	else if ((val == "C/") || (val == "c/"))
+		num = denum = 2;
+	else if (sscanf ( val.c_str(), "%d/%d", &num, &denum) != 2)
+		return;
+	// now converts the denominator into midifile compliant representation
+	unsigned int mfdenum = 0;
+	while (denum > 1) {
+		mfdenum++;
+		denum /= 2;
+	}
+	playMeterChange (num, mfdenum);	
+}
+
 
 } // end namespace

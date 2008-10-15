@@ -38,25 +38,24 @@ midiconverter::~midiconverter()
 //________________________________________________________________________
 // midiconverter 
 //________________________________________________________________________
-bool  midiconverter::score2midifile (Sguidoelement& score, char* fileName)
+int  midiconverter::score2midifile (Sguidoelement& score, char* fileName)
 {
 	MidiName tmpName = "guido2midi";
 	short ref = MidiOpen (tmpName);
-	if (ref < 0) return false;
+	if (ref < 0) return ref;
 
-	bool result = false;
+	int err = noErr;
 	if (getMidi(score)) {
 		MidiFileInfos infos;
 		infos.format = midifile1;
 		infos.timedef = TicksPerQuarterNote; 
 		infos.clicks = fTPQ;
-		if (MidiFileSave (fileName, fSeq, &infos) == noErr)
-			result = true;
+		err = MidiFileSave (fileName, fSeq, &infos);
 		MidiFreeSeq (fSeq);
 		fSeq = 0;
 	}
 	MidiClose (ref);
-	return result;
+	return err;
 }
 
 //________________________________________________________________________
@@ -66,6 +65,7 @@ short midiconverter::score2player (Sguidoelement& score, const MidiName playerNa
 	if (ref > 0) {
 		 if (getMidi(score)) {
 			SetAllTrackPlayer (ref, fSeq, fTPQ);
+			fSeq = 0;		// the sequence is now owned by the player
 		 }
 		 else {
 			ClosePlayer (ref);
@@ -124,6 +124,10 @@ void midiconverter::newNote (long date, int pitch, int vel, int duration, int ar
 		Vel(ev)		= vel;
 		if (art == midiwriter::kStaccato)
 			duration *= 0.5f;
+		else if (art == midiwriter::kSlur)
+			duration *= 1.01f;
+		else 
+			duration *= 0.90f;
 		Dur(ev)		= duration;
 		MidiAddSeq (fSeq, ev);
 	}	
@@ -145,6 +149,36 @@ void midiconverter::progChange (long date, int prog)
 	if (ev) {
 		setCommon(ev, date);
 		Data(ev)[0]	= prog;
+		MidiAddSeq (fSeq, ev);
+	}	
+}
+
+void midiconverter::timeSignChange (long date, unsigned int num, unsigned int denom)
+{
+	MidiEvPtr ev = MidiNewEv(typeTimeSign);
+	if (ev) {
+		setCommon(ev, date);
+		TSNum(ev)	= num;
+		TSDenom(ev)	= denom;
+
+		int clocksDiv = 1;
+		while (denom > 1) {
+			denom--;
+			clocksDiv *= 2;
+		}
+		TSClocks(ev)= 96 / clocksDiv;	
+		TS32nd(ev)	= 8;		// number of 32th note in a quarter note
+		MidiAddSeq (fSeq, ev);
+	}	
+}
+
+void midiconverter::keySignChange (long date, int signature, bool major)
+{
+	MidiEvPtr ev = MidiNewEv(typeKeySign);
+	if (ev) {
+		setCommon(ev, date);
+		KSTon(ev)	= signature;
+		KSMode(ev)	= major ? 0 : 1;
 		MidiAddSeq (fSeq, ev);
 	}	
 }

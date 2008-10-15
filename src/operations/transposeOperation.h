@@ -58,6 +58,8 @@ class export transposeOperation :
 	public visitor<SARVoice> 
 {		
     public:
+		enum { kUndefinedKey = -99 };
+		
 		typedef int	Chromatic;
 		typedef int	Diatonic;
 
@@ -98,6 +100,13 @@ class export transposeOperation :
 		*/
 		static int  getKey ( Chromatic steps );
 
+		/*! converts a key string specification to a n umeric value
+			\param key a guido compliant key string
+			\return a numeric key signature representing a number of sharps when positive
+			and a number of flats when negative
+		*/
+		static int  convertKey ( const std::string& key );
+
 		/*! Transpose a key expressed as a count of sharps (positive keys) or flats (negative key).
 			The method may do enharmonic adjustments to choose the simplest key. 		
 			\param key the key to be transposed
@@ -109,7 +118,6 @@ class export transposeOperation :
  
      protected:
 		std::vector<std::pair<char,int> >	fFifthCycle;	// the fifth cycle table
-		std::map<std::string,int >			fKeysMap;		// string to numeric keys map
 		Chromatic	fChromaticSteps;						// the target transposing interval
 
 		int		fTableShift;			// the current shift into the table of fifths

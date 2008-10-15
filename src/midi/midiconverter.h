@@ -52,7 +52,7 @@ class midiconverter : public midiwriter {
 		virtual ~midiconverter();
 		
 		// main services are provided under the form of a midifile export or a midishare player
-		virtual bool  score2midifile (Sguidoelement& score, char* fileName);
+		virtual int   score2midifile (Sguidoelement& score, char* fileName);
 		virtual short score2player   (Sguidoelement& score, const MidiName playerName);
 
 	protected:
@@ -63,6 +63,8 @@ class midiconverter : public midiwriter {
 		virtual void newNote (long date, int pitch, int vel, int duration, int art);
 		virtual void tempoChange (long date, int bpm);
 		virtual void progChange (long date, int prog);
+		virtual void timeSignChange (long date, unsigned int num, unsigned int denom);
+		virtual void keySignChange (long date, int signature, bool major);
 
 		virtual bool getMidi (Sguidoelement& score);
 		virtual void setCommon (MidiEvPtr ev, long date) const;

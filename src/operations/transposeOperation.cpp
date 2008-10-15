@@ -161,33 +161,6 @@ void transposeOperation::initialize ()
 		fFifthCycle.push_back(make_pair('e', i));
 		fFifthCycle.push_back(make_pair('b', i));
 	}
-	fKeysMap["C&"] = fKeysMap["a&"] = -7;
-	fKeysMap["C"]  = fKeysMap["a"]  = 0;
-	fKeysMap["C#"] = fKeysMap["a#"] = 7;
-
-	fKeysMap["D&"] = fKeysMap["b&"] = fKeysMap["h&"] = -5;
-	fKeysMap["D"]  = fKeysMap["b"]  = fKeysMap["h"]  = 2;
-	fKeysMap["D#"] = fKeysMap["b#"] = fKeysMap["h#"] = 9;
-
-	fKeysMap["E&"] = fKeysMap["c"] = -3;
-	fKeysMap["E"]  = fKeysMap["c#"] = 4;
-	fKeysMap["E#"] = 11;			// double  sharp not supported in key sign
-
-	fKeysMap["F&"] = fKeysMap["d&"] = -8;
-	fKeysMap["F"]  = fKeysMap["d"]  = -1;
-	fKeysMap["F#"] = fKeysMap["d#"] = 6;
-
-	fKeysMap["G&"] = fKeysMap["e&"] = -6;
-	fKeysMap["G"]  = fKeysMap["e"]  = 1;
-	fKeysMap["G#"] = fKeysMap["e#"] = 8;
-
-	fKeysMap["A&"] = fKeysMap["f"] = -4;
-	fKeysMap["A"]  = fKeysMap["f#"] = 3;
-	fKeysMap["A#"] = 10;			// double  sharp not supported in key sign
-
-	fKeysMap["B&"] = fKeysMap["H&"] = fKeysMap["g"] = -2;
-	fKeysMap["B"]  = fKeysMap["H"]  = fKeysMap["g#"] = 5;
-	fKeysMap["B#"] = fKeysMap["H#"] = 12;	// double  sharp not supported in key sign
 }
 
 //________________________________________________________________________
@@ -257,6 +230,41 @@ int transposeOperation::getKey (  Chromatic steps )
 }
 
 //________________________________________________________________________
+int transposeOperation::convertKey ( const string& key ) 
+{
+
+	if ((key == "C&") || (key == "a&")) return -7;
+	if ((key == "C")  || (key == "a"))  return 0;
+	if ((key == "C#") || (key == "a#")) return 7;
+
+	if ((key == "D&") || (key == "b&") || (key == "h&")) return -5;
+	if ((key == "D")  || (key == "b")  || (key == "h"))  return 2;
+	if ((key == "D#") || (key == "b#") || (key == "h#")) return 9;
+
+	if ((key == "E&") || (key == "c"))  return -3;
+	if ((key == "E")  || (key == "c#")) return 4;
+	if (key == "E#") return 11;	// double  sharp not supported in key sign
+
+	if ((key == "F&") || (key == "d&")) return -8;
+	if ((key == "F")  || (key == "d"))  return -1;
+	if ((key == "F#") || (key == "d#")) return 6;
+
+	if ((key == "G&") || (key == "e&")) return -6;
+	if ((key == "G")  || (key == "e"))  return 1;
+	if ((key == "G#") || (key == "e#")) return 8;
+
+	if ((key == "A&") || (key == "f"))  return -4;
+	if ((key == "A")  || (key == "f#")) return 3;
+	if (key == "A#") return 10;	// double  sharp not supported in key sign
+
+	if ((key == "B&") || (key == "H&") || (key == "g"))  return -2;
+	if ((key == "B")  || (key == "H")  || (key == "g#")) return 5;
+	if ((key == "B#") || (key == "H#")) return 12;
+
+	return kUndefinedKey;
+}
+
+//________________________________________________________________________
 // The visit methods
 //________________________________________________________________________
 void transposeOperation::visitStart ( SARNote& elt ) 
@@ -292,10 +300,7 @@ void transposeOperation::visitStart ( SARKey& elt )
 		int key = 0;
 		
 		if (attr->quoteVal()) {		// key is specified as a string
-			pair<map<string,int>::const_iterator, map<string,int>::const_iterator>
-			krange = fKeysMap.equal_range( attr->getValue() );
-			if (krange.first == krange.second)
-				key = krange.first->second;
+			key = convertKey (attr->getValue());
 		}
 		else  key = int(*attr);
 		int enharmonicChange;

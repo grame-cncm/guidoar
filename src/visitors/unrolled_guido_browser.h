@@ -119,7 +119,7 @@ class export unrolled_guido_browser : public browser<Sguidoelement>,
 
 
 	public:
-				 unrolled_guido_browser(basevisitor* v) : fVisitor(v) {}
+				 unrolled_guido_browser(basevisitor* v);
 		virtual ~unrolled_guido_browser() {}
 
 		virtual void browse (Sguidoelement& t);
