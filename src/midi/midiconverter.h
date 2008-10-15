@@ -38,15 +38,13 @@ struct TMidiSeq;
 
 namespace guido 
 {
-
-
 /*!
 \brief a midi converter
 
 	It is based on MidiShare and on the Player libraries.
 	It supports MIDIfile export as well as MidiShare player interface.
 */
-class midiconverter : public midiwriter {
+class export midiconverter : public midiwriter {
 	public:
 				 midiconverter(long tpq=480) : fTPQ(tpq), fSeq(0), fTimeSignDone(false), fVoiceNumber(0) {}
 		virtual ~midiconverter();
@@ -77,6 +75,5 @@ class midiconverter : public midiwriter {
 
 }
 
-
-#endif // USEMidiShare
 #endif // __midiConverter__
+#endif // USEMidiShare

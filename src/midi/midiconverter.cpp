@@ -1,4 +1,5 @@
 #ifdef USEMidiShare
+
 /*
   Copyright © Grame 2003,2007
 

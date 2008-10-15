@@ -29,6 +29,7 @@
 
 #include "export.h"
 #include "guidoelement.h"
+#include "AROthers.h"
 #include "ARTypes.h"
 #include "rational.h"
 #include "visitor.h"
