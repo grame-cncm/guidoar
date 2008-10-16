@@ -16,7 +16,7 @@
 #include "AROthers.h"
 #include "guidoelement.h"
 #include "guidoparser.h"
-#include "vheadOperation.h"
+#include "topOperation.h"
 
 using namespace std;
 using namespace guido;
@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
 	char ** argsPtr = &argv[1];
 #endif
 	SARMusic score = read (argsPtr[0]);
-	vheadOperation head;
+	topOperation head;
 	Sguidoelement result;
 
 	int nvoices = voiceArg (argsPtr[1]);

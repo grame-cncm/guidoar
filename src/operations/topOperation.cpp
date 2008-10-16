@@ -28,10 +28,9 @@
 
 #include <iostream>
 
-#include "ARFactory.h"
 #include "AROthers.h"
 #include "ARTag.h"
-#include "vtailOperation.h"
+#include "topOperation.h"
 
 using namespace std;
 
@@ -39,13 +38,15 @@ namespace guido
 {
 
 //_______________________________________________________________________________
-Sguidoelement vtailOperation::operator() ( const Sguidoelement& score, int voicenum )
+topOperation::topOperation()  { fBrowser.set(this); }
+
+//_______________________________________________________________________________
+Sguidoelement topOperation::operator() ( const Sguidoelement& score, int voicenum )
 {
 	fVoiceNum = voicenum;
 	fCurrentVoice = 0;
 	Sguidoelement outscore;
 	if (score) {
-		fBrowser.stop(false);
 		fBrowser.browse (*score);
 		outscore = fStack.top();
 		fStack.pop();
@@ -54,38 +55,31 @@ Sguidoelement vtailOperation::operator() ( const Sguidoelement& score, int voice
 }
 
 //_______________________________________________________________________________
-SARMusic vtailOperation::operator() ( const SARMusic& score1, const SARMusic& score2 )
+SARMusic topOperation::operator() ( const SARMusic& score1, const SARMusic& score2 )
 {
 	Sguidoelement elt = (*this)(score1, score2->size());
 	return dynamic_cast<ARMusic*>((guidoelement*)elt);
 }
 
 //________________________________________________________________________
-bool vtailOperation::copy  ()	{ return fCurrentVoice > fVoiceNum; }
+bool topOperation::copy  () const	{ return fCurrentVoice <= fVoiceNum; }
 
 //________________________________________________________________________
 // The visit methods
 //________________________________________________________________________
-void vtailOperation::visitStart ( SARVoice& elt )
+void topOperation::visitStart ( SARVoice& elt )
 {
 	fCurrentVoice++;
-	if (copy())
-		clonevisitor::visitStart (elt);
-	else fBrowser.stop();
+	clonevisitor::visitStart (elt);
 }
 
 //________________________________________________________________________
-void vtailOperation::visitEnd ( SARVoice& elt )
-{
-	fBrowser.stop(false);
-	if (copy())
-		clonevisitor::visitEnd (elt);
+void topOperation::visitEnd ( SARVoice& elt )	
+{ 	
+	clonevisitor::visitEnd (elt); 
+	if (fCurrentVoice > fVoiceNum) fBrowser.stop(); 
 }
 
-//________________________________________________________________________
-void vtailOperation::visitStart ( SARStaff& elt )
-{
-// don't copy staff assignments
-}
+void topOperation::visitStart ( SARStaff& elt )	{ /* don't copy staff assignments */ }
 
 }

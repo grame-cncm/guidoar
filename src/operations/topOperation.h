@@ -20,15 +20,14 @@
 
 */
 
-#ifndef __vtailOperation__
-#define __vtailOperation__
+#ifndef __topOperation__
+#define __topOperation__
 
 #include "export.h"
-#include "AROthers.h"
+#include "ARTypes.h"
 #include "clonevisitor.h"
 #include "operation.h"
 #include "tree_browser.h"
-
 
 namespace guido 
 {
@@ -39,39 +38,42 @@ namespace guido
 */
 
 /*!
-\brief A visitor that cuts the head of a score voices.
+\brief A visitor that cuts the tail of a score voices.
 */
-class export vtailOperation : 
+class export topOperation : 
 	public operation,
 	public clonevisitor,
 	public visitor<SARStaff>
 {		
     public:
- 				 vtailOperation()	{ fBrowser.set(this); }
-		virtual ~vtailOperation()	{}
+ 				 topOperation();
+		virtual ~topOperation()	{}
 
-		/*! cuts the head of the score voices before a given voice
+		/*! cuts the tail of the score voices after a given voice
 			\param score the score to be cut
-			\param voicenum the score voices to drop
+			\param voicenum the score voices to preserve
 			\return a new score
 		*/
 		Sguidoelement operator() ( const Sguidoelement& score, int voicenum );
-
-		/*! cuts the head of the score voices before a given voice
+ 
+		/*! cuts the tail of the score voices after a given voice
 			\param score1 the score to be cut
 			\param score2 a score which voice number is used as voice index
 			\return a new score
 		*/
 		SARMusic operator() ( const SARMusic& score1, const SARMusic& score2 );
- 
-     protected:
+
+ 		bool 	done () const	{ return !copy(); }
+
+    protected:
 		int			fVoiceNum, fCurrentVoice;
 		tree_browser<guidoelement> fBrowser;
 
-		virtual bool copy  ();
-		virtual void visitStart ( SARStaff& elt );
-		virtual void visitStart ( SARVoice& elt );
-		virtual void visitEnd   ( SARVoice& elt );
+		virtual bool copy  () const;
+
+		virtual void visitStart( SARStaff& elt );
+		virtual void visitStart( SARVoice& elt );
+		virtual void visitEnd  ( SARVoice& elt );
 };
 
 /*! @} */
