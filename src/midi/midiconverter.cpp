@@ -31,13 +31,20 @@ using namespace std;
 namespace guido {
 
 //________________________________________________________________________
+// durations adjustment constants definition 
+//________________________________________________________________________
+#define kStaccatoCoef	0.5f
+#define kSlurCoef		1.01f
+#define kNormalCoef		0.90f
+
+//________________________________________________________________________
+// midiconverter 
+//________________________________________________________________________
 midiconverter::~midiconverter()
 {
 	if (fSeq) MidiFreeSeq (fSeq);
 }
 
-//________________________________________________________________________
-// midiconverter 
 //________________________________________________________________________
 int  midiconverter::score2midifile (Sguidoelement& score, char* fileName)
 {
@@ -126,11 +133,11 @@ void midiconverter::newNote (long date, int pitch, int vel, int duration, int ar
 		Pitch(ev)	= pitch;
 		Vel(ev)		= vel;
 		if (art == midiwriter::kStaccato)
-			duration *= 0.5f;
+			duration *= kStaccatoCoef;
 		else if (art == midiwriter::kSlur)
-			duration *= 1.01f;
+			duration *= kSlurCoef;
 		else 
-			duration *= 0.90f;
+			duration *= kNormalCoef;
 		Dur(ev)		= duration;
 		MidiAddSeq (fSeq, ev);
 	}	
