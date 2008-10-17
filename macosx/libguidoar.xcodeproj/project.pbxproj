@@ -64,7 +64,7 @@
 		D307D8570E8BDB4E00B3555D /* transposeOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D307D8040E8BB77500B3555D /* transposeOperation.cpp */; };
 		D307D8580E8BDB4F00B3555D /* transposeOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = D307D8050E8BB77500B3555D /* transposeOperation.h */; };
 		D307D8A60E8BE55E00B3555D /* guidotranspose.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D307D8A50E8BE55E00B3555D /* guidotranspose.cpp */; };
-		D307D8A80E8BE56600B3555D /* libguidoengine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoengine.framework */; };
+		D307D8A80E8BE56600B3555D /* libguidoar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoar.framework */; };
 		D31D8F8F0EA3622F00F45B50 /* Player.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D31D8F8E0EA3622F00F45B50 /* Player.framework */; };
 		D31D8FA70EA3819E00F45B50 /* midiconverter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D31D8FA50EA3819E00F45B50 /* midiconverter.cpp */; };
 		D31D8FA80EA3819E00F45B50 /* midiconverter.h in Headers */ = {isa = PBXBuildFile; fileRef = D31D8FA60EA3819E00F45B50 /* midiconverter.h */; };
@@ -111,27 +111,27 @@
 		D3573AF00E965834000525C7 /* operation.h in Headers */ = {isa = PBXBuildFile; fileRef = D3573AEF0E965834000525C7 /* operation.h */; };
 		D364158B0E1A912800E4E545 /* clonevisitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D36415890E1A912800E4E545 /* clonevisitor.cpp */; };
 		D364158C0E1A912800E4E545 /* clonevisitor.h in Headers */ = {isa = PBXBuildFile; fileRef = D364158A0E1A912800E4E545 /* clonevisitor.h */; };
-		D37EF9F10DEE0B5800A3AB8A /* libguidoengine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoengine.framework */; };
-		D386D3D60E08EE6B00231224 /* libguidoengine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoengine.framework */; };
+		D37EF9F10DEE0B5800A3AB8A /* libguidoar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoar.framework */; };
+		D386D3D60E08EE6B00231224 /* libguidoar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoar.framework */; };
 		D386D44B0E093EEF00231224 /* seqOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D386D4490E093EEF00231224 /* seqOperation.cpp */; };
 		D386D44C0E093EEF00231224 /* seqOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = D386D44A0E093EEF00231224 /* seqOperation.h */; };
 		D386D4740E0942E600231224 /* guidoseq.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D386D4730E0942E600231224 /* guidoseq.cpp */; };
-		D386D4760E0942EF00231224 /* libguidoengine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoengine.framework */; };
+		D386D4760E0942EF00231224 /* libguidoar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoar.framework */; };
 		D39096920E1B6FF100693853 /* durationvisitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D39096900E1B6FF100693853 /* durationvisitor.cpp */; };
 		D39096930E1B6FF100693853 /* durationvisitor.h in Headers */ = {isa = PBXBuildFile; fileRef = D39096910E1B6FF100693853 /* durationvisitor.h */; };
-		D39096A40E1B714B00693853 /* libguidoengine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoengine.framework */; };
+		D39096A40E1B714B00693853 /* libguidoar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoar.framework */; };
 		D39096A60E1B715C00693853 /* guidoinfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D39096A50E1B715C00693853 /* guidoinfo.cpp */; };
 		D390973A0E1B86DF00693853 /* guidorpar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D39097390E1B86DF00693853 /* guidorpar.cpp */; };
-		D390973B0E1B86E700693853 /* libguidoengine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoengine.framework */; };
+		D390973B0E1B86E700693853 /* libguidoar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoar.framework */; };
 		D39097C80E1BCD4900693853 /* export.h in Headers */ = {isa = PBXBuildFile; fileRef = D39097C70E1BCD4900693853 /* export.h */; };
 		D390CC280E5C6F0C00C6FB95 /* interleaveOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D390CC260E5C6F0C00C6FB95 /* interleaveOperation.cpp */; };
 		D390CC290E5C6F0C00C6FB95 /* interleaveOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = D390CC270E5C6F0C00C6FB95 /* interleaveOperation.h */; };
-		D394190D0E9F4CC00002FD03 /* libguidoengine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoengine.framework */; };
+		D394190D0E9F4CC00002FD03 /* libguidoar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoar.framework */; };
 		D394190F0E9F4CD30002FD03 /* guidotime2ev.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D394190E0E9F4CD30002FD03 /* guidotime2ev.cpp */; };
 		D39419CF0E9F61E50002FD03 /* etailOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D39419CD0E9F61E50002FD03 /* etailOperation.cpp */; };
 		D39419D00E9F61E50002FD03 /* etailOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = D39419CE0E9F61E50002FD03 /* etailOperation.h */; };
-		D39419EB0E9F63250002FD03 /* libguidoengine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoengine.framework */; };
-		D39419EC0E9F63290002FD03 /* libguidoengine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoengine.framework */; };
+		D39419EB0E9F63250002FD03 /* libguidoar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoar.framework */; };
+		D39419EC0E9F63290002FD03 /* libguidoar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoar.framework */; };
 		D39419EE0E9F63420002FD03 /* guidoevhead.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D39419ED0E9F63420002FD03 /* guidoevhead.cpp */; };
 		D39419F20E9F63510002FD03 /* guidoevtail.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D39419F10E9F63510002FD03 /* guidoevtail.cpp */; };
 		D3A470CA0E9E06FE0062E209 /* eheadOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3A470C80E9E06FE0062E209 /* eheadOperation.cpp */; };
@@ -141,35 +141,35 @@
 		D3A471240E9E3C1C0062E209 /* event2timevisitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3A471220E9E3C1C0062E209 /* event2timevisitor.cpp */; };
 		D3A471250E9E3C1C0062E209 /* event2timevisitor.h in Headers */ = {isa = PBXBuildFile; fileRef = D3A471230E9E3C1C0062E209 /* event2timevisitor.h */; };
 		D3A472B00E9E64EB0062E209 /* guidoev2time.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3A471460E9E47F30062E209 /* guidoev2time.cpp */; };
-		D3A472B10E9E64EF0062E209 /* libguidoengine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoengine.framework */; };
+		D3A472B10E9E64EF0062E209 /* libguidoar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoar.framework */; };
 		D3B095500E838A9800262449 /* midicontextvisitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3B0954E0E838A9800262449 /* midicontextvisitor.cpp */; };
 		D3B095510E838A9800262449 /* midicontextvisitor.h in Headers */ = {isa = PBXBuildFile; fileRef = D3B0954F0E838A9800262449 /* midicontextvisitor.h */; };
-		D3B095BD0E83D64400262449 /* libguidoengine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoengine.framework */; };
+		D3B095BD0E83D64400262449 /* libguidoar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoar.framework */; };
 		D3B095BF0E83D65A00262449 /* guido2midi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3B095BE0E83D65A00262449 /* guido2midi.cpp */; };
 		D3B121610EA5D0AD00C159C2 /* MidiShare.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D31D8FC50EA382B200F45B50 /* MidiShare.framework */; };
 		D3B121620EA5D0AE00C159C2 /* Player.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D31D8F8E0EA3622F00F45B50 /* Player.framework */; };
 		D3BC569E0E9CBD860088746E /* guidoduration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3BC569D0E9CBD860088746E /* guidoduration.cpp */; };
-		D3BC56A00E9CBD940088746E /* libguidoengine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoengine.framework */; };
+		D3BC56A00E9CBD940088746E /* libguidoar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoar.framework */; };
 		D3C5BD540E87DC2000E11354 /* unrolled_guido_browser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3C5BD520E87DC1F00E11354 /* unrolled_guido_browser.cpp */; };
 		D3C5BD550E87DC2000E11354 /* unrolled_guido_browser.h in Headers */ = {isa = PBXBuildFile; fileRef = D3C5BD530E87DC1F00E11354 /* unrolled_guido_browser.h */; };
 		D3D1E4460E9BC51800ADD40D /* durationOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3D1E4440E9BC51800ADD40D /* durationOperation.cpp */; };
 		D3D1E4470E9BC51800ADD40D /* durationOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = D3D1E4450E9BC51800ADD40D /* durationOperation.h */; };
 		D3D3E0EA0E94B73B00A93F41 /* headOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3D3E0E80E94B73B00A93F41 /* headOperation.cpp */; };
 		D3D3E0EB0E94B73B00A93F41 /* headOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = D3D3E0E90E94B73B00A93F41 /* headOperation.h */; };
-		D3D3E1030E94C3D200A93F41 /* libguidoengine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoengine.framework */; };
+		D3D3E1030E94C3D200A93F41 /* libguidoar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoar.framework */; };
 		D3D3E1060E94C3E600A93F41 /* guidohead.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3D3E1050E94C3E600A93F41 /* guidohead.cpp */; };
 		D3D3E2A40E94F63A00A93F41 /* tailOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3D3E2A20E94F63A00A93F41 /* tailOperation.cpp */; };
 		D3D3E2A50E94F63A00A93F41 /* tailOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = D3D3E2A30E94F63A00A93F41 /* tailOperation.h */; };
 		D3D3E2B00E94F66200A93F41 /* guidotail.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3D3E2AF0E94F66200A93F41 /* guidotail.cpp */; };
-		D3D3E2B20E94F66A00A93F41 /* libguidoengine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoengine.framework */; };
+		D3D3E2B20E94F66A00A93F41 /* libguidoar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoar.framework */; };
 		D3D3E4120E95343000A93F41 /* topOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3D3E4100E95343000A93F41 /* topOperation.cpp */; };
 		D3D3E4130E95343000A93F41 /* topOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = D3D3E4110E95343000A93F41 /* topOperation.h */; };
 		D3D3E4290E95347C00A93F41 /* guidotop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3D3E4280E95347C00A93F41 /* guidotop.cpp */; };
-		D3D3E42C0E95348900A93F41 /* libguidoengine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoengine.framework */; };
+		D3D3E42C0E95348900A93F41 /* libguidoar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoar.framework */; };
 		D3D3E4A40E95417500A93F41 /* bottomOperation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3D3E4A20E95417500A93F41 /* bottomOperation.cpp */; };
 		D3D3E4A50E95417500A93F41 /* bottomOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = D3D3E4A30E95417500A93F41 /* bottomOperation.h */; };
 		D3D3E4AE0E95419700A93F41 /* guidobottom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3D3E4AD0E95419700A93F41 /* guidobottom.cpp */; };
-		D3D3E4B00E95419D00A93F41 /* libguidoengine.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoengine.framework */; };
+		D3D3E4B00E95419D00A93F41 /* libguidoar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoar.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -304,7 +304,7 @@
 /* Begin PBXFileReference section */
 		089C1667FE841158C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8D07F2C70486CC7A007CD1D0 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		8D07F2C80486CC7A007CD1D0 /* libguidoengine.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = libguidoengine.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8D07F2C80486CC7A007CD1D0 /* libguidoar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = libguidoar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D307D8040E8BB77500B3555D /* transposeOperation.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = transposeOperation.cpp; path = ../src/operations/transposeOperation.cpp; sourceTree = SOURCE_ROOT; };
 		D307D8050E8BB77500B3555D /* transposeOperation.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = transposeOperation.h; path = ../src/operations/transposeOperation.h; sourceTree = SOURCE_ROOT; };
 		D307D89E0E8BE52300B3555D /* guidotranspose */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = guidotranspose; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -360,7 +360,7 @@
 		D3573AEF0E965834000525C7 /* operation.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = operation.h; path = ../src/operations/operation.h; sourceTree = SOURCE_ROOT; };
 		D36415890E1A912800E4E545 /* clonevisitor.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = clonevisitor.cpp; path = ../src/visitors/clonevisitor.cpp; sourceTree = SOURCE_ROOT; };
 		D364158A0E1A912800E4E545 /* clonevisitor.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = clonevisitor.h; path = ../src/visitors/clonevisitor.h; sourceTree = SOURCE_ROOT; };
-		D37EF9F00DEE0B5800A3AB8A /* libguidoengine.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = libguidoengine.framework; path = ../../../../../Library/Frameworks/libguidoengine.framework; sourceTree = SOURCE_ROOT; };
+		D37EF9F00DEE0B5800A3AB8A /* libguidoar.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = libguidoar.framework; path = build/Debug/libguidoar.framework; sourceTree = "<group>"; };
 		D386D4490E093EEF00231224 /* seqOperation.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = seqOperation.cpp; path = ../src/operations/seqOperation.cpp; sourceTree = SOURCE_ROOT; };
 		D386D44A0E093EEF00231224 /* seqOperation.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = seqOperation.h; path = ../src/operations/seqOperation.h; sourceTree = SOURCE_ROOT; };
 		D386D46D0E0942C800231224 /* guidoseq */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = guidoseq; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -434,7 +434,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D307D8A80E8BE56600B3555D /* libguidoengine.framework in Frameworks */,
+				D307D8A80E8BE56600B3555D /* libguidoar.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -442,7 +442,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D386D3D60E08EE6B00231224 /* libguidoengine.framework in Frameworks */,
+				D386D3D60E08EE6B00231224 /* libguidoar.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -450,7 +450,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D37EF9F10DEE0B5800A3AB8A /* libguidoengine.framework in Frameworks */,
+				D37EF9F10DEE0B5800A3AB8A /* libguidoar.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -458,7 +458,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D386D4760E0942EF00231224 /* libguidoengine.framework in Frameworks */,
+				D386D4760E0942EF00231224 /* libguidoar.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -466,7 +466,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D39096A40E1B714B00693853 /* libguidoengine.framework in Frameworks */,
+				D39096A40E1B714B00693853 /* libguidoar.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -474,7 +474,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D390973B0E1B86E700693853 /* libguidoengine.framework in Frameworks */,
+				D390973B0E1B86E700693853 /* libguidoar.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -482,7 +482,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D394190D0E9F4CC00002FD03 /* libguidoengine.framework in Frameworks */,
+				D394190D0E9F4CC00002FD03 /* libguidoar.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -490,7 +490,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D39419EB0E9F63250002FD03 /* libguidoengine.framework in Frameworks */,
+				D39419EB0E9F63250002FD03 /* libguidoar.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -498,7 +498,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D39419EC0E9F63290002FD03 /* libguidoengine.framework in Frameworks */,
+				D39419EC0E9F63290002FD03 /* libguidoar.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -506,7 +506,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D3A472B10E9E64EF0062E209 /* libguidoengine.framework in Frameworks */,
+				D3A472B10E9E64EF0062E209 /* libguidoar.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -514,7 +514,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D3B095BD0E83D64400262449 /* libguidoengine.framework in Frameworks */,
+				D3B095BD0E83D64400262449 /* libguidoar.framework in Frameworks */,
 				D3B121610EA5D0AD00C159C2 /* MidiShare.framework in Frameworks */,
 				D3B121620EA5D0AE00C159C2 /* Player.framework in Frameworks */,
 			);
@@ -524,7 +524,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D3BC56A00E9CBD940088746E /* libguidoengine.framework in Frameworks */,
+				D3BC56A00E9CBD940088746E /* libguidoar.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -532,7 +532,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D3D3E1030E94C3D200A93F41 /* libguidoengine.framework in Frameworks */,
+				D3D3E1030E94C3D200A93F41 /* libguidoar.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -540,7 +540,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D3D3E2B20E94F66A00A93F41 /* libguidoengine.framework in Frameworks */,
+				D3D3E2B20E94F66A00A93F41 /* libguidoar.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -548,7 +548,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D3D3E42C0E95348900A93F41 /* libguidoengine.framework in Frameworks */,
+				D3D3E42C0E95348900A93F41 /* libguidoar.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -556,7 +556,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D3D3E4B00E95419D00A93F41 /* libguidoengine.framework in Frameworks */,
+				D3D3E4B00E95419D00A93F41 /* libguidoar.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -566,7 +566,7 @@
 		034768DDFF38A45A11DB9C8B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8D07F2C80486CC7A007CD1D0 /* libguidoengine.framework */,
+				8D07F2C80486CC7A007CD1D0 /* libguidoar.framework */,
 				D34739A30DEE096F00BE54BE /* guidoread */,
 				D31E255C0E083150001406DF /* guidopar */,
 				D386D46D0E0942C800231224 /* guidoseq */,
@@ -604,7 +604,7 @@
 			children = (
 				D31D8FC50EA382B200F45B50 /* MidiShare.framework */,
 				D31D8F8E0EA3622F00F45B50 /* Player.framework */,
-				D37EF9F00DEE0B5800A3AB8A /* libguidoengine.framework */,
+				D37EF9F00DEE0B5800A3AB8A /* libguidoar.framework */,
 			);
 			name = "External Frameworks and Libraries";
 			sourceTree = "<group>";
@@ -846,9 +846,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		8D07F2BC0486CC7A007CD1D0 /* libguidoengine */ = {
+		8D07F2BC0486CC7A007CD1D0 /* libguidoar */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4FADC24208B4156D00ABE55E /* Build configuration list for PBXNativeTarget "libguidoengine" */;
+			buildConfigurationList = 4FADC24208B4156D00ABE55E /* Build configuration list for PBXNativeTarget "libguidoar" */;
 			buildPhases = (
 				8D07F2BD0486CC7A007CD1D0 /* Headers */,
 				8D07F2BF0486CC7A007CD1D0 /* Resources */,
@@ -860,10 +860,10 @@
 			);
 			dependencies = (
 			);
-			name = libguidoengine;
+			name = libguidoar;
 			productInstallPath = "$(HOME)/Library/Frameworks";
 			productName = libguidoengine;
-			productReference = 8D07F2C80486CC7A007CD1D0 /* libguidoengine.framework */;
+			productReference = 8D07F2C80486CC7A007CD1D0 /* libguidoar.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		D307D89D0E8BE52300B3555D /* guidotranspose */ = {
@@ -1137,7 +1137,7 @@
 			targets = (
 				D37EF9E10DEE09E100A3AB8A /* all */,
 				D364154F0E1A7F1200E4E545 /* parser */,
-				8D07F2BC0486CC7A007CD1D0 /* libguidoengine */,
+				8D07F2BC0486CC7A007CD1D0 /* libguidoar */,
 				D34739A20DEE096F00BE54BE /* guidoread */,
 				D31E255B0E083150001406DF /* guidopar */,
 				D386D46C0E0942C800231224 /* guidoseq */,
@@ -1401,7 +1401,7 @@
 		};
 		D37EF9E70DEE09E900A3AB8A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 8D07F2BC0486CC7A007CD1D0 /* libguidoengine */;
+			target = 8D07F2BC0486CC7A007CD1D0 /* libguidoar */;
 			targetProxy = D37EF9E60DEE09E900A3AB8A /* PBXContainerItemProxy */;
 		};
 		D386D4720E0942D400231224 /* PBXTargetDependency */ = {
@@ -1501,7 +1501,7 @@
 				INSTALL_PATH = "$(HOME)/Library/Frameworks";
 				LIBRARY_STYLE = DYNAMIC;
 				MACH_O_TYPE = mh_dylib;
-				PRODUCT_NAME = libguidoengine;
+				PRODUCT_NAME = libguidoar;
 				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				WRAPPER_EXTENSION = framework;
 				ZERO_LINK = YES;
@@ -1527,7 +1527,7 @@
 				INSTALL_PATH = "$(HOME)/Library/Frameworks";
 				LIBRARY_STYLE = DYNAMIC;
 				MACH_O_TYPE = mh_dylib;
-				PRODUCT_NAME = libguidoengine;
+				PRODUCT_NAME = libguidoar;
 				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
 				WRAPPER_EXTENSION = framework;
 			};
@@ -2257,7 +2257,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		4FADC24208B4156D00ABE55E /* Build configuration list for PBXNativeTarget "libguidoengine" */ = {
+		4FADC24208B4156D00ABE55E /* Build configuration list for PBXNativeTarget "libguidoar" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4FADC24308B4156D00ABE55E /* Debug */,
