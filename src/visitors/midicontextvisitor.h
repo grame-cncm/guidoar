@@ -146,21 +146,21 @@ class export midicontextvisitor :
 		virtual void visitStart( SARInstr& elt );
 		virtual void visitStart( SAROct& elt );
 		virtual void visitEnd  ( SAROct& elt );
-		virtual void visitStart( SARGrace& elt )		{ fInGrace = true; }
-		virtual void visitEnd  ( SARGrace& elt )		{ fInGrace = false; }
+		virtual void visitStart( SARGrace& )		{ fInGrace = true; }
+		virtual void visitEnd  ( SARGrace& )		{ fInGrace = false; }
 
 	// time management
 		virtual void visitStart( SARTempo& elt );
 
-		virtual void visitStart( SARSlur& elt )			{ fInSlur = true; }
-		virtual void visitEnd  ( SARSlur& elt )			{ fInSlur = false; }
-		virtual void visitStart( SARSlurBegin& elt )	{ fInSlur = true; }
-		virtual void visitStart( SARSlurEnd& elt )		{ fInSlur = false; }
+		virtual void visitStart( SARSlur& )			{ fInSlur = true; }
+		virtual void visitEnd  ( SARSlur& )			{ fInSlur = false; }
+		virtual void visitStart( SARSlurBegin& )	{ fInSlur = true; }
+		virtual void visitStart( SARSlurEnd&  )		{ fInSlur = false; }
 
-		virtual void visitStart( SARStacc& elt )		{ fInStaccato = true; }
-		virtual void visitEnd  ( SARStacc& elt )		{ fInStaccato = false; }
-		virtual void visitStart( SARStaccBegin& elt )	{ fInStaccato = true; }
-		virtual void visitStart( SARStaccEnd& elt )		{ fInStaccato = false; }
+		virtual void visitStart( SARStacc& )		{ fInStaccato = true; }
+		virtual void visitEnd  ( SARStacc& )		{ fInStaccato = false; }
+		virtual void visitStart( SARStaccBegin& )	{ fInStaccato = true; }
+		virtual void visitStart( SARStaccEnd& )		{ fInStaccato = false; }
 
 		virtual void visitStart( SARTie& elt );
 		virtual void visitEnd  ( SARTie& elt );
