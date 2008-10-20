@@ -1,6 +1,6 @@
 /*
   GUIDO Library
-  Copyright (C) 2008  Grame
+  Copyright (C) 2006-2008  Grame
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -21,31 +21,32 @@
 
 */
 
-#ifndef __glangreader__
-#define __glangreader__
+#ifndef __guidoExpFactory__
+#define __guidoExpFactory__
 
+#include "guidoApplExpr.h"
+#include "guidoAbstractExpr.h"
+#include "guidoCompExpr.h"
+#include "guidoScoreExpr.h"
+#include "singleton.h"
 
 namespace guidolang 
 {
 
-//______________________________________________________________________________
 /*!
-\brief	An abstract class supporting the glang parser interface.
+\brief A guido language expressions factory.
 */
-class glangreader
-{ 
+class export guidoExpFactory : public singleton<guidoExpFactory>
+{
+    protected:
+				 guidoExpFactory() {}
+		virtual ~guidoExpFactory() {}
+
 	public:
-		enum compOp { kSeqOp, kParOp, kHeadOp, kTailOp, kTopOp, kBottomOp };
-
-		virtual ~glangreader() {}
-		
-		virtual SGLExpr* newIDExpr			(const char *, SGLExpr*) = 0;
-		virtual SGLExpr* newScoreExpr		(const char *) = 0;
-		virtual SGLExpr* newComposedExpr	(compOp op, SGLExpr*, SGLExpr*) = 0;
-		virtual SGLExpr* newAbstractExpr	(SGLExpr*, SGLExpr*) = 0;
-		virtual SGLExpr* newApplyExpr		(SGLExpr*, SGLExpr*) = 0;
-
-		virtual int error(const char * msg, int lineno) = 0;
+		SguidoApplExpr		createApplication(Sguidoexpression& e1, Sguidoexpression& e2) const;	
+		SguidoAbstractExpr	createAbstraction(Sguidoexpression& e1, Sguidoexpression& e2) const;	
+		SguidoCompExpr		createComposition(guidoCompExpr::composition op, Sguidoexpression& e1, Sguidoexpression& e2) const;	
+		SguidoScoreExpr		createScore(guido::Sguidoelement& score) const;	
 };
 
 } // namespace

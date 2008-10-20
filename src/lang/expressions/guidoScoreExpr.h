@@ -1,6 +1,6 @@
 /*
   GUIDO Library
-  Copyright (C) 2008  Grame
+  Copyright (C) 2006-2008  Grame
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -21,31 +21,36 @@
 
 */
 
-#ifndef __glangreader__
-#define __glangreader__
+#ifndef __guidoScoreExpr__
+#define __guidoScoreExpr__
 
+#include "guidoexpression.h"
+#include "guidoelement.h"
 
 namespace guidolang 
 {
 
-//______________________________________________________________________________
+class guidoScoreExpr;
+typedef guido::SMARTP<guidoScoreExpr> 	SguidoScoreExpr;
+
 /*!
-\brief	An abstract class supporting the glang parser interface.
+\brief abstraction expression.
 */
-class glangreader
-{ 
-	public:
-		enum compOp { kSeqOp, kParOp, kHeadOp, kTailOp, kTopOp, kBottomOp };
-
-		virtual ~glangreader() {}
+class export guidoScoreExpr : public guidoexpression
+{
+    protected:
+		guido::Sguidoelement	fScore;
 		
-		virtual SGLExpr* newIDExpr			(const char *, SGLExpr*) = 0;
-		virtual SGLExpr* newScoreExpr		(const char *) = 0;
-		virtual SGLExpr* newComposedExpr	(compOp op, SGLExpr*, SGLExpr*) = 0;
-		virtual SGLExpr* newAbstractExpr	(SGLExpr*, SGLExpr*) = 0;
-		virtual SGLExpr* newApplyExpr		(SGLExpr*, SGLExpr*) = 0;
+				 guidoScoreExpr(guido::Sguidoelement& score) : fScore(score) {}
+		virtual ~guidoScoreExpr() {}
 
-		virtual int error(const char * msg, int lineno) = 0;
+	public:
+        static SguidoScoreExpr create (guido::Sguidoelement& score);
+
+		virtual void		acceptIn(guido::basevisitor& visitor);
+		virtual void		acceptOut(guido::basevisitor& visitor);
+
+		virtual bool operator ==(const SguidoScoreExpr& i) const;
 };
 
 } // namespace

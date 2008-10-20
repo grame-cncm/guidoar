@@ -21,31 +21,31 @@
 
 */
 
-#ifndef __glangreader__
-#define __glangreader__
+#ifndef __guidoreader__
+#define __guidoreader__
 
+#include "guidoexpression.h"
+#include "glangreader.h"
 
 namespace guidolang 
 {
 
 //______________________________________________________________________________
+typedef Sguidoexpression SGLExpr;
+
 /*!
-\brief	An abstract class supporting the glang parser interface.
+\brief	An concrete class supporting the glang parser interface.
 */
-class glangreader
+class guidoExpReader : public glangreader
 { 
 	public:
-		enum compOp { kSeqOp, kParOp, kHeadOp, kTailOp, kTopOp, kBottomOp };
+		virtual SGLExpr* newIDExpr			(const char *, SGLExpr*);
+		virtual SGLExpr* newScoreExpr		(const char *);
+		virtual SGLExpr* newComposedExpr	(compOp op, SGLExpr*, SGLExpr*);
+		virtual SGLExpr* newAbstractExpr	(SGLExpr*, SGLExpr*);
+		virtual SGLExpr* newApplyExpr		(SGLExpr*, SGLExpr*);
 
-		virtual ~glangreader() {}
-		
-		virtual SGLExpr* newIDExpr			(const char *, SGLExpr*) = 0;
-		virtual SGLExpr* newScoreExpr		(const char *) = 0;
-		virtual SGLExpr* newComposedExpr	(compOp op, SGLExpr*, SGLExpr*) = 0;
-		virtual SGLExpr* newAbstractExpr	(SGLExpr*, SGLExpr*) = 0;
-		virtual SGLExpr* newApplyExpr		(SGLExpr*, SGLExpr*) = 0;
-
-		virtual int error(const char * msg, int lineno) = 0;
+		virtual int error(const char * msg, int lineno);
 };
 
 } // namespace
