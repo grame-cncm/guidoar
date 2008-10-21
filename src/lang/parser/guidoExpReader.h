@@ -21,8 +21,11 @@
 
 */
 
-#ifndef __guidoreader__
-#define __guidoreader__
+#ifndef __guidoExpReader__
+#define __guidoExpReader__
+
+#include <map>
+#include <string>
 
 #include "guidoexpression.h"
 #include "glangreader.h"
@@ -31,21 +34,34 @@ namespace guidolang
 {
 
 //______________________________________________________________________________
-typedef Sguidoexpression SGLExpr;
-
 /*!
 \brief	An concrete class supporting the glang parser interface.
 */
 class guidoExpReader : public glangreader
 { 
 	public:
-		virtual SGLExpr* newIDExpr			(const char *, SGLExpr*);
+		typedef std::map<std::string, SGLExpr> ExpList;
+		
+		int				version() const;
+		const char*		versionStr() const;
+
+		bool parseFile  (FILE* fd);
+		bool parseFile  (const char* file);
+		bool parseString(const char* string);
+
+		virtual void	 newIDExpr			(const char *, SGLExpr*);
 		virtual SGLExpr* newScoreExpr		(const char *);
 		virtual SGLExpr* newComposedExpr	(compOp op, SGLExpr*, SGLExpr*);
 		virtual SGLExpr* newAbstractExpr	(SGLExpr*, SGLExpr*);
 		virtual SGLExpr* newApplyExpr		(SGLExpr*, SGLExpr*);
 
 		virtual int error(const char * msg, int lineno);
+
+		virtual void		clear()		{ return fExprMap.clear(); }
+		virtual ExpList&	getEnv()	{ return fExprMap; }
+
+	protected:
+		std::map<std::string, SGLExpr>	fExprMap;
 };
 
 } // namespace

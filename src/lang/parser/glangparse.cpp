@@ -464,8 +464,8 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    63,    63,    65,    66,    69,    70,    71,    72,    73,
-      74,    75,    76,    77,    78,    81,    83
+       0,    63,    63,    65,    66,    69,    71,    72,    73,    74,
+      75,    76,    77,    78,    79,    82,    84
 };
 #endif
 
@@ -1403,67 +1403,68 @@ yyreduce:
 
   case 5:
 #line 69 "glang.y"
-    { debug("score expr");		(yyval.exprPtr) = gGLReader->newScoreExpr(glangtext); ;}
+    { debug("score expr");		(yyval.exprPtr) = gGLReader->newScoreExpr(glangtext); 
+																			 if (!(yyval.exprPtr)) { glangerror("Error while parsing gmn code"); YYERROR; } ;}
     break;
 
   case 6:
-#line 70 "glang.y"
+#line 71 "glang.y"
     { debug("seq expr");		(yyval.exprPtr) = gGLReader->newComposedExpr(glangreader::kSeqOp,(yyvsp[(1) - (3)].exprPtr),(yyvsp[(3) - (3)].exprPtr)); clean((yyvsp[(1) - (3)].exprPtr), (yyvsp[(3) - (3)].exprPtr)); ;}
     break;
 
   case 7:
-#line 71 "glang.y"
+#line 72 "glang.y"
     { debug("par expr");		(yyval.exprPtr) = gGLReader->newComposedExpr(glangreader::kParOp,(yyvsp[(1) - (3)].exprPtr),(yyvsp[(3) - (3)].exprPtr)); clean((yyvsp[(1) - (3)].exprPtr), (yyvsp[(3) - (3)].exprPtr)); ;}
     break;
 
   case 8:
-#line 72 "glang.y"
+#line 73 "glang.y"
     { debug("head expr");		(yyval.exprPtr) = gGLReader->newComposedExpr(glangreader::kHeadOp,(yyvsp[(1) - (3)].exprPtr),(yyvsp[(3) - (3)].exprPtr)); clean((yyvsp[(1) - (3)].exprPtr), (yyvsp[(3) - (3)].exprPtr)); ;}
     break;
 
   case 9:
-#line 73 "glang.y"
+#line 74 "glang.y"
     { debug("tail expr");		(yyval.exprPtr) = gGLReader->newComposedExpr(glangreader::kTailOp,(yyvsp[(1) - (3)].exprPtr),(yyvsp[(3) - (3)].exprPtr)); clean((yyvsp[(1) - (3)].exprPtr), (yyvsp[(3) - (3)].exprPtr)); ;}
     break;
 
   case 10:
-#line 74 "glang.y"
+#line 75 "glang.y"
     { debug("top expr");		(yyval.exprPtr) = gGLReader->newComposedExpr(glangreader::kTopOp,(yyvsp[(1) - (3)].exprPtr),(yyvsp[(3) - (3)].exprPtr)); clean((yyvsp[(1) - (3)].exprPtr), (yyvsp[(3) - (3)].exprPtr)); ;}
     break;
 
   case 11:
-#line 75 "glang.y"
+#line 76 "glang.y"
     { debug("bottom expr");		(yyval.exprPtr) = gGLReader->newComposedExpr(glangreader::kBottomOp,(yyvsp[(1) - (3)].exprPtr),(yyvsp[(3) - (3)].exprPtr)); clean((yyvsp[(1) - (3)].exprPtr), (yyvsp[(3) - (3)].exprPtr)); ;}
     break;
 
   case 12:
-#line 76 "glang.y"
+#line 77 "glang.y"
     { debug("abstract expr");	(yyval.exprPtr) = gGLReader->newAbstractExpr((yyvsp[(2) - (4)].exprPtr),(yyvsp[(4) - (4)].exprPtr)); clean((yyvsp[(2) - (4)].exprPtr), (yyvsp[(4) - (4)].exprPtr));;}
     break;
 
   case 13:
-#line 77 "glang.y"
+#line 78 "glang.y"
     { debug("apply expr");		(yyval.exprPtr) = gGLReader->newApplyExpr((yyvsp[(1) - (3)].exprPtr),(yyvsp[(3) - (3)].exprPtr)); clean((yyvsp[(1) - (3)].exprPtr), (yyvsp[(3) - (3)].exprPtr));;}
     break;
 
   case 14:
-#line 78 "glang.y"
+#line 79 "glang.y"
     { debug("group expr");		(yyval.exprPtr) = (yyvsp[(1) - (1)].exprPtr); ;}
     break;
 
   case 15:
-#line 81 "glang.y"
+#line 82 "glang.y"
     { debug("group expr"); (yyval.exprPtr) = (yyvsp[(2) - (3)].exprPtr); ;}
     break;
 
   case 16:
-#line 83 "glang.y"
+#line 84 "glang.y"
     { debug("name"); (yyval.strPtr) = new std::string (glangtext); ;}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 1467 "glangparse.cpp"
+#line 1468 "glangparse.cpp"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1677,7 +1678,7 @@ yyreturn:
 }
 
 
-#line 85 "glang.y"
+#line 86 "glang.y"
 
 
 int	glangwrap()		{ return(1); }

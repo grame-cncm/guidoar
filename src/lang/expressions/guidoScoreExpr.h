@@ -47,6 +47,8 @@ class export guidoScoreExpr : public guidoexpression
 	public:
         static SguidoScoreExpr create (guido::Sguidoelement& score);
 
+		const guido::Sguidoelement& getScore()		{ return fScore; }
+
 		virtual void		acceptIn(guido::basevisitor& visitor);
 		virtual void		acceptOut(guido::basevisitor& visitor);
 

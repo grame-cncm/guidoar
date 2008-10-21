@@ -50,7 +50,7 @@ using namespace guidolang;
 %left PAR
 %left SEQ
 %left APPLY
-%left ABSTRACT
+%right ABSTRACT
 
 /*
 	there are actually 7 shift/reduce
@@ -66,7 +66,8 @@ deflist		: name EQ expr					{ debug("ident expr");		gGLReader->newIDExpr($1->c_s
 			| deflist name EQ expr			{ debug("deflist...");		gGLReader->newIDExpr($2->c_str(), $4); delete $2; delete $4; }
 
 
-expr		: GMN							{ debug("score expr");		$$ = gGLReader->newScoreExpr(glangtext); }
+expr		: GMN							{ debug("score expr");		$$ = gGLReader->newScoreExpr(glangtext); 
+																			 if (!$$) { glangerror("Error while parsing gmn code"); YYERROR; } }
 			| expr SEQ expr					{ debug("seq expr");		$$ = gGLReader->newComposedExpr(glangreader::kSeqOp,$1,$3); clean($1, $3); }
 			| expr PAR expr					{ debug("par expr");		$$ = gGLReader->newComposedExpr(glangreader::kParOp,$1,$3); clean($1, $3); }
 			| expr HEAD expr				{ debug("head expr");		$$ = gGLReader->newComposedExpr(glangreader::kHeadOp,$1,$3); clean($1, $3); }

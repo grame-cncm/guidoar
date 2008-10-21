@@ -27,9 +27,6 @@
 # pragma warning (disable : 4102)
 #endif
 
-#include <string>
-typedef std::string SGLExpr;
-
 //#define GLDEBUG
 
 #ifdef GLDEBUG
@@ -38,6 +35,7 @@ typedef std::string SGLExpr;
 #include "glangparse.cpp"
 
 #include <iostream>
+#include "glparser.h"
 
 #define yyin				glangin
 #define yyrestart			glangrestart
@@ -56,7 +54,7 @@ guidolang::glangreader * gGLReader;
 namespace guidolang 
 {
 
-static int parse (FILE *fd) 
+int glparser::parse (FILE *fd) 
 {
 	if (!fd) {
 		gGLReader->error("Invalid file descriptor", 0 );
@@ -71,7 +69,7 @@ static int parse (FILE *fd)
 	return res;
 }
 
-static int parse (const char *filename) 
+int glparser::parse (const char *filename) 
 {
 	int res;
 	if( !filename ) return -1; // parse error
@@ -86,7 +84,7 @@ static int parse (const char *filename)
 	return res;
 }
 
-bool readstring (const char * buffer, glangreader * r) 
+bool glparser::readstring (const char * buffer, glangreader * r) 
 {
 	gGLReader = r;
 	if (!*buffer) return false;		// error for empty buffers
@@ -100,13 +98,13 @@ bool readstring (const char * buffer, glangreader * r)
  	return ret==0;
 }
 
-bool readfile (FILE* fd, glangreader * r) 
+bool glparser::readfile (FILE* fd, glangreader * r) 
 {
 	gGLReader = r;
 	return parse (fd) == 0;
 }
 
-bool readfile (const char * file, glangreader * r) 
+bool glparser::readfile (const char * file, glangreader * r) 
 {
 	gGLReader = r;
 	return parse (file) == 0;
@@ -126,8 +124,8 @@ using namespace guidolang;
 class testreader : public glangreader
 { 
 	public:
-		virtual SGLExpr* newIDExpr			(const char *id, SGLExpr* e)	
-			{  cout << "new identified expression: " << id << " = " << *e << endl; return 0; }
+		virtual void	 newIDExpr			(const char *id, SGLExpr* e)	
+			{  cout << "new identified expression: " << id << " = " << *e << endl; }
 		virtual SGLExpr* newScoreExpr		(const char *gmn)	
 			{  return new SGLExpr(gmn); }
 		virtual SGLExpr* newComposedExpr	(compOp op, SGLExpr* e1, SGLExpr* e2)	
@@ -146,7 +144,8 @@ int main (int argc, char * argv[])
 {
 	if (argc > 1) {
 		testreader r;
-		return guidolang::readfile (argv[1], &r) ? 0 : 1;
+		glparser glp;
+		return glp.readfile (argv[1], &r) ? 0 : 1;
 	}
  	return 0;
 }

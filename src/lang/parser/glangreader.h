@@ -24,6 +24,13 @@
 #ifndef __glangreader__
 #define __glangreader__
 
+#ifdef MAIN
+# include <string>
+ typedef std::string SGLExpr;
+#else
+# include "guidoexpression.h"
+ typedef guidolang::Sguidoexpression SGLExpr;
+#endif
 
 namespace guidolang 
 {
@@ -39,7 +46,7 @@ class glangreader
 
 		virtual ~glangreader() {}
 		
-		virtual SGLExpr* newIDExpr			(const char *, SGLExpr*) = 0;
+		virtual void	 newIDExpr			(const char *, SGLExpr*) = 0;
 		virtual SGLExpr* newScoreExpr		(const char *) = 0;
 		virtual SGLExpr* newComposedExpr	(compOp op, SGLExpr*, SGLExpr*) = 0;
 		virtual SGLExpr* newAbstractExpr	(SGLExpr*, SGLExpr*) = 0;

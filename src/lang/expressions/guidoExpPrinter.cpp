@@ -1,6 +1,6 @@
 /*
   GUIDO Library
-  Copyright (C) 2006-2008  Grame
+  Copyright (C) 2008  Grame
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -21,32 +21,59 @@
 
 */
 
-#ifndef __guidoExpFactory__
-#define __guidoExpFactory__
+#ifndef __guidoExpPrinter__
+#define __guidoExpPrinter__
 
+#include <iostream>
+
+#include "guidoExpPrinter.h"
 #include "guidoApplExpr.h"
 #include "guidoAbstractExpr.h"
 #include "guidoCompExpr.h"
 #include "guidoScoreExpr.h"
-#include "singleton.h"
+#include "tree_browser.h"
+
+using namespace std;
+using namespace guido;
 
 namespace guidolang 
 {
 
-/*!
-\brief A guido language expressions factory.
-*/
-class export guidoExpFactory : public singleton<guidoExpFactory>
+//______________________________________________________________________________
+// the visit methods
+//______________________________________________________________________________
+void guidoExpPrinter::visitStart (Sguidoexpression& exp) 
 {
-    public:
-				 guidoExpFactory() {}
-		virtual ~guidoExpFactory() {}
+}
 
-		SguidoApplExpr		createApplication(Sguidoexpression& e1, Sguidoexpression& e2) const;	
-		SguidoAbstractExpr	createAbstraction(Sguidoexpression& e1, Sguidoexpression& e2) const;	
-		SguidoCompExpr		createComposition(guidoCompExpr::composition op, Sguidoexpression& e1, Sguidoexpression& e2) const;	
-		SguidoScoreExpr		createScore(guido::Sguidoelement& score) const;	
-};
+void guidoExpPrinter::visitStart (SguidoScoreExpr& exp) 
+{
+	if (fPendingOp && fPos) {
+		fOut << fPendingOp << " "; 
+		fPendingOp = 0;
+	}
+	else fPos++;
+	fOut << exp->getScore() << endl;
+}
+
+void guidoExpPrinter::visitStart (SguidoCompExpr& exp) 
+{
+	fPendingOp = exp->getOpString();
+	fPos = 0;
+}
+
+void guidoExpPrinter::visitStart (SguidoAbstractExpr& exp) 
+{
+	fPendingOp = ".";
+	fPos = 0;
+	fOut << "#";
+}
+
+void guidoExpPrinter::visitStart (SguidoApplExpr& exp) 
+{
+	fPendingOp = "@";
+	fPos = 0;
+}
 
 } // namespace
 

@@ -24,6 +24,7 @@
 #include <iostream>
 
 #include "guidoexpression.h"
+#include "guidoExpPrinter.h"
 #include "tree_browser.h"
 #include "visitor.h"
 
@@ -62,11 +63,10 @@ bool guidoexpression::operator ==(const Sguidoexpression& elt) const {
 
 //______________________________________________________________________________
 void guidoexpression::print(ostream& os) {
-/*
-	gmnvisitor gv(os);
-	tree_browser<guidoexpression> browser(&gv);
+
+	guidoExpPrinter gev(os);
+	tree_browser<guidoexpression> browser(&gev);
 	browser.browse(*this);
-*/
 }
 
 //______________________________________________________________________________

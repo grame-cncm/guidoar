@@ -24,20 +24,40 @@
 #ifndef __guidoreader__
 #define __guidoreader__
 
+#include <iostream>
+
 #include "guidoExpFactory.h"
-#include "guidoExprReader.h"
+#include "guidoExpReader.h"
 #include "guidoelement.h"
 #include "guidoparser.h"
+#include "glparser.h"
 
+using namespace std;
 using namespace guido;
 
 namespace guidolang 
 {
 
 //______________________________________________________________________________
-SGLExpr* guidoExpReader::newIDExpr (const char * id, SGLExpr* e)
+int guidoExpReader::version () const			{ return 90; }
+const char* guidoExpReader::versionStr () const
+{ 
+	static char versBuff[32];
+	int v = version();
+	sprintf (versBuff, "%d.%d", v/100, v%100);
+	return versBuff;
+}
+
+//______________________________________________________________________________
+bool guidoExpReader::parseFile  (FILE* fd)				{ return glparser::readfile (fd, this);	}
+bool guidoExpReader::parseFile  (const char* file)		{ return glparser::readfile (file, this);	}
+bool guidoExpReader::parseString  (const char* str)		{ return glparser::readstring (str, this);	}
+
+
+//______________________________________________________________________________
+void guidoExpReader::newIDExpr (const char * id, SGLExpr* e)
 {
-	return 0;
+	fExprMap[id] = *e;
 }
 
 SGLExpr* guidoExpReader::newScoreExpr (const char * gmnCode)
@@ -54,20 +74,24 @@ SGLExpr* guidoExpReader::newScoreExpr (const char * gmnCode)
 
 SGLExpr* guidoExpReader::newComposedExpr (compOp op, SGLExpr* e1, SGLExpr* e2)
 {
+	if (!e1 || !e2) return 0;
 	SGLExpr* expr = new SGLExpr;
-	*expr = guidoExpFactory::instance().createComposition(op, *e1, *e2);
+	guidoCompExpr::composition cop =  guidoCompExpr::composition(op);
+	*expr = guidoExpFactory::instance().createComposition(cop, *e1, *e2);
 	return expr;
 }
 
 SGLExpr* guidoExpReader::newAbstractExpr (SGLExpr* var, SGLExpr* e)
 {
+	if (!var || !e) return 0;
 	SGLExpr* expr = new SGLExpr;
 	*expr = guidoExpFactory::instance().createAbstraction(*var, *e);
 	return expr;
 }
 
-SGLExpr* guidoExpReader::newApplyExpr (SGLExpr* a, SGLExpr* arg)
+SGLExpr* guidoExpReader::newApplyExpr (SGLExpr* e, SGLExpr* arg)
 {
+	if (!arg || !e) return 0;
 	SGLExpr* expr = new SGLExpr;
 	*expr = guidoExpFactory::instance().createApplication(*e, *arg);
 	return expr;

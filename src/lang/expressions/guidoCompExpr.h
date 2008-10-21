@@ -41,7 +41,8 @@ class export guidoCompExpr : public guidoexpression
 		enum composition { kSeqOp, kParOp, kHeadOp, kTailOp, kTopOp, kBottomOp };
 
     protected:
-		composition	fOperation;
+		static char*	fOpStrings[];		/// operations strings; must be in 'composition' order
+		composition		fOperation;
 		
 				 guidoCompExpr(composition op, Sguidoexpression& e1, Sguidoexpression& e2);
 		virtual ~guidoCompExpr() {}
@@ -49,7 +50,8 @@ class export guidoCompExpr : public guidoexpression
 	public:		
         static SguidoCompExpr create(composition op, Sguidoexpression& e1, Sguidoexpression& e2);
 		
-		virtual composition	getOperation()		{ return fOperation; }
+		virtual composition	getOperation() const		{ return fOperation; }
+		virtual const char*	getOpString() const			{ return fOpStrings[fOperation]; }
 
 		virtual void		acceptIn(guido::basevisitor& visitor);
 		virtual void		acceptOut(guido::basevisitor& visitor);

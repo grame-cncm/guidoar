@@ -109,17 +109,18 @@ void gmnvisitor::visitStart ( SARRepeatEnd& bar )	{ Sguidotag t(bar); barline(t)
 void gmnvisitor::visitStart ( SARMusic& music )
 {
 	fVoicesCount = music->size();
-	if (fVoicesCount > 1)
-		fOut++ << "{\n";
+	fOut << "{";
+	if (fVoicesCount >= 1)
+		fOut++ << "\n";
 }
 
 //______________________________________________________________________________
 void gmnvisitor::visitEnd ( SARMusic& music )
 {
-	if (music->size() > 1) {
+	if (music->size() >= 1) {
 		fOut--;
-		fOut << "\n}";
 	}
+	fOut << "}";
 }
 
 //______________________________________________________________________________
@@ -144,13 +145,16 @@ void gmnvisitor::visitEnd ( SARChord& chord )
 void gmnvisitor::visitStart ( SARVoice& voice )
 {
 	fOut << "["; 
-	fOut++ << '\n';
+	if (voice->size () > 10) fOut++ << '\n';
 }
 
 //______________________________________________________________________________
 void gmnvisitor::visitEnd ( SARVoice& voice )
 {
-	--fOut << "\n]" << (--fVoicesCount ? ',' : ' ') << "\n" ;
+	if (voice->size () > 10) --fOut << '\n';
+	fOut << ']';
+	if  (--fVoicesCount) fOut << ",\n\n";
+	else --fOut << "\n" ;
 }
 
 } // namespace
