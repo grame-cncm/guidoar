@@ -1,0 +1,288 @@
+
+\documentclass[10pt,a4paper,frenchb]{article}
+\usepackage{pslatex}
+\usepackage[T1]{fontenc}
+\usepackage[latin1]{inputenc}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\setlength\parskip{\medskipamount}
+\setlength\parindent{0pt}
+\setlength\topmargin{0mm}
+\setlength\headheight{0mm}
+\setlength\headsep{0mm}
+
+\setlength\textheight{245mm}
+\setlength\textwidth{160mm} 
+
+\setlength\oddsidemargin{3mm} 
+\setlength\footskip{10mm}
+
+\newcommand{\es}{\{\}}
+\newcommand{\seq}{:}
+\makeatletter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
+%% Bold symbol macro for standard LaTeX users
+\providecommand{\boldsymbol}[1]{\mbox{\boldmath $#1$}}
+
+
+\usepackage{babel}
+\makeatother
+\begin{document}
+
+\title{\textbf{\textsc{G-SCOL}} \\
+A Guido Scores Programming Language}
+
+
+\author{
+%D. Fober \\
+%<fober@grame.fr>\\
+\\
+Grame, Centre National de Création Musicale \\
+Computer Music Research Dept.\\
+Draft version 1 
+}
+
+\maketitle
+
+\section{Introduction}
+
+This is a first version of a programming language specification based on the Guido Music Notation (GMN) format and on the guidoar library. It operates at score level i.e. all the basic expressions of the language are GMN scores and can be thus rendered using the Guido engine. 
+
+
+%----------------------------------------------------------------
+\section{Score operations}
+%----------------------------------------------------------------
+
+The language supports a reduced set of scores composition primitives.
+They operate at \emph{voice} and \emph{event} level. 
+A \emph{voice} corresponds to a GMN voice.
+An \emph{event} is any temporal elementary voice unit: a rest, a note or a chord are viewed as single events.
+
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{rl}
+\hline
+& Horizontal operations \\
+\hline
+$seq[s_1,s_2]$ & creates a score with the scores $s_1 $ and $s_2 $ put in sequence \\
+               & i.e. each voice of $s_2$ is appended to the corresponding voice of $s_1$ \\
+$head[s_1, s_2]$ & creates a score with the score $s_1 $ cut at the $n^{th}$ event \\
+			 & where $n$ is taken from $s_2$ first voice \\
+$tail[s_1, s_2]$ & creates a score with the score $s_1 $ cut before the $n^{th}$ event \\
+			 & where $n$ is taken from $s_2$ first voice \\
+\hline
+%\multicolumn{2}{c}{Vertical operations} \\
+& Vertical operations \\
+\hline
+$par[s_1, s_2]$ & creates a score with the scores $s_1 $ and $s_2 $ put in parallel \\
+               & i.e. the voices of $s_2$ are appended to $s_1$ \\
+$top[s_1, s_2]$ & creates a score with the score $s_1 $ cut after the $n^{th}$ voice \\
+			 & where $n$ is taken from $s_2$ voices count \\
+$bottom[s_1, s_2]$ & creates a score with the score $s_1 $ cut up to the the $n^{th}$ voice \\
+			 & where $n$ is taken from $s_2$ voices count \\
+\hline
+& Time and transposition operations \\
+\hline
+$stretch[s_1, f]$ & creates a score with the scores $s_1$ stretched by a factor $f$ \\
+$stretch[s_1, s_2]$ & creates a score with the scores $s_1$ stretched to the duration of $s_2$ \\
+$transp[s_1,i]$ & creates a score with the scores $s_1$ transposed to an interval $i$ \\
+$transp[s_1, s_2]$ & creates a score with the scores $s_1$ transposed to the pitch of the first pitched event of $s_2$ \\
+			& in case $s_2$ first event is a chord, the lowest pitch is used.\\
+\hline
+\end{tabular}
+\end{center}
+\vspace{-4mm}
+\caption{Basic score operations}
+\label{basicop}
+\end{table}
+
+
+%----------------------------------------------------------------
+\section{The programming language}
+%----------------------------------------------------------------
+
+Programming capabilities are introduced by the $\lambda$-calculus \emph{abstraction} and \emph{application} and by an extended set of reduction rules to deal with scores and scores operations.
+
+%\begin{table}[H]
+\begin{center}
+\begin{tabular}{rl}
+\hline
+$\lambda [e,f]$ & the abstraction of the expression $e$ in $f$ \\
+$[e@f]$ & the application of the function $e$ to the argument $f$\\
+\hline
+\end{tabular}
+\end{center}
+%\vspace{-4mm}
+%\caption{Abstraction and application}
+%\label{lambda}
+%\end{table}
+
+%----------------------------------------------------------------
+\subsection{Syntax}
+
+An expression of the language is defined as follow:
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{rrll}
+\hline
+$expr$ & $:=$ & $score $                 & a legal expression is a score \\
+ 	    & $|$ & $expr$ op $expr$         & or an expression composed with an expression \\
+	    & $|$ & $\lambda$ $expr . expr$  & or a $\lambda$ abstraction \\
+	    & $|$ & $expr@expr$              & or a function application 
+\vspace{3mm} \\
+$score $ & $:=$ & $\es$               & a score may be empty \\
+	    & $|$ & $gmn$               & or a gmn score (as defined by the gmn format)
+ \vspace{3mm} \\
+$op$   & $:=$ & $\seq $            & a composition operation is a \emph{sequence}\\
+ 	    & $|$ & $/$            & or a \emph{parallel} operation  \\
+ 	    & $|$ & $-|$           & or a \emph{head} operation  \\
+ 	    & $|$ & $|-$           & or a \emph{tail} operation  \\
+ 	    & $|$ & $-/$           & or a \emph{top} operation  \\
+ 	    & $|$ & $/-$           & or a \emph{bottom} operation  \\
+\hline
+\end{tabular}
+\end{center}
+\vspace{-4mm}
+\caption{Syntax definition}
+\label{syntax}
+\end{table}
+
+The table \ref{syntax} gives also the operators precedence. Thus the expression 
+$ a \seq b -| c / d $ is equivalent to: $ (a \seq b) -| (c / d) $
+
+The operations are right associative i.e.:
+$ (a\ \circ\ (b\ \circ\ (c\ \circ\ d))) $ is equivalent to: $ a\ \circ\ b\ \circ\ c\ \circ\ d $ where $\circ$ is one of the composition operations from table \ref{syntax}.
+
+The semantic of theses operations regarding the empty score $\es$ is as follow:
+\begin{center}
+\begin{tabular}{rclcl}
+ $e \seq \es$ & or & $\es \seq e$ & $=>$ & $e$  \\
+ $e / \es$ & or & $\es / e$ & $=>$ & $e$  \\
+ $e -| \es$ & or & $\es -| e$ & $=>$ & $\es$  \\
+ $e -/ \es$ & or & $\es -/ e$ & $=>$ & $\es$  \\
+ $e |- \es$ & or & $e /- \es$ & $=>$ & $e$  \\
+ $\es |- e$ & or & $\es /- e$ & $=>$ & $\es$  \\
+\end{tabular}
+\end{center}
+
+
+%----------------------------------------------------------------
+\subsection{Abstraction semantic}
+
+The semantic of a $\lambda$$s_1.s_2$ abstraction when $s_1$ and $s_2$ are basic score expressions is defined as follow:
+
+%\begin{table}[H]
+\begin{center}
+\begin{tabular}{rcl}
+ $[\lambda s_1.s_2]@expr => transp[stretch[expr, f], i]$ & where & $s_1$ and $s_2$ are basic gmn scores \\
+ 	& & $f$ is the $s_{2_duration} / s_{1_duration}$ ratio \\
+ 	& & $i$ is $s_{2_pitch} - s_{1_pitch}$ \\
+\end{tabular}
+\end{center}
+%\end{table}
+
+For simplification, $[\lambda s.s]$ is the identity function $id$ and by extension of the above:
+\vspace{-6mm}\\ 
+\begin{center}
+\begin{tabular}{rrl}
+ $[\lambda s_1.s_2] = id$ & when & $s_{2_duration} = s_{1_duration}$ \\
+ 	& and & $s_{2_pitch} = s_{1_pitch}$ \\
+\end{tabular}
+\end{center}
+
+For compound expressions, score matching makes use of a normalized version of the score i.e. a gmn score with only voices and events, where all the implicit current status (duration, octave) is made explicit. 
+
+
+
+%----------------------------------------------------------------
+\subsection{Reduction rules extension}
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{r@{@}lcll}
+ \multicolumn{4}{l}{Sequence application} \\
+ \hline
+ $ (E \seq F)$ & $(G \seq H)$  & $=>$ & $(E @ G) \seq (F @ H) $ & distributes application over time\\
+ $ (E \seq F)$ & $(G \seq H)$  & $=>$ & $((E \seq F -| G) @ G) \seq ((E \seq F |- G) @ H)$ & alternate solution \\
+ $ (E \seq F)$ & $(G / H)$  & $=>$ & $((E \seq F) @ G) / ((E \seq F) @ H)$ & \\
+ $ (E \seq F)$ & $(G -| H)$ & $=>$ & $(E \seq F) @ G) -| H$ & \\
+ $ (E \seq F)$ & $(G |- H)$ & $=>$ & $(E \seq F) @ G) |- H$ & \\
+ $ (E \seq F)$ & $(G -/ H)$ & $=>$ & $(E \seq F) @ G) -/ H$ & \\
+ $ (E \seq F)$ & $(G /- H)$ & $=>$ & $(E \seq F) @ G) /- H$ & 
+ \vspace{3mm} \\
+ \multicolumn{4}{l}{Parallel application} \\
+ \hline
+ $ (E / F)$ & $(G / H)$  & $=>$ & $(E @ G) / (F @ H)$ & distributes application over voices\\
+ $ (E / F)$ & $(G \seq H)$  & $=>$ & $((E / F) @ G) \seq ((E / F) @ H)$ & \\
+ $ (E / F)$ & $(G -| H)$ & $=>$ & $(E / F) @ G) -| H$ & \\
+ $ (E / F)$ & $(G |- H)$ & $=>$ & $(E / F) @ G) |- H$ & \\ 
+ $ (E / F)$ & $(G -/ H)$ & $=>$ & $(E / F) @ G) -/ H$ & \\
+ $ (E / F)$ & $(G /- H)$ & $=>$ & $(E / F) @ G) /- H$ & 
+ \vspace{3mm} \\
+ \multicolumn{4}{l}{\emph{Cut} application ($\circ$ is any of $-|$, $|-$, $-/$, $/-$)} \\
+ \hline
+ $ (E \circ F)$ & $(G \seq H)$ & $=>$ & $(E \circ F) @ G) \seq (E \circ F) @ H)$ & \\
+ $ (E \circ F)$ & $(G / H)$ & $=>$ & $(E \circ F) @ G) / (E \circ F) @ H)$ & \\ 
+ $ (E \circ F)$ & $(G -| H)$ & $=>$ & $(E \circ F) @ G) -| H$ & \\
+ $ (E \circ F)$ & $(G |- H)$ & $=>$ & $(E \circ F) @ G) |- H$ & \\ 
+ $ (E \circ F)$ & $(G -/ H)$ & $=>$ & $(E \circ F) @ G) -/ H$ & \\
+ $ (E \circ F)$ & $(G /- H)$ & $=>$ & $(E \circ F) @ G) /- H$ & 
+\\
+
+\end{tabular}
+\end{center}
+\end{table}
+
+
+%----------------------------------------------------------------
+\section{Evaluation}
+%----------------------------------------------------------------
+
+%----------------------------------------------------------------
+\subsection{Alpha reduction}
+
+$\alpha$-reduction is an operation that transforms a general abstraction $\lambda^G[e,f]$ into a simplified abstraction $\lambda[\nu^e,f']$ where $\nu^e$ is a named variable and $f'$ is an expression where all the bounded occurrences of $e$ in $f$ have been replaced by $\nu^e$.
+
+Expression matching looks for alpha equivalence. Score matching makes use of the normalized score mentioned above. 
+
+%----------------------------------------------------------------
+\subsection{Alpha reduction on scores}
+
+As mentioned above, when $e$ and $f$ are basic gmn scores, $[\lambda e,f]$ has a special semantic and is simplified into: 
+%\begin{center}
+\begin{tabular}{rcl}
+ $\lambda[\nu ^e,f']$ & where & $\nu^e$ is a named variable \\
+ 	& and & $f'$ is $transp[stretch[\nu^e, d], i]$ \\
+ 	&  & where $d$ is the $f_{duration} / e_{duration}$ ratio \\
+ 	&  & and $i$ is $f_{pitch} - e_{pitch}$ \\
+\end{tabular}
+%\end{center}
+
+
+%----------------------------------------------------------------
+\subsection{Beta reduction}
+
+$\beta$-reduction transforms recursively a \emph{simplified} expression into values by replacing the named variable $\nu^e$ with the corresponding applications arguments. A values is a basic gmn scores or a closure $\Lambda$ or an application $@'$ that can't be reduced:
+\begin{center}
+\begin{tabular}{rl}
+ $\Lambda[\lambda[\nu ^e,f],\rho]$ & a closure associating a $\lambda$-abstraction and an environment $\rho$ \\
+ $@'[u,v]$ & an application of $u$ to $v$ that can't be reduced \\
+\end{tabular}
+\end{center}
+
+
+%----------------------------------------------------------------
+\subsection{Evaluation implementation}
+
+The implementation of the evaluator is based on \emph{environments} and two functions mutually recursive: \\
+$\epsilon(e,\rho)$ : evaluates an expression $e$ from $EXP \times ENV \rightarrow VAL$ using an environment $\rho$\\
+$A(u,v)$ : from $VAL \times VAL \rightarrow VAL$, apply the function $u$ to the argument $v$.
+
+
+
+\end{document}
