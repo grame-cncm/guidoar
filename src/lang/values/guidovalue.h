@@ -48,8 +48,8 @@ class export guidovalue : public guido::ctree<guidovalue>, public guido::visitab
 	public:
  		enum { kInfinite = UINT_MAX };
 		
-		bool		infinite(const rational& r)	{ rational inf = infinite(); return r == inf; }
-		rational	infinite()					{ return rational(kInfinite, 1); }
+		bool		infinite(const rational& r) const	{ rational inf = infinite(); return r == inf; }
+		rational	infinite() const					{ return rational(kInfinite, 1); }
 
 		virtual Sguidovalue	head	(unsigned int length)		= 0;
 		virtual Sguidovalue	head	(const rational& length)	= 0;

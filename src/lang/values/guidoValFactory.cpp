@@ -35,7 +35,7 @@ namespace guidolang
 {
 
 //______________________________________________________________________________
-SguidoApplExpr guidoValFactory::createMix(Sguidovalue& v1, Sguidovalue& v2) const
+Sguidovalue guidoValFactory::createMix(Sguidovalue& v1, Sguidovalue& v2) const
 {
 	return guidoMixValue::create(v1, v2);
 }

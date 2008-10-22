@@ -24,8 +24,10 @@
 #include <iostream>
 #include "guidoMixValue.h"
 #include "guidoValFactory.h"
+#include "visitor.h"
 
 using namespace std;
+using namespace guido;
 
 namespace guidolang 
 {
@@ -39,57 +41,75 @@ Sguidovalue	guidoMixValue::create (Sguidovalue v1, Sguidovalue v2)
 //______________________________________________________________________________
 Sguidovalue	guidoMixValue::head	(unsigned int length)
 {
-	return guidoValFactory.instance().createMix(head(fArg1,length), head(fArg2,length));
+	Sguidovalue v1 = fArg1->head(length);
+	Sguidovalue v2 = fArg2->head(length);
+	return guidoValFactory::instance().createMix(v1, v2);
 }
 
 Sguidovalue	guidoMixValue::head	(const rational& length)
 {
-	return guidoValFactory.instance().createMix(head(fArg1,length), head(fArg2,length));
+	Sguidovalue v1 = fArg1->head(length);
+	Sguidovalue v2 = fArg2->head(length);
+	return guidoValFactory::instance().createMix(v1, v2);
 }
 
 //______________________________________________________________________________
 Sguidovalue	guidoMixValue::tail	(unsigned int length)
 {
-	return guidoValFactory.instance().createMix(tail(fArg1,length), tail(fArg2,length));
+	Sguidovalue v1 = fArg1->tail(length);
+	Sguidovalue v2 = fArg2->tail(length);
+	return guidoValFactory::instance().createMix(v1, v2);
 }
 
 Sguidovalue	guidoMixValue::tail	(const rational& length)
 {
-	return guidoValFactory.instance().createMix(tail(fArg1,length), tail(fArg2,length));
+	Sguidovalue v1 = fArg1->tail(length);
+	Sguidovalue v2 = fArg2->tail(length);
+	return guidoValFactory::instance().createMix(v1, v2);
 }
 
 //______________________________________________________________________________
 Sguidovalue	guidoMixValue::top (unsigned int vnum)
 {
-	unsigned int vcount = fArg1.voices();
-	if (vnum > vcount)
-		return guidoValFactory.instance().createMix(fArg1, top(fArg2,vnum - vcount));
-	return top(fArg1, vnum);
+	unsigned int vcount = fArg1->voices();
+	if (vnum > vcount) {
+		Sguidovalue v2 = fArg2->top(vnum - vcount);
+		return guidoValFactory::instance().createMix(fArg1, v2);
+	}
+	return fArg1->top(vnum);
 }
 
 Sguidovalue	guidoMixValue::bottom (unsigned int vnum)
 {
-	unsigned int vcount = fArg1.voices();
-	if (vnum < vcount)
-		return guidoValFactory.instance().createMix(bottom(fArg1,vnum), fArg2);
-	return bottom(fArg2, vnum - vcount);
+	unsigned int vcount = fArg1->voices();
+	if (vnum < vcount) {
+		Sguidovalue v1 = fArg1->bottom(vnum);
+		return guidoValFactory::instance().createMix(v1, fArg2);
+	}
+	return fArg2->bottom(vnum - vcount);
 }
 
 //______________________________________________________________________________
 Sguidovalue	guidoMixValue::transpose(int interval)
 {
-	return guidoValFactory.instance().createMix(transpose(fArg1, interval), transpose(fArg2, interval));
+	Sguidovalue v1 = fArg1->transpose(interval);
+	Sguidovalue v2 = fArg2->transpose(interval);
+	return guidoValFactory::instance().createMix(v1, v2);
 }
 
 //______________________________________________________________________________
 Sguidovalue	guidoMixValue::stretch (rational ratio)
 {
-	return guidoValFactory.instance().createMix(stretch(fArg1, ratio), stretch(fArg2, ratio));
+	Sguidovalue v1 = fArg1->stretch(ratio);
+	Sguidovalue v2 = fArg2->stretch(ratio);
+	return guidoValFactory::instance().createMix(v1, v2);
 }
 
 Sguidovalue	guidoMixValue::stretch (float ratio)
 {
-	return guidoValFactory.instance().createMix(stretch(fArg1, ratio), stretch(fArg2, ratio));
+	Sguidovalue v1 = fArg1->stretch(ratio);
+	Sguidovalue v2 = fArg2->stretch(ratio);
+	return guidoValFactory::instance().createMix(v1, v2);
 }
 
 //______________________________________________________________________________
@@ -126,7 +146,7 @@ unsigned int guidoMixValue::voices () const
 
 unsigned int guidoMixValue::pitch () const
 {
-	return pitch(fArg1);
+	return fArg1->pitch();
 }
 
 //______________________________________________________________________________
