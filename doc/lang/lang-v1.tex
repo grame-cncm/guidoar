@@ -328,7 +328,9 @@ The functions required for the evaluation process are the following:
  $\eval{e}$ 			& evaluates $e$ with the environment $\envsym$ \\
  $\apply(u,v)$ 			& apply $u$ to $v$ \\
  $\head(u,l)$ 				& takes the head of $u$ up to the length $l$ \\
+ $\head(u,d)$ 				& takes the head of $u$ up to the duration $d$ \\
  $\tail(u,l)$ 				& takes the tail of $u$ after the length $l$ \\
+ $\tail(u,d)$ 		  & takes the tail of $u$ after the duration $d$ \\
  $\top(u,v)$ 				& takes the top of $u$ up to the voice $v$ \\
  $\bottom(u,v)$ 			& takes the bottom of $u$ after the voice $v$ \\
  $\transp(u,i)$ 		   & transposes $u$ using the interval $i$ \\
@@ -341,6 +343,8 @@ The functions required for the evaluation process are the following:
  \hline
 \end{tabular}
 \end{center}
+
+$\head$ and $\tail$ are polymorphic functions that can operate both at events and at time levels.
 
 
 %----------------------------------------------------------------
@@ -376,7 +380,7 @@ The application function $\apply(u,v)$ : \f{\val}{\val}{\val} applies $u$ to $v$
 \begin{tabular}{rc@{ $\rightarrow$ }l}
  \hline
  $\apply(score,w)$				& & $\noredex[score,w]$ \\
- $\apply(\seq [u,v],w)$		& & $seq[\apply(u,\head(w,\dur(u))), \apply(v,\head(\tail(w,\dur(u),\dur(v))))]$ \\
+ $\apply(\seq [u,v],w)$		& & $seq[\apply(u,\head(w,\dur(u))), \apply(v,\tail(w,\dur(u)))]$ \\
  $\apply(/ [u,v],w)$ 			& & $mix[\apply(u,w),\apply(v,w)]$ \\
  $\apply(\noredex [u,v],w)$ 	& & $\noredex[\noredex[u,v],w]$ \\
  $\apply(\closenv{f}{l}{d},w)$ 		& & $\evalsym(f,\envsym[\var{e} := w])$ \\
@@ -419,7 +423,7 @@ The function $\dur(u)$ : $\val \rightarrow \mathbb{R}$ computes the duration of 
 
 %----------------------------------------------------------------
 \subsubsection{Transposition computation $\transp()$}
-The function $\transp(u,n)$ :  \f{\val}{\mathbb{Z}}{\val} operates a $n$ interval transposition:
+The function $\transp(u,n)$ :  \f{\val}{\mathbb{Z}}{\val} operates a $n$ chromatic pitch transposition:
 
 \begin{center}
 \begin{tabular*}{12cm}{rc@{ $\rightarrow$ }l}

@@ -139,6 +139,8 @@
 		D3A471250E9E3C1C0062E209 /* event2timevisitor.h in Headers */ = {isa = PBXBuildFile; fileRef = D3A471230E9E3C1C0062E209 /* event2timevisitor.h */; };
 		D3A472B00E9E64EB0062E209 /* guidoev2time.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3A471460E9E47F30062E209 /* guidoev2time.cpp */; };
 		D3A472B10E9E64EF0062E209 /* libguidoar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoar.framework */; };
+		D3AADDAA0EAF7D4C0071BBD3 /* guidovalue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3AADDA80EAF7D4C0071BBD3 /* guidovalue.cpp */; };
+		D3AADDAB0EAF7D4C0071BBD3 /* guidovalue.h in Headers */ = {isa = PBXBuildFile; fileRef = D3AADDA90EAF7D4C0071BBD3 /* guidovalue.h */; };
 		D3B095500E838A9800262449 /* midicontextvisitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3B0954E0E838A9800262449 /* midicontextvisitor.cpp */; };
 		D3B095510E838A9800262449 /* midicontextvisitor.h in Headers */ = {isa = PBXBuildFile; fileRef = D3B0954F0E838A9800262449 /* midicontextvisitor.h */; };
 		D3B095BD0E83D64400262449 /* libguidoar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoar.framework */; };
@@ -265,7 +267,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = D39C11CA0EADC4E600C4E199 /* guidolang */;
+			remoteGlobalIDString = D39C11CA0EADC4E600C4E199;
 			remoteInfo = guidolang;
 		};
 		D3A472B70E9E65260062E209 /* PBXContainerItemProxy */ = {
@@ -417,6 +419,8 @@
 		D3A471230E9E3C1C0062E209 /* event2timevisitor.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = event2timevisitor.h; sourceTree = "<group>"; };
 		D3A471460E9E47F30062E209 /* guidoev2time.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = guidoev2time.cpp; path = ../tools/guidoev2time.cpp; sourceTree = "<group>"; };
 		D3A472AC0E9E64D50062E209 /* guidoev2time */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = guidoev2time; sourceTree = BUILT_PRODUCTS_DIR; };
+		D3AADDA80EAF7D4C0071BBD3 /* guidovalue.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = guidovalue.cpp; path = ../src/lang/values/guidovalue.cpp; sourceTree = SOURCE_ROOT; };
+		D3AADDA90EAF7D4C0071BBD3 /* guidovalue.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = guidovalue.h; path = ../src/lang/values/guidovalue.h; sourceTree = SOURCE_ROOT; };
 		D3B0954E0E838A9800262449 /* midicontextvisitor.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = midicontextvisitor.cpp; path = ../src/visitors/midicontextvisitor.cpp; sourceTree = SOURCE_ROOT; };
 		D3B0954F0E838A9800262449 /* midicontextvisitor.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = midicontextvisitor.h; path = ../src/visitors/midicontextvisitor.h; sourceTree = SOURCE_ROOT; };
 		D3B095B70E83D62B00262449 /* guido2midi */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = guido2midi; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -892,6 +896,8 @@
 		D3F3311F0EACCDEB00060AC2 /* values */ = {
 			isa = PBXGroup;
 			children = (
+				D3AADDA80EAF7D4C0071BBD3 /* guidovalue.cpp */,
+				D3AADDA90EAF7D4C0071BBD3 /* guidovalue.h */,
 			);
 			name = values;
 			path = ../src/lang/values;
@@ -958,6 +964,7 @@
 				D39C11C50EADBA3800C4E199 /* guidoExpReader.h in Headers */,
 				D39C12280EADCAD800C4E199 /* glparser.h in Headers */,
 				D39C12E90EADE89300C4E199 /* guidoExpPrinter.h in Headers */,
+				D3AADDAB0EAF7D4C0071BBD3 /* guidovalue.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1374,6 +1381,7 @@
 				D3F331C00EACE21100060AC2 /* guidoExpFactory.cpp in Sources */,
 				D39C11C40EADBA3800C4E199 /* guidoExpReader.cpp in Sources */,
 				D39C12E80EADE89300C4E199 /* guidoExpPrinter.cpp in Sources */,
+				D3AADDAA0EAF7D4C0071BBD3 /* guidovalue.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
