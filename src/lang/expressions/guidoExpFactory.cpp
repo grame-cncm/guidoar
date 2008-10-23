@@ -36,9 +36,9 @@ namespace guidolang
 {
 
 //______________________________________________________________________________
-SguidoApplExpr guidoExpFactory::createApplication(Sguidoexpression& e1, Sguidoexpression& e2) const
+SguidoApplyExpr guidoExpFactory::createApplication(Sguidoexpression& e1, Sguidoexpression& e2) const
 {
-	SguidoApplExpr expr = guidoApplExpr::create(e1, e2);
+	SguidoApplyExpr expr = guidoApplyExpr::create(e1, e2);
 	return expr;
 }
 

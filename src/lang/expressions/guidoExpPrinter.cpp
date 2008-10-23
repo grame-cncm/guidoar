@@ -27,7 +27,7 @@
 #include <iostream>
 
 #include "guidoExpPrinter.h"
-#include "guidoApplExpr.h"
+#include "guidoApplyExpr.h"
 #include "guidoAbstractExpr.h"
 #include "guidoCompExpr.h"
 #include "guidoScoreExpr.h"

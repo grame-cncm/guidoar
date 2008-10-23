@@ -21,31 +21,37 @@
 
 */
 
-#ifndef __guidoExpFactory__
-#define __guidoExpFactory__
+#ifndef __guidoIdentExpr__
+#define __guidoIdentExpr__
 
-#include "guidoApplyExpr.h"
-#include "guidoAbstractExpr.h"
-#include "guidoCompExpr.h"
-#include "guidoScoreExpr.h"
-#include "singleton.h"
+#include "guidoexpression.h"
 
 namespace guidolang 
 {
 
-/*!
-\brief A guido language expressions factory.
-*/
-class export guidoExpFactory : public singleton<guidoExpFactory>
-{
-    public:
-				 guidoExpFactory() {}
-		virtual ~guidoExpFactory() {}
+class guidoIdentExpr;
+typedef guido::SMARTP<guidoIdentExpr> 	SguidoIdentExpr;
 
-		SguidoApplyExpr		createApplication(Sguidoexpression& e1, Sguidoexpression& e2) const;	
-		SguidoAbstractExpr	createAbstraction(Sguidoexpression& e1, Sguidoexpression& e2) const;	
-		SguidoCompExpr		createComposition(guidoCompExpr::composition op, Sguidoexpression& e1, Sguidoexpression& e2) const;	
-		SguidoScoreExpr		createScore(guido::Sguidoelement& score) const;	
+/*!
+\brief abstraction expression.
+*/
+class export guidoIdentExpr : public guidoexpression
+{
+    protected:
+		Sguidoexpression fExp;
+		
+				 guidoIdentExpr(Sguidoexpression e) : fExp(e) {}
+		virtual ~guidoIdentExpr() {}
+
+	public:		
+        static SguidoIdentExpr create(Sguidoexpression e);
+		
+		virtual Sguidovalue eval(SguidoEnv env);
+
+		virtual void		acceptIn(guido::basevisitor& visitor);
+		virtual void		acceptOut(guido::basevisitor& visitor);
+
+		virtual bool operator ==(const SguidoIdentExpr& i) const;
 };
 
 } // namespace

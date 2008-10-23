@@ -22,7 +22,13 @@
 */
 
 #include <iostream>
+#include "exceptions.h"
 #include "guidoCompExpr.h"
+#include "guidoEnv.h"
+#include "guidovalue.h"
+#include "guidoMixValue.h"
+#include "guidoSeqValue.h"
+
 #include "visitor.h"
 
 using namespace std;
@@ -42,6 +48,50 @@ guidoCompExpr::guidoCompExpr(composition op, Sguidoexpression& e1, Sguidoexpress
 {
 	push(e1);
 	push(e2);	
+}
+
+//______________________________________________________________________________
+Sguidovalue guidoCompExpr::eval(SguidoEnv env)
+{
+	Sguidoexpression arg1 = getArg(0);
+	Sguidoexpression arg2 = getArg(1);
+	if (!arg1 || !arg2) throw (newException (kMissingArgument));
+
+	Sguidovalue earg1 = arg1->eval(env);
+	Sguidovalue earg2 = arg2->eval(env);
+	if (!earg1 || !earg2) throw (newException (kNullValue));
+	
+	Sguidovalue result;
+	switch (fOperation) {
+		case kSeqOp:
+			result = guidoSeqValue::create(earg1, earg2);
+			break;
+
+		case kParOp:
+			result = guidoMixValue::create(earg1, earg2);
+			break;
+
+		case kHeadOp:
+			result = earg1->head(earg2->length());
+			break;
+			
+		case kTailOp:
+			result = earg1->tail(earg2->length());
+			break;
+
+		case kTopOp:
+			result = earg1->top(earg2->voices());
+			break;
+
+		case kBottomOp:
+			result = earg1->bottom(earg2->voices());
+			break;
+
+		default:
+			throw (newException (kUndefinedCompOperation));
+	}
+	if (!result) throw (newException (kNullValue));
+	return result;
 }
 
 //______________________________________________________________________________

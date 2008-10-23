@@ -21,48 +21,50 @@
 
 */
 
-#ifndef __guidoexpression__
-#define __guidoexpression__
+#ifndef __guidoSeqValue__
+#define __guidoSeqValue__
 
-#include "export.h"
-#include "visitable.h"
-#include "ctree.h"
-#include "smartpointer.h"
+#include "guidovalue.h"
 
 namespace guidolang 
 {
 
-class guidoexpression;
-class guidovalue;
-class guidoEnv;
-
-typedef guido::SMARTP<guidoexpression> 	Sguidoexpression;
-typedef guido::SMARTP<guidovalue>		Sguidovalue;
-typedef guido::SMARTP<guidoEnv>			SguidoEnv;
-
-
 /*!
 \brief The base class for guido language expressions.
 */
-class export guidoexpression : public guido::ctree<guidoexpression>, public guido::visitable
+class export guidoSeqValue : public guidovalue
 {
+    private:
+		Sguidovalue fArg1, fArg2;
+		
     protected:
-		virtual ~guidoexpression() {}
+				 guidoSeqValue(Sguidovalue v1, Sguidovalue v2) : fArg1(v1), fArg2(v2) {}
+		virtual ~guidoSeqValue() {}
 
 	public:
+		static Sguidovalue create(Sguidovalue v1, Sguidovalue v2);
+
+		virtual Sguidovalue	apply	(Sguidovalue& v);
+		virtual Sguidovalue	head	(unsigned int length);
+		virtual Sguidovalue	head	(const rational& length);
+		virtual Sguidovalue	tail	(unsigned int length);
+		virtual Sguidovalue	tail	(const rational& length);
+		virtual Sguidovalue	top		(unsigned int vnum);
+		virtual Sguidovalue	bottom	(unsigned int vnum);
+		virtual Sguidovalue	transpose(int interval);
+		virtual Sguidovalue	stretch  (rational ratio);
+		virtual Sguidovalue	stretch  (float ratio);
+
+		virtual unsigned int	length	() const;
+		virtual rational		duration() const;
+		virtual unsigned int	voices	() const;
+		virtual unsigned int	pitch	() const;
+
 		virtual void		acceptIn(guido::basevisitor& visitor);
 		virtual void		acceptOut(guido::basevisitor& visitor);
-		virtual	void		print(std::ostream& os);
-
-		virtual Sguidovalue eval(SguidoEnv env) = 0;
-
-		//________________________________________________________________________
-		virtual Sguidoexpression getArg(unsigned int n) const;
-		virtual bool operator ==(const Sguidoexpression& i) const;
-		virtual bool operator !=(const Sguidoexpression& i) const		{ return !(*this == i); }
 };
+typedef guido::SMARTP<guidoSeqValue> 	SguidoSeqValue;
 
-export std::ostream& operator << (std::ostream& os, const Sguidoexpression& elt);
 
 } // namespace
 

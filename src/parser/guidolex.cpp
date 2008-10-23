@@ -386,18 +386,18 @@ struct yy_trans_info
 	};
 static yyconst flex_int16_t yy_accept[132] =
     {   0,
-        0,    0,    8,    8,   11,   11,    0,    0,   46,   44,
+        0,    0,    8,    8,   10,   10,    0,    0,   46,   44,
        43,   43,   44,   25,    7,   26,   20,   21,   27,   44,
        16,   44,   23,   28,    1,   17,   33,   29,   18,   44,
        19,   41,   39,   39,   39,   39,   39,   39,   39,   39,
        44,   44,   32,   44,   44,   31,   44,   14,   22,   15,
-        8,    9,    8,   11,   11,   11,   11,   34,   35,   34,
+        8,    9,    8,   10,   10,   10,   10,   34,   35,   34,
        34,   34,   34,   34,   34,   34,   34,   34,   34,   34,
        32,   34,   34,   31,   34,   43,    7,    0,    0,   42,
-        0,   10,    0,    2,    0,    3,   24,    4,    0,    1,
+        0,   13,    0,    2,    0,    3,   24,    4,    0,    1,
        36,    0,    0,   32,    0,   37,    0,    0,    0,   30,
 
-        0,    8,    9,    8,   11,   12,   13,   34,   34,   34,
+        0,    8,    9,    8,   10,   11,   12,   34,   34,   34,
        32,   34,   34,   34,   34,   34,   30,   34,    0,    5,
         6,   36,   38,    0,   34,   34,    0,   34,   40,   34,
         0
@@ -553,7 +553,7 @@ static yyconst flex_int16_t yy_chk[279] =
 /* Table of booleans, true if rule could match eol. */
 static yyconst flex_int32_t yy_rule_can_match_eol[46] =
     {   0,
-0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 
+0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
     0, 0, 1, 1, 0, 0,     };
 
@@ -914,23 +914,23 @@ case 10:
 /* rule 10 can match eol */
 YY_RULE_SETUP
 #line 71 "guido.l"
-nested=1; BEGIN COMMENT;
+
 	YY_BREAK
 case 11:
-/* rule 11 can match eol */
 YY_RULE_SETUP
 #line 72 "guido.l"
-
+nested++; 
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
 #line 73 "guido.l"
-nested++; 
+if (--nested==0) BEGIN INITIAL;
 	YY_BREAK
 case 13:
+/* rule 13 can match eol */
 YY_RULE_SETUP
 #line 74 "guido.l"
-if (--nested==0) BEGIN INITIAL;
+nested=1; BEGIN COMMENT;
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
@@ -1508,7 +1508,7 @@ static int yy_get_next_buffer (void)
 				case EOB_ACT_END_OF_FILE:
 					{
 					if ( guidoarwrap( ) )
-						return EOF;
+						return 0;
 
 					if ( ! (yy_did_buffer_switch_on_eof) )
 						YY_NEW_FILE;

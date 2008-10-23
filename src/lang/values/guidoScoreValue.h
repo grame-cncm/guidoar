@@ -21,10 +21,11 @@
 
 */
 
-#ifndef __guidoMixValue__
-#define __guidoMixValue__
+#ifndef __guidoScoreValue__
+#define __guidoScoreValue__
 
 #include "guidovalue.h"
+#include "guidoelement.h"
 
 namespace guidolang 
 {
@@ -32,17 +33,19 @@ namespace guidolang
 /*!
 \brief The base class for guido language expressions.
 */
-class export guidoMixValue : public guidovalue
+class export guidoScoreValue : public guidovalue
 {
     private:
-		Sguidovalue fArg1, fArg2;
+		guido::Sguidoelement fScore;
 		
     protected:
-				 guidoMixValue(Sguidovalue v1, Sguidovalue v2) : fArg1(v1), fArg2(v2) {}
-		virtual ~guidoMixValue() {}
+				 guidoScoreValue() {}	
+				 guidoScoreValue(guido::Sguidoelement score) : fScore(score) {}
+		virtual ~guidoScoreValue() {}
 
 	public:
-		static Sguidovalue create(Sguidovalue v1, Sguidovalue v2);
+		static Sguidovalue create();		// creates an empty score
+		static Sguidovalue create(guido::Sguidoelement score);
 
 		virtual Sguidovalue	apply	(Sguidovalue& v);
 		virtual Sguidovalue	head	(unsigned int length);
@@ -63,7 +66,7 @@ class export guidoMixValue : public guidovalue
 		virtual void		acceptIn(guido::basevisitor& visitor);
 		virtual void		acceptOut(guido::basevisitor& visitor);
 };
-typedef guido::SMARTP<guidoMixValue> 	SguidoMixValue;
+typedef guido::SMARTP<guidoScoreValue> 	SguidoScoreValue;
 
 
 } // namespace

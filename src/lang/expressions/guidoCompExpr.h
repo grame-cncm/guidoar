@@ -50,6 +50,8 @@ class export guidoCompExpr : public guidoexpression
 	public:		
         static SguidoCompExpr create(composition op, Sguidoexpression& e1, Sguidoexpression& e2);
 		
+		virtual Sguidovalue eval(SguidoEnv env);
+
 		virtual composition	getOperation() const		{ return fOperation; }
 		virtual const char*	getOpString() const			{ return fOpStrings[fOperation]; }
 

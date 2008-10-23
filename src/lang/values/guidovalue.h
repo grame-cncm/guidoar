@@ -42,7 +42,6 @@ typedef guido::SMARTP<guidovalue> 	Sguidovalue;
 class export guidovalue : public guido::ctree<guidovalue>, public guido::visitable
 {
     protected:
-				 guidovalue() {}
 		virtual ~guidovalue() {}
 
 	public:
@@ -51,6 +50,7 @@ class export guidovalue : public guido::ctree<guidovalue>, public guido::visitab
 		bool		infinite(const rational& r) const	{ rational inf = infinite(); return r == inf; }
 		rational	infinite() const					{ return rational(kInfinite, 1); }
 
+		virtual Sguidovalue	apply	(Sguidovalue& v)			= 0;
 		virtual Sguidovalue	head	(unsigned int length)		= 0;
 		virtual Sguidovalue	head	(const rational& length)	= 0;
 		virtual Sguidovalue	tail	(unsigned int length)		= 0;

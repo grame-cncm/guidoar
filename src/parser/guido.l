@@ -68,10 +68,10 @@ EOL		[\x0a\x0d]
 <CMNTLN>.*	
 <CMNTLN>{EOL}+		BEGIN INITIAL;
 
-{SPACE}*"(*"		nested=1; BEGIN COMMENT;
 <COMMENT>.|{EOL}*
 <COMMENT>"(*"		nested++; 
 <COMMENT>"*)"		if (--nested==0) BEGIN INITIAL;
+{SPACE}*"(*"		nested=1; BEGIN COMMENT;
 
 "{"					return STARTCHORD;
 "}"					return ENDCHORD;

@@ -21,33 +21,35 @@
 
 */
 
-#ifndef __guidoApplExpr__
-#define __guidoApplExpr__
+#ifndef __guidoApplyExpr__
+#define __guidoApplyExpr__
 
 #include "guidoexpression.h"
 
 namespace guidolang 
 {
 
-class guidoApplExpr;
-typedef guido::SMARTP<guidoApplExpr> 	SguidoApplExpr;
+class guidoApplyExpr;
+typedef guido::SMARTP<guidoApplyExpr> 	SguidoApplyExpr;
 
 /*!
 \brief application expression.
 */
-class export guidoApplExpr : public guidoexpression
+class export guidoApplyExpr : public guidoexpression
 {
     protected:
-				 guidoApplExpr(Sguidoexpression& exp, Sguidoexpression& arg);
-		virtual ~guidoApplExpr() {}
+				 guidoApplyExpr(Sguidoexpression& exp, Sguidoexpression& arg);
+		virtual ~guidoApplyExpr() {}
 
 	public:
-        static SguidoApplExpr create(Sguidoexpression& exp, Sguidoexpression& arg);
+        static SguidoApplyExpr create(Sguidoexpression& exp, Sguidoexpression& arg);
+
+		virtual Sguidovalue eval(SguidoEnv env);
 
 		virtual void		acceptIn(guido::basevisitor& visitor);
 		virtual void		acceptOut(guido::basevisitor& visitor);
 
-		virtual bool operator ==(const SguidoApplExpr& i) const;
+		virtual bool operator ==(const SguidoApplyExpr& i) const;
 };
 
 } // namespace

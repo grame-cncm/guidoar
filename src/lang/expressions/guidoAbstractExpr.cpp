@@ -22,10 +22,11 @@
 */
 
 #include <iostream>
-
-#include "guidoexpression.h"
-#include "guidoExpPrinter.h"
-#include "tree_browser.h"
+#include "exceptions.h"
+#include "guidoAbstractExpr.h"
+#include "guidoApplyValue.h"
+#include "guidoClosureValue.h"
+#include "guidoEnv.h"
 #include "visitor.h"
 
 using namespace std;
@@ -35,52 +36,52 @@ namespace guidolang
 {
 
 //______________________________________________________________________________
-// guidoexpression
+// guidoAbstractExpr
 //______________________________________________________________________________
-void guidoexpression::acceptIn(basevisitor& v) {
-	if (visitor<Sguidoexpression>* p = dynamic_cast<visitor<Sguidoexpression>*>(&v)) {
-		Sguidoexpression ge = this;
+guidoAbstractExpr::guidoAbstractExpr(Sguidoexpression& var, Sguidoexpression& exp)
+{
+	push(var);	
+	push(exp);
+}
+
+//______________________________________________________________________________
+Sguidovalue guidoAbstractExpr::eval(SguidoEnv env)
+{
+	Sguidoexpression arg1 = getArg(0);
+	Sguidoexpression arg2 = getArg(1);
+	if (!arg1 || !arg2) throw (newException (kMissingArgument));
+
+	SguidoEnv empy = guidoEnv::create();
+	Sguidovalue earg1 = arg1->eval(env);
+	Sguidovalue earg2 = arg2->eval(env);
+	if (!earg1 || !earg2) throw (newException (kNullValue));
+
+	return guidoApplyValue::create(earg1, earg2);
+}
+
+//______________________________________________________________________________
+SguidoAbstractExpr guidoAbstractExpr::create(Sguidoexpression& var, Sguidoexpression& exp)		
+	{ guidoAbstractExpr * o = new guidoAbstractExpr(var, exp); assert(o!=0); return o; }
+
+//______________________________________________________________________________
+void guidoAbstractExpr::acceptIn(basevisitor& v) {
+	if (visitor<SguidoAbstractExpr>* p = dynamic_cast<visitor<SguidoAbstractExpr>*>(&v)) {
+		SguidoAbstractExpr ge = this;
 		p->visitStart (ge);
 	}
 }
 
 //______________________________________________________________________________
-void guidoexpression::acceptOut(basevisitor& v) {
-	if (visitor<Sguidoexpression>* p = dynamic_cast<visitor<Sguidoexpression>*>(&v)) {
-		Sguidoexpression ge = this;
+void guidoAbstractExpr::acceptOut(basevisitor& v) {
+	if (visitor<SguidoAbstractExpr>* p = dynamic_cast<visitor<SguidoAbstractExpr>*>(&v)) {
+		SguidoAbstractExpr ge = this;
 		p->visitEnd (ge);
 	}
 }
 
 //______________________________________________________________________________
-Sguidoexpression guidoexpression::getArg(unsigned int n) const { 
-	ctree<guidoexpression>::const_literator i = lbegin();
-	do {
-		if (i == lend()) break;
-		if (n == 0) return *i;
-		i++;
-		n--;
-	} while (n >= 0);
-	return 0;
-}
-
-//______________________________________________________________________________
-bool guidoexpression::operator ==(const Sguidoexpression& elt) const { 
+bool guidoAbstractExpr::operator ==(const SguidoAbstractExpr& elt) const { 
 	return true;
-}
-
-//______________________________________________________________________________
-void guidoexpression::print(ostream& os) {
-
-	guidoExpPrinter gev(os);
-	tree_browser<guidoexpression> browser(&gev);
-	browser.browse(*this);
-}
-
-//______________________________________________________________________________
-ostream& operator << (ostream& os, const Sguidoexpression& elt) {
-	elt->print(os);
-	return os;
 }
 
 } // namespace

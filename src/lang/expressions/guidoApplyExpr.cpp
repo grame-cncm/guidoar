@@ -22,8 +22,10 @@
 */
 
 #include <iostream>
-
-#include "guidoScoreExpr.h"
+#include "exceptions.h"
+#include "guidoApplyExpr.h"
+#include "guidoApplyValue.h"
+#include "guidoEnv.h"
 #include "visitor.h"
 
 using namespace std;
@@ -33,29 +35,50 @@ namespace guidolang
 {
 
 //______________________________________________________________________________
-// guidoScoreExpr
+// guidoApplyExpr
 //______________________________________________________________________________
-SguidoScoreExpr guidoScoreExpr::create(Sguidoelement& score)		
-	{ guidoScoreExpr * o = new guidoScoreExpr(score); assert(o!=0); return o; }
+guidoApplyExpr::guidoApplyExpr(Sguidoexpression& exp, Sguidoexpression& arg)
+{
+	push(exp);
+	push(arg);	
+}
 
 //______________________________________________________________________________
-void guidoScoreExpr::acceptIn(basevisitor& v) {
-	if (visitor<SguidoScoreExpr>* p = dynamic_cast<visitor<SguidoScoreExpr>*>(&v)) {
-		SguidoScoreExpr ge = this;
+Sguidovalue guidoApplyExpr::eval(SguidoEnv env)
+{
+	Sguidoexpression arg1 = getArg(0);
+	Sguidoexpression arg2 = getArg(1);
+	if (!arg1 || !arg2) throw (newException (kMissingArgument));
+
+	Sguidovalue earg1 = arg1->eval(env);
+	Sguidovalue earg2 = arg2->eval(env);
+	if (!earg1 || !earg2) throw (newException (kNullValue));
+
+	return guidoApplyValue::create(earg1, earg2);
+}
+
+//______________________________________________________________________________
+SguidoApplyExpr guidoApplyExpr::create(Sguidoexpression& exp, Sguidoexpression& arg)		
+	{ guidoApplyExpr * o = new guidoApplyExpr(exp, arg); assert(o!=0); return o; }
+
+//______________________________________________________________________________
+void guidoApplyExpr::acceptIn(basevisitor& v) {
+	if (visitor<SguidoApplyExpr>* p = dynamic_cast<visitor<SguidoApplyExpr>*>(&v)) {
+		SguidoApplyExpr ge = this;
 		p->visitStart (ge);
 	}
 }
 
 //______________________________________________________________________________
-void guidoScoreExpr::acceptOut(basevisitor& v) {
-	if (visitor<SguidoScoreExpr>* p = dynamic_cast<visitor<SguidoScoreExpr>*>(&v)) {
-		SguidoScoreExpr ge = this;
+void guidoApplyExpr::acceptOut(basevisitor& v) {
+	if (visitor<SguidoApplyExpr>* p = dynamic_cast<visitor<SguidoApplyExpr>*>(&v)) {
+		SguidoApplyExpr ge = this;
 		p->visitEnd (ge);
 	}
 }
 
 //______________________________________________________________________________
-bool guidoScoreExpr::operator ==(const SguidoScoreExpr& elt) const { 
+bool guidoApplyExpr::operator ==(const SguidoApplyExpr& elt) const { 
 	return true;
 }
 

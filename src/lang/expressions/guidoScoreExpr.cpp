@@ -22,7 +22,9 @@
 */
 
 #include <iostream>
-#include "guidoApplExpr.h"
+
+#include "guidoScoreExpr.h"
+#include "guidoScoreValue.h"
 #include "visitor.h"
 
 using namespace std;
@@ -32,36 +34,35 @@ namespace guidolang
 {
 
 //______________________________________________________________________________
-// guidoApplExpr
+// guidoScoreExpr
 //______________________________________________________________________________
-guidoApplExpr::guidoApplExpr(Sguidoexpression& exp, Sguidoexpression& arg)
+SguidoScoreExpr guidoScoreExpr::create(Sguidoelement& score)		
+	{ guidoScoreExpr * o = new guidoScoreExpr(score); assert(o!=0); return o; }
+
+//______________________________________________________________________________
+Sguidovalue guidoScoreExpr::eval(SguidoEnv env)
 {
-	push(exp);
-	push(arg);	
+	return guidoScoreValue::create (fScore);
 }
 
 //______________________________________________________________________________
-SguidoApplExpr guidoApplExpr::create(Sguidoexpression& exp, Sguidoexpression& arg)		
-	{ guidoApplExpr * o = new guidoApplExpr(exp, arg); assert(o!=0); return o; }
-
-//______________________________________________________________________________
-void guidoApplExpr::acceptIn(basevisitor& v) {
-	if (visitor<SguidoApplExpr>* p = dynamic_cast<visitor<SguidoApplExpr>*>(&v)) {
-		SguidoApplExpr ge = this;
+void guidoScoreExpr::acceptIn(basevisitor& v) {
+	if (visitor<SguidoScoreExpr>* p = dynamic_cast<visitor<SguidoScoreExpr>*>(&v)) {
+		SguidoScoreExpr ge = this;
 		p->visitStart (ge);
 	}
 }
 
 //______________________________________________________________________________
-void guidoApplExpr::acceptOut(basevisitor& v) {
-	if (visitor<SguidoApplExpr>* p = dynamic_cast<visitor<SguidoApplExpr>*>(&v)) {
-		SguidoApplExpr ge = this;
+void guidoScoreExpr::acceptOut(basevisitor& v) {
+	if (visitor<SguidoScoreExpr>* p = dynamic_cast<visitor<SguidoScoreExpr>*>(&v)) {
+		SguidoScoreExpr ge = this;
 		p->visitEnd (ge);
 	}
 }
 
 //______________________________________________________________________________
-bool guidoApplExpr::operator ==(const SguidoApplExpr& elt) const { 
+bool guidoScoreExpr::operator ==(const SguidoScoreExpr& elt) const { 
 	return true;
 }
 

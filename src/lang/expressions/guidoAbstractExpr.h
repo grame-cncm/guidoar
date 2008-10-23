@@ -44,6 +44,8 @@ class export guidoAbstractExpr : public guidoexpression
 	public:
         static SguidoAbstractExpr create(Sguidoexpression& var, Sguidoexpression& exp);
 
+		virtual Sguidovalue eval(SguidoEnv env);
+
 		virtual void		acceptIn(guido::basevisitor& visitor);
 		virtual void		acceptOut(guido::basevisitor& visitor);
 

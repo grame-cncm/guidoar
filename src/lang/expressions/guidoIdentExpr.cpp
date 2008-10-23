@@ -22,7 +22,11 @@
 */
 
 #include <iostream>
-#include "guidoAbstractExpr.h"
+#include "exceptions.h"
+#include "guidoIdentExpr.h"
+#include "guidoEnv.h"
+#include "guidovalue.h"
+
 #include "visitor.h"
 
 using namespace std;
@@ -32,36 +36,37 @@ namespace guidolang
 {
 
 //______________________________________________________________________________
-// guidoAbstractExpr
+// guidoIdentExpr
 //______________________________________________________________________________
-guidoAbstractExpr::guidoAbstractExpr(Sguidoexpression& var, Sguidoexpression& exp)
+Sguidovalue guidoIdentExpr::eval(SguidoEnv env)
 {
-	push(var);	
-	push(exp);
+	if (!env) throw (newException (kNullEnvironment));
+	Sguidovalue result = env->value(fExp);
+	return result;
 }
 
 //______________________________________________________________________________
-SguidoAbstractExpr guidoAbstractExpr::create(Sguidoexpression& var, Sguidoexpression& exp)		
-	{ guidoAbstractExpr * o = new guidoAbstractExpr(var, exp); assert(o!=0); return o; }
+SguidoIdentExpr guidoIdentExpr::create(Sguidoexpression e)		
+	{ guidoIdentExpr * o = new guidoIdentExpr(e); assert(o!=0); return o; }
 
 //______________________________________________________________________________
-void guidoAbstractExpr::acceptIn(basevisitor& v) {
-	if (visitor<SguidoAbstractExpr>* p = dynamic_cast<visitor<SguidoAbstractExpr>*>(&v)) {
-		SguidoAbstractExpr ge = this;
+void guidoIdentExpr::acceptIn(basevisitor& v) {
+	if (visitor<SguidoIdentExpr>* p = dynamic_cast<visitor<SguidoIdentExpr>*>(&v)) {
+		SguidoIdentExpr ge = this;
 		p->visitStart (ge);
 	}
 }
 
 //______________________________________________________________________________
-void guidoAbstractExpr::acceptOut(basevisitor& v) {
-	if (visitor<SguidoAbstractExpr>* p = dynamic_cast<visitor<SguidoAbstractExpr>*>(&v)) {
-		SguidoAbstractExpr ge = this;
+void guidoIdentExpr::acceptOut(basevisitor& v) {
+	if (visitor<SguidoIdentExpr>* p = dynamic_cast<visitor<SguidoIdentExpr>*>(&v)) {
+		SguidoIdentExpr ge = this;
 		p->visitEnd (ge);
 	}
 }
 
 //______________________________________________________________________________
-bool guidoAbstractExpr::operator ==(const SguidoAbstractExpr& elt) const { 
+bool guidoIdentExpr::operator ==(const SguidoIdentExpr& elt) const { 
 	return true;
 }
 

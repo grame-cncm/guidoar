@@ -38,10 +38,22 @@ typedef struct TException {
 
 //______________________________________________________________________________
 // a macro to automatically catch the file name and line number
-#define newException(n,msg)	TException(n,msg,__FILE__,__LINE__)	
+#define eMsg(n)				kExceptionMsg[n]	
+#define newMsgException(n,msg)	TException(n,msg,__FILE__,__LINE__)	
+#define newException(n)			TException(n,eMsg(n),__FILE__,__LINE__)	
 
 //______________________________________________________________________________
 // exceptions definitions
+enum ExceptionNum {
+	kNoException,				// no exception - shouldn't be triggered
+	kUndefinedCompOperation,	// undefined composition operator called
+	kNullValue,					// got an unexpected null value
+	kNullEnvironment,			// got a null environment
+	kNullIdent,					// got a null identificator within a lambda abstraction
+	kNullBody,					// got a null body within a lambda abstraction
+	kMissingArgument			// an expression argument is missing
+};
 
+extern const char* kExceptionMsg[];	// and the associates messages
 
 #endif

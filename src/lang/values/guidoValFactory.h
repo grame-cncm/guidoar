@@ -25,6 +25,7 @@
 #define __guidoValFactory__
 
 #include "guidoMixValue.h"
+#include "guidoSeqValue.h"
 #include "singleton.h"
 
 namespace guidolang 
@@ -40,6 +41,7 @@ class export guidoValFactory : public singleton<guidoValFactory>
 		virtual ~guidoValFactory() {}
 
 		Sguidovalue		createMix(Sguidovalue& v1, Sguidovalue& v2) const;
+		Sguidovalue		createSeq(Sguidovalue& v1, Sguidovalue& v2) const;
 };
 
 } // namespace

@@ -1,6 +1,6 @@
 /*
-  GUIDO Library
-  Copyright (C) 2006  Grame
+  GuidoAR Library
+  Copyright (C) 2008  Grame
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -21,30 +21,18 @@
 
 */
 
-#ifdef WIN32
-# pragma warning (disable : 4786)
-#endif
+#include "exceptions.h"
 
-#include <iostream>
+/*
+	warning ! messages declaration should be kept in ExceptionNum enum order
+*/
+const char* kExceptionMsg[] = {
+	"no exception",
+	"undefined composition operation",	
+	"unexpected null value",
+	"unexpected null environment",
+	"unexpected null ident",
+	"unexpected null body",
+	"missing expression argument"	
+};
 
-#include "guidoValFactory.h"
-
-using namespace std;
-
-namespace guidolang
-{
-
-//______________________________________________________________________________
-Sguidovalue guidoValFactory::createMix(Sguidovalue& v1, Sguidovalue& v2) const
-{
-	return guidoMixValue::create(v1, v2);
-}
-
-//______________________________________________________________________________
-Sguidovalue guidoValFactory::createSeq(Sguidovalue& v1, Sguidovalue& v2) const
-{
-	return guidoSeqValue::create(v1, v2);
-}
-
-
-} // namespace

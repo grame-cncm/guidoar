@@ -23,7 +23,7 @@
 
 #include <iostream>
 #include "guidoApplyValue.h"
-#include "guidoMixValue.h"
+#include "guidoSeqValue.h"
 #include "visitor.h"
 
 using namespace std;
@@ -35,41 +35,53 @@ namespace guidolang
 #define propagate(f,val)  create(fArg1->f(val), fArg2->f(val))
 
 //______________________________________________________________________________
-// guidoMixValue
+// guidoSeqValue
 //______________________________________________________________________________
-Sguidovalue	guidoMixValue::create (Sguidovalue v1, Sguidovalue v2)
-	{ guidoMixValue * o = new guidoMixValue(v1, v2); assert(o!=0); return o; }
+Sguidovalue	guidoSeqValue::create (Sguidovalue v1, Sguidovalue v2)
+	{ guidoSeqValue * o = new guidoSeqValue(v1, v2); assert(o!=0); return o; }
 
 //______________________________________________________________________________
-Sguidovalue	guidoMixValue::apply (Sguidovalue& arg)	
-{ 
-	return create (guidoApplyValue::create(fArg1, arg), guidoApplyValue::create(fArg2, arg)); 
-}
-
-//______________________________________________________________________________
-Sguidovalue	guidoMixValue::head	(unsigned int length)		{ return propagate (head, length); }
-Sguidovalue	guidoMixValue::head	(const rational& length)	{ return propagate (head, length); }
-Sguidovalue	guidoMixValue::tail	(unsigned int length)		{ return propagate (tail, length); }
-Sguidovalue	guidoMixValue::tail	(const rational& length)	{ return propagate (tail, length); }
-Sguidovalue	guidoMixValue::transpose(int interval)			{ return propagate (transpose, interval); }
-Sguidovalue	guidoMixValue::stretch (rational ratio)			{ return propagate (stretch, ratio); }
-Sguidovalue	guidoMixValue::stretch (float ratio)			{ return propagate (stretch, ratio); }
-
-//______________________________________________________________________________
-Sguidovalue	guidoMixValue::top (unsigned int vnum)
+Sguidovalue	guidoSeqValue::apply (Sguidovalue& arg)
 {
-	unsigned int vcount = fArg1->voices();
-	return (vnum > vcount) ? create(fArg1, fArg2->top(vnum - vcount)) : fArg1->top(vnum);
-}
-
-Sguidovalue	guidoMixValue::bottom (unsigned int vnum)
-{
-	unsigned int vcount = fArg1->voices();
-	return (vnum < vcount) ? create(fArg1->bottom(vnum), fArg2) : fArg2->bottom(vnum - vcount);
+	rational dur = fArg1->duration();
+	return create(guidoApplyValue::create(fArg1, arg->head(dur)), guidoApplyValue::create(fArg2, arg->tail(dur)));
 }
 
 //______________________________________________________________________________
-unsigned int guidoMixValue::length () const
+Sguidovalue	guidoSeqValue::head	(unsigned int length)
+{
+	unsigned int l1 = fArg1->length();
+	return (length > l1) ? create(fArg1, fArg2->head(length - l1)) : fArg1->head(length);
+}
+
+Sguidovalue	guidoSeqValue::head	(const rational& length)
+{
+	rational l1 = fArg1->length();
+	return (length > l1) ? create(fArg1, fArg2->head(l1)) : fArg1->head(length);
+}
+
+//______________________________________________________________________________
+Sguidovalue	guidoSeqValue::tail	(unsigned int length)
+{
+	unsigned int l1 = fArg1->length();
+	return (length <= l1) ? create(fArg1->tail(length), fArg2) : fArg2->tail(length-l1);
+}
+
+Sguidovalue	guidoSeqValue::tail	(const rational& length)
+{
+	rational l1 = fArg1->length();
+	return (length > l1) ? fArg2->tail(length - l1) : create(fArg1->tail(length), fArg2);
+}
+
+//______________________________________________________________________________
+Sguidovalue	guidoSeqValue::top (unsigned int vnum)		{ return propagate (top, vnum); }
+Sguidovalue	guidoSeqValue::bottom (unsigned int vnum)	{ return propagate (bottom, vnum); }
+Sguidovalue	guidoSeqValue::transpose(int interval)		{ return propagate (transpose, interval); }
+Sguidovalue	guidoSeqValue::stretch (rational ratio)		{ return propagate (stretch, ratio); }
+Sguidovalue	guidoSeqValue::stretch (float ratio)		{ return propagate (stretch, ratio); }
+
+//______________________________________________________________________________
+unsigned int guidoSeqValue::length () const
 {
 	unsigned int l1 = fArg1->length();
 	if (l1 == kInfinite) return kInfinite;
@@ -77,19 +89,21 @@ unsigned int guidoMixValue::length () const
 	unsigned int l2 = fArg2->length();
 	if (l2 == kInfinite) return kInfinite;
 
-	return (l1 > l2) ? l1 : l2;
+	return l1 + l2;
 }
 
-rational guidoMixValue::duration() const
+rational guidoSeqValue::duration() const
 {
 	rational d1 = fArg1->duration();
 	if (infinite(d1)) return d1;
+
 	rational d2 = fArg2->duration();
 	if (infinite(d2)) return d2;
-	return (d1 > d2) ? d1 : d2;
+
+	return (d1 + d2).rationalise();
 }
 
-unsigned int guidoMixValue::voices () const
+unsigned int guidoSeqValue::voices () const
 {
 	unsigned int v1 = fArg1->voices();
 	if (v1 == kInfinite) return kInfinite;
@@ -97,26 +111,26 @@ unsigned int guidoMixValue::voices () const
 	unsigned int v2 = fArg2->voices();
 	if (v2 == kInfinite) return kInfinite;
 
-	return v1 + v2;
+	return (v1 > v2) ? v1 : v2;
 }
 
-unsigned int guidoMixValue::pitch () const
+unsigned int guidoSeqValue::pitch () const
 {
 	return fArg1->pitch();
 }
 
 //______________________________________________________________________________
-void guidoMixValue::acceptIn(basevisitor& v) {
-	if (visitor<SguidoMixValue>* p = dynamic_cast<visitor<SguidoMixValue>*>(&v)) {
-		SguidoMixValue ge = this;
+void guidoSeqValue::acceptIn(basevisitor& v) {
+	if (visitor<SguidoSeqValue>* p = dynamic_cast<visitor<SguidoSeqValue>*>(&v)) {
+		SguidoSeqValue ge = this;
 		p->visitStart (ge);
 	}
 }
 
 //______________________________________________________________________________
-void guidoMixValue::acceptOut(basevisitor& v) {
-	if (visitor<SguidoMixValue>* p = dynamic_cast<visitor<SguidoMixValue>*>(&v)) {
-		SguidoMixValue ge = this;
+void guidoSeqValue::acceptOut(basevisitor& v) {
+	if (visitor<SguidoSeqValue>* p = dynamic_cast<visitor<SguidoSeqValue>*>(&v)) {
+		SguidoSeqValue ge = this;
 		p->visitEnd (ge);
 	}
 }

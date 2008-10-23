@@ -21,10 +21,13 @@
 
 */
 
-#ifndef __guidoMixValue__
-#define __guidoMixValue__
+#ifndef __guidoClosureValue__
+#define __guidoClosureValue__
 
+#include "guidoexpression.h"
 #include "guidovalue.h"
+#include "guidoEnv.h"
+#include "rational.h"
 
 namespace guidolang 
 {
@@ -32,17 +35,25 @@ namespace guidolang
 /*!
 \brief The base class for guido language expressions.
 */
-class export guidoMixValue : public guidovalue
+class export guidoClosureValue : public guidovalue
 {
     private:
-		Sguidovalue fArg1, fArg2;
+		Sguidoexpression fIdent;
+		Sguidoexpression fBody;
+		SguidoEnv		 fEnv ;
+		unsigned int	 fLength;
+		rational		 fDuration;
+		unsigned int	 fVoices;
 		
     protected:
-				 guidoMixValue(Sguidovalue v1, Sguidovalue v2) : fArg1(v1), fArg2(v2) {}
-		virtual ~guidoMixValue() {}
+				 guidoClosureValue(Sguidoexpression& id, Sguidoexpression& body, SguidoEnv& env, 
+					unsigned int length, const rational& dur, unsigned int voices)
+				  : fIdent(id), fBody(body), fEnv(env), fLength(length), fDuration(dur), fVoices(voices) {}
+		virtual ~guidoClosureValue() {}
 
 	public:
-		static Sguidovalue create(Sguidovalue v1, Sguidovalue v2);
+		static Sguidovalue create(Sguidoexpression& id, Sguidoexpression& body, SguidoEnv& env, 
+					unsigned int length, const rational& dur, unsigned int voices);
 
 		virtual Sguidovalue	apply	(Sguidovalue& v);
 		virtual Sguidovalue	head	(unsigned int length);
@@ -63,7 +74,7 @@ class export guidoMixValue : public guidovalue
 		virtual void		acceptIn(guido::basevisitor& visitor);
 		virtual void		acceptOut(guido::basevisitor& visitor);
 };
-typedef guido::SMARTP<guidoMixValue> 	SguidoMixValue;
+typedef guido::SMARTP<guidoClosureValue> 	SguidoClosureValue;
 
 
 } // namespace

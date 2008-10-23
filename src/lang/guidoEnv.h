@@ -21,39 +21,42 @@
 
 */
 
-#ifndef __guidoScoreExpr__
-#define __guidoScoreExpr__
+#ifndef __guidoEnv__
+#define __guidoEnv__
+
+#include <map>
 
 #include "guidoexpression.h"
-#include "guidoelement.h"
+#include "guidovalue.h"
+#include "smartpointer.h"
 
 namespace guidolang 
 {
 
-class guidoScoreExpr;
-typedef guido::SMARTP<guidoScoreExpr> 	SguidoScoreExpr;
+class guidoEnv;
+typedef guido::SMARTP<guidoEnv> 	SguidoEnv;
 
 /*!
-\brief abstraction expression.
+\brief The guido language environment definition.
 */
-class export guidoScoreExpr : public guidoexpression
+class guidoEnv : public guido::smartable
 {
-    protected:
-		guido::Sguidoelement	fScore;
+	private:
+		std::map<Sguidoexpression, Sguidovalue>	fAssociations;
 		
-				 guidoScoreExpr(guido::Sguidoelement& score) : fScore(score) {}
-		virtual ~guidoScoreExpr() {}
+    protected:
+				 guidoEnv() {}
+				 guidoEnv(Sguidoexpression& e, Sguidovalue& v) { bind(e, v); }
+		virtual ~guidoEnv() {}
 
 	public:
-        static SguidoScoreExpr create (guido::Sguidoelement& score);
+        static SguidoEnv create()	{ guidoEnv * o = new guidoEnv(); assert(o!=0); return o; }
+        static SguidoEnv create(Sguidoexpression& e, Sguidovalue& v)
+									{ guidoEnv * o = new guidoEnv(e, v); assert(o!=0); return o; }
 
-		const guido::Sguidoelement& getScore()		{ return fScore; }
-
-		virtual Sguidovalue eval(SguidoEnv env);
-		virtual void		acceptIn(guido::basevisitor& visitor);
-		virtual void		acceptOut(guido::basevisitor& visitor);
-
-		virtual bool operator ==(const SguidoScoreExpr& i) const;
+		SguidoEnv	bind (Sguidoexpression& e, Sguidovalue& v)	{ fAssociations[e] = v; return this; }
+		void		clear()										{ fAssociations.clear(); }
+		Sguidovalue value(Sguidoexpression& e)					{ return fAssociations[e]; }		
 };
 
 } // namespace
