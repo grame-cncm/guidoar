@@ -37,29 +37,27 @@ namespace guidolang
 //______________________________________________________________________________
 // guidoTranspExpr
 //______________________________________________________________________________
-guidoTranspExpr::guidoTranspExpr(Sguidoexpression& exp, Sguidoexpression& i)
+guidoTranspExpr::guidoTranspExpr(Sguidoexpression& exp, int interval)
+	: fInterval(interval)
 {
 	push(exp);
-	push(i);
 }
 
 //______________________________________________________________________________
 Sguidovalue guidoTranspExpr::eval(SguidoEnv env)
 {
 	Sguidoexpression arg1 = getArg(0);
-	Sguidoexpression arg2 = getArg(1);
-	if (!arg1 || !arg2) throw (newException (kMissingArgument));
+	if (!arg1) throw (newException (kMissingArgument));
 
 	Sguidovalue earg1 = arg1->eval(env);
-	Sguidovalue earg2 = arg2->eval(env);
-	if (!earg1 || !earg2) throw (newException (kNullValue));
+	if (!earg1) throw (newException (kNullValue));
 
 	return 0;
 }
 
 //______________________________________________________________________________
-SguidoTranspExpr guidoTranspExpr::create(Sguidoexpression& exp, Sguidoexpression& i)		
-	{ guidoTranspExpr * o = new guidoTranspExpr(exp, i); assert(o!=0); return o; }
+SguidoTranspExpr guidoTranspExpr::create(Sguidoexpression& exp, int interval)		
+	{ guidoTranspExpr * o = new guidoTranspExpr(exp, interval); assert(o!=0); return o; }
 
 //______________________________________________________________________________
 void guidoTranspExpr::acceptIn(basevisitor& v) {
