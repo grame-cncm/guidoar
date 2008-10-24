@@ -102,21 +102,27 @@ void seqOperation::visitStart ( SARNote& elt )
 { 
 	bool done = false;
 	rational duration = elt->duration();
+	int octave = elt->GetOctave();
 
 	if (fState == kInFirstScore) {
 		// maintain the current duration status while in the first score
 		if (duration.getNumerator() != ARNote::kUndefined)
 			fCurrentDuration = duration;
+		if (octave != ARNote::kUndefined)
+			fCurrentOctave = octave;
 	}
 	else if (fState = kInSecondScore) {
+		SARNote	note = copy (elt);
+		push( note );
+		done = true;
+
+		if ((octave == ARNote::kUndefined) && (fCurrentOctave != ARNote::kUndefined)) {
+			note->SetOctave(ARNote::kDefaultOctave);
+			fCurrentOctave = ARNote::kUndefined;
+		}
 		if (fCurrentDuration.getNumerator() != ARNote::kUndefined) {
-			if ((duration.getNumerator() == ARNote::kUndefined) && (fCurrentDuration != rational(1,4))) {
-				// here we need to force implicit duration
-				SARNote	note = copy (elt);
+			if ((duration.getNumerator() == ARNote::kUndefined) && (fCurrentDuration != rational(1,4)))
 				*note = rational(1,4);
-				push( note );
-				done = true;
-			}
 			fCurrentDuration = ARNote::getImplicitDuration();
 		}
 	}
@@ -138,6 +144,7 @@ void seqOperation::visitStart ( SAREndBar& elt )
 // a voice is created only for the first score
 void seqOperation::visitStart ( SARVoice& elt ) 
 { 
+	fCurrentOctave = ARNote::kDefaultOctave;
 	switch (fState) {
 		case kInFirstScore:			
 		case kRemainVoice:			

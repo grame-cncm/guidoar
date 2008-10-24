@@ -54,6 +54,7 @@ class export seqOperation :
 {
     private:
 		rational fCurrentDuration;
+		int		 fCurrentOctave;
 		// current key, meter and clef are maintained to be avoid useless repetitions
 		Sguidotag	fCurrentKey, fCurrentMeter, fCurrentClef;
 		void checkHeader(Sguidotag tag, Sguidotag& target);
