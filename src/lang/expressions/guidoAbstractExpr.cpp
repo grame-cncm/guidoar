@@ -24,7 +24,6 @@
 #include <iostream>
 #include "exceptions.h"
 #include "guidoAbstractExpr.h"
-#include "guidoApplyValue.h"
 #include "guidoClosureValue.h"
 #include "guidoEnv.h"
 #include "visitor.h"
@@ -47,16 +46,23 @@ guidoAbstractExpr::guidoAbstractExpr(Sguidoexpression& var, Sguidoexpression& ex
 //______________________________________________________________________________
 Sguidovalue guidoAbstractExpr::eval(SguidoEnv env)
 {
-	Sguidoexpression arg1 = getArg(0);
-	Sguidoexpression arg2 = getArg(1);
-	if (!arg1 || !arg2) throw (newException (kMissingArgument));
+	evalPrint ("guidoAbstractExpr");
+	Sguidoexpression id = getArg(0);
+	Sguidoexpression body = getArg(1);
+	if (!id || !body) throw (newException (kMissingArgument));
 
-	SguidoEnv empy = guidoEnv::create();
-	Sguidovalue earg1 = arg1->eval(env);
-	Sguidovalue earg2 = arg2->eval(env);
-	if (!earg1 || !earg2) throw (newException (kNullValue));
+	SguidoEnv empty = guidoEnv::create();
+	Sguidovalue valId = id->eval(empty);
+	if (!valId) throw (newException (kNullValue));
+	env->bind (id, valId);
 
-	return guidoApplyValue::create(earg1, earg2);
+	Sguidovalue valBody = body->eval(env);
+	if (!valBody) throw (newException (kNullValue));
+	
+	unsigned int length = valBody->length();
+	rational dur = valBody->duration();
+	unsigned int voices = valBody->voices();
+	return guidoClosureValue::create(id, body, env, length, dur, voices);
 }
 
 //______________________________________________________________________________
@@ -80,8 +86,19 @@ void guidoAbstractExpr::acceptOut(basevisitor& v) {
 }
 
 //______________________________________________________________________________
-bool guidoAbstractExpr::operator ==(const SguidoAbstractExpr& elt) const { 
-	return true;
+bool guidoAbstractExpr::operator ==(const Sguidoexpression& elt) const 
+{ 
+	if (!dynamic_cast<guidoAbstractExpr*>((guidoexpression*)elt)) return false;
+
+	Sguidoexpression arg1 = getArg(0);
+	Sguidoexpression arg2 = getArg(1);
+	if (!arg1 || !arg2) throw (newException (kMissingArgument));
+
+	Sguidoexpression elt1 = elt->getArg(0);
+	Sguidoexpression elt2 = elt->getArg(1);
+	if (!arg1 || !arg2) throw (newException (kMissingArgument));
+
+	return (arg1 == elt1) && (arg2 == elt2);
 }
 
 } // namespace

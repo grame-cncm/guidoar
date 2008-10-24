@@ -38,7 +38,7 @@ namespace guidolang
 // guidoSeqValue
 //______________________________________________________________________________
 Sguidovalue	guidoSeqValue::create (Sguidovalue v1, Sguidovalue v2)
-	{ guidoSeqValue * o = new guidoSeqValue(v1, v2); assert(o!=0); return o; }
+	{ valuePrint("guidoSeqValue"); guidoSeqValue * o = new guidoSeqValue(v1, v2); assert(o!=0); return o; }
 
 //______________________________________________________________________________
 Sguidovalue	guidoSeqValue::apply (Sguidovalue& arg)
@@ -81,7 +81,7 @@ Sguidovalue	guidoSeqValue::stretch (rational ratio)		{ return propagate (stretch
 Sguidovalue	guidoSeqValue::stretch (float ratio)		{ return propagate (stretch, ratio); }
 
 //______________________________________________________________________________
-unsigned int guidoSeqValue::length () const
+unsigned int guidoSeqValue::length ()
 {
 	unsigned int l1 = fArg1->length();
 	if (l1 == kInfinite) return kInfinite;
@@ -92,7 +92,7 @@ unsigned int guidoSeqValue::length () const
 	return l1 + l2;
 }
 
-rational guidoSeqValue::duration() const
+rational guidoSeqValue::duration()
 {
 	rational d1 = fArg1->duration();
 	if (infinite(d1)) return d1;
@@ -103,7 +103,7 @@ rational guidoSeqValue::duration() const
 	return (d1 + d2).rationalise();
 }
 
-unsigned int guidoSeqValue::voices () const
+unsigned int guidoSeqValue::voices ()
 {
 	unsigned int v1 = fArg1->voices();
 	if (v1 == kInfinite) return kInfinite;
@@ -114,7 +114,7 @@ unsigned int guidoSeqValue::voices () const
 	return (v1 > v2) ? v1 : v2;
 }
 
-unsigned int guidoSeqValue::pitch () const
+unsigned int guidoSeqValue::pitch ()
 {
 	return fArg1->pitch();
 }

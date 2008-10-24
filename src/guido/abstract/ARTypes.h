@@ -158,6 +158,7 @@ typedef SMARTP<ARTag<kTVoltaBegin> > SARVoltaBegin;
 typedef SMARTP<ARTag<kTVoltaEnd> > 	SARVoltaEnd;
 typedef SMARTP<ARTag<kTDrHoos> > 	SARDrHoos;
 typedef SMARTP<ARTag<kTDrRenz> > 	SARDrRenz;
+typedef SMARTP<ARTag<kTBackward> > 	SARBackward;
 
 } // namespace
 

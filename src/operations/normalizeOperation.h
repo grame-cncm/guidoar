@@ -20,8 +20,8 @@
 
 */
 
-#ifndef __headOperation__
-#define __headOperation__
+#ifndef __normalizeOperation__
+#define __normalizeOperation__
 
 #include <map>
 #include <string>
@@ -29,8 +29,6 @@
 #include "export.h"
 #include "guidoelement.h"
 #include "clonevisitor.h"
-#include "durationvisitor.h"
-#include "operation.h"
 
 namespace guido 
 {
@@ -41,48 +39,43 @@ namespace guido
 */
 
 /*!
-\brief A visitor that cuts the tail of a score.
+\brief A visitor that produces a normalized version of a score.
+
+	A score normal form is intended to compare scores. The normal form is based
+	on pitch and duration only: it contains only voices, notes and chords, 
+	where octave and duration are made explicit for every note.
+	Thus, all the other tags are omitted (i.e. clef, meter slurs etc...). 
+	However, we need to introduce a new specific \backward<dur> tag to catch
+	the case where a single note is tied to a chord.
 */
-class export headOperation : 
-	public operation,
+class export normalizeOperation : 
 	public clonevisitor
 {		
     public:
- 				 headOperation()	{}
-		virtual ~headOperation()	{}
+ 				 normalizeOperation()	{}
+		virtual ~normalizeOperation()	{}
 
-		/*! cuts the tail of a score after a given duration
-			\param score the score to be cut
-			\param duration the score duration to preserve
-			\return a new score
+		/*! creates a normal form of a score
+			\param score the score to be normalized
+			\return a new score in normal form
 		*/
-		Sguidoelement operator() ( const Sguidoelement& score, const rational& duration );
+		Sguidoelement operator() ( const Sguidoelement& score );
  
-		/*! cuts the tail of a score after a given duration
-			\param score1 the score to be cut
-			\param score2 a score which duration is used as cut point
-			\return a new score
-		*/
-		virtual SARMusic operator() ( const SARMusic& score1, const SARMusic& score2 );
-
      protected:
-		rational		fCutPoint;
-		durationvisitor	fDuration;
-		bool			fCopy;
-
+		rational fCurrentDuration;
+		int		 fCurrentOctave;
+		
 		virtual void visitStart( SARVoice& elt );
 		virtual void visitStart( SARChord& elt );
 		virtual void visitStart( SARNote& elt );
-		virtual void visitStart( Sguidotag& elt );
 
 		virtual void visitEnd  ( SARVoice& elt );
 		virtual void visitEnd  ( SARChord& elt );
-		virtual void visitEnd  ( Sguidotag& elt );
-		virtual void visitEnd  ( SARNote& elt );
+
+		virtual void visitStart( Sguidotag& elt )	{}		// skip tags
+		virtual void visitEnd  ( Sguidotag& elt )	{} 		// skip tags
 
      private:
-		std::map<std::string,int> fOpenedTagsMap;
-		void checkOpenedTags ();
 };
 
 /*! @} */

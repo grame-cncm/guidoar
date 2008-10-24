@@ -22,9 +22,11 @@
 */
 
 #include <iostream>
+#include <sstream>
 
 #include "guidoScoreExpr.h"
 #include "guidoScoreValue.h"
+#include "normalizeOperation.h"
 #include "visitor.h"
 
 using namespace std;
@@ -42,6 +44,7 @@ SguidoScoreExpr guidoScoreExpr::create(Sguidoelement& score)
 //______________________________________________________________________________
 Sguidovalue guidoScoreExpr::eval(SguidoEnv env)
 {
+	evalPrint ("guidoScoreExpr");
 	return guidoScoreValue::create (fScore);
 }
 
@@ -62,8 +65,16 @@ void guidoScoreExpr::acceptOut(basevisitor& v) {
 }
 
 //______________________________________________________________________________
-bool guidoScoreExpr::operator ==(const SguidoScoreExpr& elt) const { 
-	return true;
+bool guidoScoreExpr::operator ==(const Sguidoexpression& elt) const 
+{
+	SguidoScoreExpr score = dynamic_cast<guidoScoreExpr*>((guidoexpression*)elt);
+	if (!score) return false;
+	
+	// matching is made on normalized score and by comparing the resulting gmn strings
+	normalizeOperation norm;
+	stringstream scoreStr;	scoreStr << norm( getScore() );
+	stringstream eltStr;	eltStr 	<< norm( score->getScore() );
+	return scoreStr.str() == eltStr.str();
 }
 
 } // namespace

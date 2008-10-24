@@ -215,6 +215,7 @@ ARFactory::ARFactory()
 	fMap["voltaEnd"]	= new newTagFunctor<kTVoltaEnd>;
 	fMap["DrHoos"]		= new newTagFunctor<kTDrHoos>;
 	fMap["DrRenz"]		= new newTagFunctor<kTDrRenz>;
+	fMap["backward"]	= new newTagFunctor<kTBackward>;
 }
 
 } // namespace

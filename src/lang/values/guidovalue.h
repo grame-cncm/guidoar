@@ -30,6 +30,12 @@
 #include "rational.h"
 #include "smartpointer.h"
 
+#ifdef valueDebug
+#define valuePrint(expr)	cout << "create \"" << expr << "\"" << endl
+#else
+#define valuePrint(expr)
+#endif
+
 namespace guidolang 
 {
 
@@ -61,10 +67,10 @@ class export guidovalue : public guido::ctree<guidovalue>, public guido::visitab
 		virtual Sguidovalue	stretch  (rational ratio)			= 0;
 		virtual Sguidovalue	stretch  (float ratio)				= 0;
 
-		virtual unsigned int	length	() const = 0;	///< computes the length of the value 
-		virtual rational		duration() const = 0;	///< computes the duration of the value
-		virtual unsigned int	voices	() const = 0;	///< computes the voices count of the value
-		virtual unsigned int	pitch	() const = 0;	///< computes the pitch of the value
+		virtual unsigned int	length	()  = 0;	///< computes the length of the value 
+		virtual rational		duration()  = 0;	///< computes the duration of the value
+		virtual unsigned int	voices	()  = 0;	///< computes the voices count of the value
+		virtual unsigned int	pitch	()  = 0;	///< computes the pitch of the value
 
 		virtual void		acceptIn(guido::basevisitor& visitor);
 		virtual void		acceptOut(guido::basevisitor& visitor);

@@ -32,7 +32,7 @@ namespace guido
 {
 
 /*!
-\addtogroup visitors
+\addtogroup operations
 @{
 */
 

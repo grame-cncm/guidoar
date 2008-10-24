@@ -49,7 +49,7 @@ class export guidoAbstractExpr : public guidoexpression
 		virtual void		acceptIn(guido::basevisitor& visitor);
 		virtual void		acceptOut(guido::basevisitor& visitor);
 
-		virtual bool operator ==(const SguidoAbstractExpr& i) const;
+		virtual bool operator ==(const Sguidoexpression& i) const;
 };
 
 } // namespace

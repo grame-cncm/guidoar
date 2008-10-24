@@ -40,6 +40,11 @@ typedef guido::SMARTP<guidoexpression> 	Sguidoexpression;
 typedef guido::SMARTP<guidovalue>		Sguidovalue;
 typedef guido::SMARTP<guidoEnv>			SguidoEnv;
 
+#ifdef evalDebug
+#define evalPrint(expr)	cout << "eval \"" << expr << "\"" << endl
+#else
+#define evalPrint(expr)
+#endif
 
 /*!
 \brief The base class for guido language expressions.
@@ -55,10 +60,13 @@ class export guidoexpression : public guido::ctree<guidoexpression>, public guid
 		virtual	void		print(std::ostream& os);
 
 		virtual Sguidovalue eval(SguidoEnv env) = 0;
+		virtual Sguidovalue suspend(SguidoEnv env);
 
 		//________________________________________________________________________
+		virtual Sguidoexpression replace(Sguidoexpression exp, Sguidoexpression with) const;
+
 		virtual Sguidoexpression getArg(unsigned int n) const;
-		virtual bool operator ==(const Sguidoexpression& i) const;
+		virtual bool operator ==(const Sguidoexpression& i) const = 0;
 		virtual bool operator !=(const Sguidoexpression& i) const		{ return !(*this == i); }
 };
 

@@ -38,7 +38,7 @@ namespace guidolang
 //______________________________________________________________________________
 Sguidovalue	guidoClosureValue::create (Sguidoexpression& id, Sguidoexpression& body, SguidoEnv& env, 
 					unsigned int length, const rational& dur, unsigned int voices)
-	{ guidoClosureValue * o = new guidoClosureValue(id, body, env, length, dur, voices); assert(o!=0); return o; }
+	{ valuePrint("guidoClosureValue"); guidoClosureValue * o = new guidoClosureValue(id, body, env, length, dur, voices); assert(o!=0); return o; }
 
 //______________________________________________________________________________
 Sguidovalue	guidoClosureValue::apply (Sguidovalue& v)
@@ -107,12 +107,12 @@ Sguidovalue	guidoClosureValue::stretch (float ratio)
 
 
 //______________________________________________________________________________
-unsigned int guidoClosureValue::length () const		{ return fLength; }
-rational guidoClosureValue::duration() const		{ return fDuration; }
-unsigned int guidoClosureValue::voices () const		{ return fVoices; }
+unsigned int guidoClosureValue::length ()		{ return fLength; }
+rational guidoClosureValue::duration()			{ return fDuration; }
+unsigned int guidoClosureValue::voices ()		{ return fVoices; }
 
 // todo: what's the meaning of pitch for a cosure ?
-unsigned int guidoClosureValue::pitch () const		{ 
+unsigned int guidoClosureValue::pitch ()		{ 
 	cerr << "warning: guidoClosureValue::pitch query !" << endl;
 	return 60; 
 }

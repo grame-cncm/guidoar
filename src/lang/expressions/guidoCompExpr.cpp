@@ -53,6 +53,7 @@ guidoCompExpr::guidoCompExpr(composition op, Sguidoexpression& e1, Sguidoexpress
 //______________________________________________________________________________
 Sguidovalue guidoCompExpr::eval(SguidoEnv env)
 {
+	evalPrint (getOpString());
 	Sguidoexpression arg1 = getArg(0);
 	Sguidoexpression arg2 = getArg(1);
 	if (!arg1 || !arg2) throw (newException (kMissingArgument));
@@ -115,8 +116,21 @@ void guidoCompExpr::acceptOut(basevisitor& v) {
 }
 
 //______________________________________________________________________________
-bool guidoCompExpr::operator ==(const SguidoCompExpr& elt) const { 
-	return true;
+bool guidoCompExpr::operator ==(const Sguidoexpression& elt) const 
+{ 
+	SguidoCompExpr comp = dynamic_cast<guidoCompExpr*>((guidoexpression*)elt);
+	if (!comp) return false;
+	if (getOperation() != comp->getOperation()) return false;
+
+	Sguidoexpression arg1 = getArg(0);
+	Sguidoexpression arg2 = getArg(1);
+	if (!arg1 || !arg2) throw (newException (kMissingArgument));
+
+	Sguidoexpression elt1 = elt->getArg(0);
+	Sguidoexpression elt2 = elt->getArg(1);
+	if (!arg1 || !arg2) throw (newException (kMissingArgument));
+
+	return (arg1 == elt1) && (arg2 == elt2);
 }
 
 } // namespace

@@ -47,11 +47,12 @@ class export guidoIdentExpr : public guidoexpression
         static SguidoIdentExpr create(Sguidoexpression e);
 		
 		virtual Sguidovalue eval(SguidoEnv env);
+		virtual Sguidoexpression getIdent() const	{ return fExp; }
 
 		virtual void		acceptIn(guido::basevisitor& visitor);
 		virtual void		acceptOut(guido::basevisitor& visitor);
 
-		virtual bool operator ==(const SguidoIdentExpr& i) const;
+		virtual bool operator ==(const Sguidoexpression& i) const;
 };
 
 } // namespace

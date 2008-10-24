@@ -24,6 +24,7 @@
 #include <iostream>
 
 #include "guidoexpression.h"
+#include "guidoEvalSusp.h"
 #include "guidoExpPrinter.h"
 #include "tree_browser.h"
 #include "visitor.h"
@@ -45,11 +46,22 @@ void guidoexpression::acceptIn(basevisitor& v) {
 }
 
 //______________________________________________________________________________
+Sguidovalue guidoexpression::suspend(SguidoEnv env)
+{
+	return guidoEvalSusp::create (this, env);
+}
+
+//______________________________________________________________________________
 void guidoexpression::acceptOut(basevisitor& v) {
 	if (visitor<Sguidoexpression>* p = dynamic_cast<visitor<Sguidoexpression>*>(&v)) {
 		Sguidoexpression ge = this;
 		p->visitEnd (ge);
 	}
+}
+
+//______________________________________________________________________________
+Sguidoexpression guidoexpression::replace(Sguidoexpression exp, Sguidoexpression with) const
+{
 }
 
 //______________________________________________________________________________
@@ -62,11 +74,6 @@ Sguidoexpression guidoexpression::getArg(unsigned int n) const {
 		n--;
 	} while (n >= 0);
 	return 0;
-}
-
-//______________________________________________________________________________
-bool guidoexpression::operator ==(const Sguidoexpression& elt) const { 
-	return true;
 }
 
 //______________________________________________________________________________

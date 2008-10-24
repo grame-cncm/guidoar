@@ -23,7 +23,7 @@
 
 #include <iostream>
 #include "exceptions.h"
-#include "guidoApplyExpr.h"
+#include "guidoStretchExpr.h"
 #include "guidoApplyValue.h"
 #include "guidoEnv.h"
 #include "visitor.h"
@@ -35,53 +35,54 @@ namespace guidolang
 {
 
 //______________________________________________________________________________
-// guidoApplyExpr
+// guidoStretchExpr
 //______________________________________________________________________________
-guidoApplyExpr::guidoApplyExpr(Sguidoexpression& exp, Sguidoexpression& arg)
+guidoStretchExpr::guidoStretchExpr(Sguidoexpression& exp1, Sguidoexpression& exp2)
 {
-	push(exp);
-	push(arg);	
+	push(exp1);
+	push(exp2);
 }
 
 //______________________________________________________________________________
-Sguidovalue guidoApplyExpr::eval(SguidoEnv env)
+SguidoStretchExpr guidoStretchExpr::create(Sguidoexpression& exp1, Sguidoexpression& exp2)		
+	{ guidoStretchExpr * o = new guidoStretchExpr(exp1, exp2); assert(o!=0); return o; }
+
+//______________________________________________________________________________
+Sguidovalue guidoStretchExpr::eval(SguidoEnv env)
 {
-	evalPrint ("guidoApplyExpr");
+	evalPrint ("guidoStretchExpr");
 	Sguidoexpression arg1 = getArg(0);
 	Sguidoexpression arg2 = getArg(1);
 	if (!arg1 || !arg2) throw (newException (kMissingArgument));
 
 	Sguidovalue earg1 = arg1->eval(env);
 	Sguidovalue earg2 = arg2->eval(env);
-	if (!earg1 || !earg2) throw (newException (kNullValue));
-
-	return guidoApplyValue::create(earg1, earg2);
+	if (!earg1 || earg2) throw (newException (kNullValue));
+	
+	rational dur = earg2->duration() - earg1->duration();
+	return earg1->stretch(dur.rationalise());
 }
 
 //______________________________________________________________________________
-SguidoApplyExpr guidoApplyExpr::create(Sguidoexpression& exp, Sguidoexpression& arg)		
-	{ guidoApplyExpr * o = new guidoApplyExpr(exp, arg); assert(o!=0); return o; }
-
-//______________________________________________________________________________
-void guidoApplyExpr::acceptIn(basevisitor& v) {
-	if (visitor<SguidoApplyExpr>* p = dynamic_cast<visitor<SguidoApplyExpr>*>(&v)) {
-		SguidoApplyExpr ge = this;
+void guidoStretchExpr::acceptIn(basevisitor& v) {
+	if (visitor<SguidoStretchExpr>* p = dynamic_cast<visitor<SguidoStretchExpr>*>(&v)) {
+		SguidoStretchExpr ge = this;
 		p->visitStart (ge);
 	}
 }
 
 //______________________________________________________________________________
-void guidoApplyExpr::acceptOut(basevisitor& v) {
-	if (visitor<SguidoApplyExpr>* p = dynamic_cast<visitor<SguidoApplyExpr>*>(&v)) {
-		SguidoApplyExpr ge = this;
+void guidoStretchExpr::acceptOut(basevisitor& v) {
+	if (visitor<SguidoStretchExpr>* p = dynamic_cast<visitor<SguidoStretchExpr>*>(&v)) {
+		SguidoStretchExpr ge = this;
 		p->visitEnd (ge);
 	}
 }
 
 //______________________________________________________________________________
-bool guidoApplyExpr::operator ==(const Sguidoexpression& elt) const 
+bool guidoStretchExpr::operator ==(const Sguidoexpression& elt) const 
 { 
-	if (!dynamic_cast<guidoApplyExpr*>((guidoexpression*)elt)) return false;
+	if (!dynamic_cast<guidoStretchExpr*>((guidoexpression*)elt)) return false;
 
 	Sguidoexpression arg1 = getArg(0);
 	Sguidoexpression arg2 = getArg(1);

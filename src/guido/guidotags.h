@@ -144,6 +144,7 @@ enum {
 	kTVoltaEnd,
 	kTDrHoos,
 	kTDrRenz,
+	kTBackward,		// a tag specific to the normal form of a chord
 	kTagEnd
 };
 

@@ -38,7 +38,7 @@ namespace guidolang
 // guidoMixValue
 //______________________________________________________________________________
 Sguidovalue	guidoMixValue::create (Sguidovalue v1, Sguidovalue v2)
-	{ guidoMixValue * o = new guidoMixValue(v1, v2); assert(o!=0); return o; }
+	{ valuePrint("guidoMixValue"); guidoMixValue * o = new guidoMixValue(v1, v2); assert(o!=0); return o; }
 
 //______________________________________________________________________________
 Sguidovalue	guidoMixValue::apply (Sguidovalue& arg)	
@@ -69,7 +69,7 @@ Sguidovalue	guidoMixValue::bottom (unsigned int vnum)
 }
 
 //______________________________________________________________________________
-unsigned int guidoMixValue::length () const
+unsigned int guidoMixValue::length ()
 {
 	unsigned int l1 = fArg1->length();
 	if (l1 == kInfinite) return kInfinite;
@@ -80,7 +80,7 @@ unsigned int guidoMixValue::length () const
 	return (l1 > l2) ? l1 : l2;
 }
 
-rational guidoMixValue::duration() const
+rational guidoMixValue::duration()
 {
 	rational d1 = fArg1->duration();
 	if (infinite(d1)) return d1;
@@ -89,7 +89,7 @@ rational guidoMixValue::duration() const
 	return (d1 > d2) ? d1 : d2;
 }
 
-unsigned int guidoMixValue::voices () const
+unsigned int guidoMixValue::voices ()
 {
 	unsigned int v1 = fArg1->voices();
 	if (v1 == kInfinite) return kInfinite;
@@ -100,7 +100,7 @@ unsigned int guidoMixValue::voices () const
 	return v1 + v2;
 }
 
-unsigned int guidoMixValue::pitch () const
+unsigned int guidoMixValue::pitch ()
 {
 	return fArg1->pitch();
 }

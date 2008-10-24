@@ -47,13 +47,13 @@ class export guidoScoreExpr : public guidoexpression
 	public:
         static SguidoScoreExpr create (guido::Sguidoelement& score);
 
-		const guido::Sguidoelement& getScore()		{ return fScore; }
+		const guido::Sguidoelement& getScore() const	{ return fScore; }
 
 		virtual Sguidovalue eval(SguidoEnv env);
 		virtual void		acceptIn(guido::basevisitor& visitor);
 		virtual void		acceptOut(guido::basevisitor& visitor);
 
-		virtual bool operator ==(const SguidoScoreExpr& i) const;
+		virtual bool operator ==(const Sguidoexpression& i) const;
 };
 
 } // namespace

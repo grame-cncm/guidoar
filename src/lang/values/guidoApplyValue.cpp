@@ -37,7 +37,7 @@ namespace guidolang
 // guidoApplyValue
 //______________________________________________________________________________
 Sguidovalue	guidoApplyValue::create (Sguidovalue v1, Sguidovalue v2)
-	{ guidoApplyValue * o = new guidoApplyValue(v1, v2); assert(o!=0); return o; }
+	{ valuePrint("guidoApplyValue"); guidoApplyValue * o = new guidoApplyValue(v1, v2); assert(o!=0); return o; }
 
 //______________________________________________________________________________
 Sguidovalue	guidoApplyValue::apply	(Sguidovalue& arg)			{ return create(this, arg); }
@@ -52,10 +52,10 @@ Sguidovalue	guidoApplyValue::stretch (rational ratio)			{ return propagate (stre
 Sguidovalue	guidoApplyValue::stretch (float ratio)				{ return propagate (stretch, ratio); }
 
 //______________________________________________________________________________
-unsigned int guidoApplyValue::length () const		{ return fArg1->length(); }
-rational guidoApplyValue::duration() const			{ return fArg1->duration(); }
-unsigned int guidoApplyValue::voices () const		{ return fArg1->voices(); }
-unsigned int guidoApplyValue::pitch () const		{ return fArg1->pitch(); }
+unsigned int guidoApplyValue::length ()			{ return fArg1->length(); }
+rational guidoApplyValue::duration()			{ return fArg1->duration(); }
+unsigned int guidoApplyValue::voices ()			{ return fArg1->voices(); }
+unsigned int guidoApplyValue::pitch ()			{ return fArg1->pitch(); }
 
 //______________________________________________________________________________
 void guidoApplyValue::acceptIn(basevisitor& v) {

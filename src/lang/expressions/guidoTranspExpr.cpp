@@ -37,27 +37,31 @@ namespace guidolang
 //______________________________________________________________________________
 // guidoTranspExpr
 //______________________________________________________________________________
-guidoTranspExpr::guidoTranspExpr(Sguidoexpression& exp, int interval)
-	: fInterval(interval)
+guidoTranspExpr::guidoTranspExpr(Sguidoexpression& exp1, Sguidoexpression& exp2)
 {
-	push(exp);
+	push(exp1);
+	push(exp2);
 }
+
+//______________________________________________________________________________
+SguidoTranspExpr guidoTranspExpr::create(Sguidoexpression& exp1, Sguidoexpression& exp2)		
+	{ guidoTranspExpr * o = new guidoTranspExpr(exp1, exp2); assert(o!=0); return o; }
 
 //______________________________________________________________________________
 Sguidovalue guidoTranspExpr::eval(SguidoEnv env)
 {
+	evalPrint ("guidoTranspExpr");
 	Sguidoexpression arg1 = getArg(0);
-	if (!arg1) throw (newException (kMissingArgument));
+	Sguidoexpression arg2 = getArg(1);
+	if (!arg1 || !arg2) throw (newException (kMissingArgument));
 
 	Sguidovalue earg1 = arg1->eval(env);
-	if (!earg1) throw (newException (kNullValue));
-
-	return 0;
+	Sguidovalue earg2 = arg2->eval(env);
+	if (!earg1 || earg2) throw (newException (kNullValue));
+	
+	int interval = earg2->pitch() - earg1->pitch();
+	return earg1->transpose(interval);
 }
-
-//______________________________________________________________________________
-SguidoTranspExpr guidoTranspExpr::create(Sguidoexpression& exp, int interval)		
-	{ guidoTranspExpr * o = new guidoTranspExpr(exp, interval); assert(o!=0); return o; }
 
 //______________________________________________________________________________
 void guidoTranspExpr::acceptIn(basevisitor& v) {
@@ -76,8 +80,19 @@ void guidoTranspExpr::acceptOut(basevisitor& v) {
 }
 
 //______________________________________________________________________________
-bool guidoTranspExpr::operator ==(const SguidoTranspExpr& elt) const { 
-	return true;
+bool guidoTranspExpr::operator ==(const Sguidoexpression& elt) const 
+{ 
+	if (!dynamic_cast<guidoTranspExpr*>((guidoexpression*)elt)) return false;
+
+	Sguidoexpression arg1 = getArg(0);
+	Sguidoexpression arg2 = getArg(1);
+	if (!arg1 || !arg2) throw (newException (kMissingArgument));
+
+	Sguidoexpression elt1 = elt->getArg(0);
+	Sguidoexpression elt2 = elt->getArg(1);
+	if (!arg1 || !arg2) throw (newException (kMissingArgument));
+
+	return (arg1 == elt1) && (arg2 == elt2);
 }
 
 } // namespace

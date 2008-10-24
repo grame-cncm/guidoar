@@ -40,6 +40,7 @@ namespace guidolang
 //______________________________________________________________________________
 Sguidovalue guidoIdentExpr::eval(SguidoEnv env)
 {
+	evalPrint ("guidoIdentExpr");
 	if (!env) throw (newException (kNullEnvironment));
 	Sguidovalue result = env->value(fExp);
 	return result;
@@ -66,8 +67,10 @@ void guidoIdentExpr::acceptOut(basevisitor& v) {
 }
 
 //______________________________________________________________________________
-bool guidoIdentExpr::operator ==(const SguidoIdentExpr& elt) const { 
-	return true;
+bool guidoIdentExpr::operator ==(const Sguidoexpression& elt) const { 
+	SguidoIdentExpr id = dynamic_cast<guidoIdentExpr*>((guidoexpression*)elt);
+	if (!id) return false;
+	return getIdent() == id->getIdent();
 }
 
 } // namespace

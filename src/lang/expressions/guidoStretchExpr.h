@@ -1,6 +1,6 @@
 /*
   GUIDO Library
-  Copyright (C) 2006  Grame
+  Copyright (C) 2006-2008  Grame
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -21,30 +21,37 @@
 
 */
 
-#ifdef WIN32
-# pragma warning (disable : 4786)
-#endif
+#ifndef __guidoStretchExpr__
+#define __guidoStretchExpr__
 
-#include <iostream>
+#include "guidoexpression.h"
 
-#include "guidoValFactory.h"
-
-using namespace std;
-
-namespace guidolang
+namespace guidolang 
 {
 
-//______________________________________________________________________________
-Sguidovalue guidoValFactory::createMix(Sguidovalue& v1, Sguidovalue& v2) const
-{
-	return guidoMixValue::create(v1, v2);
-}
+class guidoStretchExpr;
+typedef guido::SMARTP<guidoStretchExpr> 	SguidoStretchExpr;
 
-//______________________________________________________________________________
-Sguidovalue guidoValFactory::createSeq(Sguidovalue& v1, Sguidovalue& v2) const
+/*!
+\brief application expression.
+*/
+class export guidoStretchExpr : public guidoexpression
 {
-	return guidoSeqValue::create(v1, v2);
-}
+    protected:
+				 guidoStretchExpr(Sguidoexpression& exp1, Sguidoexpression& exp2);
+		virtual ~guidoStretchExpr() {}
 
+	public:
+        static SguidoStretchExpr create(Sguidoexpression& exp1, Sguidoexpression& exp2);
+
+		virtual Sguidovalue eval(SguidoEnv env);
+
+		virtual void		acceptIn(guido::basevisitor& visitor);
+		virtual void		acceptOut(guido::basevisitor& visitor);
+
+		virtual bool operator ==(const Sguidoexpression& i) const;
+};
 
 } // namespace
+
+#endif

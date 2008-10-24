@@ -38,19 +38,18 @@ typedef guido::SMARTP<guidoTranspExpr> 	SguidoTranspExpr;
 class export guidoTranspExpr : public guidoexpression
 {
     protected:
-		int	fInterval;
-				 guidoTranspExpr(Sguidoexpression& exp, int interval);
+				 guidoTranspExpr(Sguidoexpression& exp1, Sguidoexpression& exp2);
 		virtual ~guidoTranspExpr() {}
 
 	public:
-        static SguidoTranspExpr create(Sguidoexpression& exp, int interval);
+        static SguidoTranspExpr create(Sguidoexpression& exp1, Sguidoexpression& exp2);
 
 		virtual Sguidovalue eval(SguidoEnv env);
 
 		virtual void		acceptIn(guido::basevisitor& visitor);
 		virtual void		acceptOut(guido::basevisitor& visitor);
 
-		virtual bool operator ==(const SguidoTranspExpr& i) const;
+		virtual bool operator ==(const Sguidoexpression& i) const;
 };
 
 } // namespace

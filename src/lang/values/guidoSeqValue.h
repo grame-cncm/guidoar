@@ -55,10 +55,10 @@ class export guidoSeqValue : public guidovalue
 		virtual Sguidovalue	stretch  (rational ratio);
 		virtual Sguidovalue	stretch  (float ratio);
 
-		virtual unsigned int	length	() const;
-		virtual rational		duration() const;
-		virtual unsigned int	voices	() const;
-		virtual unsigned int	pitch	() const;
+		virtual unsigned int	length	();
+		virtual rational		duration();
+		virtual unsigned int	voices	();
+		virtual unsigned int	pitch	();
 
 		virtual void		acceptIn(guido::basevisitor& visitor);
 		virtual void		acceptOut(guido::basevisitor& visitor);

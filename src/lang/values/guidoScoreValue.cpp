@@ -54,6 +54,7 @@ namespace guidolang
 //______________________________________________________________________________
 Sguidovalue	guidoScoreValue::create ()
 { 
+	valuePrint("guidoScoreValue");
 	guidoScoreValue * o = new guidoScoreValue(); assert(o!=0);
 	o->fScore = ARFactory::instance().createMusic();
 	return o; 
@@ -83,7 +84,7 @@ Sguidovalue	guidoScoreValue::stretch (rational ratio)		{ compose (durationOperat
 Sguidovalue	guidoScoreValue::stretch (float ratio)			{ compose (durationOperation, ratio); }
 
 //______________________________________________________________________________
-unsigned int guidoScoreValue::length () const
+unsigned int guidoScoreValue::length ()
 {
 	unsigned int max=0;
 	for (unsigned int i=0; i < size(); i++) {
@@ -94,18 +95,18 @@ unsigned int guidoScoreValue::length () const
 	return max;
 }
 
-rational guidoScoreValue::duration() const
+rational guidoScoreValue::duration()
 {
 	durationvisitor dv;
 	return dv.duration (fScore);
 }
 
-unsigned int guidoScoreValue::voices () const
+unsigned int guidoScoreValue::voices ()
 {
 	return fScore ? fScore->size() : 0;
 }
 
-unsigned int guidoScoreValue::pitch () const
+unsigned int guidoScoreValue::pitch ()
 {
 	firstpitchvisitor fpv;
 	int pitch = fpv.firstPitch(fScore);
