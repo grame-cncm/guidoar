@@ -24,28 +24,35 @@
 #ifndef __guidoExpFactory__
 #define __guidoExpFactory__
 
-#include "guidoApplyExpr.h"
-#include "guidoAbstractExpr.h"
+#include <string>
+#include <map>
+
+#include "functor.h"
+#include "guidoExprTypes.h"
 #include "guidoCompExpr.h"
-#include "guidoScoreExpr.h"
+#include "guidoelement.h"
 #include "singleton.h"
 
 namespace guidolang 
 {
+
+typedef guido::rfunctor<Sguidoexpression>	NewNodeFunctor;
 
 /*!
 \brief A guido language expressions factory.
 */
 class export guidoExpFactory : public singleton<guidoExpFactory>
 {
+	std::map<std::string, NewNodeFunctor*> fMap;
     public:
-				 guidoExpFactory() {}
+				 guidoExpFactory();
 		virtual ~guidoExpFactory() {}
 
-		SguidoApplyExpr		createApplication(Sguidoexpression& e1, Sguidoexpression& e2) const;	
-		SguidoAbstractExpr	createAbstraction(Sguidoexpression& e1, Sguidoexpression& e2) const;	
-		SguidoCompExpr		createComposition(guidoCompExpr::composition op, Sguidoexpression& e1, Sguidoexpression& e2) const;	
-		SguidoScoreExpr		createScore(guido::Sguidoelement& score) const;	
+		Sguidoexpression		create(const std::string& name) const;	
+		SguidoScoreExpr			create(guido::Sguidoelement& score) const;	
+		Sguidoexpression		create(const std::string& name, Sguidoexpression& e) const;	
+		Sguidoexpression		create(const std::string& name, Sguidoexpression& e1, Sguidoexpression& e2) const;	
+		Sguidoexpression		create(guidoCompExpr::composition op, Sguidoexpression& e1, Sguidoexpression& e2) const;	
 };
 
 } // namespace

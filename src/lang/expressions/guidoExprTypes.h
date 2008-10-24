@@ -1,6 +1,6 @@
 /*
   GUIDO Library
-  Copyright (C) 2006  Grame
+  Copyright (C) 2006-2008  Grame
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -21,47 +21,33 @@
 
 */
 
-#ifndef __functor__
-#define __functor__
+#ifndef __guidoExpTypes__
+#define __guidoExpTypes__
 
-/*!
-\addtogroup generic
-@{
-*/
+#include "smartpointer.h"
 
-namespace guido 
+namespace guidolang 
 {
 
-/*!
-\brief basic functor templates
-*/
-template <typename R>
-class rfunctor {
-	public:
-		virtual ~rfunctor() {}
-		virtual R operator ()() = 0;	///< the operator () supports a single parameter
-};
+class guidoexpression;
+class guidoAbstractExpr;
+class guidoApplyExpr;
+class guidoCompExpr;
+class guidoIdentExpr;
+class guidoScoreExpr;
+class guidoStretchExpr;
+class guidoTranspExpr;
+class guidoEnv;
 
-/*!
-\brief A basic functor template	
-*/
-template <typename R, typename T>
-class functor {
-	public:
-		virtual ~functor() {}
-		virtual R operator ()(T) = 0;	///< the operator () supports a single parameter
-};
-
-/*!
-\brief A 2 args functor template	
-*/
-template <typename R, typename T1, typename T2>
-class functor2 {
-	public:
-		virtual ~functor2() {}
-		virtual R operator ()(T1, T2) = 0;
-};
-/*! @} */
+typedef guido::SMARTP<guidoexpression>		Sguidoexpression;
+typedef guido::SMARTP<guidoAbstractExpr> 	SguidoAbstractExpr;
+typedef guido::SMARTP<guidoApplyExpr>		SguidoApplyExpr;
+typedef guido::SMARTP<guidoCompExpr>		SguidoCompExpr;
+typedef guido::SMARTP<guidoIdentExpr>		SguidoIdentExpr;
+typedef guido::SMARTP<guidoScoreExpr>		SguidoScoreExpr;
+typedef guido::SMARTP<guidoStretchExpr>		SguidoStretchExpr;
+typedef guido::SMARTP<guidoTranspExpr>		SguidoTranspExpr;
+typedef guido::SMARTP<guidoEnv>				SguidoEnv;
 
 } // namespace
 

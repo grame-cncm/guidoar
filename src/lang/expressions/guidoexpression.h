@@ -25,9 +25,10 @@
 #define __guidoexpression__
 
 #include "export.h"
-#include "visitable.h"
 #include "ctree.h"
 #include "smartpointer.h"
+#include "visitable.h"
+#include "visitor.h"
 
 namespace guidolang 
 {
@@ -46,6 +47,7 @@ typedef guido::SMARTP<guidoEnv>			SguidoEnv;
 #define evalPrint(expr)
 #endif
 
+//______________________________________________________________________________
 /*!
 \brief The base class for guido language expressions.
 */
@@ -55,6 +57,8 @@ class export guidoexpression : public guido::ctree<guidoexpression>, public guid
 		virtual ~guidoexpression() {}
 
 	public:
+		enum { kTAbstract, kTApply, kTTransp, kTStretch, kTCompOp, kTIdent };
+		
 		virtual void		acceptIn(guido::basevisitor& visitor);
 		virtual void		acceptOut(guido::basevisitor& visitor);
 		virtual	void		print(std::ostream& os);
@@ -71,6 +75,36 @@ class export guidoexpression : public guido::ctree<guidoexpression>, public guid
 };
 
 export std::ostream& operator << (std::ostream& os, const Sguidoexpression& elt);
+
+//______________________________________________________________________________
+/*
+\brief	A template class to type all guido expressions with integers.
+		The only exception is the score expression.
+*/
+template <int elt> class guidolnode : public guidoexpression
+{
+    protected:
+		virtual ~guidolnode() {}
+
+	public:
+		static guido::SMARTP<guidolnode<elt> > create()
+			{ guidolnode<elt>* o = new guidolnode<elt>(); assert(o!=0); return o; }
+
+        virtual void acceptIn(guido::basevisitor& v) {
+			if (guido::visitor<guido::SMARTP<guidolnode<elt> > >* p = dynamic_cast<guido::visitor<guido::SMARTP<guidolnode<elt> > >*>(&v)) {
+				guido::SMARTP<guidolnode<elt> > sptr = this;
+				p->visitStart(sptr);
+			}
+			else guidoexpression::acceptIn(v);
+		}
+        virtual void acceptOut(guido::basevisitor& v) {
+			if (guido::visitor<guido::SMARTP<guidolnode<elt> > >* p = dynamic_cast<guido::visitor<guido::SMARTP<guidolnode<elt> > >*>(&v)) {
+				guido::SMARTP<guidolnode<elt> > sptr = this;
+				p->visitEnd(sptr);
+			}
+			else guidoexpression::acceptOut(v);
+		}
+};
 
 } // namespace
 

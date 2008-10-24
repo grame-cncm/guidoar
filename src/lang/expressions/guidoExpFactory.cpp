@@ -29,12 +29,59 @@
 
 #include "guidoExpFactory.h"
 
+#include "guidoexpression.h"
+#include "guidoApplyExpr.h"
+#include "guidoAbstractExpr.h"
+#include "guidoCompExpr.h"
+#include "guidoScoreExpr.h"
+
 using namespace std; 
 using namespace guido; 
 
 namespace guidolang
 {
 
+//______________________________________________________________________________
+template<int elt>
+class newNodeFunctor : public rfunctor<Sguidoexpression> {
+	public:
+		Sguidoexpression operator ()() { return guidolnode<elt>::create(); }
+};
+
+//______________________________________________________________________________
+guidoExpFactory::guidoExpFactory()
+{
+	fMap["lambda"]		= new newNodeFunctor<guidoexpression::kTAbstract>;
+	fMap["apply"]		= new newNodeFunctor<guidoexpression::kTApply>;
+	fMap["transp"]		= new newNodeFunctor<guidoexpression::kTTransp>;
+	fMap["stretch"]		= new newNodeFunctor<guidoexpression::kTStretch>;
+	fMap["compose"]		= new newNodeFunctor<guidoexpression::kTCompOp>;
+	fMap["ident"]		= new newNodeFunctor<guidoexpression::kTIdent>;
+}
+
+//______________________________________________________________________________
+Sguidoexpression guidoExpFactory::create(const string& name) const
+{
+	map<std::string, NewNodeFunctor*>::const_iterator i = fMap.find( name );
+	if (i != fMap.end()) {
+		NewNodeFunctor* f= i->second;
+		if (f) {
+			Sguidoexpression elt = (*f)();
+			return elt;
+		}
+	}
+	cerr << "Sguidoexpression factory::create called with unknown expression name \"" << name << "\"" << endl;
+	return 0;
+}
+
+//______________________________________________________________________________
+SguidoScoreExpr guidoExpFactory::create(guido::Sguidoelement& score) const
+{
+	SguidoScoreExpr expr = guidoScoreExpr::create(score);
+	return expr;
+}
+
+/*
 //______________________________________________________________________________
 SguidoApplyExpr guidoExpFactory::createApplication(Sguidoexpression& e1, Sguidoexpression& e2) const
 {
@@ -62,6 +109,6 @@ SguidoScoreExpr guidoExpFactory::createScore(guido::Sguidoelement& score) const
 	SguidoScoreExpr expr = guidoScoreExpr::create(score);
 	return expr;
 }
-
+*/
 
 } // namespace
