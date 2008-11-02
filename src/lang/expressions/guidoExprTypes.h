@@ -24,30 +24,34 @@
 #ifndef __guidoExpTypes__
 #define __guidoExpTypes__
 
+#include "guidoExprEnum.h"
 #include "smartpointer.h"
 
 namespace guidolang 
 {
 
 class guidoexpression;
-class guidoAbstractExpr;
-class guidoApplyExpr;
-class guidoCompExpr;
-class guidoIdentExpr;
-class guidoScoreExpr;
-class guidoStretchExpr;
-class guidoTranspExpr;
-class guidoEnv;
+template<int T> class guidonode;
 
-typedef guido::SMARTP<guidoexpression>		Sguidoexpression;
-typedef guido::SMARTP<guidoAbstractExpr> 	SguidoAbstractExpr;
-typedef guido::SMARTP<guidoApplyExpr>		SguidoApplyExpr;
-typedef guido::SMARTP<guidoCompExpr>		SguidoCompExpr;
-typedef guido::SMARTP<guidoIdentExpr>		SguidoIdentExpr;
-typedef guido::SMARTP<guidoScoreExpr>		SguidoScoreExpr;
-typedef guido::SMARTP<guidoStretchExpr>		SguidoStretchExpr;
-typedef guido::SMARTP<guidoTranspExpr>		SguidoTranspExpr;
+typedef guido::SMARTP<guidoexpression>			Sguidoexpression;
+typedef guido::SMARTP<guidonode<kAbstract> > 	SguidoAbstractExpr;
+typedef guido::SMARTP<guidonode<kApply> >		SguidoApplyExpr;
+typedef guido::SMARTP<guidonode<kTransp> >		SguidoTranspExpr;
+typedef guido::SMARTP<guidonode<kStretch> >		SguidoStretchExpr;
+typedef guido::SMARTP<guidonode<kSeqOp> >		SguidoSeqExpr;
+typedef guido::SMARTP<guidonode<kParOp> >		SguidoParExpr;
+typedef guido::SMARTP<guidonode<kHeadOp> >		SguidoHeadExpr;
+typedef guido::SMARTP<guidonode<kTailOp> >		SguidoTailExpr;
+typedef guido::SMARTP<guidonode<kTopOp> >		SguidoTopExpr;
+typedef guido::SMARTP<guidonode<kBottomOp> >	SguidoBottomExpr;
+typedef guido::SMARTP<guidonode<kIdent> >		SguidoIdentExpr;
+typedef guido::SMARTP<guidonode<kScore> >		SguidoScoreExpr;
+
+class guidoEnv;
 typedef guido::SMARTP<guidoEnv>				SguidoEnv;
+class guidovalue;
+typedef guido::SMARTP<guidovalue>			Sguidovalue;
+
 
 } // namespace
 

@@ -24,8 +24,12 @@
 #ifndef __guidoexpression__
 #define __guidoexpression__
 
+#include <string>
+
 #include "export.h"
 #include "ctree.h"
+#include "functor.h"
+#include "guidoEnv.h"
 #include "smartpointer.h"
 #include "visitable.h"
 #include "visitor.h"
@@ -35,17 +39,9 @@ namespace guidolang
 
 class guidoexpression;
 class guidovalue;
-class guidoEnv;
 
 typedef guido::SMARTP<guidoexpression> 	Sguidoexpression;
 typedef guido::SMARTP<guidovalue>		Sguidovalue;
-typedef guido::SMARTP<guidoEnv>			SguidoEnv;
-
-#ifdef evalDebug
-#define evalPrint(expr)	cout << "eval \"" << expr << "\"" << endl
-#else
-#define evalPrint(expr)
-#endif
 
 //______________________________________________________________________________
 /*!
@@ -54,24 +50,30 @@ typedef guido::SMARTP<guidoEnv>			SguidoEnv;
 class export guidoexpression : public guido::ctree<guidoexpression>, public guido::visitable
 {
     protected:
+		std::string	fName;
+		int			fType;
+
+				 guidoexpression(int type) : fType(type) {}
 		virtual ~guidoexpression() {}
 
-	public:
-		enum { kTAbstract, kTApply, kTTransp, kTStretch, kTCompOp, kTIdent };
-		
+	public:		
+		virtual const std::string&	getName()		{ return fName; }
+		virtual int					getType()		{ return fType; }
+
 		virtual void		acceptIn(guido::basevisitor& visitor);
 		virtual void		acceptOut(guido::basevisitor& visitor);
 		virtual	void		print(std::ostream& os);
 
-		virtual Sguidovalue eval(SguidoEnv env) = 0;
 		virtual Sguidovalue suspend(SguidoEnv env);
 
 		//________________________________________________________________________
 		virtual Sguidoexpression replace(Sguidoexpression exp, Sguidoexpression with) const;
 
 		virtual Sguidoexpression getArg(unsigned int n) const;
-		virtual bool operator ==(const Sguidoexpression& i) const = 0;
+		virtual bool operator ==(const Sguidoexpression& i) const		{ return false; }
 		virtual bool operator !=(const Sguidoexpression& i) const		{ return !(*this == i); }
+		
+		void setName(const std::string& name)	{ fName = name; }
 };
 
 export std::ostream& operator << (std::ostream& os, const Sguidoexpression& elt);
@@ -81,29 +83,45 @@ export std::ostream& operator << (std::ostream& os, const Sguidoexpression& elt)
 \brief	A template class to type all guido expressions with integers.
 		The only exception is the score expression.
 */
-template <int elt> class guidolnode : public guidoexpression
+template <int elt> class guidonode : public guidoexpression
 {
-    protected:
-		virtual ~guidolnode() {}
-
 	public:
-		static guido::SMARTP<guidolnode<elt> > create()
-			{ guidolnode<elt>* o = new guidolnode<elt>(); assert(o!=0); return o; }
-
-        virtual void acceptIn(guido::basevisitor& v) {
-			if (guido::visitor<guido::SMARTP<guidolnode<elt> > >* p = dynamic_cast<guido::visitor<guido::SMARTP<guidolnode<elt> > >*>(&v)) {
-				guido::SMARTP<guidolnode<elt> > sptr = this;
+		static guido::SMARTP<guidonode<elt> > create(int type)
+			{ guidonode<elt>* o = new guidonode<elt>(type); assert(o!=0); return o; }
+		
+		virtual void acceptIn(guido::basevisitor& v) {
+			if (guido::visitor<guido::SMARTP<guidonode<elt> > >* p = dynamic_cast<guido::visitor<guido::SMARTP<guidonode<elt> > >*>(&v)) {
+				guido::SMARTP<guidonode<elt> > sptr = this;
 				p->visitStart(sptr);
 			}
 			else guidoexpression::acceptIn(v);
 		}
         virtual void acceptOut(guido::basevisitor& v) {
-			if (guido::visitor<guido::SMARTP<guidolnode<elt> > >* p = dynamic_cast<guido::visitor<guido::SMARTP<guidolnode<elt> > >*>(&v)) {
-				guido::SMARTP<guidolnode<elt> > sptr = this;
+			if (guido::visitor<guido::SMARTP<guidonode<elt> > >* p = dynamic_cast<guido::visitor<guido::SMARTP<guidonode<elt> > >*>(&v)) {
+				guido::SMARTP<guidonode<elt> > sptr = this;
 				p->visitEnd(sptr);
 			}
 			else guidoexpression::acceptOut(v);
 		}
+
+ 		virtual bool operator ==(const Sguidoexpression& e) const { 
+//			if (getType() == e->getType()) {
+			if (dynamic_cast<guidonode<elt>*>((guidoexpression*)(e))) {
+				for (int i=0; i<size(); i++) {
+					Sguidoexpression argi = getArg(i);
+					Sguidoexpression eargi = e->getArg(i);
+					if (!argi || !eargi || (argi != eargi)) 
+						return false;
+				}
+				return true;
+			}
+			return false;		
+		}
+
+	protected:
+				 guidonode(int type) : guidoexpression(type) {}
+		virtual ~guidonode() {}
+
 };
 
 } // namespace

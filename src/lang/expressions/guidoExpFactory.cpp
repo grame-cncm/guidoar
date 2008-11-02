@@ -30,10 +30,12 @@
 #include "guidoExpFactory.h"
 
 #include "guidoexpression.h"
-#include "guidoApplyExpr.h"
-#include "guidoAbstractExpr.h"
-#include "guidoCompExpr.h"
-#include "guidoScoreExpr.h"
+//#include "guidoScoreExpr.h"
+#include "guidoEval.h"
+
+//#include "guidoApplyExpr.h"
+//#include "guidoAbstractExpr.h"
+//#include "guidoCompExpr.h"
 
 using namespace std; 
 using namespace guido; 
@@ -43,42 +45,72 @@ namespace guidolang
 
 //______________________________________________________________________________
 template<int elt>
-class newNodeFunctor : public rfunctor<Sguidoexpression> {
+class newNodeFunctor : public functor<Sguidoexpression,int> {
 	public:
-		Sguidoexpression operator ()() { return guidolnode<elt>::create(); }
+		Sguidoexpression operator ()(int type) { return guidonode<elt>::create(type); }
 };
 
 //______________________________________________________________________________
 guidoExpFactory::guidoExpFactory()
 {
-	fMap["lambda"]		= new newNodeFunctor<guidoexpression::kTAbstract>;
-	fMap["apply"]		= new newNodeFunctor<guidoexpression::kTApply>;
-	fMap["transp"]		= new newNodeFunctor<guidoexpression::kTTransp>;
-	fMap["stretch"]		= new newNodeFunctor<guidoexpression::kTStretch>;
-	fMap["compose"]		= new newNodeFunctor<guidoexpression::kTCompOp>;
-	fMap["ident"]		= new newNodeFunctor<guidoexpression::kTIdent>;
+	fMap["."]			= new newNodeFunctor<kAbstract>;
+	fMap["@"]			= new newNodeFunctor<kApply>;
+	fMap[":"]			= new newNodeFunctor<kSeqOp>;
+	fMap["/"]			= new newNodeFunctor<kParOp>;
+	fMap["-|"]			= new newNodeFunctor<kHeadOp>;
+	fMap["|-"]			= new newNodeFunctor<kTailOp>;
+	fMap["-/"]			= new newNodeFunctor<kTopOp>;
+	fMap["/-"]			= new newNodeFunctor<kTopOp>;
+	fMap["transp"]		= new newNodeFunctor<kTransp>;
+	fMap["stretch"]		= new newNodeFunctor<kStretch>;
+ 	fMap["ident"]		= new newNodeFunctor<kIdent>;
+	fMap["gmn"]			= new newNodeFunctor<kScore>;
 }
 
 //______________________________________________________________________________
-Sguidoexpression guidoExpFactory::create(const string& name) const
-{
+Sguidoexpression guidoExpFactory::create(const string& name, int type) const
+{ 
 	map<std::string, NewNodeFunctor*>::const_iterator i = fMap.find( name );
 	if (i != fMap.end()) {
 		NewNodeFunctor* f= i->second;
 		if (f) {
-			Sguidoexpression elt = (*f)();
+			Sguidoexpression elt = (*f)(type);
+			if (elt) elt->setName(name);
 			return elt;
 		}
 	}
-	cerr << "Sguidoexpression factory::create called with unknown expression name \"" << name << "\"" << endl;
+	cerr << "Sguidoelement factory::create called with unknown element \"" << name << "\"" << endl;
 	return 0;
 }
 
 //______________________________________________________________________________
-SguidoScoreExpr guidoExpFactory::create(guido::Sguidoelement& score) const
+Sguidoexpression guidoExpFactory::create(const std::string& name, int type, guido::Sguidoelement& score) const
 {
-	SguidoScoreExpr expr = guidoScoreExpr::create(score);
-	return expr;
+	Sguidoexpression exp = create (name, type);
+	if (exp) {
+	}
+	return exp;
+}
+
+//______________________________________________________________________________
+Sguidoexpression guidoExpFactory::create(const std::string& name, int type, Sguidoexpression& e) const
+{
+	Sguidoexpression exp = create (name, type);
+	if (exp) {
+		exp->push(e);
+	}
+	return exp;
+}
+
+//______________________________________________________________________________
+Sguidoexpression guidoExpFactory::create(const std::string& name, int type, Sguidoexpression& e1, Sguidoexpression& e2) const
+{
+	Sguidoexpression exp = create (name, type);
+	if (exp) {
+		exp->push(e1);
+		exp->push(e2);
+	}
+	return exp;
 }
 
 /*

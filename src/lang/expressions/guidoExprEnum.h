@@ -21,38 +21,25 @@
 
 */
 
-#ifndef __guidoExpFactory__
-#define __guidoExpFactory__
-
-#include <string>
-#include <map>
-
-#include "functor.h"
-#include "guidoExprTypes.h"
-#include "guidoelement.h"
-#include "singleton.h"
+#ifndef __guidoExpEnum__
+#define __guidoExpEnum__
 
 namespace guidolang 
 {
 
-typedef guido::functor<Sguidoexpression,int> NewNodeFunctor;
-
-/*!
-\brief A guido language expressions factory.
-*/
-class export guidoExpFactory : public singleton<guidoExpFactory>
-{
-	private:
-		std::map<std::string, NewNodeFunctor*>	fMap;
-
-    public:
-				 guidoExpFactory();
-		virtual ~guidoExpFactory() {}
-
-		Sguidoexpression		create(const std::string& name, int type) const;	
-		Sguidoexpression		create(const std::string& name, int type, guido::Sguidoelement& score) const;	
-		Sguidoexpression		create(const std::string& name, int type, Sguidoexpression& e) const;	
-		Sguidoexpression		create(const std::string& name, int type, Sguidoexpression& e1, Sguidoexpression& e2) const;	
+enum {
+	kAbstract,
+	kApply,
+	kTransp,
+	kStretch,
+	kSeqOp,
+	kParOp,
+	kHeadOp,
+	kTailOp,
+	kTopOp,
+	kBottomOp,
+	kIdent,
+	kScore
 };
 
 } // namespace

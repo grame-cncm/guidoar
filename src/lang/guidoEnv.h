@@ -26,12 +26,15 @@
 
 #include <map>
 
-#include "guidoexpression.h"
+//#include "guidoexpression.h"
 #include "guidovalue.h"
 #include "smartpointer.h"
 
 namespace guidolang 
 {
+
+class guidoexpression;
+typedef guido::SMARTP<guidoexpression> 	Sguidoexpression;
 
 class guidoEnv;
 typedef guido::SMARTP<guidoEnv> 	SguidoEnv;
