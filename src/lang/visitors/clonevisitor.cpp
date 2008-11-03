@@ -28,136 +28,60 @@
 
 #include <iostream>
 
-#include "ARFactory.h"
-#include "ARChord.h"
-#include "ARNote.h"
-#include "AROthers.h"
-#include "ARTag.h"
+#include "guidoExpFactory.h"
+#include "guidoexpression.h"
+#include "guidoScoreExpr.h"
 #include "clonevisitor.h"
 #include "tree_browser.h"
 
 using namespace std;
+using namespace guido;
 
 namespace guidolang 
 {
 
 //______________________________________________________________________________
-Sguidoelement clonevisitor::clone(const Sguidoelement& elt)
+Sguidoexpression clonevisitor::clone(const Sguidoexpression& exp)
 { 
-	if (elt) {
-		tree_browser<guidoelement> tb(this);
-		tb.browse (*elt);
-		Sguidoelement copy = fStack.top();
+	if (exp) {
+		tree_browser<guidoexpression> tb(this);
+		tb.browse (*exp);
+		Sguidoexpression copy = fStack.top();
 		fStack.pop();
 		return copy;
 	}
-	return elt;
+	return 0;
 }
 
 //______________________________________________________________________________
-void clonevisitor::copyAttributes (const Sguidoelement& src, Sguidoelement& dst ) const
-{
-	Sguidoattributes attr = src->attributes();
-	Sguidoattributes::const_iterator iter;
-	for (iter=attr.begin(); iter != attr.end(); iter++) {
-		Sguidoattribute ac = guidoattribute::create();
-		ac->setName ( (*iter)->getName());
-		ac->setValue( (*iter)->getValue(), (*iter)->quoteVal());
-		ac->setUnit ( (*iter)->getUnit());
-		dst->add( ac );
-	}
-}
-
-//______________________________________________________________________________
-Sguidoelement clonevisitor::copy (const Sguidoelement& src, Sguidoelement& dst) const
-{
-	if (dst) {
-		dst->setName( src->getName());
-		dst->setAuto( src->getAuto());
-		copyAttributes (src, dst);
-	}
-	return dst;
-}
-
-//______________________________________________________________________________
-SARNote clonevisitor::copy( const SARNote& elt ) const
-{
-	SARNote note = ARFactory::instance().createNote(elt->getName());
-	if (note) {
-		note->SetOctave (elt->GetOctave());
-		note->SetAccidental (elt->GetAccidental());
-		note->SetDots (elt->GetDots());
-		*note = elt->duration();
-		const Sguidoelement src = elt;
-		Sguidoelement dst = note;
-		copy (src, dst);
-	}
-	return note;
-}
-
-//______________________________________________________________________________
-void clonevisitor::push( const SARNote& note, bool stack )
-{
-	Sguidoelement elt = note;
-	push (elt, stack);
-}
-
-//______________________________________________________________________________
-void clonevisitor::push( const Sguidoelement& elt, bool stack )
+void clonevisitor::push( const Sguidoexpression& exp, bool stack )
 {
 	if (fStack.empty())
-		fStack.push(elt);
-	else fStack.top()->push(elt);
-	if (stack) fStack.push (elt);	
+		fStack.push(exp);
+	else fStack.top()->push(exp);
+	if (stack) fStack.push (exp);	
 }
 
 //______________________________________________________________________________
 // the visit methods
 //______________________________________________________________________________
-void clonevisitor::visitStart( SARMusic& elt )
+void clonevisitor::visitStart( Sguidoexpression& exp )
 {
-	fStack.push (ARFactory::instance().createMusic());
+	if (copy()) push (guidoExpFactory::instance().create(exp->getName()));
 }
 
 //______________________________________________________________________________
-void clonevisitor::visitStart( SARVoice& elt )
+void clonevisitor::visitStart( SguidoScoreExpr& exp )
 {
-	if (copy()) {
-		Sguidoelement cc = ARFactory::instance().createVoice();
-		push( copy (elt, cc) );
-	}
+	Sguidoelement score = exp->getScore();
+	if (copy()) push ( guidoExpFactory::instance().create( score ));
 }
 
 //______________________________________________________________________________
-void clonevisitor::visitStart( SARChord& elt )
-{
-	if (copy()) {
-		Sguidoelement cc = ARFactory::instance().createChord();
-		push( copy (elt, cc) );
-	}
+void clonevisitor::visitEnd  ( Sguidoexpression& exp )
+{ 
+	if (copy()) fStack.pop(); 
 }
-
-//______________________________________________________________________________
-void clonevisitor::visitStart( SARNote& elt )
-{
-	if (copy()) {
-		push( copy(elt), false );
-	}
-}
-
-//______________________________________________________________________________
-void clonevisitor::visitStart( Sguidotag& elt )
-{
-	if (copy()) {
-		Sguidoelement cc = ARFactory::instance().createTag(elt->getName(), elt->getID() );
-		push( copy (elt, cc), elt->size() );
-	}
-}
-
-//______________________________________________________________________________
-void clonevisitor::visitEnd  ( SARVoice& elt )		{ if (copy()) fStack.pop(); }
-void clonevisitor::visitEnd  ( SARChord& elt )		{ if (copy()) fStack.pop(); }
-void clonevisitor::visitEnd  ( Sguidotag& elt )		{ if (copy() && elt->size()) fStack.pop(); }
 
 
 }

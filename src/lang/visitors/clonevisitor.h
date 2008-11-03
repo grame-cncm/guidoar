@@ -26,9 +26,7 @@
 
 #include <ostream>
 
-#include "export.h"
-#include "guidoexpression.h"
-#include "ARTypes.h"
+#include "guidoExprTypes.h"
 #include "visitor.h"
 
 namespace guidolang
@@ -44,12 +42,9 @@ namespace guidolang
 \brief	A visitor to print the gmn description
 */
 class export clonevisitor :
-	public visitor<SARMusic>,
-	public visitor<SARVoice>,
-	public visitor<SARChord>,
-	public visitor<SARNote>,
-	public visitor<Sguidotag>
-	public visitor<Sguidoexpression>
+	public guido::visitor<Sguidoexpression>,
+	public guido::visitor<SguidoAbstractExpr>,
+	public guido::visitor<SguidoScoreExpr>
 {
     public:
 				 clonevisitor() {}
@@ -57,27 +52,16 @@ class export clonevisitor :
               
 		virtual Sguidoexpression clone(const Sguidoexpression&);
 
-	protected:
-		virtual void visitStart( SARMusic& elt );
-		virtual void visitStart( SARVoice& elt );
-		virtual void visitStart( SARChord& elt );
-		virtual void visitStart( SARNote& elt );
-		virtual void visitStart( Sguidotag& elt );
-
-		virtual void visitEnd  ( SARVoice& elt );
-		virtual void visitEnd  ( SARChord& elt );
-		virtual void visitEnd  ( Sguidotag& elt );
-		
+	protected:		
 		// the copy method may be used by derived classes to filter the elements
 		virtual bool copy  () const	{ return true; }
+		virtual void push	(const Sguidoexpression& exp, bool stack=true);
 
-		virtual void			push (const SARNote& elt, bool stack=false);
-		virtual void			push (const Sguidoelement& elt, bool stack=true);
-		virtual void			copyAttributes (const Sguidoelement& src, Sguidoelement& dst) const;
-		virtual Sguidoelement	copy (const Sguidoelement& elt, Sguidoelement& dst) const;
-		virtual SARNote			copy (const SARNote& elt) const;
+		virtual void visitStart ( Sguidoexpression&);
+		virtual void visitEnd	( Sguidoexpression&);
+		virtual void visitStart ( SguidoScoreExpr&);
 
-		std::stack<Sguidoelement> fStack;
+		std::stack<Sguidoexpression> fStack;
 };
 
 /*! @} */
