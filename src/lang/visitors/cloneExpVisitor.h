@@ -21,8 +21,8 @@
 
 */
 
-#ifndef __cloneVisitor__
-#define __cloneVisitor__
+#ifndef __cloneExpVisitor__
+#define __cloneExpVisitor__
 
 #include <ostream>
 
@@ -41,14 +41,13 @@ namespace guidolang
 /*!
 \brief	A visitor to print the gmn description
 */
-class export clonevisitor :
+class export cloneExpVisitor :
 	public guido::visitor<Sguidoexpression>,
-	public guido::visitor<SguidoAbstractExpr>,
 	public guido::visitor<SguidoScoreExpr>
 {
     public:
-				 clonevisitor() {}
-       	virtual ~clonevisitor() {}
+				 cloneExpVisitor() {}
+       	virtual ~cloneExpVisitor() {}
               
 		virtual Sguidoexpression clone(const Sguidoexpression&);
 
@@ -60,6 +59,7 @@ class export clonevisitor :
 		virtual void visitStart ( Sguidoexpression&);
 		virtual void visitEnd	( Sguidoexpression&);
 		virtual void visitStart ( SguidoScoreExpr&);
+		virtual void visitEnd	( SguidoScoreExpr&);
 
 		std::stack<Sguidoexpression> fStack;
 };

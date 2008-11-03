@@ -31,7 +31,7 @@
 #include "guidoExpFactory.h"
 #include "guidoexpression.h"
 #include "guidoScoreExpr.h"
-#include "clonevisitor.h"
+#include "replaceVisitor.h"
 #include "tree_browser.h"
 
 using namespace std;
@@ -41,47 +41,57 @@ namespace guidolang
 {
 
 //______________________________________________________________________________
-Sguidoexpression clonevisitor::clone(const Sguidoexpression& exp)
+Sguidoexpression replaceVisitor::replace(const Sguidoexpression& exp, const Sguidoexpression& target, const Sguidoexpression& with)
 { 
-	if (exp) {
-		tree_browser<guidoexpression> tb(this);
-		tb.browse (*exp);
-		Sguidoexpression copy = fStack.top();
-		fStack.pop();
-		return copy;
-	}
-	return 0;
-}
-
-//______________________________________________________________________________
-void clonevisitor::push( const Sguidoexpression& exp, bool stack )
-{
-	if (fStack.empty())
-		fStack.push(exp);
-	else fStack.top()->push(exp);
-	if (stack) fStack.push (exp);	
+	fCopy = true;
+	fTarget = target;
+	fIdent = with;
+	fReplaced = 0;
+	return clone(exp);
 }
 
 //______________________________________________________________________________
 // the visit methods
 //______________________________________________________________________________
-void clonevisitor::visitStart( Sguidoexpression& exp )
+void replaceVisitor::visitStart( Sguidoexpression& exp )
 {
-	if (copy()) push (guidoExpFactory::instance().create(exp->getName()));
+	if (*exp == *fTarget) {		// target expression found ?
+		fReplaced = exp;		// store expression for future use
+		push (fIdent, false);	// push the replacement
+		fCopy = false;			// prevent copying subtree
+	}
+	else cloneExpVisitor::visitStart(exp);
 }
 
 //______________________________________________________________________________
-void clonevisitor::visitStart( SguidoScoreExpr& exp )
-{
-	Sguidoelement score = exp->getScore();
-	if (copy()) push ( guidoExpFactory::instance().create( score ));
-}
-
-//______________________________________________________________________________
-void clonevisitor::visitEnd  ( Sguidoexpression& exp )
+void replaceVisitor::visitEnd  ( Sguidoexpression& exp )
 { 
-	if (copy()) fStack.pop(); 
+	if (fReplaced == exp) {
+		fCopy = true;
+		fReplaced = 0;
+	}
+	else cloneExpVisitor::visitEnd (exp);
 }
 
+//______________________________________________________________________________
+void replaceVisitor::visitStart( SguidoScoreExpr& exp )
+{
+	if (*exp == *fTarget) {		// target expression found ?
+		fReplaced = exp;		// store expression for future use
+		push (fIdent, false);	// push the replacement
+		fCopy = false;			// prevent copying subtree
+	}
+	else cloneExpVisitor::visitStart(exp);	
+}
+
+//______________________________________________________________________________
+void replaceVisitor::visitEnd( SguidoScoreExpr& exp )
+{
+	if (fReplaced == exp) {
+		fCopy = true;
+		fReplaced = 0;
+	}
+	else cloneExpVisitor::visitEnd (exp);
+}
 
 }

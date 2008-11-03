@@ -67,8 +67,6 @@ class export guidoexpression : public guido::ctree<guidoexpression>, public guid
 		virtual Sguidovalue suspend(SguidoEnv env);
 
 		//________________________________________________________________________
-		virtual Sguidoexpression replace(Sguidoexpression exp, Sguidoexpression with) const;
-
 		virtual Sguidoexpression getArg(unsigned int n) const;
 		virtual bool operator ==(const Sguidoexpression& i) const		{ return false; }
 		virtual bool operator !=(const Sguidoexpression& i) const		{ return !(*this == i); }

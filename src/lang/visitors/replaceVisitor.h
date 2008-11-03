@@ -1,6 +1,6 @@
 /*
   GUIDO Library
-  Copyright (C) 2008  Grame
+  Copyright (C) 2006  Grame
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -21,43 +21,46 @@
 
 */
 
-#ifndef __guidoExpReader__
-#define __guidoExpReader__
+#ifndef __replaceVisitor__
+#define __replaceVisitor__
 
 #include <ostream>
-#include <stack>
 
-#include "guidoExprTypes.h"
-#include "visitor.h"
+#include "cloneExpVisitor.h"
 
-namespace guidolang 
+namespace guidolang
 {
+
+/*!
+\addtogroup visitors
+@{
+*/
 
 //______________________________________________________________________________
 /*!
-\brief	a guido language expression printer
+\brief	A visitor to print the gmn description
 */
-class export guidoExpPrinter : 
-	public guido::visitor<Sguidoexpression>,
-	public guido::visitor<SguidoAbstractExpr>,
-	public guido::visitor<SguidoScoreExpr>
-{ 
-	private:
-		std::ostream&	fOut;		///< the output stream 
-		int				fPos;		///< position inside a node
-		std::stack<const char *> fPendingOp;
-
-	public:
-				 guidoExpPrinter(std::ostream& out) : fOut(out), fPos(0) {}
-		virtual ~guidoExpPrinter() {}
+class export replaceVisitor : public cloneExpVisitor
+{
+    public:
+				 replaceVisitor() {}
+       	virtual ~replaceVisitor() {}
+		
+		virtual Sguidoexpression replace(const Sguidoexpression& exp, const Sguidoexpression& target, const Sguidoexpression& with);
 
 	protected:
-		virtual void visitStart( Sguidoexpression&);
-		virtual void visitEnd  ( Sguidoexpression&);
-		virtual void visitStart( SguidoAbstractExpr&);
-		virtual void visitEnd  ( SguidoAbstractExpr&);
-		virtual void visitStart( SguidoScoreExpr&);
+		Sguidoexpression	fTarget, fIdent;
+		Sguidoexpression	fReplaced;
+		bool	fCopy;              
+		virtual bool copy  () const	{ return fCopy; }
+
+		virtual void visitStart ( Sguidoexpression&);
+		virtual void visitEnd	( Sguidoexpression&);
+		virtual void visitStart ( SguidoScoreExpr&);
+		virtual void visitEnd	( SguidoScoreExpr&);
 };
+
+/*! @} */
 
 } // namespace
 

@@ -1,6 +1,7 @@
 /*
-  GUIDO Library
-  Copyright (C) 2008  Grame
+
+  MusicXML Library
+  Copyright (C) 2006,2007  Grame
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -21,14 +22,16 @@
 
 */
 
-#ifndef __guidoExpPrinter__
-#define __guidoExpPrinter__
+#ifdef WIN32
+#pragma warning (disable : 4786)
+#endif
 
 #include <iostream>
 
-#include "guidoExpPrinter.h"
+#include "guidoExpFactory.h"
 #include "guidoexpression.h"
 #include "guidoScoreExpr.h"
+#include "cloneExpVisitor.h"
 #include "tree_browser.h"
 
 using namespace std;
@@ -38,48 +41,54 @@ namespace guidolang
 {
 
 //______________________________________________________________________________
+Sguidoexpression cloneExpVisitor::clone(const Sguidoexpression& exp)
+{ 
+cout << "cloneExpVisitor::clone" << endl;
+	if (exp) {
+		tree_browser<guidoexpression> tb(this);
+		tb.browse (*exp);
+		Sguidoexpression copy = fStack.top();
+		fStack.pop();
+		return copy;
+	}
+	return 0;
+}
+
+//______________________________________________________________________________
+void cloneExpVisitor::push( const Sguidoexpression& exp, bool stack )
+{
+	if (fStack.empty())
+		fStack.push(exp);
+	else fStack.top()->push(exp);
+	if (stack) fStack.push (exp);	
+}
+
+//______________________________________________________________________________
 // the visit methods
 //______________________________________________________________________________
-void guidoExpPrinter::visitStart (Sguidoexpression& exp)
-{ 
-	fPendingOp.push(exp->getName().c_str());
-//cout << "guidoExpPrinter::visitStart Sguidoexpression " << fPendingOp.top() << endl;
-}
-
-//______________________________________________________________________________
-void guidoExpPrinter::visitEnd (Sguidoexpression& exp)
-{ 
-//cout << "guidoExpPrinter::visitEnd Sguidoexpression " << fPendingOp.top() << endl;
-	fPendingOp.pop();
-}
-
-//______________________________________________________________________________
-void guidoExpPrinter::visitStart( SguidoAbstractExpr& exp)
+void cloneExpVisitor::visitStart( Sguidoexpression& exp )
 {
-//cout << "guidoExpPrinter::visitStart SguidoAbstractExpr " << endl;
-	fOut << "#";
-	fPendingOp.push(exp->getName().c_str());
-}
-
-//______________________________________________________________________________
-void guidoExpPrinter::visitEnd (SguidoAbstractExpr& exp)
-{ 
-//cout << "guidoExpPrinter::visitEnd SguidoAbstractExpr " << fPendingOp.top() << endl;
-	fPendingOp.pop();
-}
-
-//______________________________________________________________________________
-void guidoExpPrinter::visitStart (SguidoScoreExpr& exp) 
-{
-//cout << "guidoExpPrinter::visitStart SguidoScoreExpr " << endl;
-	if (fPendingOp.size() && fPos) {
-		fOut << fPendingOp.top() << " "; 
+	if (copy()) {
+		push (guidoExpFactory::instance().create(exp->getName()));
 	}
-	else fPos++;
-	fOut << exp->getScore() << endl;
 }
 
+//______________________________________________________________________________
+void cloneExpVisitor::visitEnd  ( Sguidoexpression& exp )
+{ 
+	if ( copy() ) {
+		fStack.pop();
+	}
+}
+void cloneExpVisitor::visitEnd  ( SguidoScoreExpr& exp )		{}
 
-} // namespace
+//______________________________________________________________________________
+void cloneExpVisitor::visitStart( SguidoScoreExpr& exp )
+{
+	if (copy()) {
+		Sguidoelement score = exp->getScore();
+		push ( guidoExpFactory::instance().create( score ), false);
+	}
+}
 
-#endif
+}

@@ -43,6 +43,7 @@ void guidoScoreExpr::acceptIn(basevisitor& v) {
 		SguidoScoreExpr ge = this;
 		p->visitStart (ge);
 	}
+	else guidoexpression::acceptIn(v);
 }
 
 //______________________________________________________________________________
@@ -51,6 +52,7 @@ void guidoScoreExpr::acceptOut(basevisitor& v) {
 		SguidoScoreExpr ge = this;
 		p->visitEnd (ge);
 	}
+	else guidoexpression::acceptOut(v);
 }
 
 //______________________________________________________________________________

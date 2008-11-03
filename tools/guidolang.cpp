@@ -9,6 +9,7 @@
 #include <stdlib.h>
 
 #include "guidoExpReader.h"
+#include "cloneExpVisitor.h"
 
 using namespace std;
 using namespace guidolang;
@@ -94,6 +95,11 @@ static void env()
 	guidoExpReader::ExpList::const_iterator i;
 	for (i=expmap.begin(); i != expmap.end(); i++) {
 		cout << i->first << " = " << i->second;
+
+		cloneExpVisitor cv;
+		Sguidoexpression copy = cv.clone(i->second);
+		cout << "copy (" << i->second->getType() << ") -> (" << copy->getType() << ")" << endl;
+		cout <<  copy;
 	}
 }
 

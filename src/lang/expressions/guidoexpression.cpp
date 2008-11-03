@@ -60,12 +60,6 @@ void guidoexpression::acceptOut(basevisitor& v) {
 }
 
 //______________________________________________________________________________
-Sguidoexpression guidoexpression::replace(Sguidoexpression exp, Sguidoexpression with) const
-{
-	return 0;
-}
-
-//______________________________________________________________________________
 Sguidoexpression guidoexpression::getArg(unsigned int n) const { 
 	ctree<guidoexpression>::const_literator i = lbegin();
 	do {

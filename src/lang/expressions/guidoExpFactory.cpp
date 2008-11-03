@@ -81,7 +81,6 @@ Sguidoexpression guidoExpFactory::create(const string& name) const
 //______________________________________________________________________________
 Sguidoexpression guidoExpFactory::create(guido::Sguidoelement& score) const
 {
-//	SguidoScoreExpr exp = guidoScoreExpr::create (score);
 	SguidoScoreExpr exp = guidoScoreExpr::create (score);
 	if (exp) {
 		exp->setName("gmn");
