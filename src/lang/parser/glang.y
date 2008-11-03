@@ -16,7 +16,7 @@ int glangerror(const char*s);
 #define debug(msg)
 #endif
 
-#define clean(a,b)	delete a; delete b
+#define clean(a,b,c)	delete a; delete b; delete c
 
 extern guidolang::glangreader* gGLReader;
 using namespace guidolang;
@@ -33,8 +33,7 @@ using namespace guidolang;
 }
 
 %type <exprPtr> 	expr group 
-%type <strPtr>		name 
-
+%type <strPtr>		name op asep
 
 /*------------------------- tokens  and precedence -----------------------*/
 %token GMN 
@@ -68,20 +67,23 @@ deflist		: name EQ expr					{ debug("ident expr");		gGLReader->newIDExpr($1->c_s
 
 expr		: GMN							{ debug("score expr");		$$ = gGLReader->newScoreExpr(glangtext); 
 																			 if (!$$) { glangerror("Error while parsing gmn code"); YYERROR; } }
-			| expr SEQ expr					{ debug("seq expr");		$$ = gGLReader->newComposedExpr(glangreader::kSeqOp,$1,$3); clean($1, $3); }
-			| expr PAR expr					{ debug("par expr");		$$ = gGLReader->newComposedExpr(glangreader::kParOp,$1,$3); clean($1, $3); }
-			| expr HEAD expr				{ debug("head expr");		$$ = gGLReader->newComposedExpr(glangreader::kHeadOp,$1,$3); clean($1, $3); }
-			| expr TAIL expr				{ debug("tail expr");		$$ = gGLReader->newComposedExpr(glangreader::kTailOp,$1,$3); clean($1, $3); }
-			| expr TOP expr					{ debug("top expr");		$$ = gGLReader->newComposedExpr(glangreader::kTopOp,$1,$3); clean($1, $3); }
-			| expr BOTTOM expr				{ debug("bottom expr");		$$ = gGLReader->newComposedExpr(glangreader::kBottomOp,$1,$3); clean($1, $3); }
-			| ABSTRACT expr ASEP expr		{ debug("abstract expr");	$$ = gGLReader->newAbstractExpr($2,$4); clean($2, $4);}
-			| expr APPLY expr				{ debug("apply expr");		$$ = gGLReader->newApplyExpr($1,$3); clean($1, $3);}
+			| expr op expr					{ debug("op expr");			$$ = gGLReader->newBinaryExpr($2->c_str(),$1,$3); clean($1,$2,$3); }
+			| ABSTRACT expr asep expr		{ debug("abstract expr");	$$ = gGLReader->newBinaryExpr($3->c_str(),$2,$4); clean($2,$3,$4); }
 			| group							{ debug("group expr");		$$ = $1; }
 			;
 
 group		: GROUPSTART expr GROUPEND		{ debug("group expr"); $$ = $2; }
 
-name		: IDENT							{ debug("name"); $$ = new std::string (glangtext); }
+op			: SEQ							{ debug("seq");		$$ = new std::string (glangtext); }
+			| PAR							{ debug("par");		$$ = new std::string (glangtext); }
+			| HEAD							{ debug("head");	$$ = new std::string (glangtext); }
+			| TAIL							{ debug("tail");	$$ = new std::string (glangtext); }
+			| TOP							{ debug("top");		$$ = new std::string (glangtext); }
+			| BOTTOM						{ debug("bottom");	$$ = new std::string (glangtext); }
+			| APPLY							{ debug("apply");	$$ = new std::string (glangtext); }
+			
+asep		: ASEP							{ debug("asep");	$$ = new std::string (glangtext); }
+name		: IDENT							{ debug("name");	$$ = new std::string (glangtext); }
 
 %%
 

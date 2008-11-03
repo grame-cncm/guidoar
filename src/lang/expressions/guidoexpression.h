@@ -86,8 +86,8 @@ export std::ostream& operator << (std::ostream& os, const Sguidoexpression& elt)
 template <int elt> class guidonode : public guidoexpression
 {
 	public:
-		static guido::SMARTP<guidonode<elt> > create(int type)
-			{ guidonode<elt>* o = new guidonode<elt>(type); assert(o!=0); return o; }
+		static guido::SMARTP<guidonode<elt> > create()
+			{ guidonode<elt>* o = new guidonode<elt>(elt); assert(o!=0); return o; }
 		
 		virtual void acceptIn(guido::basevisitor& v) {
 			if (guido::visitor<guido::SMARTP<guidonode<elt> > >* p = dynamic_cast<guido::visitor<guido::SMARTP<guidonode<elt> > >*>(&v)) {
@@ -107,7 +107,7 @@ template <int elt> class guidonode : public guidoexpression
  		virtual bool operator ==(const Sguidoexpression& e) const { 
 //			if (getType() == e->getType()) {
 			if (dynamic_cast<guidonode<elt>*>((guidoexpression*)(e))) {
-				for (int i=0; i<size(); i++) {
+				for (int i=0; i < size(); i++) {
 					Sguidoexpression argi = getArg(i);
 					Sguidoexpression eargi = e->getArg(i);
 					if (!argi || !eargi || (argi != eargi)) 

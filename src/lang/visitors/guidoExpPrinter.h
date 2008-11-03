@@ -26,51 +26,34 @@
 
 #include <ostream>
 
-#include "guidoexpression.h"
-#include "smartpointer.h"
+#include "guidoExprTypes.h"
 #include "visitor.h"
 
 namespace guidolang 
 {
 
-class guidoexpression;
-class guidoScoreExpr;
-class guidoCompExpr;
-class guidoAbstractExpr;
-class guidoApplExpr;
-
-typedef guido::SMARTP<guidoexpression>		Sguidoexpression;
-typedef guido::SMARTP<guidoScoreExpr>		SguidoScoreExpr;
-typedef guido::SMARTP<guidoCompExpr>		SguidoCompExpr;
-typedef guido::SMARTP<guidoAbstractExpr>	SguidoAbstractExpr;
-typedef guido::SMARTP<guidoApplExpr>		SguidoApplExpr;
-
 //______________________________________________________________________________
 /*!
-\brief	An concrete class supporting the glang parser interface.
+\brief	a guido language expression printer
 */
 class export guidoExpPrinter : 
 	public guido::visitor<Sguidoexpression>,
-	public guido::visitor<SguidoScoreExpr>,
-	public guido::visitor<SguidoCompExpr>,
 	public guido::visitor<SguidoAbstractExpr>,
-	public guido::visitor<SguidoApplExpr>
+	public guido::visitor<SguidoScoreExpr>
 { 
 	private:
-		std::ostream& fOut;		///< the output stream 
-		int			 fPos;		///< position inside a node
+		std::ostream&	fOut;		///< the output stream 
+		int				fPos;		///< position inside a node
 		const char * fPendingOp;
 
 	public:
-				 guidoExpPrinter(std::ostream& out) : fOut(out), fPendingOp(0) {}
+				 guidoExpPrinter(std::ostream& out) : fOut(out), fPos(0), fPendingOp(0) {}
 		virtual ~guidoExpPrinter() {}
 
 	protected:
-		virtual void visitStart ( Sguidoexpression& tag );
-		virtual void visitStart ( SguidoScoreExpr& tag );
-		virtual void visitStart ( SguidoCompExpr& tag );
-		virtual void visitStart ( SguidoAbstractExpr& tag );
-		virtual void visitStart ( SguidoApplExpr& tag );
+		virtual void visitStart( Sguidoexpression&);
+		virtual void visitStart( SguidoAbstractExpr&);
+		virtual void visitStart( SguidoScoreExpr&);
 };
 
 } // namespace

@@ -142,9 +142,10 @@ int main(int argc, char *argv[])
 	if (argc > 2) usage(argv[0]);
 	char ** argsPtr = &argv[1];
 #endif
-	if (argc == 2)
+	if (argc == 2) {
 		eval (readfile(*argsPtr));
-	else
+		env();
+	} else
 		interactive();
 	return 0;
 }

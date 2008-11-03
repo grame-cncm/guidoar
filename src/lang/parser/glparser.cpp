@@ -118,8 +118,6 @@ using namespace std;
 using namespace guidolang;
 
 #define catOp(str,a,b,c)	*str+="("; *str+=*a; *str+=b; *str+=*c; *str+=")" 
-#define catAbst(str,a,b)	*str+="("; *str+="~"; *str+=*a; *str+="."; *str+=*b; *str+=")"
-#define catAppl(str,a,b)	*str+="("; *str+=*a; *str+="@"; *str+=*b; *str+=")"
 
 class testreader : public glangreader
 { 
@@ -128,12 +126,8 @@ class testreader : public glangreader
 			{  cout << "new identified expression: " << id << " = " << *e << endl; }
 		virtual SGLExpr* newScoreExpr		(const char *gmn)	
 			{  return new SGLExpr(gmn); }
-		virtual SGLExpr* newComposedExpr	(compOp op, SGLExpr* e1, SGLExpr* e2)	
-			{ SGLExpr* str = new string(); catOp(str, e1, " op ", e2); cout << "newComposedExpr: " << *str << endl; return str; }
-		virtual SGLExpr* newAbstractExpr	(SGLExpr* e1, SGLExpr* e2)			
-			{ SGLExpr* str = new string(); catAbst(str, e1, e2); cout << "newAbstractExpr: " << *str << endl; return str; }
-		virtual SGLExpr* newApplyExpr		(SGLExpr* e1, SGLExpr* e2)			
-			{ SGLExpr* str = new string(); catAppl(str, e1, e2); cout << "newApplyExpr: " << *str << endl; return str; }
+		virtual SGLExpr* newBinaryExpr	(const char * name, SGLExpr* e1, SGLExpr* e2)	
+			{ SGLExpr* str = new string(); catOp(str, e1, name, e2); cout << "newBinaryExpr: " << *str << endl; return str; }
 
 		int  error (const char* msg, int lineno) 
 			{ 	cerr << msg << " on line " << lineno << endl; return 0; }

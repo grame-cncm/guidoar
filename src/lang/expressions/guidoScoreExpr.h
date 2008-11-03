@@ -25,6 +25,7 @@
 #define __guidoScoreExpr__
 
 #include "guidoexpression.h"
+#include "guidoExprEnum.h"
 #include "guidoelement.h"
 
 namespace guidolang 
@@ -36,24 +37,25 @@ typedef guido::SMARTP<guidoScoreExpr> 	SguidoScoreExpr;
 /*!
 \brief abstraction expression.
 */
-class export guidoScoreExpr : public guidoexpression
+class export guidoScoreExpr : public guidonode<kScore>
 {
-    protected:
-		guido::Sguidoelement	fScore;
-		
-				 guidoScoreExpr(guido::Sguidoelement& score) : fScore(score) {}
-		virtual ~guidoScoreExpr() {}
+	protected:
+		guido::Sguidoelement fScore;
 
 	public:
-        static SguidoScoreExpr create (guido::Sguidoelement& score);
+		static guido::SMARTP<guidoScoreExpr> create(const guido::Sguidoelement& score)
+			{ guidoScoreExpr* o = new guidoScoreExpr(score); assert(o!=0); return o; }
 
-		const guido::Sguidoelement& getScore() const	{ return fScore; }
+		const guido::Sguidoelement& getScore() const					{ return fScore; }
 
-		virtual Sguidovalue eval(SguidoEnv env);
 		virtual void		acceptIn(guido::basevisitor& visitor);
 		virtual void		acceptOut(guido::basevisitor& visitor);
 
 		virtual bool operator ==(const Sguidoexpression& i) const;
+
+	protected:
+				 guidoScoreExpr(const guido::Sguidoelement& score) : guidonode<kScore>(kScore), fScore(score) {}
+		virtual ~guidoScoreExpr() {}
 };
 
 } // namespace

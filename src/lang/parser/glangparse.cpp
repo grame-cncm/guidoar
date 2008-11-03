@@ -129,7 +129,7 @@ int glangerror(const char*s);
 #define debug(msg)
 #endif
 
-#define clean(a,b)	delete a; delete b
+#define clean(a,b,c)	delete a; delete b; delete c
 
 extern guidolang::glangreader* gGLReader;
 using namespace guidolang;
@@ -390,16 +390,16 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  5
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   62
+#define YYLAST   36
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  17
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  6
+#define YYNNTS  8
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  16
+#define YYNRULES  18
 /* YYNRULES -- Number of states.  */
-#define YYNSTATES  34
+#define YYNSTATES  30
 
 /* YYTRANSLATE(YYLEX) -- Bison symbol number corresponding to YYLEX.  */
 #define YYUNDEFTOK  2
@@ -446,26 +446,25 @@ static const yytype_uint8 yytranslate[] =
    YYRHS.  */
 static const yytype_uint8 yyprhs[] =
 {
-       0,     0,     3,     5,     9,    14,    16,    20,    24,    28,
-      32,    36,    40,    45,    49,    51,    55
+       0,     0,     3,     5,     9,    14,    16,    20,    25,    27,
+      31,    33,    35,    37,    39,    41,    43,    45,    47
 };
 
 /* YYRHS -- A `-1'-separated list of the rules' RHS.  */
 static const yytype_int8 yyrhs[] =
 {
-      18,     0,    -1,    19,    -1,    22,     7,    20,    -1,    19,
-      22,     7,    20,    -1,     3,    -1,    20,    14,    20,    -1,
-      20,    13,    20,    -1,    20,    12,    20,    -1,    20,    11,
-      20,    -1,    20,    10,    20,    -1,    20,     9,    20,    -1,
-      16,    20,     6,    20,    -1,    20,    15,    20,    -1,    21,
-      -1,     4,    20,     5,    -1,     8,    -1
+      18,     0,    -1,    19,    -1,    24,     7,    20,    -1,    19,
+      24,     7,    20,    -1,     3,    -1,    20,    22,    20,    -1,
+      16,    20,    23,    20,    -1,    21,    -1,     4,    20,     5,
+      -1,    14,    -1,    13,    -1,    12,    -1,    11,    -1,    10,
+      -1,     9,    -1,    15,    -1,     6,    -1,     8,    -1
 };
 
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    63,    63,    65,    66,    69,    71,    72,    73,    74,
-      75,    76,    77,    78,    79,    82,    84
+       0,    62,    62,    64,    65,    68,    70,    71,    72,    75,
+      77,    78,    79,    80,    81,    82,    83,    85,    86
 };
 #endif
 
@@ -476,7 +475,8 @@ static const char *const yytname[] =
 {
   "$end", "error", "$undefined", "GMN", "GROUPSTART", "GROUPEND", "ASEP",
   "EQ", "IDENT", "BOTTOM", "TOP", "TAIL", "HEAD", "PAR", "SEQ", "APPLY",
-  "ABSTRACT", "$accept", "program", "deflist", "expr", "group", "name", 0
+  "ABSTRACT", "$accept", "program", "deflist", "expr", "group", "op",
+  "asep", "name", 0
 };
 #endif
 
@@ -493,15 +493,15 @@ static const yytype_uint16 yytoknum[] =
 /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    17,    18,    19,    19,    20,    20,    20,    20,    20,
-      20,    20,    20,    20,    20,    21,    22
+       0,    17,    18,    19,    19,    20,    20,    20,    20,    21,
+      22,    22,    22,    22,    22,    22,    22,    23,    24
 };
 
 /* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
-       0,     2,     1,     3,     4,     1,     3,     3,     3,     3,
-       3,     3,     4,     3,     1,     3,     1
+       0,     2,     1,     3,     4,     1,     3,     4,     1,     3,
+       1,     1,     1,     1,     1,     1,     1,     1,     1
 };
 
 /* YYDEFACT[STATE-NAME] -- Default rule to reduce with in state
@@ -509,16 +509,15 @@ static const yytype_uint8 yyr2[] =
    means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       0,    16,     0,     2,     0,     1,     0,     0,     0,     5,
-       0,     0,     3,    14,     4,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,    15,     0,    11,    10,     9,     8,
-       7,     6,    13,    12
+       0,    18,     0,     2,     0,     1,     0,     0,     0,     5,
+       0,     0,     3,     8,     4,     0,     0,    15,    14,    13,
+      12,    11,    10,    16,     0,     9,    17,     0,     6,     7
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,     2,     3,    12,    13,     4
+      -1,     2,     3,    12,    13,    24,    27,     4
 };
 
 /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
@@ -526,16 +525,15 @@ static const yytype_int8 yydefgoto[] =
 #define YYPACT_NINF -9
 static const yytype_int8 yypact[] =
 {
-      -4,    -9,     1,    -4,    12,    -9,    22,     2,     2,    -9,
-       2,     2,    28,    -9,    28,    11,    21,     2,     2,     2,
-       2,     2,     2,     2,    -9,     2,    34,    39,    43,    46,
-      -7,    13,    -9,    28
+      -7,    -9,     7,    -7,    14,    -9,    29,     1,     1,    -9,
+       1,     1,    20,    -9,    20,    13,     0,    -9,    -9,    -9,
+      -9,    -9,    -9,    -9,     1,    -9,    -9,     1,    20,    -9
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-      -9,    -9,    -9,    -8,    -9,    59
+      -9,    -9,    -9,    -8,    -9,    -9,    -9,     5
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]].  What to do in state STATE-NUM.  If
@@ -545,34 +543,27 @@ static const yytype_int8 yypgoto[] =
 #define YYTABLE_NINF -1
 static const yytype_uint8 yytable[] =
 {
-      14,     5,    15,    16,     1,     9,    10,    22,    23,    26,
-      27,    28,    29,    30,    31,    32,    24,    33,    11,     7,
-      17,    18,    19,    20,    21,    22,    23,    25,    23,     8,
-      17,    18,    19,    20,    21,    22,    23,    17,    18,    19,
-      20,    21,    22,    23,    18,    19,    20,    21,    22,    23,
-      19,    20,    21,    22,    23,    20,    21,    22,    23,    21,
-      22,    23,     6
+      14,     1,    15,    16,     9,    10,    26,     5,     6,    17,
+      18,    19,    20,    21,    22,    23,    28,    11,    25,    29,
+       0,     7,    17,    18,    19,    20,    21,    22,    23,    17,
+      18,    19,    20,    21,    22,    23,     8
 };
 
-static const yytype_uint8 yycheck[] =
+static const yytype_int8 yycheck[] =
 {
-       8,     0,    10,    11,     8,     3,     4,    14,    15,    17,
-      18,    19,    20,    21,    22,    23,     5,    25,    16,     7,
-       9,    10,    11,    12,    13,    14,    15,     6,    15,     7,
-       9,    10,    11,    12,    13,    14,    15,     9,    10,    11,
-      12,    13,    14,    15,    10,    11,    12,    13,    14,    15,
-      11,    12,    13,    14,    15,    12,    13,    14,    15,    13,
-      14,    15,     3
+       8,     8,    10,    11,     3,     4,     6,     0,     3,     9,
+      10,    11,    12,    13,    14,    15,    24,    16,     5,    27,
+      -1,     7,     9,    10,    11,    12,    13,    14,    15,     9,
+      10,    11,    12,    13,    14,    15,     7
 };
 
 /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
    symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,     8,    18,    19,    22,     0,    22,     7,     7,     3,
+       0,     8,    18,    19,    24,     0,    24,     7,     7,     3,
        4,    16,    20,    21,    20,    20,    20,     9,    10,    11,
-      12,    13,    14,    15,     5,     6,    20,    20,    20,    20,
-      20,    20,    20,    20
+      12,    13,    14,    15,    22,     5,     6,    23,    20,    20
 };
 
 #define yyerrok		(yyerrstatus = 0)
@@ -1387,84 +1378,94 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 63 "glang.y"
+#line 62 "glang.y"
     { ;}
     break;
 
   case 3:
-#line 65 "glang.y"
+#line 64 "glang.y"
     { debug("ident expr");		gGLReader->newIDExpr((yyvsp[(1) - (3)].strPtr)->c_str(), (yyvsp[(3) - (3)].exprPtr)); delete (yyvsp[(1) - (3)].strPtr); delete (yyvsp[(3) - (3)].exprPtr); ;}
     break;
 
   case 4:
-#line 66 "glang.y"
+#line 65 "glang.y"
     { debug("deflist...");		gGLReader->newIDExpr((yyvsp[(2) - (4)].strPtr)->c_str(), (yyvsp[(4) - (4)].exprPtr)); delete (yyvsp[(2) - (4)].strPtr); delete (yyvsp[(4) - (4)].exprPtr); ;}
     break;
 
   case 5:
-#line 69 "glang.y"
+#line 68 "glang.y"
     { debug("score expr");		(yyval.exprPtr) = gGLReader->newScoreExpr(glangtext); 
 																			 if (!(yyval.exprPtr)) { glangerror("Error while parsing gmn code"); YYERROR; } ;}
     break;
 
   case 6:
-#line 71 "glang.y"
-    { debug("seq expr");		(yyval.exprPtr) = gGLReader->newComposedExpr(glangreader::kSeqOp,(yyvsp[(1) - (3)].exprPtr),(yyvsp[(3) - (3)].exprPtr)); clean((yyvsp[(1) - (3)].exprPtr), (yyvsp[(3) - (3)].exprPtr)); ;}
+#line 70 "glang.y"
+    { debug("op expr");			(yyval.exprPtr) = gGLReader->newBinaryExpr((yyvsp[(2) - (3)].strPtr)->c_str(),(yyvsp[(1) - (3)].exprPtr),(yyvsp[(3) - (3)].exprPtr)); clean((yyvsp[(1) - (3)].exprPtr),(yyvsp[(2) - (3)].strPtr),(yyvsp[(3) - (3)].exprPtr)); ;}
     break;
 
   case 7:
-#line 72 "glang.y"
-    { debug("par expr");		(yyval.exprPtr) = gGLReader->newComposedExpr(glangreader::kParOp,(yyvsp[(1) - (3)].exprPtr),(yyvsp[(3) - (3)].exprPtr)); clean((yyvsp[(1) - (3)].exprPtr), (yyvsp[(3) - (3)].exprPtr)); ;}
+#line 71 "glang.y"
+    { debug("abstract expr");	(yyval.exprPtr) = gGLReader->newBinaryExpr((yyvsp[(3) - (4)].strPtr)->c_str(),(yyvsp[(2) - (4)].exprPtr),(yyvsp[(4) - (4)].exprPtr)); clean((yyvsp[(2) - (4)].exprPtr),(yyvsp[(3) - (4)].strPtr),(yyvsp[(4) - (4)].exprPtr)); ;}
     break;
 
   case 8:
-#line 73 "glang.y"
-    { debug("head expr");		(yyval.exprPtr) = gGLReader->newComposedExpr(glangreader::kHeadOp,(yyvsp[(1) - (3)].exprPtr),(yyvsp[(3) - (3)].exprPtr)); clean((yyvsp[(1) - (3)].exprPtr), (yyvsp[(3) - (3)].exprPtr)); ;}
+#line 72 "glang.y"
+    { debug("group expr");		(yyval.exprPtr) = (yyvsp[(1) - (1)].exprPtr); ;}
     break;
 
   case 9:
-#line 74 "glang.y"
-    { debug("tail expr");		(yyval.exprPtr) = gGLReader->newComposedExpr(glangreader::kTailOp,(yyvsp[(1) - (3)].exprPtr),(yyvsp[(3) - (3)].exprPtr)); clean((yyvsp[(1) - (3)].exprPtr), (yyvsp[(3) - (3)].exprPtr)); ;}
+#line 75 "glang.y"
+    { debug("group expr"); (yyval.exprPtr) = (yyvsp[(2) - (3)].exprPtr); ;}
     break;
 
   case 10:
-#line 75 "glang.y"
-    { debug("top expr");		(yyval.exprPtr) = gGLReader->newComposedExpr(glangreader::kTopOp,(yyvsp[(1) - (3)].exprPtr),(yyvsp[(3) - (3)].exprPtr)); clean((yyvsp[(1) - (3)].exprPtr), (yyvsp[(3) - (3)].exprPtr)); ;}
+#line 77 "glang.y"
+    { debug("seq");		(yyval.strPtr) = new std::string (glangtext); ;}
     break;
 
   case 11:
-#line 76 "glang.y"
-    { debug("bottom expr");		(yyval.exprPtr) = gGLReader->newComposedExpr(glangreader::kBottomOp,(yyvsp[(1) - (3)].exprPtr),(yyvsp[(3) - (3)].exprPtr)); clean((yyvsp[(1) - (3)].exprPtr), (yyvsp[(3) - (3)].exprPtr)); ;}
+#line 78 "glang.y"
+    { debug("par");		(yyval.strPtr) = new std::string (glangtext); ;}
     break;
 
   case 12:
-#line 77 "glang.y"
-    { debug("abstract expr");	(yyval.exprPtr) = gGLReader->newAbstractExpr((yyvsp[(2) - (4)].exprPtr),(yyvsp[(4) - (4)].exprPtr)); clean((yyvsp[(2) - (4)].exprPtr), (yyvsp[(4) - (4)].exprPtr));;}
+#line 79 "glang.y"
+    { debug("head");	(yyval.strPtr) = new std::string (glangtext); ;}
     break;
 
   case 13:
-#line 78 "glang.y"
-    { debug("apply expr");		(yyval.exprPtr) = gGLReader->newApplyExpr((yyvsp[(1) - (3)].exprPtr),(yyvsp[(3) - (3)].exprPtr)); clean((yyvsp[(1) - (3)].exprPtr), (yyvsp[(3) - (3)].exprPtr));;}
+#line 80 "glang.y"
+    { debug("tail");	(yyval.strPtr) = new std::string (glangtext); ;}
     break;
 
   case 14:
-#line 79 "glang.y"
-    { debug("group expr");		(yyval.exprPtr) = (yyvsp[(1) - (1)].exprPtr); ;}
+#line 81 "glang.y"
+    { debug("top");		(yyval.strPtr) = new std::string (glangtext); ;}
     break;
 
   case 15:
 #line 82 "glang.y"
-    { debug("group expr"); (yyval.exprPtr) = (yyvsp[(2) - (3)].exprPtr); ;}
+    { debug("bottom");	(yyval.strPtr) = new std::string (glangtext); ;}
     break;
 
   case 16:
-#line 84 "glang.y"
-    { debug("name"); (yyval.strPtr) = new std::string (glangtext); ;}
+#line 83 "glang.y"
+    { debug("apply");	(yyval.strPtr) = new std::string (glangtext); ;}
+    break;
+
+  case 17:
+#line 85 "glang.y"
+    { debug("asep");	(yyval.strPtr) = new std::string (glangtext); ;}
+    break;
+
+  case 18:
+#line 86 "glang.y"
+    { debug("name");	(yyval.strPtr) = new std::string (glangtext); ;}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 1468 "glangparse.cpp"
+#line 1469 "glangparse.cpp"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1678,7 +1679,7 @@ yyreturn:
 }
 
 
-#line 86 "glang.y"
+#line 88 "glang.y"
 
 
 int	glangwrap()		{ return(1); }

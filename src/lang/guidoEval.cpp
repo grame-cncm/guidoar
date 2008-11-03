@@ -29,6 +29,8 @@
 #include "guidoApplyValue.h"
 #include "guidoClosureValue.h"
 #include "guidoMixValue.h"
+#include "guidoScoreExpr.h"
+#include "guidoScoreValue.h"
 #include "guidoSeqValue.h"
 
 using namespace std;
@@ -171,14 +173,17 @@ void guidoEval::visitStart( SguidoBottomExpr exp)
 
 void guidoEval::visitStart( SguidoIdentExpr exp)
 {
+	evalPrint (exp->getName());
 	Sguidoexpression e = exp->getArg(0);
 	if (!e) throw (newException (kMissingArgument));
 	if (!fEnv) throw (newException (kNullEnvironment));
 	fValue = fEnv->value(e);
 }
 
-void guidoEval::visitStart( SguidoScoreExpr)
+void guidoEval::visitStart( SguidoScoreExpr exp)
 {
+	evalPrint (exp->getName());
+	fValue = guidoScoreValue::create (exp->getScore());
 }
 
 } // namespace

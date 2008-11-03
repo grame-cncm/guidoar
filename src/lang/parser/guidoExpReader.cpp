@@ -39,7 +39,7 @@ namespace guidolang
 {
 
 //______________________________________________________________________________
-int guidoExpReader::version () const			{ return 90; }
+int guidoExpReader::version () const			{ return 91; }
 const char* guidoExpReader::versionStr () const
 { 
 	static char versBuff[32];
@@ -66,37 +66,19 @@ SGLExpr* guidoExpReader::newScoreExpr (const char * gmnCode)
 	guidoparser gp;
 	Sguidoelement score = gp.parseString (gmnCode);
 	if (score) {
-		*expr = guidoExpFactory::instance().createScore(score);
+		*expr = guidoExpFactory::instance().create(score);
 		return expr;
 	}
 	return 0;  
 }
 
-SGLExpr* guidoExpReader::newComposedExpr (compOp op, SGLExpr* e1, SGLExpr* e2)
+SGLExpr* guidoExpReader::newBinaryExpr (const char * name, SGLExpr* e1, SGLExpr* e2)
 {
 	if (!e1 || !e2) return 0;
 	SGLExpr* expr = new SGLExpr;
-	guidoCompExpr::composition cop =  guidoCompExpr::composition(op);
-	*expr = guidoExpFactory::instance().createComposition(cop, *e1, *e2);
+	*expr = guidoExpFactory::instance().create(name, *e1, *e2);
 	return expr;
 }
-
-SGLExpr* guidoExpReader::newAbstractExpr (SGLExpr* var, SGLExpr* e)
-{
-	if (!var || !e) return 0;
-	SGLExpr* expr = new SGLExpr;
-	*expr = guidoExpFactory::instance().createAbstraction(*var, *e);
-	return expr;
-}
-
-SGLExpr* guidoExpReader::newApplyExpr (SGLExpr* e, SGLExpr* arg)
-{
-	if (!arg || !e) return 0;
-	SGLExpr* expr = new SGLExpr;
-	*expr = guidoExpFactory::instance().createApplication(*e, *arg);
-	return expr;
-}
-
 
 int guidoExpReader::error(const char * msg, int lineno)
 {

@@ -30,12 +30,8 @@
 #include "guidoExpFactory.h"
 
 #include "guidoexpression.h"
-//#include "guidoScoreExpr.h"
+#include "guidoScoreExpr.h"
 #include "guidoEval.h"
-
-//#include "guidoApplyExpr.h"
-//#include "guidoAbstractExpr.h"
-//#include "guidoCompExpr.h"
 
 using namespace std; 
 using namespace guido; 
@@ -45,9 +41,9 @@ namespace guidolang
 
 //______________________________________________________________________________
 template<int elt>
-class newNodeFunctor : public functor<Sguidoexpression,int> {
+class newNodeFunctor : public rfunctor<Sguidoexpression> {
 	public:
-		Sguidoexpression operator ()(int type) { return guidonode<elt>::create(type); }
+		Sguidoexpression operator ()() { return guidonode<elt>::create(); }
 };
 
 //______________________________________________________________________________
@@ -64,17 +60,16 @@ guidoExpFactory::guidoExpFactory()
 	fMap["transp"]		= new newNodeFunctor<kTransp>;
 	fMap["stretch"]		= new newNodeFunctor<kStretch>;
  	fMap["ident"]		= new newNodeFunctor<kIdent>;
-	fMap["gmn"]			= new newNodeFunctor<kScore>;
 }
 
 //______________________________________________________________________________
-Sguidoexpression guidoExpFactory::create(const string& name, int type) const
+Sguidoexpression guidoExpFactory::create(const string& name) const
 { 
 	map<std::string, NewNodeFunctor*>::const_iterator i = fMap.find( name );
 	if (i != fMap.end()) {
 		NewNodeFunctor* f= i->second;
 		if (f) {
-			Sguidoexpression elt = (*f)(type);
+			Sguidoexpression elt = (*f)();
 			if (elt) elt->setName(name);
 			return elt;
 		}
@@ -84,18 +79,20 @@ Sguidoexpression guidoExpFactory::create(const string& name, int type) const
 }
 
 //______________________________________________________________________________
-Sguidoexpression guidoExpFactory::create(const std::string& name, int type, guido::Sguidoelement& score) const
+Sguidoexpression guidoExpFactory::create(guido::Sguidoelement& score) const
 {
-	Sguidoexpression exp = create (name, type);
+//	SguidoScoreExpr exp = guidoScoreExpr::create (score);
+	SguidoScoreExpr exp = guidoScoreExpr::create (score);
 	if (exp) {
+		exp->setName("gmn");
 	}
 	return exp;
 }
 
 //______________________________________________________________________________
-Sguidoexpression guidoExpFactory::create(const std::string& name, int type, Sguidoexpression& e) const
+Sguidoexpression guidoExpFactory::create(const std::string& name, Sguidoexpression& e) const
 {
-	Sguidoexpression exp = create (name, type);
+	Sguidoexpression exp = create (name);
 	if (exp) {
 		exp->push(e);
 	}
@@ -103,44 +100,14 @@ Sguidoexpression guidoExpFactory::create(const std::string& name, int type, Sgui
 }
 
 //______________________________________________________________________________
-Sguidoexpression guidoExpFactory::create(const std::string& name, int type, Sguidoexpression& e1, Sguidoexpression& e2) const
+Sguidoexpression guidoExpFactory::create(const std::string& name, Sguidoexpression& e1, Sguidoexpression& e2) const
 {
-	Sguidoexpression exp = create (name, type);
+	Sguidoexpression exp = create (name);
 	if (exp) {
 		exp->push(e1);
 		exp->push(e2);
 	}
 	return exp;
 }
-
-/*
-//______________________________________________________________________________
-SguidoApplyExpr guidoExpFactory::createApplication(Sguidoexpression& e1, Sguidoexpression& e2) const
-{
-	SguidoApplyExpr expr = guidoApplyExpr::create(e1, e2);
-	return expr;
-}
-
-//______________________________________________________________________________
-SguidoAbstractExpr guidoExpFactory::createAbstraction(Sguidoexpression& e1, Sguidoexpression& e2) const
-{
-	SguidoAbstractExpr expr = guidoAbstractExpr::create(e1, e2);
-	return expr;
-}
-
-//______________________________________________________________________________
-SguidoCompExpr guidoExpFactory::createComposition(guidoCompExpr::composition op, Sguidoexpression& e1, Sguidoexpression& e2) const
-{
-	SguidoCompExpr expr = guidoCompExpr::create(op, e1, e2);
-	return expr;
-}
-
-//______________________________________________________________________________
-SguidoScoreExpr guidoExpFactory::createScore(guido::Sguidoelement& score) const
-{
-	SguidoScoreExpr expr = guidoScoreExpr::create(score);
-	return expr;
-}
-*/
 
 } // namespace

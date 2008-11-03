@@ -35,7 +35,7 @@
 namespace guidolang 
 {
 
-typedef guido::functor<Sguidoexpression,int> NewNodeFunctor;
+typedef guido::rfunctor<Sguidoexpression> NewNodeFunctor;
 
 /*!
 \brief A guido language expressions factory.
@@ -44,15 +44,15 @@ class export guidoExpFactory : public singleton<guidoExpFactory>
 {
 	private:
 		std::map<std::string, NewNodeFunctor*>	fMap;
+		Sguidoexpression		create(const std::string& name) const;	
 
     public:
 				 guidoExpFactory();
 		virtual ~guidoExpFactory() {}
 
-		Sguidoexpression		create(const std::string& name, int type) const;	
-		Sguidoexpression		create(const std::string& name, int type, guido::Sguidoelement& score) const;	
-		Sguidoexpression		create(const std::string& name, int type, Sguidoexpression& e) const;	
-		Sguidoexpression		create(const std::string& name, int type, Sguidoexpression& e1, Sguidoexpression& e2) const;	
+		Sguidoexpression		create(guido::Sguidoelement& score) const;	
+		Sguidoexpression		create(const std::string& name, Sguidoexpression& e) const;	
+		Sguidoexpression		create(const std::string& name, Sguidoexpression& e1, Sguidoexpression& e2) const;	
 };
 
 } // namespace

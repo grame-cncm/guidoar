@@ -38,17 +38,6 @@ namespace guidolang
 //______________________________________________________________________________
 // guidoScoreExpr
 //______________________________________________________________________________
-SguidoScoreExpr guidoScoreExpr::create(Sguidoelement& score)		
-	{ guidoScoreExpr * o = new guidoScoreExpr(score); assert(o!=0); return o; }
-
-//______________________________________________________________________________
-Sguidovalue guidoScoreExpr::eval(SguidoEnv env)
-{
-	evalPrint ("guidoScoreExpr");
-	return guidoScoreValue::create (fScore);
-}
-
-//______________________________________________________________________________
 void guidoScoreExpr::acceptIn(basevisitor& v) {
 	if (visitor<SguidoScoreExpr>* p = dynamic_cast<visitor<SguidoScoreExpr>*>(&v)) {
 		SguidoScoreExpr ge = this;

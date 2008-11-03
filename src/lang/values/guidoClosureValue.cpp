@@ -24,6 +24,7 @@
 #include <iostream>
 #include "exceptions.h"
 #include "guidoClosureValue.h"
+#include "guidoEval.h"
 #include "guidoScoreValue.h"
 #include "visitor.h"
 
@@ -47,7 +48,8 @@ Sguidovalue	guidoClosureValue::apply (Sguidovalue& v)
 	if (!fBody)		throw(newException (kNullBody));
 	if (!fEnv)		throw(newException (kNullEnvironment));
 
-	return fBody->eval(fEnv->bind (fIdent, v)); 
+	guidoEval eval;
+	return eval.eval(fBody, fEnv->bind (fIdent, v));
 }
 
 //______________________________________________________________________________

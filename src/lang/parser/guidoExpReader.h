@@ -51,9 +51,7 @@ class guidoExpReader : public glangreader
 
 		virtual void	 newIDExpr			(const char *, SGLExpr*);
 		virtual SGLExpr* newScoreExpr		(const char *);
-		virtual SGLExpr* newComposedExpr	(compOp op, SGLExpr*, SGLExpr*);
-		virtual SGLExpr* newAbstractExpr	(SGLExpr*, SGLExpr*);
-		virtual SGLExpr* newApplyExpr		(SGLExpr*, SGLExpr*);
+		virtual SGLExpr* newBinaryExpr		(const char *, SGLExpr*, SGLExpr*);
 
 		virtual int error(const char * msg, int lineno);
 
@@ -61,7 +59,7 @@ class guidoExpReader : public glangreader
 		virtual ExpList&	getEnv()	{ return fExprMap; }
 
 	protected:
-		std::map<std::string, SGLExpr>	fExprMap;
+		ExpList	fExprMap;
 };
 
 } // namespace

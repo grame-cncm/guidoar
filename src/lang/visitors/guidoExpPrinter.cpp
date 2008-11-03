@@ -27,9 +27,7 @@
 #include <iostream>
 
 #include "guidoExpPrinter.h"
-#include "guidoApplyExpr.h"
-#include "guidoAbstractExpr.h"
-#include "guidoCompExpr.h"
+#include "guidoexpression.h"
 #include "guidoScoreExpr.h"
 #include "tree_browser.h"
 
@@ -42,10 +40,19 @@ namespace guidolang
 //______________________________________________________________________________
 // the visit methods
 //______________________________________________________________________________
-void guidoExpPrinter::visitStart (Sguidoexpression& exp) 
-{
+void guidoExpPrinter::visitStart (Sguidoexpression& exp)
+{ 
+	fPendingOp = exp->getName().c_str();	
 }
 
+//______________________________________________________________________________
+void guidoExpPrinter::visitStart( SguidoAbstractExpr& exp)
+{
+	fOut << "#";
+	fPendingOp = exp->getName().c_str();	
+}
+
+//______________________________________________________________________________
 void guidoExpPrinter::visitStart (SguidoScoreExpr& exp) 
 {
 	if (fPendingOp && fPos) {
@@ -56,24 +63,6 @@ void guidoExpPrinter::visitStart (SguidoScoreExpr& exp)
 	fOut << exp->getScore() << endl;
 }
 
-void guidoExpPrinter::visitStart (SguidoCompExpr& exp) 
-{
-	fPendingOp = exp->getOpString();
-	fPos = 0;
-}
-
-void guidoExpPrinter::visitStart (SguidoAbstractExpr& exp) 
-{
-	fPendingOp = ".";
-	fPos = 0;
-	fOut << "#";
-}
-
-void guidoExpPrinter::visitStart (SguidoApplExpr& exp) 
-{
-	fPendingOp = "@";
-	fPos = 0;
-}
 
 } // namespace
 
