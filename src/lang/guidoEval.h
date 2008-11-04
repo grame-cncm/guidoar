@@ -24,6 +24,7 @@
 #ifndef __guidoEval__
 #define __guidoEval__
 
+#include "export.h"
 #include "guidoExprTypes.h"
 #include "visitor.h"
 
@@ -31,7 +32,7 @@ namespace guidolang
 {
 
 /*! \brief base class for the evaluation functors */
-class guidoEval : 
+class export guidoEval : 
 	public guido::visitor<Sguidoexpression>,
 	public guido::visitor<SguidoAbstractExpr>,
 	public guido::visitor<SguidoApplyExpr>,
@@ -58,19 +59,19 @@ class guidoEval :
 	protected:
 		virtual void evalBinary( Sguidoexpression e, Sguidovalue& v1, Sguidovalue& v2);
 
-		virtual void visitStart( Sguidoexpression);
-		virtual void visitStart( SguidoAbstractExpr);
-		virtual void visitStart( SguidoApplyExpr);
-		virtual void visitStart( SguidoTranspExpr);
-		virtual void visitStart( SguidoStretchExpr);
-		virtual void visitStart( SguidoSeqExpr);
-		virtual void visitStart( SguidoParExpr);
-		virtual void visitStart( SguidoHeadExpr);
-		virtual void visitStart( SguidoTailExpr);
-		virtual void visitStart( SguidoTopExpr);
-		virtual void visitStart( SguidoBottomExpr);
-		virtual void visitStart( SguidoIdentExpr);
-		virtual void visitStart( SguidoScoreExpr);
+		virtual void visitStart( Sguidoexpression&);
+		virtual void visitStart( SguidoAbstractExpr&);
+		virtual void visitStart( SguidoApplyExpr&);
+		virtual void visitStart( SguidoTranspExpr&);
+		virtual void visitStart( SguidoStretchExpr&);
+		virtual void visitStart( SguidoSeqExpr&);
+		virtual void visitStart( SguidoParExpr&);
+		virtual void visitStart( SguidoHeadExpr&);
+		virtual void visitStart( SguidoTailExpr&);
+		virtual void visitStart( SguidoTopExpr&);
+		virtual void visitStart( SguidoBottomExpr&);
+		virtual void visitStart( SguidoIdentExpr&);
+		virtual void visitStart( SguidoScoreExpr&);
 };
 
 } // namespace

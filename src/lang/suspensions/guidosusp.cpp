@@ -51,6 +51,7 @@ void guidosusp::acceptIn(basevisitor& v) {
 		Sguidosusp ge = this;
 		p->visitStart (ge);
 	}
+	else guidovalue::acceptIn(v);
 }
 
 //______________________________________________________________________________
@@ -59,6 +60,7 @@ void guidosusp::acceptOut(basevisitor& v) {
 		Sguidosusp ge = this;
 		p->visitEnd (ge);
 	}
+	else guidovalue::acceptOut(v);
 }
 
 } // namespace

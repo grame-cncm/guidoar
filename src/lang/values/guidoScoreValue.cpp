@@ -86,8 +86,10 @@ Sguidovalue	guidoScoreValue::stretch (float ratio)			{ compose (durationOperatio
 //______________________________________________________________________________
 unsigned int guidoScoreValue::length ()
 {
+	if (!fScore) return 0;
+
 	unsigned int max=0;
-	for (unsigned int i=0; i < size(); i++) {
+	for (unsigned int i=0; i < fScore->size(); i++) {
 		countvoiceseventsvisitor cvev;
 		unsigned int count = cvev.count (fScore, i);
 		if (count > max) max = count;

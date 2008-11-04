@@ -47,6 +47,8 @@ class export guidoScoreValue : public guidovalue
 		static Sguidovalue create();		// creates an empty score
 		static Sguidovalue create(guido::Sguidoelement score);
 
+		const guido::Sguidoelement& getScore()	{ return fScore; }
+		
 		virtual Sguidovalue	apply	(Sguidovalue& v);
 		virtual Sguidovalue	head	(unsigned int length);
 		virtual Sguidovalue	head	(const rational& length);

@@ -1,6 +1,7 @@
 /*
-  GUIDO Library
-  Copyright (C) 2008  Grame
+
+  MusicXML Library
+  Copyright (C) 2006,2007  Grame
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -21,15 +22,13 @@
 
 */
 
-#ifndef __guidoExpPrinter__
-#define __guidoExpPrinter__
+#ifdef WIN32
+#pragma warning (disable : 4786)
+#endif
 
 #include <iostream>
 
-#include "guidoExpPrinter.h"
-#include "guidoexpression.h"
-#include "guidoScoreExpr.h"
-#include "tree_browser.h"
+#include "suspVisitor.h"
 
 using namespace std;
 using namespace guido;
@@ -38,52 +37,50 @@ namespace guidolang
 {
 
 //______________________________________________________________________________
+Sguidovalue suspVisitor::force(const Sguidovalue& exp)
+{ 
+	fValue = 0;
+	exp->acceptIn (*this);
+	return fValue;
+}
+
+//______________________________________________________________________________
 // the visit methods
 //______________________________________________________________________________
-void guidoExpPrinter::visitStart (Sguidoexpression& exp)
-{ 
-	fPendingOp.push(exp->getName().c_str());
-//cout << "guidoExpPrinter::visitStart Sguidoexpression " << fPendingOp.top() << endl;
-	fPos = 0;
-}
-
-//______________________________________________________________________________
-void guidoExpPrinter::visitEnd (Sguidoexpression& exp)
-{ 
-//cout << "guidoExpPrinter::visitEnd Sguidoexpression " << fPendingOp.top() << " (" << exp->getType() << ")" << endl;
-	fPendingOp.pop();
-}
-
-//______________________________________________________________________________
-void guidoExpPrinter::visitStart( SguidoAbstractExpr& exp)
+void suspVisitor::visitStart( Sguidovalue& exp )
 {
-//cout << "guidoExpPrinter::visitStart SguidoAbstractExpr " << endl;
-	fOut << "#";
-	fPendingOp.push(exp->getName().c_str());
-	fPos = 0;
+	fValue = exp;
 }
 
-
 //______________________________________________________________________________
-void guidoExpPrinter::visitEnd (SguidoAbstractExpr& exp)
-{ 
-//cout << "guidoExpPrinter::visitEnd SguidoAbstractExpr " << fPendingOp.top() << endl;
-	fPendingOp.pop();
-}
-
-
-//______________________________________________________________________________
-void guidoExpPrinter::visitStart (SguidoScoreExpr& exp) 
+void suspVisitor::visitStart( Sguidosusp& exp )
 {
-//cout << "guidoExpPrinter::visitStart SguidoScoreExpr " << endl;
-	if (fPendingOp.size() && fPos) {
-		fOut << fPendingOp.top() << " "; 
-	}
-	else fPos++;
-	fOut << exp->getScore() << endl;
+	cerr << __FILE__ << ": unexpected Sguidosusp received" << endl;
 }
 
+//______________________________________________________________________________
+void suspVisitor::visitStart( SguidoAbstractSusp& exp )
+{
+}
 
-} // namespace
+//______________________________________________________________________________
+void suspVisitor::visitStart( SguidoApplySusp& exp )
+{
+}
 
-#endif
+//______________________________________________________________________________
+void suspVisitor::visitStart( SguidoClosureSusp& exp )
+{
+}
+
+//______________________________________________________________________________
+void suspVisitor::visitStart( SguidoSeqSusp& exp )
+{
+}
+
+//______________________________________________________________________________
+void suspVisitor::visitStart( SguidoParSusp& exp )
+{
+}
+
+}

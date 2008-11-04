@@ -26,7 +26,7 @@
 
 #include "export.h"
 #include "visitable.h"
-#include "ctree.h"
+//#include "ctree.h"
 #include "rational.h"
 #include "smartpointer.h"
 
@@ -45,9 +45,12 @@ typedef guido::SMARTP<guidovalue> 	Sguidovalue;
 /*!
 \brief The base class for guido language expressions.
 */
-class export guidovalue : public guido::ctree<guidovalue>, public guido::visitable
+class export guidovalue : virtual public guido::smartable, public guido::visitable
 {
     protected:
+		Sguidovalue fArg1, fArg2;
+				 guidovalue() {}
+				 guidovalue(Sguidovalue v1, Sguidovalue v2) : fArg1(v1), fArg2(v2) {}
 		virtual ~guidovalue() {}
 
 	public:
@@ -75,6 +78,9 @@ class export guidovalue : public guido::ctree<guidovalue>, public guido::visitab
 		virtual void		acceptIn(guido::basevisitor& visitor);
 		virtual void		acceptOut(guido::basevisitor& visitor);
 		virtual	void		print(std::ostream& os);
+		
+		virtual Sguidovalue	getArg1 () const		{ return fArg1; }
+		virtual Sguidovalue	getArg2 () const		{ return fArg2; }
 };
 
 export std::ostream& operator << (std::ostream& os, const Sguidovalue& elt);

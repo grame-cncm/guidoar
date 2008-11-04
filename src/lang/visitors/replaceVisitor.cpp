@@ -44,6 +44,7 @@ namespace guidolang
 Sguidoexpression replaceVisitor::replace(const Sguidoexpression& exp, const Sguidoexpression& target, const Sguidoexpression& with)
 { 
 	fCopy = true;
+	fMatched = false;
 	fTarget = target;
 	fIdent = with;
 	fReplaced = 0;
@@ -55,10 +56,11 @@ Sguidoexpression replaceVisitor::replace(const Sguidoexpression& exp, const Sgui
 //______________________________________________________________________________
 void replaceVisitor::visitStart( Sguidoexpression& exp )
 {
-	if (*exp == *fTarget) {		// target expression found ?
+	if (*exp == fTarget) {		// target expression found ?
 		fReplaced = exp;		// store expression for future use
 		push (fIdent, false);	// push the replacement
 		fCopy = false;			// prevent copying subtree
+		fMatched = true;
 	}
 	else cloneExpVisitor::visitStart(exp);
 }
@@ -76,19 +78,30 @@ void replaceVisitor::visitEnd  ( Sguidoexpression& exp )
 //______________________________________________________________________________
 void replaceVisitor::visitStart( SguidoScoreExpr& exp )
 {
-	if (*exp == *fTarget) {		// target expression found ?
+	SguidoScoreExpr scoreExp = dynamic_cast<guidoScoreExpr*> ((guidoexpression*)fTarget);
+	if (scoreExp && fStretchScore) {
+		Sguidoexpression e= exp;
+		Sguidoexpression transp = guidoExpFactory::instance().create ("transp", fTarget, e);
+		Sguidoexpression stretch = guidoExpFactory::instance().create ("stretch", transp, e);
+		push (stretch, false);	// push stretch(transp) as replacement
+		fCopy = false;			// prevent copying subtree
+		fMatched = true;
+		fReplaced = e;			// store expression for future use
+	}
+	else if (*exp == fTarget) {		// target expression found ?
 		fReplaced = exp;		// store expression for future use
 		push (fIdent, false);	// push the replacement
 		fCopy = false;			// prevent copying subtree
+		fMatched = true;
 	}
-	else cloneExpVisitor::visitStart(exp);	
+	else cloneExpVisitor::visitStart(exp);
 }
 
 //______________________________________________________________________________
 void replaceVisitor::visitEnd( SguidoScoreExpr& exp )
 {
-	if (fReplaced == exp) {
-		fCopy = true;
+	if (fReplaced == exp) {		// end of the replaced subtree
+		fCopy = true;			// returns back to copy state
 		fReplaced = 0;
 	}
 	else cloneExpVisitor::visitEnd (exp);

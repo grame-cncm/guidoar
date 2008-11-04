@@ -25,6 +25,7 @@
 #define __guidosusp__
 
 #include "guidovalue.h"
+#include "visitor.h"
 
 #ifdef suspDebug
 #define suspForce(expr)		cout << "Force \"" << expr << "\"" << endl
@@ -40,19 +41,22 @@ namespace guidolang
 class guidosusp;
 typedef guido::SMARTP<guidosusp> 	Sguidosusp;
 
+//______________________________________________________________________________
 /*!
 \brief a guido value suspension.
 */
 class export guidosusp : public guidovalue
 {
     protected:
+		int			fType;
 		Sguidovalue	fValue;
 		
+				 guidosusp(int type) : fType(type) {}
 		virtual ~guidosusp() {}
 
 	public:
 		virtual Sguidovalue	getValue();
-		virtual Sguidovalue	force()	= 0;
+		virtual Sguidovalue	force();
 
 		virtual Sguidovalue	apply	(Sguidovalue& v)		{ return getValue()->apply(v); }
 		virtual Sguidovalue	head	(unsigned int length)	{ return getValue()->head(length); }
@@ -73,6 +77,39 @@ class export guidosusp : public guidovalue
 		virtual void		acceptIn(guido::basevisitor& visitor);
 		virtual void		acceptOut(guido::basevisitor& visitor);
 };
+
+
+//______________________________________________________________________________
+/*
+\brief	A template class to type all guido expressions with integers.
+*/
+template <int elt> class guidonodesusp : public guidosusp
+{
+	public:
+		static guido::SMARTP<guidonodesusp<elt> > create()
+			{ guidonodesusp<elt>* o = new guidonodesusp<elt>(elt); assert(o!=0); return o; }
+		
+		virtual void acceptIn(guido::basevisitor& v) {
+			if (guido::visitor<guido::SMARTP<guidonodesusp<elt> > >* p = dynamic_cast<guido::visitor<guido::SMARTP<guidonodesusp<elt> > >*>(&v)) {
+				guido::SMARTP<guidonodesusp<elt> > sptr = this;
+				p->visitStart(sptr);
+			}
+			else guidosusp::acceptIn(v);
+		}
+        virtual void acceptOut(guido::basevisitor& v) {
+			if (guido::visitor<guido::SMARTP<guidonodesusp<elt> > >* p = dynamic_cast<guido::visitor<guido::SMARTP<guidonodesusp<elt> > >*>(&v)) {
+				guido::SMARTP<guidonodesusp<elt> > sptr = this;
+				p->visitEnd(sptr);
+			}
+			else guidosusp::acceptOut(v);
+		}
+
+	protected:
+				 guidonodesusp(int type) : guidosusp(type) {}
+		virtual ~guidonodesusp() {}
+
+};
+
 
 } // namespace
 

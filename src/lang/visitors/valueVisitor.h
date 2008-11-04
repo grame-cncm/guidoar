@@ -21,13 +21,13 @@
 
 */
 
-#ifndef __cloneExpVisitor__
-#define __cloneExpVisitor__
+#ifndef __valueVisitor__
+#define __valueVisitor__
 
 #include <ostream>
 
-#include "export.h"
-#include "guidoExprTypes.h"
+#include "guidoValueTypes.h"
+#include "guidoelement.h"
 #include "visitor.h"
 
 namespace guidolang
@@ -40,29 +40,31 @@ namespace guidolang
 
 //______________________________________________________________________________
 /*!
-\brief	A visitor to print the gmn description
+\brief	A values visitor
 */
-class export cloneExpVisitor :
-	public guido::visitor<Sguidoexpression>,
-	public guido::visitor<SguidoScoreExpr>
+class export valueVisitor : 
+	public guido::visitor<Sguidovalue>,
+	public guido::visitor<SguidoSeqValue>,
+	public guido::visitor<SguidoScoreValue>,
+	public guido::visitor<SguidoMixValue>,
+	public guido::visitor<SguidoClosureValue>,
+	public guido::visitor<SguidoApplyValue>
 {
     public:
-				 cloneExpVisitor() {}
-       	virtual ~cloneExpVisitor() {}
-              
-		virtual Sguidoexpression clone(const Sguidoexpression&);
+				 valueVisitor() {}
+       	virtual ~valueVisitor() {}
+		
+		guido::Sguidoelement visit(const Sguidovalue&);
 
-	protected:		
-		// the copy method may be used by derived classes to filter the elements
-		virtual bool copy  () const	{ return true; }
-		virtual void push	(const Sguidoexpression& exp, bool stack=true);
-
-		virtual void visitStart ( Sguidoexpression&);
-		virtual void visitEnd	( Sguidoexpression&);
-		virtual void visitStart ( SguidoScoreExpr&);
-		virtual void visitEnd	( SguidoScoreExpr&);
-
-		std::stack<Sguidoexpression> fStack;
+	protected:
+		virtual void visitStart ( Sguidovalue&);
+		virtual void visitStart	( SguidoSeqValue&);
+		virtual void visitStart ( SguidoScoreValue&);
+		virtual void visitStart	( SguidoMixValue&);
+		virtual void visitStart	( SguidoClosureValue&);
+		virtual void visitStart	( SguidoApplyValue&);
+		
+		guido::Sguidoelement fScore;
 };
 
 /*! @} */

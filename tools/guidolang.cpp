@@ -8,16 +8,21 @@
 #include <string>
 #include <stdlib.h>
 
+#include "guidoEval.h"
+#include "guidoEnv.h"
 #include "guidoExpReader.h"
-#include "cloneExpVisitor.h"
+#include "guidoScoreValue.h"
+#include "replaceVisitor.h"
+#include "valueVisitor.h"
 
 using namespace std;
+using namespace guido;
 using namespace guidolang;
 
 
 guidoExpReader gReader;
 
-//#define debug
+#define debug
 
 //_______________________________________________________________________________
 static void usage(const char * name)
@@ -40,6 +45,7 @@ static void help()
 	cout << "Available commands are: "  << endl;
 	cout << " 'quit', 'exit' or 'bye' to quit the interpreter"  << endl;
 	cout << " 'env' to show the expressions in the current environment"  << endl;
+	cout << " 'eval id' to evaluate an expression identified by 'id' from current environment"  << endl;
 	cout << " '?' or 'help' to display this message"  << endl;
 }
 
@@ -95,20 +101,39 @@ static void env()
 	guidoExpReader::ExpList::const_iterator i;
 	for (i=expmap.begin(); i != expmap.end(); i++) {
 		cout << i->first << " = " << i->second;
-
-		cloneExpVisitor cv;
-		Sguidoexpression copy = cv.clone(i->second);
-		cout << "copy (" << i->second->getType() << ") -> (" << copy->getType() << ")" << endl;
-		cout <<  copy;
 	}
 }
 
 //_______________________________________________________________________________
-static void eval (char * buffer) 
+static void read (char * buffer) 
 {
 	if (*buffer) {
 		gReader.parseString (buffer);
 	}
+}
+
+//_______________________________________________________________________________
+static void eval (char * name) 
+{
+	while ((*name == ' ') || (*name == '\t')) name++;
+	string id = name;
+	Sguidoexpression exp = gReader.getId(name);
+	if (exp) {
+		cout << "eval expression '" << name << "'" << endl;
+		SguidoEnv env = guidoEnv::create();
+		
+		guidoEval eval;
+		Sguidovalue val = eval.eval(exp, env);
+		
+		valueVisitor v;
+		Sguidoelement score = v.visit(val);
+		if (score) {
+			cout << score << endl;
+		}
+		else if (val) cout << "val is not a score value" << endl;
+		else cout << "null val returned" << endl;
+	}
+	else cout << "'" << name << "': no such expression !" << endl;
 }
 
 //_______________________________________________________________________________
@@ -124,8 +149,9 @@ static void interactive ()
 				done = true;
 
 			else if (!strcmp(buffer, "help") || !strcmp(buffer, "?"))	help();
-			else if (!strcmp(buffer, "env"))	env();
-			else eval (buffer);
+			else if (!strcmp(buffer, "env"))		env();
+			else if (!strncmp(buffer, "eval", 4))	eval(&buffer[5]);
+			else read (buffer);
 
 			if (!done) cout << "> ";
 			free (buffer);
@@ -149,9 +175,16 @@ int main(int argc, char *argv[])
 	char ** argsPtr = &argv[1];
 #endif
 	if (argc == 2) {
-		eval (readfile(*argsPtr));
-		env();
-	} else
-		interactive();
+		read (readfile(*argsPtr));
+//		env();
+/*
+		cout << "replace expr c with b in a" << endl;
+		replaceVisitor rv;
+		Sguidoexpression r = rv.replace (gReader.getId("a"), gReader.getId("c"), gReader.getId("b"));
+		cout << "matched: " << (rv.matched() ? "yes" : "no") << endl;
+		cout << r;
+*/
+	} 
+	interactive();
 	return 0;
 }

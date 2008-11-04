@@ -34,11 +34,8 @@ namespace guidolang
 */
 class export guidoMixValue : public guidovalue
 {
-    private:
-		Sguidovalue fArg1, fArg2;
-		
     protected:
-				 guidoMixValue(Sguidovalue v1, Sguidovalue v2) : fArg1(v1), fArg2(v2) {}
+				 guidoMixValue(Sguidovalue v1, Sguidovalue v2) : guidovalue(v1, v2) {}
 		virtual ~guidoMixValue() {}
 
 	public:

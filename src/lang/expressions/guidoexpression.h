@@ -79,7 +79,6 @@ export std::ostream& operator << (std::ostream& os, const Sguidoexpression& elt)
 //______________________________________________________________________________
 /*
 \brief	A template class to type all guido expressions with integers.
-		The only exception is the score expression.
 */
 template <int elt> class guidonode : public guidoexpression
 {

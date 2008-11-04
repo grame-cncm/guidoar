@@ -55,8 +55,9 @@ class guidoExpReader : public glangreader
 
 		virtual int error(const char * msg, int lineno);
 
-		virtual void		clear()		{ return fExprMap.clear(); }
-		virtual ExpList&	getEnv()	{ return fExprMap; }
+		virtual void		clear()					{ return fExprMap.clear(); }
+		virtual ExpList&	getEnv()				{ return fExprMap; }
+		virtual SGLExpr		getId(std::string id)	{ return fExprMap[id]; }
 
 	protected:
 		ExpList	fExprMap;

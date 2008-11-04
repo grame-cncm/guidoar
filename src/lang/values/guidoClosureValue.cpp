@@ -113,7 +113,7 @@ unsigned int guidoClosureValue::length ()		{ return fLength; }
 rational guidoClosureValue::duration()			{ return fDuration; }
 unsigned int guidoClosureValue::voices ()		{ return fVoices; }
 
-// todo: what's the meaning of pitch for a cosure ?
+// todo: what's the meaning of pitch for a closure ?
 unsigned int guidoClosureValue::pitch ()		{ 
 	cerr << "warning: guidoClosureValue::pitch query !" << endl;
 	return 60; 

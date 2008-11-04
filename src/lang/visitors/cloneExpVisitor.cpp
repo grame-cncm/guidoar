@@ -43,7 +43,6 @@ namespace guidolang
 //______________________________________________________________________________
 Sguidoexpression cloneExpVisitor::clone(const Sguidoexpression& exp)
 { 
-cout << "cloneExpVisitor::clone" << endl;
 	if (exp) {
 		tree_browser<guidoexpression> tb(this);
 		tb.browse (*exp);

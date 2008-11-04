@@ -34,11 +34,8 @@ namespace guidolang
 */
 class export guidoSeqValue : public guidovalue
 {
-    private:
-		Sguidovalue fArg1, fArg2;
-		
-    protected:
-				 guidoSeqValue(Sguidovalue v1, Sguidovalue v2) : fArg1(v1), fArg2(v2) {}
+	protected:
+				 guidoSeqValue(Sguidovalue v1, Sguidovalue v2) : guidovalue(v1, v2) {}
 		virtual ~guidoSeqValue() {}
 
 	public:

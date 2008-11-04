@@ -43,15 +43,16 @@ namespace guidolang
 class export replaceVisitor : public cloneExpVisitor
 {
     public:
-				 replaceVisitor() {}
+				 replaceVisitor(bool createStretch=false) : fCopy(true), fMatched(false), fStretchScore(createStretch) {}
        	virtual ~replaceVisitor() {}
 		
 		virtual Sguidoexpression replace(const Sguidoexpression& exp, const Sguidoexpression& target, const Sguidoexpression& with);
+		bool	matched()		{ return fMatched; }
 
 	protected:
 		Sguidoexpression	fTarget, fIdent;
 		Sguidoexpression	fReplaced;
-		bool	fCopy;              
+		bool	fCopy, fMatched, fStretchScore;          
 		virtual bool copy  () const	{ return fCopy; }
 
 		virtual void visitStart ( Sguidoexpression&);

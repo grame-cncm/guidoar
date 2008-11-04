@@ -31,7 +31,7 @@ using namespace guido;
 namespace guidolang 
 {
 
-#define propagate(f,val)  create(fArg1->f(val), fArg2)
+#define propagate(f,val)  create(getArg1()->f(val), getArg2())
 
 //______________________________________________________________________________
 // guidoApplyValue
@@ -52,10 +52,10 @@ Sguidovalue	guidoApplyValue::stretch (rational ratio)			{ return propagate (stre
 Sguidovalue	guidoApplyValue::stretch (float ratio)				{ return propagate (stretch, ratio); }
 
 //______________________________________________________________________________
-unsigned int guidoApplyValue::length ()			{ return fArg1->length(); }
-rational guidoApplyValue::duration()			{ return fArg1->duration(); }
-unsigned int guidoApplyValue::voices ()			{ return fArg1->voices(); }
-unsigned int guidoApplyValue::pitch ()			{ return fArg1->pitch(); }
+unsigned int guidoApplyValue::length ()			{ return getArg1()->length(); }
+rational guidoApplyValue::duration()			{ return getArg1()->duration(); }
+unsigned int guidoApplyValue::voices ()			{ return getArg1()->voices(); }
+unsigned int guidoApplyValue::pitch ()			{ return getArg1()->pitch(); }
 
 //______________________________________________________________________________
 void guidoApplyValue::acceptIn(basevisitor& v) {

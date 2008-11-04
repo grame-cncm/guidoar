@@ -32,7 +32,7 @@ using namespace guido;
 namespace guidolang 
 {
 
-#define propagate(f,val)  create(fArg1->f(val), fArg2->f(val))
+#define propagate(f,val)  create(getArg1()->f(val), getArg2()->f(val))
 
 //______________________________________________________________________________
 // guidoMixValue
@@ -43,7 +43,7 @@ Sguidovalue	guidoMixValue::create (Sguidovalue v1, Sguidovalue v2)
 //______________________________________________________________________________
 Sguidovalue	guidoMixValue::apply (Sguidovalue& arg)	
 { 
-	return create (guidoApplyValue::create(fArg1, arg), guidoApplyValue::create(fArg2, arg)); 
+	return create (guidoApplyValue::create(getArg1(), arg), guidoApplyValue::create(getArg2(), arg)); 
 }
 
 //______________________________________________________________________________
@@ -58,51 +58,41 @@ Sguidovalue	guidoMixValue::stretch (float ratio)			{ return propagate (stretch, 
 //______________________________________________________________________________
 Sguidovalue	guidoMixValue::top (unsigned int vnum)
 {
-	unsigned int vcount = fArg1->voices();
-	return (vnum > vcount) ? create(fArg1, fArg2->top(vnum - vcount)) : fArg1->top(vnum);
+	unsigned int vcount = getArg1()->voices();
+	return (vnum > vcount) ? create(getArg1(), getArg2()->top(vnum - vcount)) : getArg1()->top(vnum);
 }
 
 Sguidovalue	guidoMixValue::bottom (unsigned int vnum)
 {
-	unsigned int vcount = fArg1->voices();
-	return (vnum < vcount) ? create(fArg1->bottom(vnum), fArg2) : fArg2->bottom(vnum - vcount);
+	unsigned int vcount = getArg1()->voices();
+	return (vnum < vcount) ? create(getArg1()->bottom(vnum), getArg2()) : getArg2()->bottom(vnum - vcount);
 }
 
 //______________________________________________________________________________
 unsigned int guidoMixValue::length ()
 {
-	unsigned int l1 = fArg1->length();
-	if (l1 == kInfinite) return kInfinite;
-
-	unsigned int l2 = fArg2->length();
-	if (l2 == kInfinite) return kInfinite;
-
+	unsigned int l1 = getArg1()->length();	if (l1 == kInfinite) return kInfinite;
+	unsigned int l2 = getArg2()->length();	if (l2 == kInfinite) return kInfinite;
 	return (l1 > l2) ? l1 : l2;
 }
 
 rational guidoMixValue::duration()
 {
-	rational d1 = fArg1->duration();
-	if (infinite(d1)) return d1;
-	rational d2 = fArg2->duration();
-	if (infinite(d2)) return d2;
+	rational d1 = getArg1()->duration();	if (infinite(d1)) return d1;
+	rational d2 = getArg2()->duration();	if (infinite(d2)) return d2;
 	return (d1 > d2) ? d1 : d2;
 }
 
 unsigned int guidoMixValue::voices ()
 {
-	unsigned int v1 = fArg1->voices();
-	if (v1 == kInfinite) return kInfinite;
-	
-	unsigned int v2 = fArg2->voices();
-	if (v2 == kInfinite) return kInfinite;
-
+	unsigned int v1 = getArg1()->voices();	if (v1 == kInfinite) return kInfinite;
+	unsigned int v2 = getArg2()->voices();	if (v2 == kInfinite) return kInfinite;
 	return v1 + v2;
 }
 
 unsigned int guidoMixValue::pitch ()
 {
-	return fArg1->pitch();
+	return getArg1()->pitch();
 }
 
 //______________________________________________________________________________

@@ -35,6 +35,7 @@
 
 using namespace std;
 
+#define evalDebug
 #ifdef evalDebug
 #define evalPrint(expr)	cout << "eval \"" << expr << "\"" << endl
 #else
@@ -56,7 +57,6 @@ Sguidovalue guidoEval::eval(Sguidoexpression e, SguidoEnv env)
 //______________________________________________________________________________
 void guidoEval::evalBinary( Sguidoexpression exp, Sguidovalue& v1, Sguidovalue& v2)
 {
-	evalPrint (exp->getName());
 	Sguidoexpression arg1 = exp->getArg(0);
 	Sguidoexpression arg2 = exp->getArg(1);
 	if (!arg1 || !arg2) throw (newException (kMissingArgument));
@@ -70,12 +70,12 @@ void guidoEval::evalBinary( Sguidoexpression exp, Sguidovalue& v1, Sguidovalue& 
 //______________________________________________________________________________
 // the visit methods
 //______________________________________________________________________________
-void guidoEval::visitStart( Sguidoexpression)
+void guidoEval::visitStart( Sguidoexpression&)
 {
 	cerr << __FILE__ << ": unexpected Sguidoexpression received for evaluation" << endl;
 }
 
-void guidoEval::visitStart( SguidoAbstractExpr exp)
+void guidoEval::visitStart( SguidoAbstractExpr& exp)
 {
 	evalPrint (exp->getName());
 	Sguidoexpression id = exp->getArg(0);
@@ -97,7 +97,7 @@ void guidoEval::visitStart( SguidoAbstractExpr exp)
 	fValue = guidoClosureValue::create(id, body, fEnv, length, dur, voices);
 }
 
-void guidoEval::visitStart( SguidoApplyExpr exp)
+void guidoEval::visitStart( SguidoApplyExpr& exp)
 {
 	evalPrint (exp->getName());
 	Sguidovalue earg1, earg2;
@@ -105,7 +105,7 @@ void guidoEval::visitStart( SguidoApplyExpr exp)
 	fValue = guidoApplyValue::create(earg1, earg2);
 }
 
-void guidoEval::visitStart( SguidoTranspExpr exp)
+void guidoEval::visitStart( SguidoTranspExpr& exp)
 {
 	evalPrint (exp->getName());
 	Sguidovalue earg1, earg2;
@@ -114,7 +114,7 @@ void guidoEval::visitStart( SguidoTranspExpr exp)
 	fValue = earg1->transpose(interval);
 }
 
-void guidoEval::visitStart( SguidoStretchExpr exp)
+void guidoEval::visitStart( SguidoStretchExpr& exp)
 {
 	evalPrint (exp->getName());
 	Sguidovalue earg1, earg2;
@@ -123,7 +123,7 @@ void guidoEval::visitStart( SguidoStretchExpr exp)
 	fValue = earg1->stretch(dur.rationalise());
 }
 
-void guidoEval::visitStart( SguidoSeqExpr exp)
+void guidoEval::visitStart( SguidoSeqExpr& exp)
 {
 	evalPrint (exp->getName());
 	Sguidovalue earg1, earg2;
@@ -131,7 +131,7 @@ void guidoEval::visitStart( SguidoSeqExpr exp)
 	fValue = guidoSeqValue::create(earg1, earg2);
 }
 
-void guidoEval::visitStart( SguidoParExpr exp)
+void guidoEval::visitStart( SguidoParExpr& exp)
 {
 	evalPrint (exp->getName());
 	Sguidovalue earg1, earg2;
@@ -139,7 +139,7 @@ void guidoEval::visitStart( SguidoParExpr exp)
 	fValue = guidoMixValue::create(earg1, earg2);
 }
 
-void guidoEval::visitStart( SguidoHeadExpr exp)
+void guidoEval::visitStart( SguidoHeadExpr& exp)
 {
 	evalPrint (exp->getName());
 	Sguidovalue earg1, earg2;
@@ -147,7 +147,7 @@ void guidoEval::visitStart( SguidoHeadExpr exp)
 	fValue = earg1->head(earg2->length());
 }
 
-void guidoEval::visitStart( SguidoTailExpr exp)
+void guidoEval::visitStart( SguidoTailExpr& exp)
 {
 	evalPrint (exp->getName());
 	Sguidovalue earg1, earg2;
@@ -155,7 +155,7 @@ void guidoEval::visitStart( SguidoTailExpr exp)
 	fValue = earg1->tail(earg2->length());
 }
 
-void guidoEval::visitStart( SguidoTopExpr exp)
+void guidoEval::visitStart( SguidoTopExpr& exp)
 {
 	evalPrint (exp->getName());
 	Sguidovalue earg1, earg2;
@@ -163,7 +163,7 @@ void guidoEval::visitStart( SguidoTopExpr exp)
 	fValue = earg1->top(earg2->length());
 }
 
-void guidoEval::visitStart( SguidoBottomExpr exp)
+void guidoEval::visitStart( SguidoBottomExpr& exp)
 {
 	evalPrint (exp->getName());
 	Sguidovalue earg1, earg2;
@@ -171,7 +171,7 @@ void guidoEval::visitStart( SguidoBottomExpr exp)
 	fValue = earg1->bottom(earg2->length());
 }
 
-void guidoEval::visitStart( SguidoIdentExpr exp)
+void guidoEval::visitStart( SguidoIdentExpr& exp)
 {
 	evalPrint (exp->getName());
 	Sguidoexpression e = exp->getArg(0);
@@ -180,7 +180,7 @@ void guidoEval::visitStart( SguidoIdentExpr exp)
 	fValue = fEnv->value(e);
 }
 
-void guidoEval::visitStart( SguidoScoreExpr exp)
+void guidoEval::visitStart( SguidoScoreExpr& exp)
 {
 	evalPrint (exp->getName());
 	fValue = guidoScoreValue::create (exp->getScore());
