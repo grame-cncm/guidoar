@@ -31,7 +31,6 @@
 
 #include "guidoexpression.h"
 #include "guidoScoreExpr.h"
-#include "guidoEval.h"
 
 using namespace std; 
 using namespace guido; 

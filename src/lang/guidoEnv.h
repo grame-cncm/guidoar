@@ -59,6 +59,7 @@ class guidoEnv : public guido::smartable
 		SguidoEnv	bind (Sguidoexpression& e, Sguidovalue& v)	{ fAssociations[e] = v; return this; }
 		void		clear()										{ fAssociations.clear(); }
 		Sguidovalue value(Sguidoexpression& e)					{ return fAssociations[e]; }		
+		int			size()										{ return fAssociations.size(); }
 };
 
 } // namespace

@@ -28,12 +28,13 @@
 
 #include <iostream>
 
-#include "valueVisitor.h"
+#include "exceptions.h"
 #include "guidoApplyValue.h"
 #include "guidoClosureValue.h"
 #include "guidoMixValue.h"
 #include "guidoScoreValue.h"
 #include "guidoSeqValue.h"
+#include "valueRenderer.h"
 
 #include "AROthers.h"
 #include "seqOperation.h"
@@ -46,7 +47,7 @@ namespace guidolang
 {
 
 //______________________________________________________________________________
-Sguidoelement valueVisitor::visit(const Sguidovalue& exp)
+Sguidoelement valueRenderer::render(const Sguidovalue& exp)
 { 
 	fScore = 0;
 	exp->acceptIn (*this);
@@ -56,17 +57,17 @@ Sguidoelement valueVisitor::visit(const Sguidovalue& exp)
 //______________________________________________________________________________
 // the visit methods
 //______________________________________________________________________________
-void valueVisitor::visitStart( Sguidovalue& exp )
+void valueRenderer::visitStart( Sguidovalue& exp )
 {
 	cerr << __FILE__ << ": unexpected Sguidovalue received" << endl;
 }
 
 //______________________________________________________________________________
-void valueVisitor::visitStart( SguidoSeqValue& exp )
+void valueRenderer::visitStart( SguidoSeqValue& exp )
 {
-	valueVisitor v;
-	SARMusic s1 = dynamic_cast<ARMusic*> ((guidoelement*)v.visit(exp->getArg1()));
-	SARMusic s2 = dynamic_cast<ARMusic*> ((guidoelement*)v.visit(exp->getArg2()));
+	valueRenderer v;
+	SARMusic s1 = dynamic_cast<ARMusic*> ((guidoelement*)v.render(exp->getArg1()));
+	SARMusic s2 = dynamic_cast<ARMusic*> ((guidoelement*)v.render(exp->getArg2()));
 	if (s1 && s2) {
 		seqOperation seq;
 		fScore = seq(s1, s2);
@@ -74,37 +75,21 @@ void valueVisitor::visitStart( SguidoSeqValue& exp )
 }
 
 //______________________________________________________________________________
-void valueVisitor::visitStart( SguidoScoreValue& exp )
+void valueRenderer::visitStart( SguidoScoreValue& exp )
 {
 	fScore = exp->getScore();
 }
 
 //______________________________________________________________________________
-void valueVisitor::visitStart( SguidoMixValue& exp )
+void valueRenderer::visitStart( SguidoMixValue& exp )
 {
-	valueVisitor v;
-	SARMusic s1 = dynamic_cast<ARMusic*> ((guidoelement*)v.visit(exp->getArg1()));
-	SARMusic s2 = dynamic_cast<ARMusic*> ((guidoelement*)v.visit(exp->getArg2()));
+	valueRenderer v;
+	SARMusic s1 = dynamic_cast<ARMusic*> ((guidoelement*)v.render(exp->getArg1()));
+	SARMusic s2 = dynamic_cast<ARMusic*> ((guidoelement*)v.render(exp->getArg2()));
 	if (s1 && s2) {
 		parOperation mix;
 		fScore = mix(s1, s2);
 	}
-}
-
-//______________________________________________________________________________
-void valueVisitor::visitStart( SguidoClosureValue& exp )
-{
-
-}
-
-//______________________________________________________________________________
-void valueVisitor::visitStart( SguidoApplyValue& exp )
-{
-	Sguidovalue	arg = exp->getArg2 ();
-	SguidoClosureValue c = dynamic_cast<guidoClosureValue*> ((guidovalue*)exp->getArg1 ());
-	if (c) {
-	}
-
 }
 
 }

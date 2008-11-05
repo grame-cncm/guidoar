@@ -42,27 +42,23 @@ namespace guidolang
 /*!
 \brief	A values visitor
 */
-class export valueVisitor : 
+class export valueRenderer : 
 	public guido::visitor<Sguidovalue>,
 	public guido::visitor<SguidoSeqValue>,
 	public guido::visitor<SguidoScoreValue>,
-	public guido::visitor<SguidoMixValue>,
-	public guido::visitor<SguidoClosureValue>,
-	public guido::visitor<SguidoApplyValue>
+	public guido::visitor<SguidoMixValue>
 {
     public:
-				 valueVisitor() {}
-       	virtual ~valueVisitor() {}
+				 valueRenderer() {}
+       	virtual ~valueRenderer() {}
 		
-		guido::Sguidoelement visit(const Sguidovalue&);
+		guido::Sguidoelement render(const Sguidovalue&);
 
 	protected:
 		virtual void visitStart ( Sguidovalue&);
 		virtual void visitStart	( SguidoSeqValue&);
 		virtual void visitStart ( SguidoScoreValue&);
 		virtual void visitStart	( SguidoMixValue&);
-		virtual void visitStart	( SguidoClosureValue&);
-		virtual void visitStart	( SguidoApplyValue&);
 		
 		guido::Sguidoelement fScore;
 };

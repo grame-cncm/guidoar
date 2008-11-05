@@ -24,7 +24,6 @@
 #include <iostream>
 #include "exceptions.h"
 #include "guidoClosureValue.h"
-#include "guidoEval.h"
 #include "guidoScoreValue.h"
 #include "visitor.h"
 

@@ -12,7 +12,7 @@
 #include "guidoExpReader.h"
 #include "guidoScoreValue.h"
 #include "replaceVisitor.h"
-#include "valueVisitor.h"
+#include "valueRenderer.h"
 
 using namespace std;
 using namespace guido;
@@ -21,7 +21,7 @@ using namespace guidolang;
 
 guidoExpReader gReader;
 
-#define debug
+//#define debug
 
 //_______________________________________________________________________________
 static void usage(const char * name)
@@ -122,8 +122,8 @@ static void eval (char * name)
 		SguidoEnv env = guidoEnv::create();		
 		Sguidovalue val = exp->eval(env);
 		
-		valueVisitor v;
-		Sguidoelement score = v.visit(val);
+		valueRenderer vr;
+		Sguidoelement score = vr.render(val);
 		if (score) {
 			cout << score << endl;
 		}
@@ -173,14 +173,6 @@ int main(int argc, char *argv[])
 #endif
 	if (argc == 2) {
 		read (readfile(*argsPtr));
-//		env();
-/*
-		cout << "replace expr c with b in a" << endl;
-		replaceVisitor rv;
-		Sguidoexpression r = rv.replace (gReader.getId("a"), gReader.getId("c"), gReader.getId("b"));
-		cout << "matched: " << (rv.matched() ? "yes" : "no") << endl;
-		cout << r;
-*/
 	} 
 	interactive();
 	return 0;

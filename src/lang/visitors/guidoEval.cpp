@@ -35,7 +35,7 @@
 
 using namespace std;
 
-#define evalDebug
+//#define evalDebug
 #ifdef evalDebug
 #define evalPrint(expr)	cout << "eval \"" << expr << "\"" << endl
 #else
@@ -48,9 +48,15 @@ namespace guidolang
 //______________________________________________________________________________
 Sguidovalue guidoEval::eval(Sguidoexpression e, SguidoEnv env) 
 {
-	fEnv = env;
-	fValue = 0;
-	e->acceptIn(*this);
+	try {
+		int size = env->size();
+		fEnv = env;
+		size = fEnv->size();
+		fValue = 0;
+		e->acceptIn(*this);
+	} catch (const TException& e)  { 
+		cerr << e.msg << " - file: '" << e.file << "' line: " << e.line << endl;
+	}
 	return fValue;
 }
 
@@ -81,20 +87,21 @@ void guidoEval::visitStart( SguidoAbstractExpr& exp)
 	Sguidoexpression id = exp->getArg(0);
 	Sguidoexpression body = exp->getArg(1);
 	if (!id || !body) throw (newException (kMissingArgument));
-
+/*
 	SguidoEnv empty = guidoEnv::create();
-	guidoEval eval;
-	Sguidovalue valId = eval.eval(id, empty);
-	if (!valId) throw (newException (kNullValue));
+	Sguidovalue valId = id->eval(empty);
+//	if (!valId) throw (newException (kNullValue));
 	fEnv->bind (id, valId);
 
-	Sguidovalue valBody = eval.eval(body, fEnv);
+	Sguidovalue valBody = body->eval(body, fEnv);
 	if (!valBody) throw (newException (kNullValue));
 	
 	unsigned int length = valBody->length();
 	rational dur = valBody->duration();
 	unsigned int voices = valBody->voices();
 	fValue = guidoClosureValue::create(id, body, fEnv, length, dur, voices);
+*/
+	fValue = guidoClosureValue::create(id, body, fEnv, 0, rational(0,1), 0);
 }
 
 void guidoEval::visitStart( SguidoApplyExpr& exp)
@@ -102,7 +109,8 @@ void guidoEval::visitStart( SguidoApplyExpr& exp)
 	evalPrint (exp->getName());
 	Sguidovalue earg1, earg2;
 	evalBinary (exp, earg1, earg2);
-	fValue = guidoApplyValue::create(earg1, earg2);
+//	fValue = guidoApplyValue::create(earg1, earg2);
+	fValue = earg1->apply(earg2);
 }
 
 void guidoEval::visitStart( SguidoTranspExpr& exp)
@@ -174,7 +182,7 @@ void guidoEval::visitStart( SguidoBottomExpr& exp)
 void guidoEval::visitStart( SguidoIdentExpr& exp)
 {
 	evalPrint (exp->getName());
-	Sguidoexpression e = exp->getArg(0);
+	Sguidoexpression e = exp;
 	if (!e) throw (newException (kMissingArgument));
 	if (!fEnv) throw (newException (kNullEnvironment));
 	fValue = fEnv->value(e);

@@ -23,7 +23,6 @@
 
 #include <iostream>
 
-#include "guidoEval.h"
 #include "guidoEvalSusp.h"
 #include "exceptions.h"
 #include "visitor.h"
@@ -47,7 +46,6 @@ Sguidovalue guidoEvalSusp::create(Sguidoexpression e, SguidoEnv env)
 Sguidovalue	guidoEvalSusp::force()
 {
 	suspForce("guidoEvalSusp");
-	guidoEval eval;
 	return fExp->eval(fEnv);
 }
 
