@@ -381,8 +381,8 @@
 		D322C8910EB20457004BEF8D /* guidoExpPrinter.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = guidoExpPrinter.cpp; path = ../src/lang/visitors/guidoExpPrinter.cpp; sourceTree = SOURCE_ROOT; };
 		D322C8920EB20457004BEF8D /* guidoExpPrinter.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = guidoExpPrinter.h; path = ../src/lang/visitors/guidoExpPrinter.h; sourceTree = SOURCE_ROOT; };
 		D322C8B90EB214BC004BEF8D /* guidoExprTypes.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = guidoExprTypes.h; path = ../src/lang/expressions/guidoExprTypes.h; sourceTree = SOURCE_ROOT; };
-		D334640A0EB46A5400723DAF /* guidoEval.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = guidoEval.cpp; path = ../src/lang/guidoEval.cpp; sourceTree = SOURCE_ROOT; };
-		D334640B0EB46A5400723DAF /* guidoEval.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = guidoEval.h; path = ../src/lang/guidoEval.h; sourceTree = SOURCE_ROOT; };
+		D334640A0EB46A5400723DAF /* guidoEval.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; path = guidoEval.cpp; sourceTree = "<group>"; };
+		D334640B0EB46A5400723DAF /* guidoEval.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; path = guidoEval.h; sourceTree = "<group>"; };
 		D334641F0EB46FB100723DAF /* guidoExprEnum.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = guidoExprEnum.h; path = ../src/lang/expressions/guidoExprEnum.h; sourceTree = SOURCE_ROOT; };
 		D347376F0DED77F400BE54BE /* ctree.h */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.c.h; name = ctree.h; path = ../src/lib/ctree.h; sourceTree = SOURCE_ROOT; };
 		D34737700DED77F400BE54BE /* rational.cpp */ = {isa = PBXFileReference; fileEncoding = 5; lastKnownFileType = sourcecode.cpp.cpp; name = rational.cpp; path = ../src/lib/rational.cpp; sourceTree = SOURCE_ROOT; };
@@ -811,6 +811,8 @@
 		D322C8900EB20457004BEF8D /* visitors */ = {
 			isa = PBXGroup;
 			children = (
+				D334640A0EB46A5400723DAF /* guidoEval.cpp */,
+				D334640B0EB46A5400723DAF /* guidoEval.h */,
 				D3B63F200EC0728B00DD2556 /* valueVisitor.cpp */,
 				D3B63F210EC0728B00DD2556 /* valueVisitor.h */,
 				D3B63DDE0EC03A4400DD2556 /* replaceVisitor.cpp */,
@@ -960,8 +962,6 @@
 		D3F331150EACCDEB00060AC2 /* lang */ = {
 			isa = PBXGroup;
 			children = (
-				D334640A0EB46A5400723DAF /* guidoEval.cpp */,
-				D334640B0EB46A5400723DAF /* guidoEval.h */,
 				D322C8900EB20457004BEF8D /* visitors */,
 				D3BCDB570EB0AE6C00BE6DE0 /* exceptions.cpp */,
 				D3BCDB240EB0A0F700BE6DE0 /* exceptions.h */,

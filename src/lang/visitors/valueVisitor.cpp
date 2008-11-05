@@ -94,11 +94,17 @@ void valueVisitor::visitStart( SguidoMixValue& exp )
 //______________________________________________________________________________
 void valueVisitor::visitStart( SguidoClosureValue& exp )
 {
+
 }
 
 //______________________________________________________________________________
 void valueVisitor::visitStart( SguidoApplyValue& exp )
 {
+	Sguidovalue	arg = exp->getArg2 ();
+	SguidoClosureValue c = dynamic_cast<guidoClosureValue*> ((guidovalue*)exp->getArg1 ());
+	if (c) {
+	}
+
 }
 
 }

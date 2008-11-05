@@ -8,7 +8,6 @@
 #include <string>
 #include <stdlib.h>
 
-#include "guidoEval.h"
 #include "guidoEnv.h"
 #include "guidoExpReader.h"
 #include "guidoScoreValue.h"
@@ -120,10 +119,8 @@ static void eval (char * name)
 	Sguidoexpression exp = gReader.getId(name);
 	if (exp) {
 		cout << "eval expression '" << name << "'" << endl;
-		SguidoEnv env = guidoEnv::create();
-		
-		guidoEval eval;
-		Sguidovalue val = eval.eval(exp, env);
+		SguidoEnv env = guidoEnv::create();		
+		Sguidovalue val = exp->eval(env);
 		
 		valueVisitor v;
 		Sguidoelement score = v.visit(val);

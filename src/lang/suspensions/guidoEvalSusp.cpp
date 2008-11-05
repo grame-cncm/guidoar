@@ -48,7 +48,7 @@ Sguidovalue	guidoEvalSusp::force()
 {
 	suspForce("guidoEvalSusp");
 	guidoEval eval;
-	return eval.eval(fExp, fEnv);
+	return fExp->eval(fEnv);
 }
 
 //______________________________________________________________________________

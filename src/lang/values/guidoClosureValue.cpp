@@ -47,9 +47,7 @@ Sguidovalue	guidoClosureValue::apply (Sguidovalue& v)
 	if (!fIdent)	throw(newException (kNullIdent)); 
 	if (!fBody)		throw(newException (kNullBody));
 	if (!fEnv)		throw(newException (kNullEnvironment));
-
-	guidoEval eval;
-	return eval.eval(fBody, fEnv->bind (fIdent, v));
+	return fBody->eval(fEnv->bind (fIdent, v));
 }
 
 //______________________________________________________________________________

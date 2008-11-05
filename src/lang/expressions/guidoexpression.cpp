@@ -24,6 +24,7 @@
 #include <iostream>
 
 #include "guidoexpression.h"
+#include "guidoEval.h"
 #include "guidoEvalSusp.h"
 #include "guidoExpPrinter.h"
 #include "replaceVisitor.h"
@@ -52,6 +53,13 @@ Sguidoexpression guidoexpression::replace(const Sguidoexpression& exp, const Sgu
 	replaceVisitor rv;
 	Sguidoexpression e = rv.replace(this, exp, with);
 	return e;
+}
+
+//______________________________________________________________________________
+Sguidovalue guidoexpression::eval(SguidoEnv env)
+{
+	guidoEval ev;
+	return ev.eval (this, env);
 }
 
 //______________________________________________________________________________
