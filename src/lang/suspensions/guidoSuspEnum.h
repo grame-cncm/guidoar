@@ -28,7 +28,6 @@ namespace guidolang
 {
 
 enum {
-	kAbstractSusp,
 	kApplySusp,
 	kSeqSusp,
 	kParSusp,

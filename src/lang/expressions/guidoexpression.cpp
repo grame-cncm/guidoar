@@ -26,6 +26,7 @@
 #include "guidoexpression.h"
 #include "guidoEvalSusp.h"
 #include "guidoExpPrinter.h"
+#include "replaceVisitor.h"
 #include "tree_browser.h"
 #include "visitor.h"
 
@@ -43,6 +44,14 @@ void guidoexpression::acceptIn(basevisitor& v) {
 		Sguidoexpression ge = this;
 		p->visitStart (ge);
 	}
+}
+
+//______________________________________________________________________________
+Sguidoexpression guidoexpression::replace(const Sguidoexpression& exp, const Sguidoexpression& with)
+{
+	replaceVisitor rv;
+	Sguidoexpression e = rv.replace(this, exp, with);
+	return e;
 }
 
 //______________________________________________________________________________

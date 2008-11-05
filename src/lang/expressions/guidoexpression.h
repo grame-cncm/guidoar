@@ -63,8 +63,9 @@ class export guidoexpression : public guido::ctree<guidoexpression>, public guid
 		virtual void		acceptIn(guido::basevisitor& visitor);
 		virtual void		acceptOut(guido::basevisitor& visitor);
 		virtual	void		print(std::ostream& os);
-
-		virtual Sguidovalue suspend(SguidoEnv env);
+		
+		virtual Sguidoexpression	replace (const Sguidoexpression& exp, const Sguidoexpression& with);
+		virtual Sguidovalue			suspend(SguidoEnv env);
 
 		//________________________________________________________________________
 		virtual Sguidoexpression getArg(unsigned int n) const;

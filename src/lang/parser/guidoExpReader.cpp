@@ -80,6 +80,14 @@ SGLExpr* guidoExpReader::newBinaryExpr (const char * name, SGLExpr* e1, SGLExpr*
 	return expr;
 }
 
+SGLExpr* guidoExpReader::newAbstractExpr (const char * name, SGLExpr* e1, SGLExpr* e2)
+{
+	if (!e1 || !e2) return 0;
+	SGLExpr* expr = new SGLExpr;
+	*expr = guidoExpFactory::instance().createAbstract(name, *e1, *e2);
+	return expr;
+}
+
 int guidoExpReader::error(const char * msg, int lineno)
 {
 	cerr << msg << " on line " << lineno << endl;

@@ -52,6 +52,7 @@ class guidoExpReader : public glangreader
 		virtual void	 newIDExpr			(const char *, SGLExpr*);
 		virtual SGLExpr* newScoreExpr		(const char *);
 		virtual SGLExpr* newBinaryExpr		(const char *, SGLExpr*, SGLExpr*);
+		virtual SGLExpr* newAbstractExpr	(const char *, SGLExpr*, SGLExpr*);
 
 		virtual int error(const char * msg, int lineno);
 

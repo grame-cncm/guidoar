@@ -42,9 +42,10 @@ namespace guidolang
 //______________________________________________________________________________
 void guidoExpPrinter::visitStart (Sguidoexpression& exp)
 { 
+	fPos = checkOp (fPos);
 	fPendingOp.push(exp->getName().c_str());
 //cout << "guidoExpPrinter::visitStart Sguidoexpression " << fPendingOp.top() << endl;
-	fPos = 0;
+	fPos = 1;
 }
 
 //______________________________________________________________________________
@@ -58,9 +59,10 @@ void guidoExpPrinter::visitEnd (Sguidoexpression& exp)
 void guidoExpPrinter::visitStart( SguidoAbstractExpr& exp)
 {
 //cout << "guidoExpPrinter::visitStart SguidoAbstractExpr " << endl;
+	fPos = checkOp (fPos);
 	fOut << "#";
 	fPendingOp.push(exp->getName().c_str());
-	fPos = 0;
+	fPos = 1;
 }
 
 
@@ -73,13 +75,19 @@ void guidoExpPrinter::visitEnd (SguidoAbstractExpr& exp)
 
 
 //______________________________________________________________________________
+int guidoExpPrinter::checkOp (int pos) 
+{
+	if (fPendingOp.size() && !pos) {
+		fOut << fPendingOp.top() << " "; 
+	}
+	return --pos;
+}
+
+//______________________________________________________________________________
 void guidoExpPrinter::visitStart (SguidoScoreExpr& exp) 
 {
 //cout << "guidoExpPrinter::visitStart SguidoScoreExpr " << endl;
-	if (fPendingOp.size() && fPos) {
-		fOut << fPendingOp.top() << " "; 
-	}
-	else fPos++;
+	fPos = checkOp (fPos);
 	fOut << exp->getScore() << endl;
 }
 

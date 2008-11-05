@@ -57,6 +57,8 @@ class export guidoExpPrinter :
 		virtual void visitStart( SguidoAbstractExpr&);
 		virtual void visitEnd  ( SguidoAbstractExpr&);
 		virtual void visitStart( SguidoScoreExpr&);
+		
+				int checkOp (int pos);
 };
 
 } // namespace

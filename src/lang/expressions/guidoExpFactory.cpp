@@ -109,4 +109,22 @@ Sguidoexpression guidoExpFactory::create(const std::string& name, Sguidoexpressi
 	return exp;
 }
 
+//______________________________________________________________________________
+Sguidoexpression guidoExpFactory::createAbstract(const std::string& name, Sguidoexpression& e1, Sguidoexpression& e2) const
+{
+	Sguidoexpression exp = create (name);
+	Sguidoexpression ident = create("ident", e1);
+	Sguidoexpression e = e2->replace(e1,ident);
+	if (exp && ident && e) {
+#if 0
+		exp->push(e1);
+		exp->push(e2);
+#else
+		exp->push(ident);
+		exp->push(e);
+#endif
+	}
+	return exp;
+}
+
 } // namespace

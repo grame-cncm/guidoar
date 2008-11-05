@@ -126,8 +126,10 @@ class testreader : public glangreader
 			{  cout << "new identified expression: " << id << " = " << *e << endl; }
 		virtual SGLExpr* newScoreExpr		(const char *gmn)	
 			{  return new SGLExpr(gmn); }
-		virtual SGLExpr* newBinaryExpr	(const char * name, SGLExpr* e1, SGLExpr* e2)	
+		virtual SGLExpr* newBinaryExpr		(const char * name, SGLExpr* e1, SGLExpr* e2)	
 			{ SGLExpr* str = new string(); catOp(str, e1, name, e2); cout << "newBinaryExpr: " << *str << endl; return str; }
+		virtual SGLExpr* newAbstractExpr	(const char * name, SGLExpr* e1, SGLExpr* e2)	
+			{ SGLExpr* str = new string(); catOp(str, e1, name, e2); cout << "newAbstractExpr: " << *str << endl; return str; }
 
 		int  error (const char* msg, int lineno) 
 			{ 	cerr << msg << " on line " << lineno << endl; return 0; }

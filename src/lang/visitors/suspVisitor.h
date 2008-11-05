@@ -43,7 +43,6 @@ namespace guidolang
 */
 class export suspVisitor : 
 	public guido::visitor<Sguidosusp>,
-	public guido::visitor<SguidoAbstractSusp>,
 	public guido::visitor<SguidoApplySusp>,
 	public guido::visitor<SguidoClosureSusp>,
 	public guido::visitor<SguidoSeqSusp>,
@@ -58,7 +57,6 @@ class export suspVisitor :
 	protected:
 		virtual void visitStart ( Sguidovalue&);
 		virtual void visitStart ( Sguidosusp&);
-		virtual void visitStart	( SguidoAbstractSusp&);
 		virtual void visitStart ( SguidoApplySusp&);
 		virtual void visitStart	( SguidoClosureSusp&);
 		virtual void visitStart	( SguidoSeqSusp&);

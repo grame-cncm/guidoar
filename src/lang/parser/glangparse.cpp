@@ -1405,7 +1405,7 @@ yyreduce:
 
   case 7:
 #line 71 "glang.y"
-    { debug("abstract expr");	(yyval.exprPtr) = gGLReader->newBinaryExpr((yyvsp[(3) - (4)].strPtr)->c_str(),(yyvsp[(2) - (4)].exprPtr),(yyvsp[(4) - (4)].exprPtr)); clean((yyvsp[(2) - (4)].exprPtr),(yyvsp[(3) - (4)].strPtr),(yyvsp[(4) - (4)].exprPtr)); ;}
+    { debug("abstract expr");	(yyval.exprPtr) = gGLReader->newAbstractExpr((yyvsp[(3) - (4)].strPtr)->c_str(),(yyvsp[(2) - (4)].exprPtr),(yyvsp[(4) - (4)].exprPtr)); clean((yyvsp[(2) - (4)].exprPtr),(yyvsp[(3) - (4)].strPtr),(yyvsp[(4) - (4)].exprPtr)); ;}
     break;
 
   case 8:

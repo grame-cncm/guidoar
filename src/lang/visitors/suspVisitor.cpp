@@ -59,13 +59,10 @@ void suspVisitor::visitStart( Sguidosusp& exp )
 }
 
 //______________________________________________________________________________
-void suspVisitor::visitStart( SguidoAbstractSusp& exp )
-{
-}
-
-//______________________________________________________________________________
 void suspVisitor::visitStart( SguidoApplySusp& exp )
 {
+	fValue = exp->apply (fArg);
+
 }
 
 //______________________________________________________________________________

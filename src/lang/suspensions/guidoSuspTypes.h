@@ -38,7 +38,6 @@ typedef guido::SMARTP<guidovalue>			Sguidovalue;
 template<int T> class guidonodesusp;
 
 typedef guido::SMARTP<guidosusp>						Sguidosusp;
-typedef guido::SMARTP<guidonodesusp<kAbstractSusp> > 	SguidoAbstractSusp;
 typedef guido::SMARTP<guidonodesusp<kApplySusp> >		SguidoApplySusp;
 typedef guido::SMARTP<guidonodesusp<kClosureSusp> >		SguidoClosureSusp;
 typedef guido::SMARTP<guidonodesusp<kSeqSusp> >			SguidoSeqSusp;

@@ -68,7 +68,7 @@ deflist		: name EQ expr					{ debug("ident expr");		gGLReader->newIDExpr($1->c_s
 expr		: GMN							{ debug("score expr");		$$ = gGLReader->newScoreExpr(glangtext); 
 																			 if (!$$) { glangerror("Error while parsing gmn code"); YYERROR; } }
 			| expr op expr					{ debug("op expr");			$$ = gGLReader->newBinaryExpr($2->c_str(),$1,$3); clean($1,$2,$3); }
-			| ABSTRACT expr asep expr		{ debug("abstract expr");	$$ = gGLReader->newBinaryExpr($3->c_str(),$2,$4); clean($2,$3,$4); }
+			| ABSTRACT expr asep expr		{ debug("abstract expr");	$$ = gGLReader->newAbstractExpr($3->c_str(),$2,$4); clean($2,$3,$4); }
 			| group							{ debug("group expr");		$$ = $1; }
 			;
 
