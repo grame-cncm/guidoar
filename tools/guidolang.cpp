@@ -98,8 +98,9 @@ static void env()
 {
 	guidoExpReader::ExpList expmap = gReader.getEnv();
 	guidoExpReader::ExpList::const_iterator i;
+	cout << expmap.size() << " expresssions in the current environment: " << endl;
 	for (i=expmap.begin(); i != expmap.end(); i++) {
-		cout << i->first << " = " << i->second;
+		cout << i->first << " = " << i->second << endl;
 	}
 }
 
@@ -119,15 +120,11 @@ static void eval (char * name)
 	Sguidoexpression exp = gReader.getId(name);
 	if (exp) {
 		cout << "eval expression '" << name << "'" << endl;
-		SguidoEnv env = guidoEnv::create();		
-		Sguidovalue val = exp->eval(env);
-		
 		valueRenderer vr;
-		Sguidoelement score = vr.render(val);
+		Sguidoelement score = vr.render(exp);
 		if (score) {
 			cout << score << endl;
 		}
-		else if (val) cout << "val is not a score value" << endl;
 		else cout << "null val returned" << endl;
 	}
 	else cout << "'" << name << "': no such expression !" << endl;

@@ -160,10 +160,13 @@ An expression of the language is defined as follow:
 \begin{center}
 \begin{tabular}{rrll}
 \hline
+$namedExpr$ & $:=$ & $id$ = $expr$          & expressions are identified by a name 
+ \vspace{3mm} \\
 $expr$ & $:=$ & $score $                 & a legal expression is a score \\
  	    & $|$ & $expr$ op $expr$         & or an expression composed with an expression \\
-	    & $|$ & $\lambda$ $expr . expr$  & or a $\lambda$ abstraction \\
-	    & $|$ & $expr@expr$              & or a function application 
+	    & $|$ & $\#$ $expr . expr$  & or a $\lambda$ abstraction \\
+	    & $|$ & $expr@expr$              & or a function application \\
+	    & $|$ & $id$              & or a named expression referred to by its id 
 \vspace{3mm} \\
 $score $ & $:=$ & $\es$               & a score may be empty \\
 	    & $|$ & $gmn$               & or a gmn score (as defined by the gmn format)
