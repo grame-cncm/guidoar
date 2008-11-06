@@ -39,26 +39,34 @@ namespace guidolang
 */
 class export guidoExpPrinter : 
 	public guido::visitor<Sguidoexpression>,
+	public guido::visitor<SguidoNamedExpr>,
+	public guido::visitor<SguidoGroupedExpr>,
 	public guido::visitor<SguidoAbstractExpr>,
+	public guido::visitor<SguidoIdentExpr>,
 	public guido::visitor<SguidoScoreExpr>
 { 
 	private:
-		std::ostream&	fOut;		///< the output stream 
-		int				fPos;		///< position inside a node
-		std::stack<const char *> fPendingOp;
+		bool	fInNamed;
+		std::ostream&	fOut;					///< the output stream 
+		std::stack<const char *> fPendingOp;	///< the pending operations names
 
 	public:
-				 guidoExpPrinter(std::ostream& out) : fOut(out), fPos(0) {}
+				 guidoExpPrinter(std::ostream& out) : fInNamed(false), fOut(out) {}
 		virtual ~guidoExpPrinter() {}
 
 	protected:
 		virtual void visitStart( Sguidoexpression&);
-		virtual void visitEnd  ( Sguidoexpression&);
+		virtual void visitStart( SguidoNamedExpr&);
+		virtual void visitEnd  ( SguidoNamedExpr&);
+		virtual void visitStart( SguidoGroupedExpr&);
+		virtual void visitEnd  ( SguidoGroupedExpr&);
 		virtual void visitStart( SguidoAbstractExpr&);
-		virtual void visitEnd  ( SguidoAbstractExpr&);
 		virtual void visitStart( SguidoScoreExpr&);
+		virtual void visitStart( SguidoIdentExpr&);
 		
-				int checkOp (int pos);
+				void checkOp (bool pop=true);	// check if operation need to be flushed
+				void push (const char *);		// push operation name on a stack
+				void stackPrint ();
 };
 
 } // namespace

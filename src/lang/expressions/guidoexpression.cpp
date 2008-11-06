@@ -25,7 +25,6 @@
 
 #include "guidoexpression.h"
 #include "guidoEval.h"
-#include "guidoEvalSusp.h"
 #include "guidoExpPrinter.h"
 #include "replaceVisitor.h"
 #include "tree_browser.h"
@@ -62,11 +61,13 @@ Sguidovalue guidoexpression::eval(SguidoEnv env)
 	return ev.eval (this, env);
 }
 
+/*
 //______________________________________________________________________________
 Sguidovalue guidoexpression::suspend(SguidoEnv env)
 {
 	return guidoEvalSusp::create (this, env);
 }
+*/
 
 //______________________________________________________________________________
 void guidoexpression::acceptOut(basevisitor& v) {
@@ -89,11 +90,42 @@ Sguidoexpression guidoexpression::getArg(unsigned int n) const {
 }
 
 //______________________________________________________________________________
-void guidoexpression::print(ostream& os) {
+void guidoexpression::basicprint(ostream& os) 
+{
+	Sguidoexpression arg1 = getArg(0);
+	Sguidoexpression arg2 = getArg(1);
+	if (arg1) {
+		os << arg1;
+		if (arg2)
+			 os << getName() << arg2;
+	}
+}
 
+//______________________________________________________________________________
+void guidoexpression::print(ostream& os) 
+{
+	switch (getType()) {
+		case kGrouped:
+			os << "(" << getArg(0) <<  ")";
+			break;
+		case kAbstract:
+			os << "#";
+			basicprint(os);
+			break;
+		case kNamed:
+			os << getName();
+			break;
+		case kIdent:
+			os << getArg(0);
+			break;
+		default:
+			basicprint (os);
+	}
+/*
 	guidoExpPrinter gev(os);
 	tree_browser<guidoexpression> browser(&gev);
 	browser.browse(*this);
+*/
 }
 
 //______________________________________________________________________________

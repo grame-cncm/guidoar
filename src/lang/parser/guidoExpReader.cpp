@@ -55,9 +55,37 @@ bool guidoExpReader::parseString  (const char* str)		{ return glparser::readstri
 
 
 //______________________________________________________________________________
+SGLExpr guidoExpReader::getId(const string& id)
+{ 
+	pair<ExpList::const_iterator, ExpList::const_iterator> i = fExprMap.equal_range(id);
+	if (i.first != i.second)
+		return (*i.first).second;
+	return 0;
+}
+
+//______________________________________________________________________________
 void guidoExpReader::newIDExpr (const char * id, SGLExpr* e)
 {
-	fExprMap[id] = *e;
+	if (e) fExprMap[id] = *e;
+}
+
+SGLExpr* guidoExpReader::newGroupExpr (SGLExpr* e)
+{
+	if (!e) return 0;
+	SGLExpr* expr = new SGLExpr;
+	*expr = guidoExpFactory::instance().create("group", *e);
+	return expr;
+}
+
+SGLExpr* guidoExpReader::newNamedExpr (const char * name)
+{
+	SGLExpr e = getId(name);
+	if (e) {
+		SGLExpr* expr = new SGLExpr;
+		*expr = guidoExpFactory::instance().createNamed(name, e);
+		return expr;		
+	}
+	return 0;
 }
 
 SGLExpr* guidoExpReader::newScoreExpr (const char * gmnCode)

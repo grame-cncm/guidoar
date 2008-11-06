@@ -32,6 +32,7 @@ namespace guidolang
 
 class guidoexpression;
 class guidoScoreExpr;
+class guidoNamedExpr;
 template<int T> class guidonode;
 
 typedef guido::SMARTP<guidoexpression>			Sguidoexpression;
@@ -46,8 +47,10 @@ typedef guido::SMARTP<guidonode<kTailOp> >		SguidoTailExpr;
 typedef guido::SMARTP<guidonode<kTopOp> >		SguidoTopExpr;
 typedef guido::SMARTP<guidonode<kBottomOp> >	SguidoBottomExpr;
 typedef guido::SMARTP<guidonode<kIdent> >		SguidoIdentExpr;
+typedef guido::SMARTP<guidonode<kGrouped> >		SguidoGroupedExpr;
 
 typedef guido::SMARTP<guidoScoreExpr>			SguidoScoreExpr;
+typedef guido::SMARTP<guidoNamedExpr>			SguidoNamedExpr;
 
 class guidoEnv;
 typedef guido::SMARTP<guidoEnv>				SguidoEnv;

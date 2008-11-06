@@ -63,6 +63,7 @@ int glparser::parse (FILE *fd)
 	yyin = fd;
 	pdebug;
 
+	glanglineno = 0;
 	int res = yyparse();
 	yyrestart(yyin);
 	BEGIN(INITIAL);
@@ -124,10 +125,19 @@ class testreader : public glangreader
 	public:
 		virtual void	 newIDExpr			(const char *id, SGLExpr* e)	
 			{  cout << "new identified expression: " << id << " = " << *e << endl; }
+
+		virtual SGLExpr* newNamedExpr		(const char *name)	
+			{  cout << "newNamedExpr: " << name << endl; return new SGLExpr(name); }
+
+		virtual SGLExpr* newGroupExpr		(SGLExpr* e)	
+			{  cout << "newGroupedExpr: " << *e << endl; SGLExpr* str = new string; *str+="<"; *str+=*e; *str+=">";return str; }
+
 		virtual SGLExpr* newScoreExpr		(const char *gmn)	
 			{  return new SGLExpr(gmn); }
+
 		virtual SGLExpr* newBinaryExpr		(const char * name, SGLExpr* e1, SGLExpr* e2)	
 			{ SGLExpr* str = new string(); catOp(str, e1, name, e2); cout << "newBinaryExpr: " << *str << endl; return str; }
+
 		virtual SGLExpr* newAbstractExpr	(const char * name, SGLExpr* e1, SGLExpr* e2)	
 			{ SGLExpr* str = new string(); catOp(str, e1, name, e2); cout << "newAbstractExpr: " << *str << endl; return str; }
 

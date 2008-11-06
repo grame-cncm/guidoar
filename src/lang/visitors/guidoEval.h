@@ -34,6 +34,8 @@ namespace guidolang
 /*! \brief base class for the evaluation functors */
 class export guidoEval : 
 	public guido::visitor<Sguidoexpression>,
+	public guido::visitor<SguidoNamedExpr>,
+	public guido::visitor<SguidoGroupedExpr>,
 	public guido::visitor<SguidoAbstractExpr>,
 	public guido::visitor<SguidoApplyExpr>,
 	public guido::visitor<SguidoTranspExpr>,
@@ -60,6 +62,8 @@ class export guidoEval :
 		virtual void evalBinary( Sguidoexpression e, Sguidovalue& v1, Sguidovalue& v2);
 
 		virtual void visitStart( Sguidoexpression&);
+		virtual void visitStart( SguidoNamedExpr&);
+		virtual void visitStart( SguidoGroupedExpr&);
 		virtual void visitStart( SguidoAbstractExpr&);
 		virtual void visitStart( SguidoApplyExpr&);
 		virtual void visitStart( SguidoTranspExpr&);

@@ -46,6 +46,8 @@ class glangreader
 		
 		virtual void	 newIDExpr			(const char *, SGLExpr*) = 0;
 		virtual SGLExpr* newScoreExpr		(const char *) = 0;
+		virtual SGLExpr* newNamedExpr		(const char *) = 0;
+		virtual SGLExpr* newGroupExpr		(SGLExpr*) = 0;
 		virtual SGLExpr* newAbstractExpr	(const char *, SGLExpr*, SGLExpr*) = 0;
 		virtual SGLExpr* newBinaryExpr		(const char *, SGLExpr*, SGLExpr*) = 0;
 

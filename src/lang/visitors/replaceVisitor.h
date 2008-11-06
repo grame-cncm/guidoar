@@ -51,14 +51,14 @@ class export replaceVisitor : public cloneExpVisitor
 
 	protected:
 		Sguidoexpression	fTarget, fIdent;
-		Sguidoexpression	fReplaced;
 		bool	fCopy, fMatched, fStretchScore;          
 		virtual bool copy  () const	{ return fCopy; }
 
 		virtual void visitStart ( Sguidoexpression&);
 		virtual void visitEnd	( Sguidoexpression&);
 		virtual void visitStart ( SguidoScoreExpr&);
-		virtual void visitEnd	( SguidoScoreExpr&);
+		
+		void replace(const Sguidoexpression& ident);
 };
 
 /*! @} */

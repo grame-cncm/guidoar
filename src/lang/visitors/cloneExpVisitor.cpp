@@ -31,8 +31,8 @@
 #include "guidoExpFactory.h"
 #include "guidoexpression.h"
 #include "guidoScoreExpr.h"
+#include "guidoNamedExpr.h"
 #include "cloneExpVisitor.h"
-#include "tree_browser.h"
 
 using namespace std;
 using namespace guido;
@@ -44,11 +44,13 @@ namespace guidolang
 Sguidoexpression cloneExpVisitor::clone(const Sguidoexpression& exp)
 { 
 	if (exp) {
-		tree_browser<guidoexpression> tb(this);
-		tb.browse (*exp);
-		Sguidoexpression copy = fStack.top();
-		fStack.pop();
-		return copy;
+		stop(false);
+		browse (*exp);
+		if (fStack.size()) {
+			Sguidoexpression copy = fStack.top();
+			fStack.pop();
+			return copy;
+		}
 	}
 	return 0;
 }
@@ -67,27 +69,25 @@ void cloneExpVisitor::push( const Sguidoexpression& exp, bool stack )
 //______________________________________________________________________________
 void cloneExpVisitor::visitStart( Sguidoexpression& exp )
 {
-	if (copy()) {
-		push (guidoExpFactory::instance().create(exp->getName()));
+	if (exp->getType() == kNamed) {
+		Sguidoexpression named = exp->getArg(0);
+		push (guidoExpFactory::instance().createNamed(exp->getName(), named));
 	}
+	else push (guidoExpFactory::instance().create(exp->getName()));
 }
 
 //______________________________________________________________________________
 void cloneExpVisitor::visitEnd  ( Sguidoexpression& exp )
 { 
-	if ( copy() ) {
-		fStack.pop();
-	}
+	fStack.pop();
 }
 void cloneExpVisitor::visitEnd  ( SguidoScoreExpr& exp )		{}
 
 //______________________________________________________________________________
 void cloneExpVisitor::visitStart( SguidoScoreExpr& exp )
 {
-	if (copy()) {
-		Sguidoelement score = exp->getScore();
-		push ( guidoExpFactory::instance().create( score ), false);
-	}
+	Sguidoelement score = exp->getScore();
+	push ( guidoExpFactory::instance().create( score ), false);
 }
 
 }

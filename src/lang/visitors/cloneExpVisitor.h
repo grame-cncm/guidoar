@@ -28,7 +28,9 @@
 
 #include "export.h"
 #include "guidoExprTypes.h"
+#include "guidoexpression.h"
 #include "visitor.h"
+#include "tree_browser.h"
 
 namespace guidolang
 {
@@ -42,19 +44,18 @@ namespace guidolang
 /*!
 \brief	A visitor to print the gmn description
 */
-class export cloneExpVisitor :
+class export cloneExpVisitor : 
+	public guido::tree_browser<guidoexpression>,
 	public guido::visitor<Sguidoexpression>,
 	public guido::visitor<SguidoScoreExpr>
 {
     public:
-				 cloneExpVisitor() {}
+				 cloneExpVisitor() { set(this); }
        	virtual ~cloneExpVisitor() {}
               
 		virtual Sguidoexpression clone(const Sguidoexpression&);
 
 	protected:		
-		// the copy method may be used by derived classes to filter the elements
-		virtual bool copy  () const	{ return true; }
 		virtual void push	(const Sguidoexpression& exp, bool stack=true);
 
 		virtual void visitStart ( Sguidoexpression&);

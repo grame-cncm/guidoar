@@ -52,6 +52,7 @@ class export valueRenderer :
 				 valueRenderer() {}
        	virtual ~valueRenderer() {}
 		
+		guido::Sguidoelement render(const Sguidoexpression&);
 		guido::Sguidoelement render(const Sguidovalue&);
 
 	protected:

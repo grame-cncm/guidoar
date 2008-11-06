@@ -30,6 +30,7 @@
 #include "ctree.h"
 #include "functor.h"
 #include "guidoEnv.h"
+#include "guidoExprEnum.h"
 #include "smartpointer.h"
 #include "visitable.h"
 #include "visitor.h"
@@ -55,17 +56,18 @@ class export guidoexpression : public guido::ctree<guidoexpression>, public guid
 
 				 guidoexpression(int type) : fType(type) {}
 		virtual ~guidoexpression() {}
+		virtual	void	basicprint(std::ostream& os);
 
 	public:		
-		virtual const std::string&	getName()		{ return fName; }
-		virtual int					getType()		{ return fType; }
+		virtual const std::string&	getName() const		{ return fName; }
+		virtual int					getType() const		{ return fType; }
 
 		virtual void		acceptIn(guido::basevisitor& visitor);
 		virtual void		acceptOut(guido::basevisitor& visitor);
 		virtual	void		print(std::ostream& os);
 		
 		virtual Sguidoexpression	replace (const Sguidoexpression& exp, const Sguidoexpression& with);
-		virtual Sguidovalue			suspend(SguidoEnv env);
+//		virtual Sguidovalue			suspend(SguidoEnv env);
 		virtual Sguidovalue			eval(SguidoEnv env);
 
 		//________________________________________________________________________
@@ -104,7 +106,9 @@ template <int elt> class guidonode : public guidoexpression
 		}
 
  		virtual bool operator ==(const Sguidoexpression& e) const { 
-//			if (getType() == e->getType()) {
+			if (e->getType() == kNamed)
+				return *this == e->getArg(0); 
+
 			if (dynamic_cast<guidonode<elt>*>((guidoexpression*)(e))) {
 				for (int i=0; i < size(); i++) {
 					Sguidoexpression argi = getArg(i);

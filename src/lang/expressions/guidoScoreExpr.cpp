@@ -24,6 +24,7 @@
 #include <iostream>
 #include <sstream>
 
+#include "guidoNamedExpr.h"
 #include "guidoScoreExpr.h"
 #include "guidoScoreValue.h"
 #include "normalizeOperation.h"
@@ -56,11 +57,21 @@ void guidoScoreExpr::acceptOut(basevisitor& v) {
 }
 
 //______________________________________________________________________________
-bool guidoScoreExpr::operator ==(const Sguidoexpression& elt) const 
+void guidoScoreExpr::print(ostream& os) {
+	Sguidoelement score = getScore();
+	if (score) os << getScore();
+	else cerr << "warning: guidoScoreExpr with null score" << endl;
+}
+
+//______________________________________________________________________________
+bool guidoScoreExpr::operator ==(const Sguidoexpression& elt) const
 {
+	SguidoNamedExpr e = dynamic_cast<guidoNamedExpr*>((guidoexpression*)elt);
+	if (e) return *this == e->getArg(0);
+
 	SguidoScoreExpr score = dynamic_cast<guidoScoreExpr*>((guidoexpression*)elt);
 	if (!score) return false;
-	
+
 	// matching is made on normalized score and by comparing the resulting gmn strings
 	normalizeOperation norm;
 	stringstream scoreStr;	scoreStr << norm( getScore() );

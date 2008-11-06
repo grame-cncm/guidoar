@@ -53,12 +53,14 @@ class guidoExpReader : public glangreader
 		virtual SGLExpr* newScoreExpr		(const char *);
 		virtual SGLExpr* newBinaryExpr		(const char *, SGLExpr*, SGLExpr*);
 		virtual SGLExpr* newAbstractExpr	(const char *, SGLExpr*, SGLExpr*);
+		virtual SGLExpr* newNamedExpr		(const char *);
+		virtual SGLExpr* newGroupExpr		(SGLExpr*);
 
 		virtual int error(const char * msg, int lineno);
 
-		virtual void		clear()					{ return fExprMap.clear(); }
-		virtual ExpList&	getEnv()				{ return fExprMap; }
-		virtual SGLExpr		getId(std::string id)	{ return fExprMap[id]; }
+		virtual void			clear()					{ return fExprMap.clear(); }
+		virtual const ExpList&	getEnv()				{ return fExprMap; }
+		virtual SGLExpr			getId(const std::string& id);
 
 	protected:
 		ExpList	fExprMap;

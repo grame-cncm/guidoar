@@ -29,6 +29,7 @@
 #include <iostream>
 
 #include "exceptions.h"
+#include "guidoexpression.h"
 #include "guidoApplyValue.h"
 #include "guidoClosureValue.h"
 #include "guidoMixValue.h"
@@ -47,10 +48,23 @@ namespace guidolang
 {
 
 //______________________________________________________________________________
-Sguidoelement valueRenderer::render(const Sguidovalue& exp)
+Sguidoelement valueRenderer::render(const Sguidoexpression& exp)
+{ 
+	try {
+		SguidoEnv env = guidoEnv::create();		
+		Sguidovalue val = exp->eval(env);
+		if (val) return render(val);
+	} catch (const TException& e)  { 
+		cerr << e.msg << " - file: '" << e.file << "' line: " << e.line << endl;
+	}
+	return 0;
+}
+
+//______________________________________________________________________________
+Sguidoelement valueRenderer::render(const Sguidovalue& val)
 { 
 	fScore = 0;
-	exp->acceptIn (*this);
+	val->acceptIn (*this);
 	return fScore;
 }
 

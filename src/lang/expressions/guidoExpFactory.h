@@ -52,6 +52,7 @@ class export guidoExpFactory : public singleton<guidoExpFactory>
 		Sguidoexpression		create(const std::string& name) const;	
 		Sguidoexpression		create(guido::Sguidoelement& score) const;	
 		Sguidoexpression		create(const std::string& name, Sguidoexpression& e) const;	
+		Sguidoexpression		createNamed(const std::string& name, Sguidoexpression& e) const;	
 		Sguidoexpression		create(const std::string& name, Sguidoexpression& e1, Sguidoexpression& e2) const;	
 		Sguidoexpression		createAbstract(const std::string& name, Sguidoexpression& e1, Sguidoexpression& e2) const;	
 };

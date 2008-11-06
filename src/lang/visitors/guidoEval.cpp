@@ -29,6 +29,7 @@
 #include "guidoApplyValue.h"
 #include "guidoClosureValue.h"
 #include "guidoMixValue.h"
+#include "guidoNamedExpr.h"
 #include "guidoScoreExpr.h"
 #include "guidoScoreValue.h"
 #include "guidoSeqValue.h"
@@ -48,15 +49,9 @@ namespace guidolang
 //______________________________________________________________________________
 Sguidovalue guidoEval::eval(Sguidoexpression e, SguidoEnv env) 
 {
-	try {
-		int size = env->size();
-		fEnv = env;
-		size = fEnv->size();
-		fValue = 0;
-		e->acceptIn(*this);
-	} catch (const TException& e)  { 
-		cerr << e.msg << " - file: '" << e.file << "' line: " << e.line << endl;
-	}
+	fEnv = env;
+	fValue = 0;
+	e->acceptIn(*this);
 	return fValue;
 }
 
@@ -81,27 +76,41 @@ void guidoEval::visitStart( Sguidoexpression&)
 	cerr << __FILE__ << ": unexpected Sguidoexpression received for evaluation" << endl;
 }
 
+void guidoEval::visitStart( SguidoNamedExpr& exp)
+{
+	Sguidoexpression target = exp->getArg(0);
+	fValue = target->eval(fEnv);
+}
+
+void guidoEval::visitStart( SguidoGroupedExpr& exp)
+{
+	Sguidoexpression target = exp->getArg(0);
+	fValue = target->eval(fEnv);
+}
+
 void guidoEval::visitStart( SguidoAbstractExpr& exp)
 {
 	evalPrint (exp->getName());
 	Sguidoexpression id = exp->getArg(0);
 	Sguidoexpression body = exp->getArg(1);
 	if (!id || !body) throw (newException (kMissingArgument));
-/*
-	SguidoEnv empty = guidoEnv::create();
-	Sguidovalue valId = id->eval(empty);
-//	if (!valId) throw (newException (kNullValue));
-	fEnv->bind (id, valId);
+	
+	Sguidoexpression idexp = id->getArg(0);
+	if (!idexp) throw (newException (kNullValue));
 
-	Sguidovalue valBody = body->eval(body, fEnv);
+	SguidoEnv env = guidoEnv::create();
+	Sguidovalue valId = idexp->eval(env);
+	if (!valId) throw (newException (kNullValue));
+	env->bind (id, valId);
+
+	Sguidovalue valBody = body->eval(env);
 	if (!valBody) throw (newException (kNullValue));
 	
 	unsigned int length = valBody->length();
 	rational dur = valBody->duration();
 	unsigned int voices = valBody->voices();
 	fValue = guidoClosureValue::create(id, body, fEnv, length, dur, voices);
-*/
-	fValue = guidoClosureValue::create(id, body, fEnv, 0, rational(0,1), 0);
+//	fValue = guidoClosureValue::create(id, body, fEnv, 0, rational(0,1), 0);
 }
 
 void guidoEval::visitStart( SguidoApplyExpr& exp)

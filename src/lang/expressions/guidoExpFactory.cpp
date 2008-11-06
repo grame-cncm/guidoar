@@ -31,6 +31,7 @@
 
 #include "guidoexpression.h"
 #include "guidoScoreExpr.h"
+#include "guidoNamedExpr.h"
 
 using namespace std; 
 using namespace guido; 
@@ -59,6 +60,7 @@ guidoExpFactory::guidoExpFactory()
 	fMap["transp"]		= new newNodeFunctor<kTransp>;
 	fMap["stretch"]		= new newNodeFunctor<kStretch>;
  	fMap["ident"]		= new newNodeFunctor<kIdent>;
+ 	fMap["group"]		= new newNodeFunctor<kGrouped>;
 }
 
 //______________________________________________________________________________
@@ -81,9 +83,7 @@ Sguidoexpression guidoExpFactory::create(const string& name) const
 Sguidoexpression guidoExpFactory::create(guido::Sguidoelement& score) const
 {
 	SguidoScoreExpr exp = guidoScoreExpr::create (score);
-	if (exp) {
-		exp->setName("gmn");
-	}
+	if (exp) exp->setName("gmn");
 	return exp;
 }
 
@@ -91,7 +91,16 @@ Sguidoexpression guidoExpFactory::create(guido::Sguidoelement& score) const
 Sguidoexpression guidoExpFactory::create(const std::string& name, Sguidoexpression& e) const
 {
 	Sguidoexpression exp = create (name);
+	if (exp) exp->push(e);
+	return exp;
+}
+
+//______________________________________________________________________________
+Sguidoexpression guidoExpFactory::createNamed(const std::string& name, Sguidoexpression& e) const
+{
+	Sguidoexpression exp = guidoNamedExpr::create();
 	if (exp) {
+		if (exp) exp->setName(name);
 		exp->push(e);
 	}
 	return exp;

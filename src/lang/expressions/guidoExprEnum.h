@@ -39,6 +39,8 @@ enum {
 	kTopOp,
 	kBottomOp,
 	kIdent,
+	kNamed,
+	kGrouped,
 	kScore
 };
 

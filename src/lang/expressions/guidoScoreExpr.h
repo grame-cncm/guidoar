@@ -50,6 +50,7 @@ class export guidoScoreExpr : public guidonode<kScore>
 
 		virtual void		acceptIn(guido::basevisitor& visitor);
 		virtual void		acceptOut(guido::basevisitor& visitor);
+		virtual void		print(std::ostream& os);
 
 		virtual bool operator ==(const Sguidoexpression& i) const;
 
