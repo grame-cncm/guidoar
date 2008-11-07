@@ -93,6 +93,7 @@ bool glparser::readstring (const char * buffer, glangreader * r)
 	YY_BUFFER_STATE b;
     b = yy_scan_string (buffer);	// Copy string into new buffer and Switch buffers
 	pdebug;
+	glanglineno = 1;
     int ret = yyparse();			// parse the string
     yy_delete_buffer(b);			// delete the new buffer
 	BEGIN(INITIAL);					// and return to INITIAL state

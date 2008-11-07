@@ -931,7 +931,7 @@ YY_RULE_SETUP
 case 28:
 YY_RULE_SETUP
 #line 61 "glang.l"
-printf("glang extra text is : %s\n", glangtext);
+/* printf("glang extra text is : %s\n", glangtext); */
 	YY_BREAK
 case 29:
 YY_RULE_SETUP

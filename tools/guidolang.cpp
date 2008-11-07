@@ -131,6 +131,20 @@ static void eval (char * name)
 }
 
 //_______________________________________________________________________________
+// remove leading and trailing spaces
+static char * strip (char * buff)
+{
+	while ((*buff == ' ') || (*buff == '	')) buff++;
+	int len = strlen(buff);
+	if (len) {
+		char * ptr = &buff[strlen(buff)-1];
+		while ((*ptr == ' ') || (*ptr == '	')) ptr--;
+		ptr[1] = 0;
+	}
+	return buff;
+}
+
+//_______________________________________________________________________________
 static void interactive () 
 {
 	cout << "G-SCOL - Guido Scores Programming language." << endl;
@@ -139,13 +153,14 @@ static void interactive ()
 	while (!done) {
 		char * buffer = read (stdin, true);
 		if (buffer) {
-			if (!strcmp(buffer, "quit") || !strcmp(buffer, "exit") || !strcmp(buffer, "bye")) 
+			char * cmd = strip( buffer);
+			if (!strcmp(cmd, "quit") || !strcmp(cmd, "exit") || !strcmp(cmd, "bye")) 
 				done = true;
 
-			else if (!strcmp(buffer, "help") || !strcmp(buffer, "?"))	help();
-			else if (!strcmp(buffer, "env"))		env();
-			else if (!strncmp(buffer, "eval", 4))	eval(&buffer[5]);
-			else read (buffer);
+			else if (!strcmp(cmd, "help") || !strcmp(cmd, "?"))	help();
+			else if (!strcmp(cmd, "env"))		env();
+			else if (!strncmp(cmd, "eval", 4))	eval(&cmd[5]);
+			else read (cmd);
 
 			if (!done) cout << "> ";
 			free (buffer);

@@ -30,6 +30,7 @@
 
 #include "guidoExpFactory.h"
 #include "guidoexpression.h"
+#include "guidoExpression.h"
 #include "guidoScoreExpr.h"
 #include "replaceVisitor.h"
 #include "tree_browser.h"
@@ -78,6 +79,19 @@ void replaceVisitor::visitEnd  ( Sguidoexpression& exp )
 		stop(false);
 	}
 	else cloneExpVisitor::visitEnd (exp);
+}
+
+//______________________________________________________________________________
+void replaceVisitor::visitStart( SguidoIdentExpr& exp )
+{
+	push(exp, false);		// don't duplicate identificators
+	stop();
+}
+
+//______________________________________________________________________________
+void replaceVisitor::visitEnd( SguidoIdentExpr& exp )
+{
+	stop(false);
 }
 
 //______________________________________________________________________________

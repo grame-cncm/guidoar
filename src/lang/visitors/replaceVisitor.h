@@ -40,7 +40,9 @@ namespace guidolang
 /*!
 \brief	A visitor to print the gmn description
 */
-class export replaceVisitor : public cloneExpVisitor
+class export replaceVisitor : 
+	public cloneExpVisitor,
+	public guido::visitor<SguidoIdentExpr>
 {
     public:
 				 replaceVisitor(bool createStretch=false) : fCopy(true), fMatched(false), fStretchScore(createStretch) {}
@@ -57,6 +59,8 @@ class export replaceVisitor : public cloneExpVisitor
 		virtual void visitStart ( Sguidoexpression&);
 		virtual void visitEnd	( Sguidoexpression&);
 		virtual void visitStart ( SguidoScoreExpr&);
+		virtual void visitStart ( SguidoIdentExpr&);
+		virtual void visitEnd	( SguidoIdentExpr&);
 		
 		void replace(const Sguidoexpression& ident);
 };

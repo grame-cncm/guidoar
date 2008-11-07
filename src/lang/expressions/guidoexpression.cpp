@@ -24,6 +24,7 @@
 #include <iostream>
 
 #include "guidoexpression.h"
+#include "guidoEnv.h"
 #include "guidoEval.h"
 #include "guidoExpPrinter.h"
 #include "replaceVisitor.h"

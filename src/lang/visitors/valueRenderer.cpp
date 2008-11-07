@@ -30,7 +30,6 @@
 
 #include "exceptions.h"
 #include "guidoexpression.h"
-#include "guidoApplyValue.h"
 #include "guidoClosureValue.h"
 #include "guidoMixValue.h"
 #include "guidoScoreValue.h"
@@ -47,6 +46,12 @@ using namespace guido;
 namespace guidolang 
 {
 
+#ifdef WIN32
+#define kSep "\\"
+#else
+#define kSep "/"
+#endif
+
 //______________________________________________________________________________
 Sguidoelement valueRenderer::render(const Sguidoexpression& exp)
 { 
@@ -55,7 +60,10 @@ Sguidoelement valueRenderer::render(const Sguidoexpression& exp)
 		Sguidovalue val = exp->eval(env);
 		if (val) return render(val);
 	} catch (const TException& e)  { 
-		cerr << e.msg << " - file: '" << e.file << "' line: " << e.line << endl;
+		string file(e.file);
+		size_t pos = file.find_last_of(kSep);
+		if (pos != string::npos) file = file.substr(pos+1);
+		cerr << e.msg << " - file: '" << file << "' line: " << e.line << endl;
 	}
 	return 0;
 }

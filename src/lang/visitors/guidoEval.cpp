@@ -26,7 +26,6 @@
 #include "exceptions.h"
 #include "guidoEval.h"
 #include "guidoexpression.h"
-#include "guidoApplyValue.h"
 #include "guidoClosureValue.h"
 #include "guidoMixValue.h"
 #include "guidoNamedExpr.h"
@@ -62,9 +61,10 @@ void guidoEval::evalBinary( Sguidoexpression exp, Sguidovalue& v1, Sguidovalue& 
 	Sguidoexpression arg2 = exp->getArg(1);
 	if (!arg1 || !arg2) throw (newException (kMissingArgument));
 
-	guidoEval earg;
-	v1 = earg.eval(arg1, fEnv);
-	v2 = earg.eval(arg2, fEnv);
+	v1 = arg1->eval(fEnv);
+//evalPrint( "evalBinary " << arg1 << " " << fEnv << " -> " << (void*)v1);
+	v2 = arg2->eval(fEnv);
+//evalPrint( "evalBinary " << arg2 << " " << fEnv << " -> " << (void*)v2);
 	if (!v1 || !v2) throw (newException (kNullValue));
 }
 
@@ -90,7 +90,7 @@ void guidoEval::visitStart( SguidoGroupedExpr& exp)
 
 void guidoEval::visitStart( SguidoAbstractExpr& exp)
 {
-	evalPrint (exp->getName());
+	evalPrint (exp->getName() << " " << exp->getArg(0) );
 	Sguidoexpression id = exp->getArg(0);
 	Sguidoexpression body = exp->getArg(1);
 	if (!id || !body) throw (newException (kMissingArgument));
@@ -101,9 +101,9 @@ void guidoEval::visitStart( SguidoAbstractExpr& exp)
 	SguidoEnv env = guidoEnv::create();
 	Sguidovalue valId = idexp->eval(env);
 	if (!valId) throw (newException (kNullValue));
-	env->bind (id, valId);
+	fEnv->bind (id, valId);
 
-	Sguidovalue valBody = body->eval(env);
+	Sguidovalue valBody = body->eval(fEnv);
 	if (!valBody) throw (newException (kNullValue));
 	
 	unsigned int length = valBody->length();
@@ -118,7 +118,6 @@ void guidoEval::visitStart( SguidoApplyExpr& exp)
 	evalPrint (exp->getName());
 	Sguidovalue earg1, earg2;
 	evalBinary (exp, earg1, earg2);
-//	fValue = guidoApplyValue::create(earg1, earg2);
 	fValue = earg1->apply(earg2);
 }
 
@@ -190,7 +189,8 @@ void guidoEval::visitStart( SguidoBottomExpr& exp)
 
 void guidoEval::visitStart( SguidoIdentExpr& exp)
 {
-	evalPrint (exp->getName());
+//	evalPrint (exp->getName() << " '" << exp->getArg(0) << "' (" << (void*)exp << ") - " << fEnv);
+	evalPrint (exp->getName());	
 	Sguidoexpression e = exp;
 	if (!e) throw (newException (kMissingArgument));
 	if (!fEnv) throw (newException (kNullEnvironment));

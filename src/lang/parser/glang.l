@@ -58,5 +58,5 @@ SCCHAR	[^{}]
 {ID}				return IDENT;
 
 {SPACE}+			/* eat up space */
-.				printf("glang extra text is : %s\n", yytext);
+.					/* printf("glang extra text is : %s\n", yytext); */
 

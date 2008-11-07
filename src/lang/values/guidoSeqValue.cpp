@@ -22,7 +22,6 @@
 */
 
 #include <iostream>
-#include "guidoApplyValue.h"
 #include "guidoSeqValue.h"
 #include "visitor.h"
 
@@ -44,7 +43,9 @@ Sguidovalue	guidoSeqValue::create (Sguidovalue v1, Sguidovalue v2)
 Sguidovalue	guidoSeqValue::apply (Sguidovalue& arg)
 {
 	rational dur = getArg1()->duration();
-	return create(guidoApplyValue::create(getArg1(), arg->head(dur)), guidoApplyValue::create(getArg2(), arg->tail(dur)));
+	Sguidovalue head = arg->head(dur);
+	Sguidovalue tail = arg->tail(dur);
+	return create(getArg1()->apply(head), getArg2()->apply(tail));
 }
 
 //______________________________________________________________________________

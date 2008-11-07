@@ -22,7 +22,6 @@
 */
 
 #include <iostream>
-#include "guidoApplyValue.h"
 #include "guidoMixValue.h"
 #include "visitor.h"
 
@@ -43,7 +42,10 @@ Sguidovalue	guidoMixValue::create (Sguidovalue v1, Sguidovalue v2)
 //______________________________________________________________________________
 Sguidovalue	guidoMixValue::apply (Sguidovalue& arg)	
 { 
-	return create (guidoApplyValue::create(getArg1(), arg), guidoApplyValue::create(getArg2(), arg)); 
+	int voices = getArg1()->voices();
+	Sguidovalue top = arg->top(voices);
+	Sguidovalue bottom = arg->bottom(voices);
+	return create(getArg1()->apply(top), getArg2()->apply(bottom));
 }
 
 //______________________________________________________________________________

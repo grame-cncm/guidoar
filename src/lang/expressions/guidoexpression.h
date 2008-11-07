@@ -29,7 +29,6 @@
 #include "export.h"
 #include "ctree.h"
 #include "functor.h"
-#include "guidoEnv.h"
 #include "guidoExprEnum.h"
 #include "smartpointer.h"
 #include "visitable.h"
@@ -40,9 +39,11 @@ namespace guidolang
 
 class guidoexpression;
 class guidovalue;
+class guidoEnv;
 
 typedef guido::SMARTP<guidoexpression> 	Sguidoexpression;
 typedef guido::SMARTP<guidovalue>		Sguidovalue;
+typedef guido::SMARTP<guidoEnv>			SguidoEnv;
 
 //______________________________________________________________________________
 /*!

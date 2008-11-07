@@ -26,15 +26,16 @@
 
 #include <map>
 
+#include "guidoexpression.h"
 #include "guidovalue.h"
 #include "smartpointer.h"
 
 namespace guidolang 
 {
-
+/*
 class guidoexpression;
 typedef guido::SMARTP<guidoexpression> 	Sguidoexpression;
-
+*/
 class guidoEnv;
 typedef guido::SMARTP<guidoEnv> 	SguidoEnv;
 
@@ -44,6 +45,7 @@ typedef guido::SMARTP<guidoEnv> 	SguidoEnv;
 class guidoEnv : public guido::smartable
 {
 	private:
+		typedef std::map<Sguidoexpression, Sguidovalue>	Associations;
 		std::map<Sguidoexpression, Sguidovalue>	fAssociations;
 		
     protected:
@@ -58,9 +60,25 @@ class guidoEnv : public guido::smartable
 
 		SguidoEnv	bind (Sguidoexpression& e, Sguidovalue& v)	{ fAssociations[e] = v; return this; }
 		void		clear()										{ fAssociations.clear(); }
-		Sguidovalue value(Sguidoexpression& e)					{ return fAssociations[e]; }		
-		int			size()										{ return fAssociations.size(); }
+		int			size() const								{ return fAssociations.size(); }
+		
+		Sguidovalue value(Sguidoexpression& e) { 
+			std::pair<Associations::const_iterator, Associations::const_iterator> i = fAssociations.equal_range(e);
+			if (i.first != i.second) return (*i.first).second;
+			return 0;
+		}
+		
+		void		print(std::ostream& os)	const { 
+			os << "env size:" << size() << " : ";
+			Associations::const_iterator i = fAssociations.begin();
+			while (i != fAssociations.end()) {
+				os << i->first << "(" << (void*)i->first << "):" << (void*)(i->second) << " ";
+				i++;
+			}
+		}
 };
+
+inline std::ostream& operator << (std::ostream& os, const SguidoEnv& env) { env->print(os); return os; }
 
 } // namespace
 
