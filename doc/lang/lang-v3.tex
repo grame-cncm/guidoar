@@ -1,0 +1,585 @@
+
+\documentclass[10pt,a4paper,frenchb]{article}
+\usepackage{pslatex}
+\usepackage[T1]{fontenc}
+\usepackage[latin1]{inputenc}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\setlength\parskip{\medskipamount}
+\setlength\parindent{0pt}
+\setlength\topmargin{0mm}
+\setlength\headheight{0mm}
+\setlength\headsep{0mm}
+
+\setlength\textheight{245mm}
+\setlength\textwidth{160mm} 
+
+\setlength\oddsidemargin{3mm} 
+\setlength\footskip{10mm}
+
+\newcommand{\seq}{:}
+%%%%%%%%%%%%%%% definitions for env, empty env a and so on
+\newcommand{\var}[1]{\diamond^#1}
+\newcommand{\es}{\{\}}
+\newcommand{\expr}{\mathbb{EXP}}
+\newcommand{\val}{\mathbb{VAL}}
+\newcommand{\elength}{\mathbb{N}}
+\newcommand{\env}{\mathbb{ENV}}
+\newcommand{\closure}{\Lambda}
+\newcommand{\noredex}{@^o}
+\newcommand{\f}[4]{$#1 \times #2 \rightarrow #3 \times #4$}
+\newcommand{\fv}[3]{$#1 \times #2 \rightarrow #3$}
+\newcommand{\fb}{\mathbb{N} \times \mathbb{N} \times \mathbb{Q}}
+\newcommand{\evalsym}{\epsilon}
+\newcommand{\eval}[1]{\evalsym[\bounds](#1,\rho)}
+\newcommand{\evala}[1]{\evalsym(#1,\rho)}
+\newcommand{\evalb}[2]{\evalsym[#2](#1,\rho)}
+\newcommand{\envsym}{\rho}
+\newcommand{\emptyenv}{\theta}
+\newcommand{\closenv}[5][\var{e}]{\closure[#3,#4,#5,\lambda[#1,#2],\envsym]}
+
+%%%%%%%%%%%%%%% definitions for functions symbols
+\newcommand{\apply}		{{\mathcal A}[\bounds]}
+\newcommand{\length}		{{\mathcal L}}
+\newcommand{\voices}		{{\mathcal V}}
+\newcommand{\pitch}		{{\mathcal P}}
+\newcommand{\dur}			{{\mathcal D}}
+\newcommand{\head}			{{\mathcal H}}
+\newcommand{\tail}			{{\mathcal T}}
+\renewcommand{\top}		{{\mathcal U}}
+\newcommand{\bottom}		{{\mathcal B}}
+\newcommand{\transp}		{\delta}
+\renewcommand{\stretch}	{{\mathcal S}}
+\newcommand{\bounds}		{\sigma}
+ 
+
+
+
+\makeatletter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
+%% Bold symbol macro for standard LaTeX users
+\providecommand{\boldsymbol}[1]{\mbox{\boldmath $#1$}}
+
+
+\usepackage{babel}
+\makeatother
+\begin{document}
+
+\title{\textbf{\textsc{G-SCOL}} or \textbf{\textsc{G-SCOPE}} or \textbf{\textsc{GPL}} \\
+A Guido Scores Programming Language}
+
+
+\author{
+%D. Fober \\
+%<fober@grame.fr>\\
+\\
+Grame, Centre National de Création Musicale \\
+Computer Music Research Dept.\\
+Draft version 3 
+}
+
+\maketitle
+
+\section{Introduction}
+
+This is a first version of a programming language specification based on the Guido Music Notation (GMN) format and on the guidoar library. It operates at score level i.e. all the basic expressions of the language are GMN scores and can be thus rendered using the Guido engine. 
+
+
+%----------------------------------------------------------------
+\section{Score operations}
+%----------------------------------------------------------------
+
+The language supports a reduced set of scores composition primitives.
+They operate at \emph{voice} and \emph{event} level. 
+A \emph{voice} corresponds to a GMN voice.
+An \emph{event} is any temporal elementary voice unit: a rest, a note or a chord are viewed as single events.
+
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{rl}
+\hline
+& Horizontal operations \\
+\hline
+$seq[s_1,s_2]$ & creates a score with the scores $s_1 $ and $s_2 $ put in sequence \\
+               & i.e. each voice of $s_2$ is appended to the corresponding voice of $s_1$ \\
+$head[s_1, s_2]$ & creates a score with the score $s_1 $ cut at the $n^{th}$ event \\
+			 & where $n$ is taken from $s_2$ first voice \\
+$tail[s_1, s_2]$ & creates a score with the score $s_1 $ cut before the $n^{th}$ event \\
+			 & where $n$ is taken from $s_2$ first voice \\
+\hline
+%\multicolumn{2}{c}{Vertical operations} \\
+& Vertical operations \\
+\hline
+$par[s_1, s_2]$ & creates a score with the scores $s_1 $ and $s_2 $ put in parallel \\
+               & i.e. the voices of $s_2$ are appended to $s_1$ \\
+$top[s_1, s_2]$ & creates a score with the score $s_1 $ cut after the $n^{th}$ voice \\
+			 & where $n$ is taken from $s_2$ voices count \\
+$bottom[s_1, s_2]$ & creates a score with the score $s_1 $ cut up to the the $n^{th}$ voice \\
+			 & where $n$ is taken from $s_2$ voices count \\
+\hline
+& Time and transposition operations \\
+\hline
+$stretch[s_1, f]$ & creates a score with the scores $s_1$ stretched by a factor $f$ \\
+$stretch[s_1, s_2]$ & creates a score with the scores $s_1$ stretched to the duration of $s_2$ \\
+$transp[s_1,i]$ & creates a score with the scores $s_1$ transposed to an interval $i$ \\
+$transp[s_1, s_2]$ & creates a score with the scores $s_1$ transposed to the pitch of the first pitched event of $s_2$ \\
+			& in case $s_2$ first event is a chord, the lowest pitch is used.\\
+\hline
+\end{tabular}
+\end{center}
+\vspace{-4mm}
+\caption{Basic score operations}
+\label{basicop}
+\end{table}
+
+
+%----------------------------------------------------------------
+\section{The programming language}
+%----------------------------------------------------------------
+
+Programming capabilities are introduced by the $\lambda$-calculus \emph{abstraction} and \emph{application} and by an extended set of reduction rules to deal with scores and scores operations.
+
+%\begin{table}[H]
+\begin{center}
+\begin{tabular}{rl}
+\hline
+$\lambda [e,f]$ & the abstraction of the expression $e$ in $f$ \\
+$[e@f]$ & the application of the function $e$ to the argument $f$\\
+\hline
+\end{tabular}
+\end{center}
+%\vspace{-4mm}
+%\caption{Abstraction and application}
+%\label{lambda}
+%\end{table}
+
+%----------------------------------------------------------------
+\subsection{Syntax}
+
+An expression of the language is defined as follow:
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{rrll}
+\hline
+$namedExpr$ & $:=$ & $id$ = $expr$          & expressions are identified by a name 
+ \vspace{3mm} \\
+$expr$ & $:=$ & $score $                 & a legal expression is a score \\
+ 	    & $|$ & $expr$ op $expr$         & or an expression composed with an expression \\
+	    & $|$ & $\#$ $expr . expr$  & or a $\lambda$ abstraction \\
+	    & $|$ & $expr@expr$              & or a function application \\
+	    & $|$ & $id$              & or a named expression referred to by its id 
+\vspace{3mm} \\
+$score $ & $:=$ & $\es$               & a score may be empty \\
+	    & $|$ & $gmn$               & or a gmn score (as defined by the gmn format)
+ \vspace{3mm} \\
+$op$   & $:=$ & $\seq $            & a composition operation is a \emph{sequence}\\
+ 	    & $|$ & $/$            & or a \emph{parallel} operation  \\
+ 	    & $|$ & $-|$           & or a \emph{head} operation  \\
+ 	    & $|$ & $|-$           & or a \emph{tail} operation  \\
+ 	    & $|$ & $-/$           & or a \emph{top} operation  \\
+ 	    & $|$ & $/-$           & or a \emph{bottom} operation  \\
+\hline
+\end{tabular}
+\end{center}
+\vspace{-4mm}
+\caption{Syntax definition}
+\label{syntax}
+\end{table}
+
+The table \ref{syntax} gives also the operators precedence. Thus the expression 
+$ a \seq b -| c / d $ is equivalent to: $ (a \seq b) -| (c / d) $
+
+The operations are right associative i.e.:
+$ (a\ \circ\ (b\ \circ\ (c\ \circ\ d))) $ is equivalent to: $ a\ \circ\ b\ \circ\ c\ \circ\ d $ where $\circ$ is one of the composition operations $op$ from table \ref{syntax}.
+
+The semantic of theses operations regarding the empty score $\es$ is as follow:
+\begin{center}
+\begin{tabular}{rclcl}
+ $e \seq \es$ & or & $\es \seq e$ & $=>$ & $e$  \\
+ $e / \es$ & or & $\es / e$ & $=>$ & $e$  \\
+ $e -| \es$ & or & $\es -| e$ & $=>$ & $\es$  \\
+ $e -/ \es$ & or & $\es -/ e$ & $=>$ & $\es$  \\
+ $e |- \es$ & or & $e /- \es$ & $=>$ & $e$  \\
+ $\es |- e$ & or & $\es /- e$ & $=>$ & $\es$  \\
+\end{tabular}
+\end{center}
+
+
+%----------------------------------------------------------------
+\subsection{Abstraction semantic}
+
+The semantic of a $\lambda$$s_1.s_2$ abstraction when $s_1$ and $s_2$ are basic score expressions is defined as follow:
+
+%\begin{table}[H]
+\begin{center}
+\begin{tabular}{rcl}
+ $[\lambda s_1.s_2]@expr => transp[stretch[expr, f], i]$ & where & $s_1$ and $s_2$ are basic gmn scores \\
+ 	& & $f$ is the $s_{2_duration} / s_{1_duration}$ ratio \\
+ 	& & $i$ is $s_{2_pitch} - s_{1_pitch}$ \\
+\end{tabular}
+\end{center}
+%\end{table}
+
+For simplification, $[\lambda s.s]$ is the identity function $id$ and by extension of the above:
+\vspace{-6mm}\\ 
+\begin{center}
+\begin{tabular}{rrl}
+ $[\lambda s_1.s_2] = id$ & when & $s_{2_duration} = s_{1_duration}$ \\
+ 	& and & $s_{2_pitch} = s_{1_pitch}$ \\
+\end{tabular}
+\end{center}
+
+For compound expressions, score matching makes use of a normalized version of the score i.e. a gmn score with only voices and events, where all the implicit current status (duration, octave) is made explicit. 
+
+
+
+%----------------------------------------------------------------
+\subsection{Reduction rules extension}
+
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{r@{@}lcll}
+ \multicolumn{4}{l}{Sequence application} \\
+ \hline
+ $ (E \seq F)$ & $(G \seq H)$  & $=>$ & $(E @ G) \seq (F @ H) $ & distributes application over time\\
+% $ (E \seq F)$ & $(G \seq H)$  & $=>$ & $((E \seq F -| G) @ G) \seq ((E \seq F |- G) @ H)$ & alternate solution \\
+ $ (E \seq F)$ & $(G / H)$  & $=>$ & $((E \seq F) @ G) / ((E \seq F) @ H)$ & \\
+ $ (E \seq F)$ & $(G -| H)$ & $=>$ & $(E \seq F) @ G) -| H$ & \\
+ $ (E \seq F)$ & $(G |- H)$ & $=>$ & $(E \seq F) @ G) |- H$ & \\
+ $ (E \seq F)$ & $(G -/ H)$ & $=>$ & $(E \seq F) @ G) -/ H$ & \\
+ $ (E \seq F)$ & $(G /- H)$ & $=>$ & $(E \seq F) @ G) /- H$ & 
+ \vspace{3mm} \\
+ \multicolumn{4}{l}{Parallel application} \\
+ \hline
+ $ (E / F)$ & $(G / H)$  & $=>$ & $(E @ G) / (F @ H)$ & distributes application over voices\\
+ $ (E / F)$ & $(G \seq H)$  & $=>$ & $((E / F) @ G) \seq ((E / F) @ H)$ & \\
+ $ (E / F)$ & $(G -| H)$ & $=>$ & $(E / F) @ G) -| H$ & \\
+ $ (E / F)$ & $(G |- H)$ & $=>$ & $(E / F) @ G) |- H$ & \\ 
+ $ (E / F)$ & $(G -/ H)$ & $=>$ & $(E / F) @ G) -/ H$ & \\
+ $ (E / F)$ & $(G /- H)$ & $=>$ & $(E / F) @ G) /- H$ & 
+ \vspace{3mm} \\
+ \multicolumn{4}{l}{\emph{Cut} application ($\circ$ is any of $-|$, $|-$, $-/$, $/-$)} \\
+ \hline
+ $ (E \circ F)$ & $(G \seq H)$ & $=>$ & $(E \circ F) @ G) \seq (E \circ F) @ H)$ & \\
+ $ (E \circ F)$ & $(G / H)$ & $=>$ & $(E \circ F) @ G) / (E \circ F) @ H)$ & \\ 
+ $ (E \circ F)$ & $(G -| H)$ & $=>$ & $(E \circ F) @ G) -| H$ & \\
+ $ (E \circ F)$ & $(G |- H)$ & $=>$ & $(E \circ F) @ G) |- H$ & \\ 
+ $ (E \circ F)$ & $(G -/ H)$ & $=>$ & $(E \circ F) @ G) -/ H$ & \\
+ $ (E \circ F)$ & $(G /- H)$ & $=>$ & $(E \circ F) @ G) /- H$ & 
+\\
+
+\end{tabular}
+\end{center}
+\end{table}
+
+
+%----------------------------------------------------------------
+\section{Evaluation}
+%----------------------------------------------------------------
+
+%----------------------------------------------------------------
+\subsection{Alpha reduction}
+
+$\alpha$-reduction is an operation that transforms a general abstraction $\lambda^G[e,f]$ into a simplified abstraction $\lambda[\var{e},f']$ where $\var{e}$ is a named variable and $f'$ is an expression where all the bounded occurrences of $e$ in $f$ are replaced with $\var{e}$.
+
+Expression matching looks for alpha equivalence. Basic score matching makes use of the normalized score mentioned above. 
+
+%----------------------------------------------------------------
+\subsection{Alpha reduction on scores}
+
+As mentioned above, when $e$ and $f$ are basic gmn scores, $[\lambda e,f]$ has a special semantic and is simplified into: 
+%\begin{center}
+\begin{tabular}{rcl}
+ $\lambda[\var{e},f']$ & where & $\var{e}$ is a named variable \\
+ 	& and & $f'$ is $transp[stretch[\var{e}, d], i]$ \\
+ 	&  & where $d$ is the $f_{duration} / e_{duration}$ ratio \\
+ 	&  & and $i$ is $f_{pitch} - e_{pitch}$ \\
+\end{tabular}
+%\end{center}
+
+
+%----------------------------------------------------------------
+\subsection{Beta reduction}
+
+$\beta$-reduction transforms recursively a \emph{simplified} expression into \emph{values} by replacing the named variable $\var{e}$ with the corresponding application argument. A \emph{value} is a $score$, a basic gmn score, or a closure $\closure$, or an application $\noredex$ that can't be reduced:
+\begin{center}
+\begin{tabular}{rc@{ : }l}
+ $score$				& & a guido music notation (gmn) score \\
+ $\closenv{f}{l}{v}{d}$ 		& & a closure associating a length $l$, a voices number $v$,  a duration $d$,  a $\lambda$-abstraction and an environment $\envsym$ \\
+ $\noredex[u,v]$ 		& & an application of $u$ to $v$ that can't be reduced \\
+\end{tabular}
+\end{center}
+
+
+%----------------------------------------------------------------
+\subsection{Evaluation implementation}
+
+The implementation of the evaluator is based on \emph{environments} and on two mutually recursive functions:
+\begin{center}
+\begin{tabular}{rc@{ : }l}
+$\eval{e}$ & & evaluates an expression $e$ from \f{\expr}{\env}{\val}{\elength} using an \emph{environment} $\envsym$ and a \emph{bound} $\bounds$ \\
+$A(u,v)$  & & from \f{\val}{\val}{\val}{\elength}, apply the function $u$ to the argument $v$. \\
+\end{tabular}
+\end{center}
+
+
+An \emph{environment} can be viewed as a function that returns the value of a variable. The notation $\envsym(x)$ refers to the value of the variable $x$ in the environment $\envsym$. $\envsym[x := v]$ represents the environment $\envsym$ extended to link the variable $x$ to the value $v$. Thus $\envsym[x := v](x) = v$ and $\envsym[x := v](y) = \envsym(y)$. We'll use $\emptyenv $ for the empty environment.
+
+A \emph{bound} $\bounds$ is a triplet $[l, v, d] \in \fb$ used to bound the evaluation process in length using $l$, in voices number using $v$, or in duration using $d$. 
+The notation $\bounds(l)$, $\bounds(v)$ and $\bounds(d)$ respectively refers to the value of the length $l$, the voice number $v$ and the duration $d$  of $\bounds$. $\bounds[l := x]$ represents a bound where the length $l$ is set to $x$; $\bounds[l := x, d:=y]$ represents a bound where the length $l$ is set to $x$ and the duration $d$ to $y$, etc...
+
+The semantic of a \emph{bounded} evaluation $\eval{e}$ is similar to $\head[ \top[ \evala{e}, \bounds(v)], \bounds(l)]$. The duration $d$ of a bound $\bounds$ is used for temporal applications.
+
+
+The functions required for the evaluation process are the following:
+\begin{center}
+\begin{tabular}{rl}
+ \hline
+ $\eval{e}$ 				& evaluates $e$ with the environment $\envsym$ and a bound $\bounds$ \\
+ $\apply(u,v)$ 			& apply $u$ to $v$ with a bound $\bounds$ \\
+ $\head(u,l)$ 				& takes the head of $u$ up to the length $l$ \\
+ $\head(u,d)$ 				& takes the head of $u$ up to the duration $d$ \\
+ $\tail(u,l)$ 				& takes the tail of $u$ after the length $l$ \\
+ $\tail(u,d)$ 		  & takes the tail of $u$ after the duration $d$ \\
+ $\top(u,v)$ 				& takes the top of $u$ up to the voice $v$ \\
+ $\bottom(u,v)$ 			& takes the bottom of $u$ after the voice $v$ \\
+ $\transp(u,i)$ 		   & transposes $u$ using the interval $i$ \\
+ $\stretch(u,r)$ 		   & stretch $u$ using a coefficient $r$ \\
+\multicolumn{2}{c}{\dotfill{}} \\
+ $\length(u)$ 				& computes the length of $u$ as $max$ of the voices events count \\
+ $\voices(u)$ 				& computes the voices number of $u$ \\
+ $\pitch(u)$ 				& computes the pitch of $u$ \\
+ $\dur(u)$ 				& computes the duration of $u$ \\
+ \hline
+\end{tabular}
+\end{center}
+
+%$\head$ and $\tail$ are polymorphic functions that can operate both at events and at time levels.
+
+
+%----------------------------------------------------------------
+\subsubsection{The evaluation function $\evalsym()$}
+
+The evaluation function $\eval{l}{e}$ : \f{\expr}{\env}{\val}{[\fb]} is defined as follow:
+
+\begin{center}
+\begin{tabular}{rc@{ $\rightarrow$ }l}
+ \hline
+  $\eval{score}$	& & $\left\{ \begin{array}{ll}
+							\left[ \head (score,\bounds(l)), \bounds \right] & \mathrm{when} \  l_{score} < \bounds(l) \\
+							\left[ score, \bounds(l := l_{score}) \right] & \mathrm{when} \  l_{score} \geq \bounds(l) \\
+ 										& \mathrm{with} \   l_{score} = \length (score) \\
+	 							\end{array} \right.$ \\
+ $\eval{\var{e}}$ 				& & $[ \envsym(\var{e}), \bounds]$ \\
+% $\eval{\lambda[\var{e},f]}$ 	& & $[ \closenv{f}{l}, \bounds]$ \\
+ $\eval{\lambda[\var{e},f]}$ 	& & $\closenv{f}{l}{v}{d}$ with $l=\length(\evalsym(f,\envsym[\var{e}= \evalsym(e, \emptyenv)))$ and $d=$ \\
+ $\eval{@[e,f]}$ 				& & $[ \apply{l} [\eval{inf}{e}, \eval{inf}{f}), l]$ where $inf$ is an infinite length\\
+ $\eval{\seq [e,f]}$	& & $\left\{ \begin{array}{ll}
+							\eval{l}{e} & \mathrm{when} \  l_e \geq l \\
+							\left[ seq[\eval{l}{e}, \eval{l-l_e}{f}), l_e + l_f \right] & \mathrm{when} \  l_e < l \\
+ 										& \mathrm{with} \   l_e = \eval{l}{e} \mathrm{and} \   l_f = \eval{l-l_e}{f} \\
+	 							\end{array} \right.$ \\
+% $\eval{/ [e,f]}$ 			& & $mix[\eval{e}, \eval{f}]$ \\
+\end{tabular}
+\begin{tabular}{rc@{ $\rightarrow$ }ll}
+ $\eval{l}{-| [e,f]}$		& & $\eval{l_f}{e}$ & with $l_f = \eval{l}{f})$ \\
+ $\eval{l}{|- [e,f]}$		   & & $[ \tail [\eval{l+l_f}{e},l_f], max(0,l_e - l_f)]$ & with $l_f = \eval{l}{f})$ 
+ 										and $l_e = \eval{l+l_f}{e})$ \\
+% $\eval{-/ [e,f]}$ 			 & & $\top [\eval{e},v)$ with $v = \voices(\eval{f})$ \\
+% $\eval{/- [e,f]}$ 			 & & $\bottom [\eval{e},v)$ with $v = \voices(\eval{f})$ \\
+% $\eval{transp[e,f]}$ 		& & $\transp [\eval{e},i)$ with $i = \pitch(\eval{f}) - \pitch(\eval{e}) $ \\
+ $\eval{l}{transp[e,f]}$ 		& & $[\transp [\eval{l}{e},i], l_e]$ & with $i = \pitch(\eval{l}{f}) - \pitch(\eval{l}{e}) $ 
+ 										and $l_e = \eval{l}{e} $\\
+ $\eval{l}{stretch[e,f]}$ 	& & $[\stretch [\eval{l}{e},r], l_e \times r]$ & with $r = \dur(\eval{l}{f} / \dur(\eval{l}{e}))$ 
+										and $l_e = \eval{l}{e} $\\
+% $\eval{stretch[e,f]}$ 		& & $\stretch [\eval{e},r)$ with $r = \dur(\eval{f} / \dur(\eval{e}))$ \\
+ \hline
+\end{tabular}
+\end{center}
+
+
+%----------------------------------------------------------------
+\subsubsection{The application function $\apply{l}()$}
+The application function $\apply{l}(u,v)$ : \fv{\val}{\val}{\val} applies $u$ to $v$ on a length $l$ as follow:
+
+\begin{center}
+\begin{tabular}{rc@{ $\rightarrow$ }l}
+ \hline
+ $\apply{l}(score,w)$					& & $\noredex[score,w]$ \\
+ $\apply{l}(\seq [u,v],w)$			& & $\left\{ \begin{array}{ll}
+							 \apply{l}(u,w) & \mathrm{when} \  l_{u} \geq l \\
+							 seq[\apply{l_u}(u,\head(w,\dur(u))), \apply{l-l_u}(v,\tail(w,\dur(u)))] & \mathrm{when} \  l_u < l \\
+ 										& \mathrm{with} \   l_u = \length (u) \\
+	 							\end{array} \right.$ \\
+% $\apply{l}(\seq [u,v],w)$			& & $seq[\apply(u,\head(w,\dur(u))), \apply(v,\tail(w,\dur(u)))]$ \\
+ $\apply{l}(/ [u,v],w)$ 				& & $mix[\apply(u,w),\apply(v,w)]$ \\
+ $\apply{l}(\noredex [u,v],w)$ 		& & $\noredex[\noredex[u,v],w]$ \\
+ $\apply{l}(\closenv{f}{l}{d},w)$ 	& & $\eval{l}(f,\envsym[\var{e} := w])$ \\
+ \hline
+\end{tabular}
+\end{center}
+
+
+%----------------------------------------------------------------
+\subsubsection{Length computation $\length()$}
+The function $\length(u)$ : $\val \rightarrow \mathbb{N}$ computes the length of $u$:
+
+\begin{center}
+\begin{tabular}{rc@{ $\rightarrow$ }l}
+ \hline
+ $\length(score)$				& & $max[\length(v_1),...,\length(v_n)]$ where $v_i$ are the $score$ voices and $n=\voices(score)$ \\
+ $\length(\seq [u,v])$		& & $\length(u) + \length(v)$ \\
+ $\length(/ [u,v])$ 			& & $max(\length(u), \length(v))$ \\
+ $\length(\noredex [u,v])$ 	& & $\length(u)$ \\
+ $\length(\closenv{f}{l}{d})$ 	& & $l$ \\
+ \hline
+\end{tabular}
+\end{center}
+
+%----------------------------------------------------------------
+\subsubsection{Duration computation $\dur()$}
+The function $\dur(u)$ : $\val \rightarrow \mathbb{R}$ computes the duration of $u$:
+
+\begin{center}
+\begin{tabular}{rc@{ $\rightarrow$ }l}
+ \hline
+ $\dur(score)$				& & $max[\dur(v_1),..., \dur(v_n)]$ where $v_i$ are the $score$ voices and $n=\voices(score)$\\
+ $\dur(\seq [u,v])$		& & $\dur(u) + \dur(v)$ \\
+ $\dur(/ [u,v])$ 			& & $max(\dur(u), \dur(v))$ \\
+ $\dur(\noredex [u,v])$ 	& & $\dur(u)$ \\
+ $\dur(\closenv{f}{l}{d})$ 	& & $d$ \\
+ \hline
+\end{tabular}
+\end{center}
+
+%----------------------------------------------------------------
+\subsubsection{Transposition computation $\transp()$}
+The function $\transp(u,n)$ :  \fv{\val}{\mathbb{Z}}{\val} operates a $n$ chromatic pitch transposition:
+
+\begin{center}
+\begin{tabular*}{12cm}{rc@{ $\rightarrow$ }l}
+ \hline
+ $\transp(score,n)$				& & $score'_n$\\
+ $\transp(\seq [u,v],n)$			& & $seq[\transp(u, n), \transp(v, n)]$ \\
+ $\transp(/ [u,v],n)$ 			& & $mix(\transp(u, n), \transp(v, n))$ \\
+ $\transp(\noredex [u,v],n)$ 	& & $\noredex[\transp(u,n),v]$ \\
+ $\transp(\closenv{f}{l}{v}{d},n)$ 	& & $\closenv{\transp(f,n)}{l}{v}{d}$ \\
+ \hline
+\end{tabular*}
+\end{center}
+
+%----------------------------------------------------------------
+\subsubsection{Strech computation $\stretch()$}
+The function $\stretch(u,r)$ :  \fv{\val}{\mathbb{R}}{\val} stretches $u$ using a coefficient $r$:
+
+\begin{center}
+\begin{tabular*}{12cm}{rc@{ $\rightarrow$ }l}
+ \hline
+ $\stretch(score,r)$				& & $score'_r$\\
+ $\stretch(\seq [u,v],r)$			& & $seq[\stretch(u, r), \stretch(v, r)]$ \\
+ $\stretch(/ [u,v],r)$ 			& & $mix(\stretch(u, r), \stretch(v, r))$ \\
+ $\stretch(\noredex [u,v],r)$ 	& & $\noredex[\stretch(u,r),v]$ \\
+ $\stretch(\closenv{f}{l}{v}{d},r)$ 	& & $\closenv{\stretch(f,r)}{l}{v}{d}$ \\
+ \hline
+\end{tabular*}
+\end{center}
+
+%----------------------------------------------------------------
+\subsubsection{Head computation $\head()$}
+The function $\head(u,l)$ :  \fv{\val}{\mathbb{N}}{\val} computes the head of $u$ over the length $l$:
+
+\begin{center}
+\begin{tabular*}{12cm}{rc@{ $\rightarrow$ }l}
+ \hline
+ $\head(score,l')$				& & $\left\{ \begin{array}{ll}
+ 								score'_{l'} & \mathrm{when} \  l' < \length(score) \\
+								score & \mathrm{when} \  l' \geq \length(score) \\
+	 							\end{array} \right.$ \\
+ $\head(\seq [u,v],l')$		& & $\left\{ \begin{array}{ll}
+ 								\head(u,l') & \mathrm{when} \  l' \leq \length(u) \\
+								seq[u, \head(v, l'-\length(u)] & \mathrm{when} \  l' > \length(u) \\
+	 							\end{array} \right.$ \\
+ $\head(/ [u,v],l')$ 			& & $mix(\head(u, l'), \head(v, l'))$ \\
+ $\head(\noredex [u,v],l')$ 	& & $\noredex[\head(u,l'),v]$ \\
+ $\head(\closenv{f}{l}{v}{d},l')$ 	& &  $\closenv{f}{min(l,l')}{v}{d}$ \\
+ \hline
+\end{tabular*}
+\end{center}
+
+%----------------------------------------------------------------
+\subsubsection{Tail computation $\tail()$}
+The function $\tail(u,l)$ :  \fv{\val}{\mathbb{N}}{\val} computes the tail of $u$ after the length $l$:
+
+\begin{center}
+\begin{tabular*}{12cm}{rc@{ $\rightarrow$ }l}
+ \hline
+ $\tail(score,l')$				& & $\left\{ \begin{array}{ll}
+ 								score"_{l'} & \mathrm{when} \  l' < \length(score) \\
+								\es & \mathrm{when} \  l' \geq \length(score) \\
+	 							\end{array} \right.$ \\
+ $\tail(\seq [u,v],l')$		& & $\left\{ \begin{array}{ll}
+ 								\tail(v,l'-\length(u)) & \mathrm{when} \  l' > \length(u) \\
+								seq[\tail(u, l'),v] & \mathrm{when} \  l' \leq \length(u) \\
+	 							\end{array} \right.$ \\
+ $\tail(/ [u,v],l')$ 			& & $mix(\tail(u, l'), \tail(v, l'))$ \\
+ $\tail(\noredex [u,v],l')$ 	& & $\noredex[\tail(u,l'),v]$ \\
+ $\tail(\closenv{f}{l}{v}{d},l')$ 	& &  $\left\{ \begin{array}{ll}
+ 								\closenv{f}{l-l'}{v}{d} & \mathrm{when} \  l' < l \\
+								\es & \mathrm{when} \  l' \geq l \\
+	 							\end{array} \right.$ \\
+ \hline
+\end{tabular*}
+\end{center}
+
+%----------------------------------------------------------------
+\subsubsection{Top computation $\top()$}
+The function $\top(u,n)$ :  \fv{\val}{\mathbb{N}}{\val} computes the top of $u$ over the $n$ first voices:
+
+\begin{center}
+\begin{tabular*}{12cm}{rc@{ $\rightarrow$ }l}
+ \hline
+ $\top(score,n)$				& & $\left\{ \begin{array}{ll}
+ 								score'_{n} & \mathrm{when} \  n < \voices(score) \\
+								score & \mathrm{when} \  n \geq \voices(score) \\
+	 							\end{array} \right.$ \\
+ $\top(\seq [u,v],n)$		& & $seq[\top(u, n),\top(v, n)]$ \\
+ $\top(/ [u,v],n)$ 			& & $\left\{ \begin{array}{ll}
+ 								mix[u,\top(v,n-\voices(u)] & \mathrm{when} \  n > \voices(u) \\
+								\top(u,n) & \mathrm{when} \  n \leq\voices(u) \\
+	 							\end{array} \right.$ \\
+ $\top(\noredex [u,v],n)$ 	& & $\noredex[\top(u,n),v]$ \\
+ $\top(\closenv{f}{l}{v}{d},n)$ 	& &  $\closenv{\top(f)}{l}{v}{d}$ \\
+ \hline
+\end{tabular*}
+\end{center}
+
+%----------------------------------------------------------------
+\subsubsection{Bottom computation $\bottom()$}
+The function $\bottom(u,n)$ :  \fv{\val}{\mathbb{N}}{\val} computes the bottom of $u$ after the $n$ first voices:
+
+\begin{center}
+\begin{tabular*}{12cm}{rc@{ $\rightarrow$ }l}
+ \hline
+ $\bottom(score,n)$				& & $\left\{ \begin{array}{ll}
+ 								score"_{n} & \mathrm{when} \  n < \voices(score) \\
+								\es & \mathrm{when} \  n \geq \voices(score) \\
+	 							\end{array} \right.$ \\
+ $\bottom(\seq [u,v],n)$		& & $seq[\bottom(u, n), \bottom(v, n)]$ \\
+ $\bottom(/ [u,v],n)$ 			& & $\left\{ \begin{array}{ll}
+ 								mix[\bottom(u,n) v] & \mathrm{when} \  n < \voices(u) \\
+								\bottom(v,n - \voices(u)) & \mathrm{when} \  n \geq\voices(u) \\
+	 							\end{array} \right.$ \\
+ $\bottom(\noredex [u,v],n)$ 	& & $\noredex[\bottom(u,n),v]$ \\
+ $\bottom(\closenv{f}{v}{l}{d},n)$ 	& &  $\closenv{\bottom(f)}{l}{v}{d}$ \\
+ \hline
+\end{tabular*}
+\end{center}
+
+
+
+\end{document}
