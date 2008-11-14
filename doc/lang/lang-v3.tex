@@ -20,7 +20,6 @@
 \setlength\oddsidemargin{3mm} 
 \setlength\footskip{10mm}
 
-\newcommand{\seq}{:}
 %%%%%%%%%%%%%%% definitions for env, empty env a and so on
 \newcommand{\var}[1]{\diamond^#1}
 \newcommand{\es}{\{\}}
@@ -30,19 +29,24 @@
 \newcommand{\env}{\mathbb{ENV}}
 \newcommand{\closure}{\Lambda}
 \newcommand{\noredex}{@^o}
-\newcommand{\f}[4]{$#1 \times #2 \rightarrow #3 \times #4$}
-\newcommand{\fv}[3]{$#1 \times #2 \rightarrow #3$}
-\newcommand{\fb}{\mathbb{N} \times \mathbb{N} \times \mathbb{Q}}
+
+\newcommand{\bounddomain}{\mathbb{N} \times \mathbb{N} \times \mathbb{Q}}
+\newcommand{\edomain}[3]{$#1 \times #2 \times [\bounddomain] \rightarrow #3 \times [\bounddomain]$}
+\newcommand{\bdomain}[3]{$#1 \times #2 \rightarrow #3$}
+
 \newcommand{\evalsym}{\epsilon}
-\newcommand{\eval}[1]{\evalsym[\bounds](#1,\rho)}
-\newcommand{\evala}[1]{\evalsym(#1,\rho)}
-\newcommand{\evalb}[2]{\evalsym[#2](#1,\rho)}
+%:commands def
+\newcommand{\eval}[2][\bounds]{\evalsym[#1](#2,\rho)}
+\newcommand{\evalmod}[3][\bounds]{\evalsym[#1](#2,#3)}
+\newcommand{\evalsimple}[1]{\evalsym(#1,\rho)}
 \newcommand{\envsym}{\rho}
 \newcommand{\emptyenv}{\theta}
-\newcommand{\closenv}[5][\var{e}]{\closure[#3,#4,#5,\lambda[#1,#2],\envsym]}
+\newcommand{\closenv}[5][\var{e}]{\closure(#3,#4,#5,\lambda[#1,#2],\envsym)}
 
 %%%%%%%%%%%%%%% definitions for functions symbols
-\newcommand{\apply}		{{\mathcal A}[\bounds]}
+\newcommand{\seq}			{:}
+\newcommand{\mix}			{/}
+\newcommand{\apply}[1][\bounds]	{{\mathcal A}[#1]}
 \newcommand{\length}		{{\mathcal L}}
 \newcommand{\voices}		{{\mathcal V}}
 \newcommand{\pitch}		{{\mathcal P}}
@@ -54,7 +58,14 @@
 \newcommand{\transp}		{\delta}
 \renewcommand{\stretch}	{{\mathcal S}}
 \newcommand{\bounds}		{\sigma}
+\newcommand{\nobounds}	{\infty}
  
+%%%%%%%%%%%%%%% layout
+\newcommand{\evaltable}[1][$\rightarrow$]	  {\begin{center} \begin{tabular*}{0.9\linewidth}{rc@{ #1 }l}}
+\newcommand{\evaldots}						  {\multicolumn{3}{r}{\dotfill{}}}
+\newcommand{\evaltitle}[1]						{\multicolumn{3}{l}{#1} \\ \hline}
+\newcommand{\evaltablend}  		{\end{tabular*}\end{center}}
+\newcommand{\evalspace}	  		{\vspace{2mm}\\}
 
 
 
@@ -319,21 +330,23 @@ $\beta$-reduction transforms recursively a \emph{simplified} expression into \em
 %----------------------------------------------------------------
 \subsection{Evaluation implementation}
 
-The implementation of the evaluator is based on \emph{environments} and on two mutually recursive functions:
+The implementation of the evaluator is based on \emph{bounds}, \emph{environments} and on two mutually recursive functions:
 \begin{center}
-\begin{tabular}{rc@{ : }l}
-$\eval{e}$ & & evaluates an expression $e$ from \f{\expr}{\env}{\val}{\elength} using an \emph{environment} $\envsym$ and a \emph{bound} $\bounds$ \\
-$A(u,v)$  & & from \f{\val}{\val}{\val}{\elength}, apply the function $u$ to the argument $v$. \\
+\begin{tabular}{rcl}
+$\eval{e}$ & : & evaluates an expression $e$ from \edomain{\expr}{\env}{\val} \\
+		  & & using an \emph{environment} $\envsym$ and a \emph{bound} $\bounds$ \\
+$\apply(u,v)$  & : & from \edomain{\val}{\val}{\val}, \\
+			& & apply the function $u$ to the argument $v$ using a \emph{bound} $\bounds$ \\
 \end{tabular}
 \end{center}
 
 
 An \emph{environment} can be viewed as a function that returns the value of a variable. The notation $\envsym(x)$ refers to the value of the variable $x$ in the environment $\envsym$. $\envsym[x := v]$ represents the environment $\envsym$ extended to link the variable $x$ to the value $v$. Thus $\envsym[x := v](x) = v$ and $\envsym[x := v](y) = \envsym(y)$. We'll use $\emptyenv $ for the empty environment.
 
-A \emph{bound} $\bounds$ is a triplet $[l, v, d] \in \fb$ used to bound the evaluation process in length using $l$, in voices number using $v$, or in duration using $d$. 
-The notation $\bounds(l)$, $\bounds(v)$ and $\bounds(d)$ respectively refers to the value of the length $l$, the voice number $v$ and the duration $d$  of $\bounds$. $\bounds[l := x]$ represents a bound where the length $l$ is set to $x$; $\bounds[l := x, d:=y]$ represents a bound where the length $l$ is set to $x$ and the duration $d$ to $y$, etc...
+A \emph{bound} $\bounds$ is a triplet $[l, v, d] \in \bounddomain$ used to bound the evaluation process in length using $l$, in voices number using $v$, or in duration using $d$. 
+The notation $\bounds(l)$, $\bounds(v)$ and $\bounds(d)$ respectively refers to the value of the length $l$, the voice number $v$ and the duration $d$  of $\bounds$. $\bounds[l := x]$ represents a bound where the length $l$ is set to $x$; $\bounds[l := x, d:=y]$ represents a bound where the length $l$ is set to $x$ and the duration $d$ to $y$, etc... We'll use $\nobounds$ for the infinite bound i.e. $\bounds[l := \infty, v:= \infty, d:= \infty]$
 
-The semantic of a \emph{bounded} evaluation $\eval{e}$ is similar to $\head[ \top[ \evala{e}, \bounds(v)], \bounds(l)]$. The duration $d$ of a bound $\bounds$ is used for temporal applications.
+A \emph{bounded} evaluation is an evaluation that carries the \emph{head} and \emph{top} operations during all the evaluation process. The semantic of $\eval{e}$ is similar to $\head[ \top[ \evalsimple{e}, \bounds(v)], \bounds(l)]$. The duration $d$ of a bound $\bounds$ is used for temporal applications.
 
 
 The functions required for the evaluation process are the following:
@@ -365,64 +378,121 @@ The functions required for the evaluation process are the following:
 %----------------------------------------------------------------
 \subsubsection{The evaluation function $\evalsym()$}
 
-The evaluation function $\eval{l}{e}$ : \f{\expr}{\env}{\val}{[\fb]} is defined as follow:
+The evaluation function $\eval{l}{e}$ : \edomain{\expr}{\env}{\val} is defined as follow:
 
-\begin{center}
-\begin{tabular}{rc@{ $\rightarrow$ }l}
- \hline
+%%%%%% evaluation of a score %%%%%%
+\evaltable
+  \hline
+\evaltitle {Evaluation of a score} \\
   $\eval{score}$	& & $\left\{ \begin{array}{ll}
-							\left[ \head (score,\bounds(l)), \bounds \right] & \mathrm{when} \  l_{score} < \bounds(l) \\
-							\left[ score, \bounds(l := l_{score}) \right] & \mathrm{when} \  l_{score} \geq \bounds(l) \\
+							\left[ \head (score,\bounds(l)), \bounds \right] & \mathrm{when} \  l_{score} > \bounds(l) \\
+							\left[ score, \bounds(l := l_{score}) \right] & \mathrm{when} \  l_{score} \leq \bounds(l) \\
  										& \mathrm{with} \   l_{score} = \length (score) \\
-	 							\end{array} \right.$ \\
- $\eval{\var{e}}$ 				& & $[ \envsym(\var{e}), \bounds]$ \\
-% $\eval{\lambda[\var{e},f]}$ 	& & $[ \closenv{f}{l}, \bounds]$ \\
- $\eval{\lambda[\var{e},f]}$ 	& & $\closenv{f}{l}{v}{d}$ with $l=\length(\evalsym(f,\envsym[\var{e}= \evalsym(e, \emptyenv)))$ and $d=$ \\
- $\eval{@[e,f]}$ 				& & $[ \apply{l} [\eval{inf}{e}, \eval{inf}{f}), l]$ where $inf$ is an infinite length\\
+	 							\end{array} \right.$ 
+ \evalspace
+				& & $\left\{ \begin{array}{ll}
+							\left[ \top (score,\bounds(v)), \bounds \right] & \mathrm{when} \  v_{score} > \bounds(v) \\
+							\left[ score, \bounds(v:= v_{score}) \right] & \mathrm{when} \  v_{score} \leq \bounds(v) \\
+ 										& \mathrm{with} \   v_{score} = \voices (score) \\
+	 							\end{array} \right.$ 
+\evalspace
+				& & the combination of both when $l_{score} > \bounds(l)$ and $v_{score} > \bounds(v)$ 
+ \evaltablend
+
+Note that the \emph{head} and \emph{tail} operations are implicitly included in a score evaluation due to the \emph{bound} $\bounds$.
+
+%%%%%% abstraction, application and env evaluation %%%%%%
+\evaltable[]
+\hline
+\evaltitle {Abstraction, application and environments evaluation} 
+  $\eval{@[e,f]}$ 			&  $\rightarrow$ & $[ \apply\ (\eval[\nobounds]{e}, \ \eval[\nobounds]{f}), \bounds]$ 
+ \evalspace
+ $\eval{\var{e}}$ 				& $\rightarrow$ & $[ \envsym(\var{e}), \bounds]$
+\evalspace
+ $\eval{\lambda[\var{e},f]}$ 	& $\rightarrow$& $[ \closenv{f}{l}{v}{d}, \bounds]$ \\
+ 						& & with $l=\length(\evalmod[\nobounds]{f}{\ \envsym[\var{e}= \evalmod[\nobounds]{e}{\emptyenv}}$ \\
+						& & and $v=\voices(\evalmod[\nobounds]{f}{\ \envsym[\var{e}= \evalmod[\nobounds]{e}{\emptyenv}}$ \\
+						& & and $d=\dur(\evalmod[\nobounds]{f}{\ \envsym[\var{e}= \evalmod[\nobounds]{e}{\emptyenv}}$ 
+\evaltablend
+
+%%%%%% seq and par evaluation %%%%%%
+\evaltable
+\hline
+\evaltitle {Sequence and parallel  evaluation} 
  $\eval{\seq [e,f]}$	& & $\left\{ \begin{array}{ll}
-							\eval{l}{e} & \mathrm{when} \  l_e \geq l \\
-							\left[ seq[\eval{l}{e}, \eval{l-l_e}{f}), l_e + l_f \right] & \mathrm{when} \  l_e < l \\
- 										& \mathrm{with} \   l_e = \eval{l}{e} \mathrm{and} \   l_f = \eval{l-l_e}{f} \\
-	 							\end{array} \right.$ \\
-% $\eval{/ [e,f]}$ 			& & $mix[\eval{e}, \eval{f}]$ \\
-\end{tabular}
-\begin{tabular}{rc@{ $\rightarrow$ }ll}
- $\eval{l}{-| [e,f]}$		& & $\eval{l_f}{e}$ & with $l_f = \eval{l}{f})$ \\
- $\eval{l}{|- [e,f]}$		   & & $[ \tail [\eval{l+l_f}{e},l_f], max(0,l_e - l_f)]$ & with $l_f = \eval{l}{f})$ 
- 										and $l_e = \eval{l+l_f}{e})$ \\
-% $\eval{-/ [e,f]}$ 			 & & $\top [\eval{e},v)$ with $v = \voices(\eval{f})$ \\
-% $\eval{/- [e,f]}$ 			 & & $\bottom [\eval{e},v)$ with $v = \voices(\eval{f})$ \\
-% $\eval{transp[e,f]}$ 		& & $\transp [\eval{e},i)$ with $i = \pitch(\eval{f}) - \pitch(\eval{e}) $ \\
- $\eval{l}{transp[e,f]}$ 		& & $[\transp [\eval{l}{e},i], l_e]$ & with $i = \pitch(\eval{l}{f}) - \pitch(\eval{l}{e}) $ 
- 										and $l_e = \eval{l}{e} $\\
- $\eval{l}{stretch[e,f]}$ 	& & $[\stretch [\eval{l}{e},r], l_e \times r]$ & with $r = \dur(\eval{l}{f} / \dur(\eval{l}{e}))$ 
-										and $l_e = \eval{l}{e} $\\
-% $\eval{stretch[e,f]}$ 		& & $\stretch [\eval{e},r)$ with $r = \dur(\eval{f} / \dur(\eval{e}))$ \\
- \hline
-\end{tabular}
-\end{center}
+							\eval{e} & \mathrm{when} \  l_e \geq \bounds(l) \\
+							\left[ seq[\eval{e}, \ \eval[{\bounds[l:=l- l_e]}]{f}, \ \bounds[l:=l_e + l_f] \right] & \mathrm{when} \  l_e < \bounds(l) \\
+ 								\ \mathrm{with} \   l_e \leftarrow \eval{e} \ \mathrm{and} \   l_f \leftarrow \eval[{\bounds[l:=l- l_e]}]{f} &\\
+	 							\end{array} \right.$
+\evalspace
+ $\eval{\mix [e,f]}$	& & $\left\{ \begin{array}{ll}
+							\eval{e} & \mathrm{when} \  v_e \geq \bounds(v) \\
+							\left[ par[\eval{e}, \ \eval[{\bounds[v:=v- v_e]}]{f}, \ \bounds[v:=v_e + v_f] \right] & \mathrm{when} \  v_e < \bounds(v) \\
+ 								\ \mathrm{with} \   v_e \leftarrow \eval{e} \ \mathrm{and} \   v_f \leftarrow \eval[{\bounds[v:=v- v_e]}]{f} &\\
+	 							\end{array} \right.$ 
+\evaltablend
+
+%%%%%% other operations %%%%%%
+\evaltable[]
+\hline
+\evaltitle {Other operations} 
+ $\eval{-| [e,f]}$			& $\rightarrow$ & $\eval [{\bounds[l:=l_f]}] {e}$  \\
+ 					& & \ with $l_f \leftarrow \eval{f})$ 
+\evalspace
+  $\eval{|- [e,f]}$		   	& $\rightarrow$& $[ \tail [\eval[{\bounds[l:=l+l_f]}]{e},l_f], \bounds[l:=max(0,l_e - l_f)]]$  \\
+  					& & \ with $l_f \leftarrow \eval{f})$ and $l_e \leftarrow \eval[{\bounds[l:=l+l_f]}]{e})$ 
+\evalspace
+ $\eval{-/ [e,f]}$			& $\rightarrow$ & $\eval [{\bounds[v:=v_f]}] {e}$  \\
+ 					& & \ with $v_f \leftarrow \eval{f})$ 
+\evalspace
+  $\eval{/- [e,f]}$		   	& $\rightarrow$& $[ \bottom [\eval[{\bounds[v:=v+v_f]}]{e},v_f], \bounds[v:=max(0,v_e - v_f)]]$  \\
+  					& & \ with $v_f \leftarrow \eval{f})$ and $v_e \leftarrow \eval[{\bounds[v:=v+v_f]}]{e})$ 
+ \evalspace
+  $\eval{transp[e,f]}$ 		& $\rightarrow$ & $[\transp [\eval{e},i], \bounds]$  \\
+  					& & \ with $i = \pitch(\eval{f}) - \pitch(\eval{e}) $ 
+  \evalspace
+$\eval{stretch[e,f]}$ 		& $\rightarrow$& $[\stretch [\eval{e},r], \bounds[d:=d_e \times r]]$  \\
+					& & \ with $r = \dur(\eval{f} / \dur(\eval{e}))$ and $d_e \leftarrow \eval{e} $
+\evaltablend
 
 
 %----------------------------------------------------------------
-\subsubsection{The application function $\apply{l}()$}
-The application function $\apply{l}(u,v)$ : \fv{\val}{\val}{\val} applies $u$ to $v$ on a length $l$ as follow:
+\subsubsection{The application function $\apply()$}
+The application function $\apply(u,v)$ : \edomain{\val}{\val}{\val} applies $u$ to $v$ using bounds $\bounds$ as follow:
 
-\begin{center}
-\begin{tabular}{rc@{ $\rightarrow$ }l}
+%%%%%% Non-reductible applications %%%%%%
+\evaltable
  \hline
- $\apply{l}(score,w)$					& & $\noredex[score,w]$ \\
- $\apply{l}(\seq [u,v],w)$			& & $\left\{ \begin{array}{ll}
-							 \apply{l}(u,w) & \mathrm{when} \  l_{u} \geq l \\
-							 seq[\apply{l_u}(u,\head(w,\dur(u))), \apply{l-l_u}(v,\tail(w,\dur(u)))] & \mathrm{when} \  l_u < l \\
- 										& \mathrm{with} \   l_u = \length (u) \\
+ \evaltitle {Non-reductible applications} 
+	$\apply(score,w)$					& & $[\noredex(score,w), \bounds]$ 
+\evalspace
+	$\apply(\noredex [u,v],w)$ 		& & $[\noredex(\noredex(u,v),w), \bounds]$ 
+\evaltablend
+  
+%%%%%% mix & seq %%%%%%
+\evaltable
+  \hline
+\evaltitle {Applications in sequence or in parallel} 
+ $\apply(\seq [u,v],w)$			& & $\left\{ \begin{array}{ll}
+							 \apply(u,w) & \mathrm{when} \  d_{u} \geq \bounds(d) \\
+							 \left[ seq(\apply[{\bounds[d:=d_u]}](u,w_h), \apply[{\bounds[d:=d-d_u]}](v,w_t)),\bounds \right] & \mathrm{when} \  d_u < \bounds(d) \\
+ 							\  \mathrm{with} \   d_u = \length (u), \  w_h=\head(w,d_u) \ \mathrm{and} \   w_t=\tail(w,d_u) & \\
 	 							\end{array} \right.$ \\
-% $\apply{l}(\seq [u,v],w)$			& & $seq[\apply(u,\head(w,\dur(u))), \apply(v,\tail(w,\dur(u)))]$ \\
- $\apply{l}(/ [u,v],w)$ 				& & $mix[\apply(u,w),\apply(v,w)]$ \\
- $\apply{l}(\noredex [u,v],w)$ 		& & $\noredex[\noredex[u,v],w]$ \\
- $\apply{l}(\closenv{f}{l}{d},w)$ 	& & $\eval{l}(f,\envsym[\var{e} := w])$ \\
- \hline
-\end{tabular}
-\end{center}
+\evalspace
+
+ $\apply(\mix [u,v],w)$			& & $\left\{ \begin{array}{ll}
+							 \apply(u,w) & \mathrm{when} \  v_{u} \geq \bounds(v) \\
+							 \left[ mix(\apply[{\bounds[v:=v_u]}](u,w_t), \apply[{\bounds[d:=v-v_u]}](v,w_b)),\bounds \right] & \mathrm{when} \  v_u < \bounds(v) \\
+ 							\  \mathrm{with} \   v_u = \voices (u), \  w_t=\top(w,v_u) \ \mathrm{and} \   w_b=\bottom(w,v_u) & \\
+	 							\end{array} \right.$
+\evaltablend
+
+%%%%%% closures %%%%%%
+\evaltable
+  \hline
+\evaltitle {A closure application} 
+ $\apply(\closenv{f}{l}{v}{d},w)$ 	& & $\evalmod{f}{\envsym[\var{e} := w]}$
+\evaltablend
 
 
 %----------------------------------------------------------------
@@ -459,7 +529,7 @@ The function $\dur(u)$ : $\val \rightarrow \mathbb{R}$ computes the duration of 
 
 %----------------------------------------------------------------
 \subsubsection{Transposition computation $\transp()$}
-The function $\transp(u,n)$ :  \fv{\val}{\mathbb{Z}}{\val} operates a $n$ chromatic pitch transposition:
+The function $\transp(u,n)$ :  \bdomain{\val}{\mathbb{Z}}{\val} operates a $n$ chromatic pitch transposition:
 
 \begin{center}
 \begin{tabular*}{12cm}{rc@{ $\rightarrow$ }l}
@@ -475,7 +545,7 @@ The function $\transp(u,n)$ :  \fv{\val}{\mathbb{Z}}{\val} operates a $n$ chroma
 
 %----------------------------------------------------------------
 \subsubsection{Strech computation $\stretch()$}
-The function $\stretch(u,r)$ :  \fv{\val}{\mathbb{R}}{\val} stretches $u$ using a coefficient $r$:
+The function $\stretch(u,r)$ :  \bdomain{\val}{\mathbb{R}}{\val} stretches $u$ using a coefficient $r$:
 
 \begin{center}
 \begin{tabular*}{12cm}{rc@{ $\rightarrow$ }l}
@@ -491,7 +561,7 @@ The function $\stretch(u,r)$ :  \fv{\val}{\mathbb{R}}{\val} stretches $u$ using 
 
 %----------------------------------------------------------------
 \subsubsection{Head computation $\head()$}
-The function $\head(u,l)$ :  \fv{\val}{\mathbb{N}}{\val} computes the head of $u$ over the length $l$:
+The function $\head(u,l)$ :  \bdomain{\val}{\mathbb{N}}{\val} computes the head of $u$ over the length $l$:
 
 \begin{center}
 \begin{tabular*}{12cm}{rc@{ $\rightarrow$ }l}
@@ -513,7 +583,7 @@ The function $\head(u,l)$ :  \fv{\val}{\mathbb{N}}{\val} computes the head of $u
 
 %----------------------------------------------------------------
 \subsubsection{Tail computation $\tail()$}
-The function $\tail(u,l)$ :  \fv{\val}{\mathbb{N}}{\val} computes the tail of $u$ after the length $l$:
+The function $\tail(u,l)$ :  \bdomain{\val}{\mathbb{N}}{\val} computes the tail of $u$ after the length $l$:
 
 \begin{center}
 \begin{tabular*}{12cm}{rc@{ $\rightarrow$ }l}
@@ -538,7 +608,7 @@ The function $\tail(u,l)$ :  \fv{\val}{\mathbb{N}}{\val} computes the tail of $u
 
 %----------------------------------------------------------------
 \subsubsection{Top computation $\top()$}
-The function $\top(u,n)$ :  \fv{\val}{\mathbb{N}}{\val} computes the top of $u$ over the $n$ first voices:
+The function $\top(u,n)$ :  \bdomain{\val}{\mathbb{N}}{\val} computes the top of $u$ over the $n$ first voices:
 
 \begin{center}
 \begin{tabular*}{12cm}{rc@{ $\rightarrow$ }l}
@@ -560,7 +630,7 @@ The function $\top(u,n)$ :  \fv{\val}{\mathbb{N}}{\val} computes the top of $u$ 
 
 %----------------------------------------------------------------
 \subsubsection{Bottom computation $\bottom()$}
-The function $\bottom(u,n)$ :  \fv{\val}{\mathbb{N}}{\val} computes the bottom of $u$ after the $n$ first voices:
+The function $\bottom(u,n)$ :  \bdomain{\val}{\mathbb{N}}{\val} computes the bottom of $u$ after the $n$ first voices:
 
 \begin{center}
 \begin{tabular*}{12cm}{rc@{ $\rightarrow$ }l}
