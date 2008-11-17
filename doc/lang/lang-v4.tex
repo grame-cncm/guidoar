@@ -21,13 +21,13 @@
 \setlength\footskip{10mm}
 
 %%%%%%%%%%%%%%% definitions for env, empty env a and so on
-\newcommand{\var}[1]{\diamond^#1}
-\newcommand{\es}{\{\}}
-\newcommand{\expr}{\mathbb{EXP}}
-\newcommand{\val}{\mathbb{VAL}}
-\newcommand{\env}{\mathbb{ENV}}
-\newcommand{\closure}{\Lambda}
-\newcommand{\noredex}{@^o}
+\newcommand{\var}[1]	{\ensuremath{\diamond^#1}}
+\newcommand{\es}		{\{\}}
+\newcommand{\expr}		{\ensuremath{\mathbb{EXP}}}
+\newcommand{\val}		{\ensuremath{\mathbb{VAL}}}
+\newcommand{\env}		{\ensuremath{\mathbb{ENV}}}
+\newcommand{\closure}	{\ensuremath{\Lambda}}
+\newcommand{\noredex}	{\ensuremath{@^o}}
 
 \newcommand{\bounddomain}{\mathbb{LIM}}
 \newcommand{\ebounddomain}{\mathbb{N} \times \mathbb{N} \times \mathbb{Q}}
@@ -35,34 +35,40 @@
 \newcommand{\edomain}[3]{$#1 \times #2 \times \bounddomain \rightarrow #3 \times \bounddomain$}
 \newcommand{\bdomain}[3]{$#1 \times #2 \rightarrow #3$}
 
-\newcommand{\evalsym}{\epsilon}
-\newcommand{\envsym}{\rho}
-\newcommand{\emptyenv}{\theta}
+\newcommand{\evalsym}			{\ensuremath{\epsilon}}
+\newcommand{\boundevalsym}	{\ensuremath{\xi}}
+\newcommand{\envsym}			{\ensuremath{\rho}}
+\newcommand{\emptyenv}		{\ensuremath{\theta}}
+\newcommand{\applysym}		{\ensuremath{\mathcal A}}
+\newcommand{\boundapplysym}	{\ensuremath{\mathcal A'}}
 \newcommand{\closenv}[3][\var{e}]{\closure(#3,\lambda[#1,#2],\envsym)}
 
 %:commands def
-\newcommand{\eval}[2][\bounds]{\evalsym[#1](#2,\rho)}
-\newcommand{\evalmod}[3][\bounds]{\evalsym[#1](#2,#3)}
-\newcommand{\evalsimple}[1]{\evalsym(#1,\rho)}
-\newcommand{\apply}[1][\bounds]	{{\mathcal A}[#1]}
-\newcommand{\applysimple}	{{\mathcal A}}
+\newcommand{\eval}[2][\bounds]	{\boundevalsym\left[#2\right],\rho, #1}
+\newcommand{\evalshort}[2][\bounds]	{\boundevalsym\left[#2\right],#1}
+\newcommand{\evalmod}[3][\bounds]{\boundevalsym\left[#2\right],#3, #1}
+\newcommand{\evalsimpleshort}[1]		{\evalsym\left[#1\right]}
+\newcommand{\evalsimple}[1]		{\evalsym\left[#1\right],\rho}
+\newcommand{\apply}[3][\bounds]	{\boundapplysym\left[#2,#3\right],#1}
+\newcommand{\applysimple}	[2]		{\applysym\left[#1,#2\right]}
 
 
 %%%%%%%%%%%%%%% definitions for functions symbols
 \newcommand{\seq}			{:}
 \newcommand{\mix}			{/}
-\newcommand{\length}		{{\mathcal L}}
-\newcommand{\voices}		{{\mathcal V}}
-\newcommand{\pitch}		{{\mathcal P}}
-\newcommand{\dur}			{{\mathcal D}}
-\newcommand{\head}			{{\mathcal H}}
-\newcommand{\tail}			{{\mathcal T}}
-\renewcommand{\top}		{{\mathcal U}}
-\newcommand{\bottom}		{{\mathcal B}}
-\newcommand{\transp}		{\delta}
-\renewcommand{\stretch}	{{\mathcal S}}
-\newcommand{\bounds}		{\sigma}
-\newcommand{\nobounds}	{\infty} 
+\newcommand{\length}		{\ensuremath{\mathcal L}}
+\newcommand{\voices}		{\ensuremath{\mathcal V}}
+\newcommand{\pitch}		{\ensuremath{\mathcal P}}
+\newcommand{\dur}			{\ensuremath{\mathcal D}}
+\newcommand{\head}			{\ensuremath{\mathcal H}}
+\newcommand{\tail}			{\ensuremath{\mathcal T}}
+\renewcommand{\top}		{\ensuremath{\mathcal U}}
+\newcommand{\bottom}		{\ensuremath{\mathcal B}}
+\newcommand{\transp}		{\ensuremath{\delta}}
+\renewcommand{\stretch}	{\ensuremath{\mathcal S}}
+\newcommand{\bounds}		{\ensuremath{\sigma}}
+\newcommand{\nullbounds}	{\ensuremath{\sigma_0}}
+\newcommand{\nobounds}	{\ensuremath{\infty}} 
  
 %%%%%%%%%%%%%%% layout
 \newcommand{\evaltable}[1][$\rightarrow$]	  {\begin{center} \begin{tabular*}{0.9\linewidth}{rc@{ #1 }l}}
@@ -70,6 +76,9 @@
 \newcommand{\evaltitle}[1]						{\multicolumn{3}{l}{#1} \\ \hline}
 \newcommand{\evaltablend}  		{\end{tabular*}\end{center}}
 \newcommand{\evalspace}	  		{\vspace{2mm}\\}
+
+\newcommand{\implsect}	  		{\section}
+\newcommand{\implsubsect}	  		{\subsection}
 
 
 \makeatletter
@@ -213,13 +222,13 @@ $ (a\ \circ\ (b\ \circ\ (c\ \circ\ d))) $ is equivalent to: $ a\ \circ\ b\ \circ
 
 The semantic of theses operations regarding the empty score $\es$ is as follow:
 \begin{center}
-\begin{tabular}{rclcl}
- $e \seq \es$ & or & $\es \seq e$ & $=>$ & $e$  \\
- $e / \es$ & or & $\es / e$ & $=>$ & $e$  \\
- $e -| \es$ & or & $\es -| e$ & $=>$ & $\es$  \\
- $e -/ \es$ & or & $\es -/ e$ & $=>$ & $\es$  \\
- $e |- \es$ & or & $e /- \es$ & $=>$ & $e$  \\
- $\es |- e$ & or & $\es /- e$ & $=>$ & $\es$  \\
+\begin{tabular}{rclc@{$\rightarrow$\ }l}
+ $e \seq \es$ & or & $\es \seq e$ &  & $e$  \\
+ $e / \es$ & or & $\es / e$ &  & $e$  \\
+ $e -| \es$ & or & $\es -| e$ &  & $\es$  \\
+ $e -/ \es$ & or & $\es -/ e$ &  & $\es$  \\
+ $e |- \es$ & or & $e /- \es$ &  & $e$  \\
+ $\es |- e$ & or & $\es /- e$ &  & $\es$  \\
 \end{tabular}
 \end{center}
 
@@ -253,43 +262,42 @@ For compound expressions, score matching makes use of a normalized version of th
 
 
 %----------------------------------------------------------------
-\subsection{Reduction rules extension}
+%\subsection{Reduction rules extension}
 
-\begin{table}[H]
-\begin{center}
-\begin{tabular}{r@{@}lcll}
- \multicolumn{4}{l}{Sequence application} \\
- \hline
- $ (E \seq F)$ & $(G \seq H)$  & $=>$ & $(E @ G) \seq (F @ H) $ & distributes application over time\\
-% $ (E \seq F)$ & $(G \seq H)$  & $=>$ & $((E \seq F -| G) @ G) \seq ((E \seq F |- G) @ H)$ & alternate solution \\
- $ (E \seq F)$ & $(G / H)$  & $=>$ & $((E \seq F) @ G) / ((E \seq F) @ H)$ & \\
- $ (E \seq F)$ & $(G -| H)$ & $=>$ & $(E \seq F) @ G) -| H$ & \\
- $ (E \seq F)$ & $(G |- H)$ & $=>$ & $(E \seq F) @ G) |- H$ & \\
- $ (E \seq F)$ & $(G -/ H)$ & $=>$ & $(E \seq F) @ G) -/ H$ & \\
- $ (E \seq F)$ & $(G /- H)$ & $=>$ & $(E \seq F) @ G) /- H$ & 
- \vspace{3mm} \\
- \multicolumn{4}{l}{Parallel application} \\
- \hline
- $ (E / F)$ & $(G / H)$  & $=>$ & $(E @ G) / (F @ H)$ & distributes application over voices\\
- $ (E / F)$ & $(G \seq H)$  & $=>$ & $((E / F) @ G) \seq ((E / F) @ H)$ & \\
- $ (E / F)$ & $(G -| H)$ & $=>$ & $(E / F) @ G) -| H$ & \\
- $ (E / F)$ & $(G |- H)$ & $=>$ & $(E / F) @ G) |- H$ & \\ 
- $ (E / F)$ & $(G -/ H)$ & $=>$ & $(E / F) @ G) -/ H$ & \\
- $ (E / F)$ & $(G /- H)$ & $=>$ & $(E / F) @ G) /- H$ & 
- \vspace{3mm} \\
- \multicolumn{4}{l}{\emph{Cut} application ($\circ$ is any of $-|$, $|-$, $-/$, $/-$)} \\
- \hline
- $ (E \circ F)$ & $(G \seq H)$ & $=>$ & $(E \circ F) @ G) \seq (E \circ F) @ H)$ & \\
- $ (E \circ F)$ & $(G / H)$ & $=>$ & $(E \circ F) @ G) / (E \circ F) @ H)$ & \\ 
- $ (E \circ F)$ & $(G -| H)$ & $=>$ & $(E \circ F) @ G) -| H$ & \\
- $ (E \circ F)$ & $(G |- H)$ & $=>$ & $(E \circ F) @ G) |- H$ & \\ 
- $ (E \circ F)$ & $(G -/ H)$ & $=>$ & $(E \circ F) @ G) -/ H$ & \\
- $ (E \circ F)$ & $(G /- H)$ & $=>$ & $(E \circ F) @ G) /- H$ & 
-\\
+%\begin{table}[H]
+%\begin{center}
+%\begin{tabular}{r@{@}lcll}
+% \multicolumn{4}{l}{Sequence application} \\
+% \hline
+% $ (E \seq F)$ & $(G \seq H)$  & $=>$ & $(E @ G) \seq (F @ H) $ & distributes application over time\\
+%% $ (E \seq F)$ & $(G \seq H)$  & $=>$ & $((E \seq F -| G) @ G) \seq ((E \seq F |- G) @ H)$ & alternate solution \\
+% $ (E \seq F)$ & $(G / H)$  & $=>$ & $((E \seq F) @ G) / ((E \seq F) @ H)$ & \\
+% $ (E \seq F)$ & $(G -| H)$ & $=>$ & $(E \seq F) @ G) -| H$ & \\
+% $ (E \seq F)$ & $(G |- H)$ & $=>$ & $(E \seq F) @ G) |- H$ & \\
+% $ (E \seq F)$ & $(G -/ H)$ & $=>$ & $(E \seq F) @ G) -/ H$ & \\
+% $ (E \seq F)$ & $(G /- H)$ & $=>$ & $(E \seq F) @ G) /- H$ & 
+% \vspace{3mm} \\
+% \multicolumn{4}{l}{Parallel application} \\
+% \hline
+% $ (E / F)$ & $(G / H)$  & $=>$ & $(E @ G) / (F @ H)$ & distributes application over voices\\
+% $ (E / F)$ & $(G \seq H)$  & $=>$ & $((E / F) @ G) \seq ((E / F) @ H)$ & \\
+% $ (E / F)$ & $(G -| H)$ & $=>$ & $(E / F) @ G) -| H$ & \\
+% $ (E / F)$ & $(G |- H)$ & $=>$ & $(E / F) @ G) |- H$ & \\ 
+% $ (E / F)$ & $(G -/ H)$ & $=>$ & $(E / F) @ G) -/ H$ & \\
+% $ (E / F)$ & $(G /- H)$ & $=>$ & $(E / F) @ G) /- H$ & 
+% \vspace{3mm} \\
+% \multicolumn{4}{l}{\emph{Cut} application ($\circ$ is any of $-|$, $|-$, $-/$, $/-$)} \\
+% \hline
+% $ (E \circ F)$ & $(G \seq H)$ & $=>$ & $(E \circ F) @ G) \seq (E \circ F) @ H)$ & \\
+% $ (E \circ F)$ & $(G / H)$ & $=>$ & $(E \circ F) @ G) / (E \circ F) @ H)$ & \\ 
+% $ (E \circ F)$ & $(G -| H)$ & $=>$ & $(E \circ F) @ G) -| H$ & \\
+% $ (E \circ F)$ & $(G |- H)$ & $=>$ & $(E \circ F) @ G) |- H$ & \\ 
+% $ (E \circ F)$ & $(G -/ H)$ & $=>$ & $(E \circ F) @ G) -/ H$ & \\
+% $ (E \circ F)$ & $(G /- H)$ & $=>$ & $(E \circ F) @ G) /- H$ & \\
 
-\end{tabular}
-\end{center}
-\end{table}
+%\end{tabular}
+%\end{center}
+%\end{table}
 
 
 %----------------------------------------------------------------
@@ -324,14 +332,17 @@ $\beta$-reduction transforms recursively a \emph{simplified} expression into \em
 \begin{center}
 \begin{tabular}{rc@{ : }l}
  $score$				& & a guido music notation (gmn) score \\
- $\closenv{f}{\bounds}$ 	& & a closure associating dimensions $\bounds$, a $\lambda$-abstraction and an environment $\envsym$ \\
+ $\closenv{f}{\bounds}$ 	& & a closure associating the expression dimensions $\bounds$, a $\lambda$-abstraction and an environment $\envsym$ \\
  $\noredex[u,v]$ 		& & an application of $u$ to $v$ that can't be reduced \\
 \end{tabular}
 \end{center}
 
+See section \ref{impl} for a description of the dimensions $\bounds$.
 
 %----------------------------------------------------------------
-\subsection{Evaluation implementation}
+%:Evaluation implementation
+\implsect{Evaluation implementation}
+\label{impl}
 
 The implementation of the evaluator is based on \emph{environments} and on two mutually recursive functions:
 \begin{center}
@@ -355,7 +366,7 @@ The functions required for the evaluation process are the following:
 \begin{tabular}{rl}
  \hline
  $\evalsimple{e}$ 			& evaluates $e$ with the environment $\envsym$ \\
- $\applysimple(u,v)$ 			& apply $u$ to $v$ \\
+ $\applysimple{u}{v}$ 	& apply $u$ to $v$ \\
  $\head(u,l)$ 				& takes the head of $u$ up to the length $l$ \\
  $\head(u,d)$ 				& takes the head of $u$ up to the duration $d$ \\
  $\tail(u,l)$ 				& takes the tail of $u$ after the length $l$ \\
@@ -375,7 +386,8 @@ The functions required for the evaluation process are the following:
 
 
 %----------------------------------------------------------------
-\subsubsection{The evaluation function $\evalsym()$}
+\implsubsect{The evaluation function $\evalsym()$}
+\label{evalsimple}
 
 The evaluation function $\evalsym(e,\envsym)$ : \sdomain{\expr}{\env}{\val} is defined as follow:
 
@@ -386,7 +398,7 @@ The evaluation function $\evalsym(e,\envsym)$ : \sdomain{\expr}{\env}{\val} is d
  $\evalsimple{/ [e,f]}$ 			& & $mix[\evalsimple{e}, \evalsimple{f}]$ \\
  $\evalsimple{\var{e}}$ 				& & $\envsym(\var{e})$ \\
  $\evalsimple{\lambda[\var{e},f]}$ 	& & $\closenv{f}{\bounds}$ with $l=\length(\evalsym(f,\envsym[\var{e}= \evalsym(e, \emptyenv)))$ and $d=\dur(\evalsym(f,\envsym[\var{e}= \evalsym(e, \emptyenv)))$\\
- $\evalsimple{@[e,f]}$ 				& & $\applysimple [\evalsimple{e}, \evalsimple{f}]$ \\
+ $\evalsimple{@[e,f]}$ 				& & $\applysimple{\evalsimple{e}}{\evalsimple{f}}$ \\
  $\evalsimple{-| [e,f]}$ 			 & & $\head [\evalsimple{e},l)$ with $l = \length(\evalsimple{f})$ \\
  $\evalsimple{|- [e,f]}$ 			 & & $\tail [\evalsimple{e},l)$ with $l = \length(\evalsimple{f})$ \\
  $\evalsimple{-/ [e,f]}$ 			 & & $\top [\evalsimple{e},v)$ with $v = \voices(\evalsimple{f})$ \\
@@ -397,22 +409,22 @@ The evaluation function $\evalsym(e,\envsym)$ : \sdomain{\expr}{\env}{\val} is d
 \evaltablend
 
 %----------------------------------------------------------------
-\subsubsection{The application function $\applysimple()$}
-The application function $\applysimple(u,v)$ : \sdomain{\val}{\val}{\val} applies $u$ to $v$ as follow:
+\implsubsect{The application function $\applysym{}$}
+The application function $\applysimple{u}{v}$ : \sdomain{\val}{\val}{\val} applies $u$ to $v$ as follow:
 
 \evaltable
  \hline
- $\applysimple(score,w)$				& & $\noredex[score,w]$ \\
- $\applysimple(\seq [u,v],w)$		& & $seq[\applysimple(u,\head(w,\dur(u))), \applysimple(v,\tail(w,\dur(u)))]$ \\
- $\applysimple(/ [u,v],w)$ 			& & $mix[\applysimple(u,w), \applysimple(v,w)]$ \\
- $\applysimple(\noredex [u,v],w)$ 	& & $\noredex[\noredex[u,v],w]$ \\
- $\applysimple(\closenv{f}{l}{d},w)$ 		& & $\evalsym(f,\envsym[\var{e} := w])$ \\
+ $\applysimple{score}{w}$				& & $\noredex[score,w]$ \\
+ $\applysimple{\seq [u,v]}{w}$		& & $seq(\applysimple{u}{\head(w,\dur(u))}, \applysimple{v}{\tail(w,\dur(u))})$ \\
+ $\applysimple{/ [u,v]}{w}$ 			& & $mix(\applysimple{u}{w}, \applysimple{v}{w})$ \\
+ $\applysimple{\noredex [u,v]}{w}$ 	& & $\noredex[\noredex[u,v],w]$ \\
+ $\applysimple{\closenv{f}{l}{d}}{w}$ 		& & $\evalsimple{f}[\var{e} := w]$ \\
  \hline
 \evaltablend
 
 
 %----------------------------------------------------------------
-\subsubsection{Length computation $\length()$}
+\implsubsect{Length computation $\length()$}
 The function $\length(u)$ : $\val \rightarrow \mathbb{N}$ computes the length of $u$:
 
 \evaltable
@@ -426,7 +438,7 @@ The function $\length(u)$ : $\val \rightarrow \mathbb{N}$ computes the length of
 \evaltablend
 
 %----------------------------------------------------------------
-\subsubsection{Duration computation $\dur()$}
+\implsubsect{Duration computation $\dur()$}
 The function $\dur(u)$ : $\val \rightarrow \mathbb{R}$ computes the duration of $u$:
 
 \evaltable
@@ -440,7 +452,7 @@ The function $\dur(u)$ : $\val \rightarrow \mathbb{R}$ computes the duration of 
 \evaltablend
 
 %----------------------------------------------------------------
-\subsubsection{Transposition computation $\transp()$}
+\implsubsect{Transposition computation $\transp()$}
 The function $\transp(u,n)$ :  \sdomain{\val}{\mathbb{Z}}{\val} operates a $n$ chromatic pitch transposition:
 
 \evaltable
@@ -454,7 +466,7 @@ The function $\transp(u,n)$ :  \sdomain{\val}{\mathbb{Z}}{\val} operates a $n$ c
 \evaltablend
 
 %----------------------------------------------------------------
-\subsubsection{Strech computation $\stretch()$}
+\implsubsect{Strech computation $\stretch()$}
 The function $\stretch(u,r)$ :  \sdomain{\val}{\mathbb{R}}{\val} stretches $u$ using a coefficient $r$:
 
 \evaltable
@@ -468,7 +480,7 @@ The function $\stretch(u,r)$ :  \sdomain{\val}{\mathbb{R}}{\val} stretches $u$ u
 \evaltablend
 
 %----------------------------------------------------------------
-\subsubsection{Head computation $\head()$}
+\implsubsect{Head computation $\head()$}
 The function $\head(u,l)$ :  \sdomain{\val}{\mathbb{N}}{\val} computes the head of $u$ over the length $l$:
 
 \evaltable
@@ -488,7 +500,7 @@ The function $\head(u,l)$ :  \sdomain{\val}{\mathbb{N}}{\val} computes the head 
 \evaltablend
 
 %----------------------------------------------------------------
-\subsubsection{Tail computation $\tail()$}
+\implsubsect{Tail computation $\tail()$}
 The function $\tail(u,l)$ :  \sdomain{\val}{\mathbb{N}}{\val} computes the tail of $u$ after the length $l$:
 
 \evaltable
@@ -511,7 +523,7 @@ The function $\tail(u,l)$ :  \sdomain{\val}{\mathbb{N}}{\val} computes the tail 
 \evaltablend
 
 %----------------------------------------------------------------
-\subsubsection{Top computation $\top()$}
+\implsubsect{Top computation $\top()$}
 The function $\top(u,n)$ :  \sdomain{\val}{\mathbb{N}}{\val} computes the top of $u$ over the $n$ first voices:
 
 \evaltable
@@ -531,7 +543,7 @@ The function $\top(u,n)$ :  \sdomain{\val}{\mathbb{N}}{\val} computes the top of
 \evaltablend
 
 %----------------------------------------------------------------
-\subsubsection{Bottom computation $\bottom()$}
+\implsubsect{Bottom computation $\bottom()$}
 The function $\bottom(u,n)$ :  \sdomain{\val}{\mathbb{N}}{\val} computes the bottom of $u$ after the $n$ first voices:
 
 \evaltable
@@ -552,21 +564,115 @@ The function $\bottom(u,n)$ :  \sdomain{\val}{\mathbb{N}}{\val} computes the bot
 
 
 %----------------------------------------------------------------
-\subsection{Bounded evaluation}
+%:Bounded evaluation
+\implsect{Bounded evaluation}
 
 A \emph{bounded evaluation} is an evaluation that carries the \emph{head} and \emph{top} operations during all the evaluation process. 
 It is intended to control strict evaluation and to bound the result since all the gmn scores need to be finite.
-For this purpose, the functions $\evalsimple{e}$ and $\applysimple()$ are modified to make use of \emph{bounds} $\bounds$:
+For this purpose, the functions $\evalsimple{e}$ and $\applysym[]$ are modified to make use of \emph{bounds} $\bounds$:
 \begin{center}
 \begin{tabular}{rcl}
 $\eval{e}$ & : & evaluates an expression $e$ from \edomain{\expr}{\env}{\val} \\
 		  & & using an \emph{environment} $\envsym$ and a \emph{bound} $\bounds$ \\
-$\apply(u,v)$  & : & from \edomain{\val}{\val}{\val}, \\
+$\apply{u}{v}$  & : & from \edomain{\val}{\val}{\val}, \\
 			& & apply the function $u$ to the argument $v$ using a \emph{bound} $\bounds$ \\
 \end{tabular}
 \end{center}
 
-The semantic of $\eval{e}$ is similar to $\head[ \top[ \evalsimple{e}, \bounds(v)], \bounds(l)]$. The duration $d$ of a bound $\bounds$ is used for temporal applications. 
+For simplification, we'll omit the environment $\envsym$ in further eval definition, unless this environment is modified by the evaluation.
+The semantic of a bounded evaluation $\evalshort{e}$ is equivalent to apply the \emph{top} and the \emph{head} operations to the evaluation of $e$, using \bounds(v) and \bounds(l):
+\begin{equation}
+\label{equiv}
+ \evalshort{e} \Longleftrightarrow \head( \top( (\evalsimpleshort{e}), \bounds(v)), \bounds(l))
+\end{equation}
+
+We need first to introduce the notion of \emph{null bound} \nullbounds, which represent a bound \bounds \ where any of its dimension is $[l, v d]\leq 0$:
+\begin{center}
+$\nullbounds \Rightarrow \left\{ \begin{array}{ll}
+ 										 &  \nullbounds(l) \leq 0 \\
+ 								\mathrm{or} &  \nullbounds(v) \leq 0 \\
+ 								\mathrm{or} &  \nullbounds(d) \leq 0 \\
+	 							\end{array} \right.$
+\end{center}
+An evaluation $\evalshort[\nullbounds]{e}$ and an application $\apply[\nullbounds]{u}{v}$ have no effect: \nullbounds \ stops the evaluation or the application process.
+\begin{center}
+\begin{tabular}{rc@{$\rightarrow$}l}
+ $\evalshort[\nullbounds]{e}$ 		& & \ [ $0$, \bounds[l:=0, v:=0, d:=0]] \\
+ $\apply[\nullbounds]{u}{v}$  	& & \ [ $0$, \bounds[l:=0, v:=0, d:=0]]
+\end{tabular}
+\end{center}
+
+
+%----------------------------------------------------------------
+%:The bounded evaluation function
+\implsubsect{The bounded evaluation function \boundevalsym}
+
+%%%%%% evaluation of a score %%%%%%
+\evaltable
+  \hline
+\evaltitle {Evaluation of a score}
+  $\evalshort{score}$	& & $[\head( \top( (score, \bounds(v)), \bounds(l)), \ \bounds[l:=min(\length(score),l), v:=min(\voices(score),v)]$ 
+\evaltablend
+
+This is strictly the equivalence definition given in \ref{equiv}. Note that the \emph{head} and \emph{tail} operations are implicitly included in a score evaluation due to the \emph{bound} $\bounds$.
+
+%%%%%% seq and par evaluation %%%%%%
+\evaltable
+\hline
+\evaltitle {Sequence and parallel  evaluation}
+ $\evalshort{\seq [e,f]}$	 &  &  $[ seq((\evalshort{e}), \ (\evalshort[{\bounds[l:=l- l_e]}]{f})), \ \bounds]$  with $l_e = \length(e)$ 
+\evalspace
+
+ $\evalshort{\mix [e,f]}$	 &  &  $[ par((\evalshort{e}), \ (\evalshort[{\bounds[v:=v- v_e]}]{f})), \ \bounds]$  with $v_e = \voices(e) $
+\evaltablend
+
+We'll show now that: \hspace{1cm} $\evalshort{\seq [e,f]} \rightarrow \head( \evalsimpleshort{\seq [e,f]}), \bounds(l))$ \\
+The \bounds(v) dimension is omitted since it doesn't affect the \emph{seq} operation.
+
+By definition of the $\evalsimpleshort{\seq [e,f]}$ evaluation (section \ref{evalsimple}):
+\evaltable
+  $\evalsimpleshort{\seq [e,f]}$					& & $seq(\evalsimpleshort{e}, \evalsimpleshort{f}))$ \\
+  thus $\head( \evalsimpleshort{\seq [e,f]}), \bounds(l))$	& & $\head( seq(\evalsimpleshort{e}, \evalsimpleshort{f})), \bounds(l))$ \\
+					& & $ seq((\head(\evalsimpleshort{e},\bounds(l)), \ (\head(\evalsimpleshort{f},\bounds(l)-l_e)))$  with $l_e = \length(e)$
+\evalspace
+  and $\evalshort{\seq [e,f]}$	& & $seq((\evalshort{e}), \ (\evalshort[\bounds[l:=l- l_e]{f}))$ with $l_e = \length(e)$ \\
+  								& & $seq((\head(\evalsimpleshort{e},\bounds(l)), \ (\head(\evalsimpleshort{f}, \bounds(l)-l_e)))$
+\evalspace
+	thus $\evalshort{\seq [e,f]}$ & & $\head( \evalsimpleshort{\seq [e,f]}), \bounds(l))$
+								
+\evaltablend
+
+
+By definition of the $\evalsimpleshort{\mix [e,f]}$ evaluation:
+\evaltable
+  $\evalsimpleshort{\mix [e,f]}$					& & $par(\evalsimpleshort{e}, \evalsimpleshort{f}))$ \\
+  thus $\top( \evalsimpleshort{\mix [e,f]}), \bounds(v))$	& & $\top( par(\evalsimpleshort{e}, \evalsimpleshort{f})), \bounds(v))$ \\
+					& & $ par((\top(\evalsimpleshort{e},\bounds(v)), \ (\top(\evalsimpleshort{f},\bounds(v)-v_e)))$  with $v_e = \voices(e)$
+\evalspace
+  and $\evalshort{\mix [e,f]}$	& & $par((\evalshort{e}), \ (\evalshort[\bounds[v:=v- v_e]{f}))$ with $v_e = \voices(e)$ \\
+  								& & $seq((\head(\evalsimpleshort{e},\bounds(v)), \ (\head(\evalsimpleshort{f}, \bounds(v)-v_e)))$
+\evalspace
+	thus $\evalshort{\mix [e,f]}$ & & $\top( \evalsimpleshort{\mix [e,f]}), \bounds(v))$
+								
+\evaltablend
+
+
+%%%%%% abstraction, application and env evaluation %%%%%%
+\evaltable
+\hline
+\evaltitle {Environments evaluation} 
+ $\evalshort{\var{e}}$ 	&  & $[\head(\top(\ \envsym(\var{e}), \bounds(v)), \bounds(l)), \bounds]$ \\
+					  &  & $[\head(\top(\ \evalsimpleshort{\var{e}}, \bounds(v)), \bounds(l)), \bounds]$
+%\evalspace
+%  $\evalshort{@ e f}$ 			&  $\rightarrow$ & $[ \apply{\evalshort[\nobounds]{e}}{\evalshort[\nobounds]{f}}, \ \bounds]$ 
+%\evalspace
+% $\evalshort{\lambda[\var{e},f]}$ 	& $\rightarrow$& $[ \closenv{f}{\bounds'}, \bounds]$ \\
+% 						& & with $\bounds'(l:=\length(\evalmod[\nobounds]{f}{\envsym'},
+%							v:=\voices(\evalmod[\nobounds]{f}{\envsym'},
+%							d:=\dur(\evalmod[\nobounds]{f}{\envsym'})$ \\
+%				   & & where $\envsym' = \envsym[\var{e}= \evalmod[\nobounds]{e}{\emptyenv}]$
+\evaltablend
+
 
 
 \end{document}
