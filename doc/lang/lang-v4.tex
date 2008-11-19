@@ -1,7 +1,7 @@
 
 \documentclass[10pt,a4paper,frenchb]{article}
 \usepackage{pslatex}
-\usepackage[T1]{fontenc}
+%\usepackage[T1]{fontenc}
 \usepackage[latin1]{inputenc}
 \usepackage{float}
 \usepackage{graphicx}
@@ -30,10 +30,10 @@
 \newcommand{\applyop}	{\ensuremath{@}}
 \newcommand{\noredex}	{\ensuremath{\applyop^o}}
 
-\newcommand{\bounddomain}{\mathbb{LIM}}
-\newcommand{\ebounddomain}{\mathbb{N} \times \mathbb{N} \times \mathbb{Q}}
+\newcommand{\bounddomain}{\ensuremath{\mathbb{LIM}}}
+\newcommand{\ebounddomain}{\ensuremath{\mathbb{N} \times \mathbb{N} \times \mathbb{Q}}}
 \newcommand{\sdomain}[3]{$#1 \times #2 \rightarrow #3$}
-\newcommand{\edomain}[3]{$#1 \times #2 \times \bounddomain \rightarrow #3 \times \bounddomain$}
+\newcommand{\edomain}[3]{$#1 \times #2 \times \bounddomain \rightarrow #3$}
 \newcommand{\bdomain}[3]{$#1 \times #2 \rightarrow #3$}
 
 \newcommand{\evalsym}			{\ensuremath{\epsilon}}
@@ -52,7 +52,8 @@
 \newcommand{\evalsimple}[1]			{\evalsym\left[#1\right],\rho}
 \newcommand{\apply}[3][\bounds]		{\boundapplysym{#1}\left[#2,#3\right]}
 \newcommand{\applysimple}	[2]			{\applysym\left[#1,\ #2\right]}
-\newcommand{\result}[2]				{\left[#1,\ #2\right]}
+%\newcommand{\result}[2]				{\left[#1,\ #2\right]}
+\newcommand{\result}[2]				{#1}
 \newcommand{\equivalence}[1]			{\head( \top (#1, \bounds(v)), \bounds(l)}
 
 %%%%%%%%%%%%%%% definitions for syntactic expressions
@@ -716,7 +717,7 @@ Thus: \hspace{1cm} $\evalexpr{\lambdaexpr} \rightarrow \ \equivalence{\evalsimpl
  			\: where $l_f=\length(f)$ and $v_f=\voices(f)$  \\
 \evaltablend
 
-Here we need to define first the application \boundapplysym{\bounds} to prove that \hspace{5mm} $\evalexpr{\opexpr{\applyop}} \rightarrow \: \equivalence{\evalsimpleshort{\opexpr{\applyop}}}$ 
+Here we need first to define the application \boundapplysym{\bounds} to prove that \hspace{5mm} $\evalexpr{\opexpr{\applyop}} \rightarrow \: \equivalence{\evalsimpleshort{\opexpr{\applyop}}}$ 
 
 %%%%%% application function %%%%%%
 \subsubsection{Bounded \emph{application} ($\boundapplysym{\bounds} $) function}
@@ -732,15 +733,35 @@ Here we need to define first the application \boundapplysym{\bounds} to prove th
 \evalspace
  $\apply{\apexpr{mix}}{w}$ 	& $\rightarrow$ & $\result{mix(\apply{u}{\top(w,\voices(u))}, \apply[\bounds(v:=v-v_1]{v}{\bottom(w,\voices(u))})}{\bounds(v:=v-v_1-v_2)}$ \\
 				 		& &		\: where $v_1= \voices(\apply{u}{\top(w,\voices(u)})$  and $v_2=\voices(\apply[\bounds(v:=v-v_1]{v}{\bottom(w,\voices(u))})$
-
 \evalspace
-\evalspace
-% $\applysimple{score}{w}$				& & $\noredex(score,w)$ \\
-% $\applysimple{\apexpr{seq}}{w}$		& & $seq(\applysimple{u}{\head(w,\dur(u))}, \applysimple{v}{\tail(w,\dur(u))})$ \\
-% $\applysimple{\apexpr{mix}}{w}$ 			& & $mix(\applysimple{u}{w}, \applysimple{v}{w})$ \\
-% $\applysimple{\noredex (u,v)}{w}$ 	& & $\noredex(\noredex(u,v),w)$ \\
- $\applysimple{\closenv{\bounds}}{w}$ 		& & $\evalsimple{f}[\var{e} := w]$ \\
+ $\apply{\closenv{\bounds'}}{w}$  & $\rightarrow$ & $\evalexpr{f}[\var{e} := w]$ \\
 
+\evaltablend
+
+%%%%%% score application evaluation proof %%%%%%
+Now and for each application type, we'll examine the bounded evaluation equivalence:
+\evaltable
+\evaltitle {Score application equivalence}
+ from the above: \: $\evalexpr{score \applyop w}$ 	& & $\apply{\evalexpr[\nobounds]{score}}{\evalexpr{w}}$ \\
+									& & $\applysimple{score}{\equivalence{\evalsimpleshort{w}}}$ \\
+									& & $\noredex(score, \equivalence{w})$
+\evalspace
+from the simple evaluation def: \: $\equivalence{\evalsimpleshort{score \applyop w}}$  & & $\equivalence{\noredex(score,w)}$ \\
+									& &  $\noredex(score, \equivalence{w})$
+\evalspace
+thus $\evalexpr{score \applyop w}$ 	& & $\equivalence{\evalsimpleshort{score \applyop w}}$
+\evaltablend
+
+%%%%%% Seq application evaluation proof %%%%%%
+\evaltable
+\evaltitle {Sequence application equivalence}
+ from the above: \: $\evalexpr{(u \seq v) \applyop w}$ 	& & $\apply{\evalexpr[\nobounds]{u \seq v}}{\evalexpr{w}}$ \\
+									& & $\applysimple{\evalsimpleshort{(u \seq v)}}{\equivalence{\evalsimpleshort{w}}}$ \\
+\evalspace
+from the simple evaluation def: \: $\equivalence{\evalsimpleshort{(u \seq v) \applyop w}}$  & & $\equivalence{(u \seq v) \applyop w)}$ \\
+									& &  $\noredex(score, \equivalence{w})$
+\evalspace
+thus $\evalexpr{score \applyop w}$ 	& & $\equivalence{\evalsimpleshort{score \applyop w}}$
 \evaltablend
 
 
