@@ -54,12 +54,15 @@
 \newcommand{\applysimple}	[2]			{\applysym\left[#1,\ #2\right]}
 %\newcommand{\result}[2]				{\left[#1,\ #2\right]}
 \newcommand{\result}[2]				{#1}
-\newcommand{\equivalence}[1]			{\head( \top (#1, \bounds(v)), \bounds(l)}
+\newcommand{\equivalence}[1]			{\head( \top (#1, \bounds(v)), \bounds(l))}
+\newcommand{\equivl}[2]				{\head( \top (#1, \bounds(v)), \bounds(#2))}
+\newcommand{\equivv}[2]				{\head( \top (#1, \bounds(#2)), \bounds(l))}
 
 %%%%%%%%%%%%%%% definitions for syntactic expressions
 \newcommand{\opexpr}[1] 	{e #1 f}
 \newcommand{\apexpr}[1] 	{#1(u, v)}
 \newcommand{\lambdaexpr}	{\lambda \var{e}.f}
+\newcommand{\ra}	{\ensuremath{\rightarrow}} 
 
 
 %%%%%%%%%%%%%%% definitions for functions symbols
@@ -402,22 +405,22 @@ The evaluation function $\evalsym(e,\envsym)$ : \sdomain{\expr}{\env}{\val} is d
 
 \evaltable[]
  \hline
- $\evalsimple{score}$			& $\rightarrow$ & $score$ \\
- $\evalsimple{\var{e}}$ 		& $\rightarrow$ & $\envsym(\var{e})$ \\
- $\evalsimple{\lambdaexpr}$ 	& $\rightarrow$ & $\closenv{\bounds'}$ \\
+ $\evalsimple{score}$			& \ra & $score$ \\
+ $\evalsimple{\var{e}}$ 		& \ra & $\envsym(\var{e})$ \\
+ $\evalsimple{\lambdaexpr}$ 	& \ra & $\closenv{\bounds'}$ \\
  								& & \ with $\bounds'(l:=\length(VAL(f)), v:=\voices(VAL(f)), d=\dur(VAL(f)))$ \\
 			 			& & \ and $VAL(f) = \evalsimpleshort{f},\envsym[\var{e}= \evalsimpleshort{e}, \emptyenv]$\\
 %			 d=\dur(\evalsym(f,\envsym[\var{e}= \evalsym(e, \emptyenv)))$\\
- $\evalsimple{\opexpr{\applyop}}$ 	& $\rightarrow$ & $\applysimple{\evalsimple{e}}{\evalsimple{f}}$
+ $\evalsimple{\opexpr{\applyop}}$ 	& \ra & $\applysimple{\evalsimple{e}}{\evalsimple{f}}$
 \evalspace
- $\evalsimple{\opexpr{\seq}}$	& $\rightarrow$ & $seq[\evalsimple{e}, \evalsimple{f})]$ \\
- $\evalsimple{\opexpr{\mix}}$ 	& $\rightarrow$ & $mix[\evalsimple{e}, \evalsimple{f}]$ \\
- $\evalsimple{\opexpr{-|}}$ 		& $\rightarrow$ & $\head [\evalsimple{e},l)$ with $l = \length(\evalsimple{f})$ \\
- $\evalsimple{\opexpr{|-}}$ 		& $\rightarrow$ & $\tail [\evalsimple{e},l)$ with $l = \length(\evalsimple{f})$ \\
- $\evalsimple{\opexpr{-/}}$ 		& $\rightarrow$ & $\top [\evalsimple{e},v)$ with $v = \voices(\evalsimple{f})$ \\
- $\evalsimple{\opexpr{/-}}$ 		& $\rightarrow$ & $\bottom [\evalsimple{e},v)$ with $v = \voices(\evalsimple{f})$ \\
- $\evalsimple{transp[e,f]}$ 		& $\rightarrow$ & $\transp [\evalsimple{e},i)$ with $i = \pitch(\evalsimple{f}) - \pitch(\evalsimple{e}) $ \\
- $\evalsimple{stretch[e,f]}$ 	& $\rightarrow$ & $\stretch [\evalsimple{e},r)$ with $r = \dur(\evalsimple{f} / \dur(\evalsimple{e}))$ \\
+ $\evalsimple{\opexpr{\seq}}$	& \ra & $seq[\evalsimple{e}, \evalsimple{f})]$ \\
+ $\evalsimple{\opexpr{\mix}}$ 	& \ra & $mix[\evalsimple{e}, \evalsimple{f}]$ \\
+ $\evalsimple{\opexpr{-|}}$ 		& \ra & $\head [\evalsimple{e},l)$ with $l = \length(\evalsimple{f})$ \\
+ $\evalsimple{\opexpr{|-}}$ 		& \ra & $\tail [\evalsimple{e},l)$ with $l = \length(\evalsimple{f})$ \\
+ $\evalsimple{\opexpr{-/}}$ 		& \ra & $\top [\evalsimple{e},v)$ with $v = \voices(\evalsimple{f})$ \\
+ $\evalsimple{\opexpr{/-}}$ 		& \ra & $\bottom [\evalsimple{e},v)$ with $v = \voices(\evalsimple{f})$ \\
+ $\evalsimple{transp[e,f]}$ 		& \ra & $\transp [\evalsimple{e},i)$ with $i = \pitch(\evalsimple{f}) - \pitch(\evalsimple{e}) $ \\
+ $\evalsimple{stretch[e,f]}$ 	& \ra & $\stretch [\evalsimple{e},r)$ with $r = \dur(\evalsimple{f} / \dur(\evalsimple{e}))$ \\
  \hline
 \evaltablend
 
@@ -611,7 +614,7 @@ $\nullbounds \Rightarrow \left\{ \begin{array}{ll}
 \end{center}
 An evaluation $\evalexpr[\nullbounds]{e}$ and an application $\apply[\nullbounds]{u}{v}$ have no effect: \nullbounds \ stops the evaluation or the application process.
 \begin{center}
-\begin{tabular}{rc@{$\rightarrow$}l}
+\begin{tabular}{rc@{\ra}l}
  $\evalexpr[\nullbounds]{e}$ 		& & \ $\result{0}{\bounds(l:=0, v:=0, d:=0)}$ \\
  $\apply[\nullbounds]{u}{v}$  		& & \ $\result{0}{\bounds(l:=0, v:=0, d:=0)}$
 \end{tabular}
@@ -699,11 +702,11 @@ By definition of $\evalsimpleshort{\opexpr{\mix}}$ (section \ref{evalsimple}):
 
 By definition of $\evalsimple{\lambdaexpr}$  (section \ref{evalsimple}):
 \evaltable[]
- $\evalsimple{\lambdaexpr}$ 	& $\rightarrow$ & $\closenv{\bounds'}$ \\
+ $\evalsimple{\lambdaexpr}$ 	& \ra & $\closenv{\bounds'}$ \\
  								& & \ with $\bounds'(l:=\length(VAL(f)), v:=\voices(VAL(f)), d=\dur(VAL(f)))$ \\
 			 			& & \ and $VAL(f) = \evalsimpleshort{f},\envsym[\var{e}= \evalsimpleshort{e}, \emptyenv]$ \\
-and $\head( \top (\evalsimpleshort{\lambdaexpr}, \bounds(v)), \bounds(l))$ &  $\rightarrow$ & $\head( \top (\closenv{\bounds'}, \bounds(v)), \bounds(l))$ \\
-			&  $\rightarrow$ & $\closenv{\bounds'(l:=min(l,\bounds(l), v:=min(v, \bounds(v), d:=min(v,\bounds(v))} $
+and $\head( \top (\evalsimpleshort{\lambdaexpr}, \bounds(v)), \bounds(l))$ &  \ra & $\head( \top (\closenv{\bounds'}, \bounds(v)), \bounds(l))$ \\
+			&  \ra & $\closenv{\bounds'(l:=min(l,\bounds(l), v:=min(v, \bounds(v), d:=min(v,\bounds(v))} $
 \evaltablend
 
 which corresponds to the bounded evaluation definition above. \\
@@ -722,47 +725,94 @@ Here we need first to define the application \boundapplysym{\bounds} to prove th
 %%%%%% application function %%%%%%
 \subsubsection{Bounded \emph{application} ($\boundapplysym{\bounds} $) function}
 \evaltable[]
- $\apply{score}{w}$ 	& $\rightarrow$ & $\result{\noredex(score, \equivalence{w})}{\bounds(l:=l-l_w, v:=v-v_w)}$ \\
+ $\apply{score}{w}$ 	& \ra & $\result{\noredex(score, \equivalence{w})}{\bounds(l:=l-l_w, v:=v-v_w)}$ \\
 				 		& &		\: where $l_w=\length(w)$ and $v_w=\voices(w)$
 \evalspace
- $\applysimple{\noredex (u,v)}{w}$ 	& $\rightarrow$ & $\result{\noredex(\noredex(u,v), \equivalence{w})}{\bounds(l:=l-l_w, v:=v-v_w)}$ \\
+ $\apply{\noredex (u,v)}{w}$ 	& \ra & $\result{\noredex(\noredex(u,v), \equivalence{w})}{\bounds(l:=l-l_w, v:=v-v_w)}$ \\
 				 		& &		\: where $l_w=\length(w)$ and $v_w=\voices(w)$
 \evalspace
- $\apply{\apexpr{seq}}{w}$	& $\rightarrow$ & $\result{seq(\apply{u}{\head(w,\dur(u))}, \apply[\bounds(l:=l-l_1]{v}{\tail(w,\dur(u))})}{\bounds(l:=l-l_1-l_2)}$ \\
-				 		& &		\: where $l_1=\length(\apply{u}{\head(w,\dur(u))})$ and $l_2= \length(\apply[\bounds(l:=l-l_1]{v}{\tail(w,\dur(u))})$ 
+ $\apply{\apexpr{seq}}{w}$	& \ra & $\result{seq(\apply{u}{\head(w,\dur(u))}, \apply[\bounds(l:=l-l_1]{v}{\tail(w,\dur(u))})}{\bounds(l:=l-l_1-l_2)}$ \\
+				 		& &		\: where $l_1=\length(\apply{u}{\head(w,\dur(u))})$ 
 \evalspace
- $\apply{\apexpr{mix}}{w}$ 	& $\rightarrow$ & $\result{mix(\apply{u}{\top(w,\voices(u))}, \apply[\bounds(v:=v-v_1]{v}{\bottom(w,\voices(u))})}{\bounds(v:=v-v_1-v_2)}$ \\
-				 		& &		\: where $v_1= \voices(\apply{u}{\top(w,\voices(u)})$  and $v_2=\voices(\apply[\bounds(v:=v-v_1]{v}{\bottom(w,\voices(u))})$
+ $\apply{\apexpr{mix}}{w}$ 	& \ra & $\result{mix(\apply{u}{\top(w,\voices(u))}, \apply[\bounds(v:=v-v_1]{v}{\bottom(w,\voices(u))})}{\bounds(v:=v-v_1-v_2)}$ \\
+				 		& &		\: where $v_1= \voices(\apply{u}{\top(w,\voices(u)})$
 \evalspace
- $\apply{\closenv{\bounds'}}{w}$  & $\rightarrow$ & $\evalexpr{f}[\var{e} := w]$ \\
+ $\apply{\closenv{\bounds'}}{w}$  & \ra & $\evalexpr{f}[\var{e} := w]$ \\
 
 \evaltablend
 
 %%%%%% score application evaluation proof %%%%%%
-Now and for each application type, we'll examine the bounded evaluation equivalence:
+Now and for each application type, we'll examine the bounded evaluation equivalence. Note that we'll make use the following equivalence:
+\hspace{1cm} $\evalexpr[\nobounds]{e} \rightarrow \evalsimple{e}$
+
 \evaltable
 \evaltitle {Score application equivalence}
  from the above: \: $\evalexpr{score \applyop w}$ 	& & $\apply{\evalexpr[\nobounds]{score}}{\evalexpr{w}}$ \\
 									& & $\applysimple{score}{\equivalence{\evalsimpleshort{w}}}$ \\
 									& & $\noredex(score, \equivalence{w})$
 \evalspace
-from the simple evaluation def: \: $\equivalence{\evalsimpleshort{score \applyop w}}$  & & $\equivalence{\noredex(score,w)}$ \\
+from the evaluation \evalsym\ def: \: $\equivalence{\evalsimpleshort{score \applyop w}}$  & & $\equivalence{\noredex(score,w)}$ \\
 									& &  $\noredex(score, \equivalence{w})$
 \evalspace
 thus $\evalexpr{score \applyop w}$ 	& & $\equivalence{\evalsimpleshort{score \applyop w}}$
 \evaltablend
 
+\newpage
 %%%%%% Seq application evaluation proof %%%%%%
-\evaltable
+\evaltable[]
 \evaltitle {Sequence application equivalence}
- from the above: \: $\evalexpr{(u \seq v) \applyop w}$ 	& & $\apply{\evalexpr[\nobounds]{u \seq v}}{\evalexpr{w}}$ \\
-									& & $\applysimple{\evalsimpleshort{(u \seq v)}}{\equivalence{\evalsimpleshort{w}}}$ \\
-\evalspace
-from the simple evaluation def: \: $\equivalence{\evalsimpleshort{(u \seq v) \applyop w}}$  & & $\equivalence{(u \seq v) \applyop w)}$ \\
-									& &  $\noredex(score, \equivalence{w})$
-\evalspace
-thus $\evalexpr{score \applyop w}$ 	& & $\equivalence{\evalsimpleshort{score \applyop w}}$
+ $\evalexpr{(u \seq v) \applyop w}$ 	& \ra & $\apply{\evalexpr[\nobounds]{u \seq v}}{\evalexpr{w}}$ \\
+						& \ra & $\apply{seq(u, v)}{w'}$ where $w' = \evalexpr{w}$ \\
+						& \ra & $seq(\apply{u}{\head(w',\dur(u))}, \apply[\bounds(l:=l-l_{uw})]{v}{\tail(w',\dur(u))}))$ \\
+				 		& &		\: where $l_{uw}= \length(\apply{u}{\head(w',\dur(u))})$ \\
+%						& \ra & $seq(\apply{u}{\head(w',\dur(u))}, \apply[\bounds(l:=l-l_{uw})]{v}{\tail(w',\dur(u))}))$ \\
+						& \ra & $seq(\equivalence{h_{uw}}, \equivl{t_{uw}}{l-l_{uw}})$ \\
+				 		& &		\: where $h_{uw}=\applysimple{u}{\head(w',\dur(u))}$ and $t_{uw} = \applysimple{v}{\tail(w',\dur(u))} $
+%									& & $\applysimple{\evalsimpleshort{u \seq v}}{\equivalence{\evalsimpleshort{w}}}$ \\
+%									& & $\applysimple{seq(u, v)}{\equivalence{\evalsimpleshort{w}}}$ \\
+%									& & $seq(\applysimple{u}{\head(w', \dur(u))}, \applysimple{v}{\tail(w', \dur(u))})$ 
+%									with $w'= \equivalence{\evalsimpleshort{w}}$
+%\evalspace
 \evaltablend
+from the evaluation \evalsym\ def:
+\evaltable[]
+ $\equivalence{\evalsimpleshort{(u \seq v) \applyop w}}$  
+ 	& \ra & $\equivalence{\applysimple{seq(u, v)}{w''}}$ with $w''=\evalsimpleshort{w}$\\
+	& \ra &  $\equivalence{seq(\applysimple{u}{\head(w'',\dur(u))}, \applysimple{v}{\tail(w'',\dur(u))})}$ \\
+	& \ra &  $\head(seq(\top(\applysimple{u}{\head(w'',\dur(u))}, \bounds(v)),\top(\applysimple{v}{\tail(w'',\dur(u))},\bounds(v))),\bounds(l))$ \\
+	& \ra &  $\head(seq(\top(h_{uw}', \bounds(v)), \top(t_{uw}', \bounds(v))),\bounds(l))$ \\
+	& &  \: where $h_{uw}' = \applysimple{u}{(\head(w'',\dur(u))}$ \\
+	& &  \: and   $t_{uw}' = \applysimple{v}{\tail(w'',\dur(u))}$ \\
+	& \ra &  $seq(\head(\top(h_{uw}',\bounds(v)),\bounds(l), \head(\top(t_{uw}',\bounds(v)), \bounds(l-l_{uw}')$ \\
+	& &  \: where $l_{uw}' = \length(h_{uw}')$ \\
+\evaltablend
+
+\begin{center} \begin{tabular*}{0.9\linewidth}{rclcl}
+	$h_{uw}'$ 	& $=$ & $\applysimple{u}{(\head(w'',\dur(u))}$ & $=$ & $\applysimple{u}{(\head(\evalsimpleshort{w},\dur(u))}$ \\
+	$h_{uw}$ 	& $=$ & $\applysimple{u}{\head(w',\dur(u))}$ 	& $=$ & $\applysimple{u}{\head(\evalexpr{w},\dur(u))}$
+\evalspace
+	$t_{uw}'$ 	& $=$ & $\applysimple{v}{\tail(w'',\dur(u))}$ 	& $=$ & $\applysimple{v}{\tail(\evalsimpleshort{w},\dur(u))}$ \\
+	$t_{uw}$ 	& $=$ & $\applysimple{v}{\tail(w',\dur(u))}$ 	& $=$ & $\applysimple{v}{\tail(\evalexpr{w},\dur(u))}$
+\evalspace
+	$l_{uw}'$ 	& $=$ & $\length(h_{uw}')$	& $=$ & $\length(\applysimple{u}{(\head(\evalsimpleshort{w},\dur(u))})$	\\
+	$l_{uw}$ 	& $=$ & $\length(\apply{u}{\head(w',\dur(u))})$	& $=$ & $\length(\apply{u}{\head(\evalexpr{w},\dur(u))})$	
+\evaltablend
+
+
+thus $\evalexpr{score \applyop w}$ 	\ra $\: \equivalence{\evalsimpleshort{score \applyop w}}$
+
+
+%%%%%% Mis application evaluation proof %%%%%%
+%\evaltable
+%\evaltitle {Parallel application equivalence}
+% from the above: \: $\evalexpr{(u \mix v) \applyop w}$ 	& & $\apply{\evalexpr[\nobounds]{u \mix v}}{\evalexpr{w}}$ \\
+%									& & $\applysimple{\evalsimpleshort{(u \mix v)}}{\equivalence{\evalsimpleshort{w}}}$ \\
+%\evalspace
+%from the evaluation \evalsym\ def: \: $\equivalence{\evalsimpleshort{(u \mix v) \applyop w}}$  & & $\equivalence{(u \mix v) \applyop w)}$ \\
+%									& &  $\noredex(score, \equivalence{w})$
+%\evalspace
+%thus $\evalexpr{score \applyop w}$ 	& & $\equivalence{\evalsimpleshort{score \applyop w}}$
+%\evaltablend
 
 
 
