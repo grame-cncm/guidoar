@@ -22,18 +22,18 @@
  
 %%%%%%%%%%%%%%% layout
 \newcommand{\evaltable}[1][$\rightarrow$]	  {\begin{center} \begin{tabular*}{0.9\linewidth}{rc@{ #1 }l}}
-\newcommand{\evaldots}						  {\multicolumn{3}{r}{\dotfill{}}}
-\newcommand{\evaltitle}[1]						{\multicolumn{3}{l}{#1} \\ \hline}
+\newcommand{\evaldots}			{\multicolumn{3}{r}{\dotfill{}}}
+\newcommand{\evaltitle}[1]		{\multicolumn{3}{l}{#1} \\ \hline}
 \newcommand{\evaltablend}  		{\end{tabular*}\end{center}}
 \newcommand{\evalspace}	  		{\vspace{2mm}\\}
 
 %%%%%%%%%%%%%%% definitions for env, empty env a and so on
-\newcommand{\var}[1]	{\ensuremath{\diamond^#1}}
-\newcommand{\es}		{\{\}}
+\newcommand{\var}[1]		{\ensuremath{\diamond^#1}}
+\newcommand{\es}			{\{\}}
 \newcommand{\expr}		{\ensuremath{\mathbb{EXP}}}
 \newcommand{\val}		{\ensuremath{\mathbb{VAL}}}
 \newcommand{\env}		{\ensuremath{\mathbb{ENV}}}
-\newcommand{\closure}	{\ensuremath{\Lambda}}
+\newcommand{\clossym}	{\ensuremath{\Lambda}}
 \newcommand{\applyop}	{\ensuremath{@}}
 \newcommand{\noredex}	{\ensuremath{\applyop^o}}
 
@@ -44,135 +44,145 @@
 \newcommand{\bdomain}[3]{$#1 \times #2 \rightarrow #3$}
 
 \newcommand{\evalsym}			{\ensuremath{\epsilon}}
-\newcommand{\boundevalsym}	{\ensuremath{\xi}}
-\newcommand{\envsym}			{\ensuremath{\rho}}
-\newcommand{\emptyenv}		{\ensuremath{\theta}}
-\newcommand{\applysym}		{\ensuremath{\mathcal A}}
+\newcommand{\boundevalsym}		{\ensuremath{\xi}}
+\newcommand{\envsym}				{\ensuremath{\rho}}
+\newcommand{\emptyenv}			{\ensuremath{\theta}}
+\newcommand{\applysym}			{\ensuremath{\mathcal A}}
 \newcommand{\boundapplysym}[1]	{\ensuremath{\applysym^{#1}}}
-%\newcommand{\closenv}[3][\var{e}]		{\closure(#3,\lambda[#1,#2],\envsym)}
-\newcommand{\closenv}[2][f]		{\closure(#2,\ [\lambda \var{e}.#1],\ \envsym)}
+% closure args: #1 var, #2 body, #3 env, #4 bounds
+\newcommand{\closure}[4]			{\ensuremath{\clossym\left(#4,\ \left[\lambdaexpr{#1}{#2}\right],\ #3 \right)}}
 
 %:commands def
-\newcommand{\eval}[1]					{\boundevalsym_\envsym^{#1}}
-\newcommand{\evalexpr}[2][\bounds]	{\eval{#1}\left[#2\right]}
-\newcommand{\evalss}[1]				{\evalsym\left[#1\right]}
-\newcommand{\evalsimple}[1]			{\evalsym\left[#1\right]\rho}
-\newcommand{\apply}[3][\bounds]		{\boundapplysym{#1}\left(#2,#3\right)}
-\newcommand{\applysimple}	[2]			{\applysym\left(#1,\ #2\right)}
-%\newcommand{\result}[2]				{\left[#1,\ #2\right]}
+\newcommand{\eval}[1]				{\ensuremath{\boundevalsym_\envsym^{#1}}}
+\newcommand{\evalexpr}[2][\bounds]	{\ensuremath{\eval{#1}\left[#2\right]}}
+\newcommand{\evalss}[1]				{\ensuremath{\evalsym\left[#1\right]}}
+\newcommand{\evalsimple}[2][\envsym]	{\ensuremath{\evalsym\left[#2\right]#1}}
+\newcommand{\apply}[3][\bounds]		{\ensuremath{\boundapplysym{#1}\left(#2,#3\right)}}
+\newcommand{\applysimple}	[2]		{\ensuremath{\applysym\left(#1,\ #2\right)}}
 \newcommand{\result}[2]				{#1}
-\newcommand{\equivalence}[1]			{\head( \top (#1, \bounds(v)), \bounds(l))}
-\newcommand{\equivl}[2]				{\head( \top (#1, \bounds(v)), \bounds(#2))}
-\newcommand{\equivv}[2]				{\head( \top (#1, \bounds(#2)), \bounds(l))}
+\newcommand{\equivalence}[1]			{\ensuremath{\head( \top (#1, \bounds(v)), \bounds(l))}}
+\newcommand{\equivl}[2]				{\ensuremath{\head( \top (#1, \bounds(v)), \bounds(#2))}}
+\newcommand{\equivv}[2]				{\ensuremath{\head( \top (#1, \bounds(#2)), \bounds(l))}}
 
 %%%%%%%%%%%%%%% definitions for syntactic expressions
 \newcommand{\opexpr}[1] 		{e #1 f}
 \newcommand{\apexpr}[1] 		{#1(u, v)}
-%\newcommand{\lambdaexpr}		{\lambda \var{e}.f}
 \newcommand{\lambdaexpr}[2]	{\lambda \var{#1}.#2}
 \newcommand{\ra}	{\ensuremath{\rightarrow}} 
 
 %%%%%%%%%%%%%%% definitions for functions symbols
 \newcommand{\seq}			{:}
 \newcommand{\mix}			{/}
-\newcommand{\length}		{\ensuremath{\mathcal L}}
-\newcommand{\voices}		{\ensuremath{\mathcal V}}
-\newcommand{\pitch}		{\ensuremath{\mathcal P}}
+\newcommand{\length}			{\ensuremath{\mathcal L}}
+\newcommand{\voices}			{\ensuremath{\mathcal V}}
+\newcommand{\pitch}			{\ensuremath{\mathcal P}}
 \newcommand{\dur}			{\ensuremath{\mathcal D}}
 \newcommand{\head}			{\ensuremath{\mathcal H}}
 \newcommand{\tail}			{\ensuremath{\mathcal T}}
-\renewcommand{\top}		{\ensuremath{\mathcal U}}
-\newcommand{\bottom}		{\ensuremath{\mathcal B}}
-\newcommand{\transp}		{\ensuremath{\delta}}
-\renewcommand{\stretch}	{\ensuremath{\mathcal S}}
-\newcommand{\bounds}		{\ensuremath{\sigma}}
-\newcommand{\nullbounds}	{\ensuremath{\sigma_0}}
-\newcommand{\nobounds}	{\ensuremath{\infty}} 
+\renewcommand{\top}			{\ensuremath{\mathcal U}}
+\newcommand{\bottom}			{\ensuremath{\mathcal B}}
+\newcommand{\transp}			{\ensuremath{\delta}}
+\renewcommand{\stretch}		{\ensuremath{\mathcal S}}
+\newcommand{\bounds}			{\ensuremath{\sigma}}
+\newcommand{\nullbounds}		{\ensuremath{\sigma_0}}
+\newcommand{\nobounds}		{\ensuremath{\infty}} 
 
 %%%%%%%%%%%%%%% operations definitions
-\newcommand{\seqOp}[2]						{\ensuremath{seq\left(#1, #2\right)}}
-\newcommand{\mixOp}[2]						{\ensuremath{par\left(#1, #2\right)}}
-\newcommand{\headOp}[2]						{\ensuremath{\head\left(#1, #2\right)}}
-\newcommand{\tailOp}[2]						{\ensuremath{\tail\left(#1, #2\right)}}
-\newcommand{\topOp}[2]						{\ensuremath{\top\left(#1, #2\right)}}
-\newcommand{\bottomOp}[2]						{\ensuremath{\bottom\left(#1, #2\right)}}
+\newcommand{\seqOp}[2]		{\ensuremath{seq\left(#1, #2\right)}}
+\newcommand{\mixOp}[2]		{\ensuremath{par\left(#1, #2\right)}}
+\newcommand{\headOp}[2]		{\ensuremath{\head\left(#1, #2\right)}}
+\newcommand{\tailOp}[2]		{\ensuremath{\tail\left(#1, #2\right)}}
+\newcommand{\topOp}[2]		{\ensuremath{\top\left(#1, #2\right)}}
+\newcommand{\bottomOp}[2]	{\ensuremath{\bottom\left(#1, #2\right)}}
 
 %%%%%%%%%%%%%%% language definitions
-\newcommand{\sevalScore}[1]					{\ensuremath{#1}}
-\newcommand{\sevalVar}[2]	[\envsym]			{\ensuremath{#1\left(\var{#2}\right)}}
-\newcommand{\sevalLambda}[4][\envsym]		{\ensuremath{\closure\left(#4,\ [\lambda \var{#2}.#3],\ #1\right)}}
-\newcommand{\sevalApply}[2]					{\ensuremath{\applysimple{\evalss{#1}}{\evalss{#2}}}}
-\newcommand{\sevalSeq}[2]						{\ensuremath{seq\left(\evalss{#1}, \ \evalss{#2}\right)}}
-\newcommand{\sevalMix}[2]						{\ensuremath{mix\left(\evalss{#1}, \ \evalss{#2}\right)}}
-\newcommand{\sevalHead}[2]					{\ensuremath{\head \left(\evalss{#1},#2\right)}}
-\newcommand{\sevalTail}[2]					{\ensuremath{\tail \left(\evalss{#1},#2\right)}}
-\newcommand{\sevalTop}[2]						{\ensuremath{\top \left(\evalss{#1},#2\right)}}
-\newcommand{\sevalBottom}[2]					{\ensuremath{\bottom \left(\evalss{#1},#2\right)}}
-\newcommand{\sevalTransp}[2]					{\ensuremath{\transp \left(\evalss{#1},#2\right)}}
-\newcommand{\sevalStretch}[2]				{\ensuremath{\stretch \left(\evalss{#1},#2\right)}}
+\newcommand{\sevalScore}[1]				{\ensuremath{#1}}
+\newcommand{\sevalVar}[2][\envsym]		{\ensuremath{#1\left(\var{#2}\right)}}
+\newcommand{\sevalLambda}[4]				{\ensuremath{\closure{#1}{#2}{#3}{#4}}}
+\newcommand{\sevalApply}[2]				{\ensuremath{\applysimple{\evalss{#1}}{\evalss{#2}}}}
+\newcommand{\sevalSeq}[2]				{\ensuremath{seq\left(\evalss{#1}, \ \evalss{#2}\right)}}
+\newcommand{\sevalMix}[2]				{\ensuremath{mix\left(\evalss{#1}, \ \evalss{#2}\right)}}
+\newcommand{\sevalHead}[2]				{\ensuremath{\head \left(\evalss{#1},#2\right)}}
+\newcommand{\sevalTail}[2]				{\ensuremath{\tail \left(\evalss{#1},#2\right)}}
+\newcommand{\sevalTop}[2]				{\ensuremath{\top \left(\evalss{#1},#2\right)}}
+\newcommand{\sevalBottom}[2]				{\ensuremath{\bottom \left(\evalss{#1},#2\right)}}
+\newcommand{\sevalTransp}[2]				{\ensuremath{\transp \left(\evalss{#1},#2\right)}}
+\newcommand{\sevalStretch}[2]			{\ensuremath{\stretch \left(\evalss{#1},#2\right)}}
 
-\newcommand{\sapplyScore}[2]					{\ensuremath{\noredex\left(#1,#2\right)}}
-\newcommand{\sapplySeq}[3]					{\ensuremath{seq\left(\applysimple{#1}{\head\left(#3,\dur\left(#1\right)\right)}, \applysimple{#2}{\tail\left(#3,\dur\left(#1\right)\right)}\right)}}
-\newcommand{\sapplyMix}[3]					{\ensuremath{mix\left(\applysimple{#1}{\top\left(#3, \voices\left(#1\right)\right)}, \applysimple{#2}{\bottom\left(#3, \voices\left(#1\right)\right)}\right)}}
-\newcommand{\sapplyApply}[3]					{\ensuremath{\noredex\left(\noredex\left(#1,#2\right),#3\right)}}
-\newcommand{\sapplyClosure}[3]				{\ensuremath{\evalss{#2}[\var{#1} := #3]}}
+\newcommand{\sapplyScore}[2]				{\ensuremath{\noredex\left(#1,#2\right)}}
+\newcommand{\sapplySeq}[3]				{\ensuremath{seq\left(\applysimple{#1}{\head\left(#3,\dur\left(#1\right)\right)}, \applysimple{#2}{\tail\left(#3,\dur\left(#1\right)\right)}\right)}}
+\newcommand{\sapplyMix}[3]				{\ensuremath{mix\left(\applysimple{#1}{\top\left(#3, \voices\left(#1\right)\right)}, \applysimple{#2}{\bottom\left(#3, \voices\left(#1\right)\right)}\right)}}
+\newcommand{\sapplyApply}[3]				{\ensuremath{\noredex\left(\noredex\left(#1,#2\right),#3\right)}}
+\newcommand{\sapplyClosure}[3]			{\ensuremath{\evalss{#2}[\var{#1} := #3]}}
 
-\newcommand{\lengthScore}						{\ensuremath{max\left(\length\left(v_1\right),..., \length\left(v_n\right)\right)}}
-\newcommand{\lengthSeq}[2]					{\ensuremath{\length\left(#1\right) + \length\left(#2\right)}}
-\newcommand{\lengthMix}[2]					{\ensuremath{max\left(\length\left(#1\right), \length\left(#2\right)\right)}}
-\newcommand{\lengthApply}[2]					{\ensuremath{\length\left(#2\right)}}
+\newcommand{\lengthScore}		{\ensuremath{max\left(\length\left(v_1\right),..., \length\left(v_n\right)\right)}}
+\newcommand{\lengthSeq}[2]		{\ensuremath{\length\left(#1\right) + \length\left(#2\right)}}
+\newcommand{\lengthMix}[2]		{\ensuremath{max\left(\length\left(#1\right), \length\left(#2\right)\right)}}
+\newcommand{\lengthApply}[2]		{\ensuremath{\length\left(#2\right)}}
 \newcommand{\lengthClosure}[4][\envsym]		{\ensuremath{{#4}\left(l\right)}}
 
-\newcommand{\durScore}						{\ensuremath{max\left(\dur\left(v_1\right),..., \dur\left(v_n\right)\right)}}
-\newcommand{\durSeq}[2]						{\ensuremath{\dur\left(#1\right) + \dur\left(#2\right)}}
-\newcommand{\durMix}[2]						{\ensuremath{max\left(\dur\left(#1\right),\dur\left(#2\right)\right)}}
-\newcommand{\durApply}[2]						{\ensuremath{\dur\left(#2\right)}}
-\newcommand{\durClosure}[4][\envsym]			{\ensuremath{{#4}\left(d\right)}}
+\newcommand{\durScore}				{\ensuremath{max\left(\dur\left(v_1\right),..., \dur\left(v_n\right)\right)}}
+\newcommand{\durSeq}[2]				{\ensuremath{\dur\left(#1\right) + \dur\left(#2\right)}}
+\newcommand{\durMix}[2]				{\ensuremath{max\left(\dur\left(#1\right),\dur\left(#2\right)\right)}}
+\newcommand{\durApply}[2]			{\ensuremath{\dur\left(#2\right)}}
+\newcommand{\durClosure}[4][\envsym]	{\ensuremath{{#4}\left(d\right)}}
 
-\newcommand{\transpScore}[2]					{\ensuremath{#1_{#2}'}}
-\newcommand{\transpSeq}[3]					{\ensuremath{seq\left(\transp\left(#1, #3\right), \transp\left(#2, #3\right)\right)}}
-\newcommand{\transpMix}[3]					{\ensuremath{mix\left(\transp\left(#1, #3\right), \transp\left(#2, #3\right)\right)}}
-\newcommand{\transpApply}[3]					{\ensuremath{\noredex\left(#1,\transp\left(#2,#3\right)\right)}}
-\newcommand{\transpClosure}[5][\envsym]		{\ensuremath{\closure\left(#4,\ [\lambda \var{#2}.\transp\left(#3,#5\right)],\ #1\right)}}
+\newcommand{\transpScore}[2]			{\ensuremath{#1_{#2}'}}
+\newcommand{\transpSeq}[3]			{\ensuremath{seq\left(\transp\left(#1, #3\right), \transp\left(#2, #3\right)\right)}}
+\newcommand{\transpMix}[3]			{\ensuremath{mix\left(\transp\left(#1, #3\right), \transp\left(#2, #3\right)\right)}}
+\newcommand{\transpApply}[3]			{\ensuremath{\noredex\left(#1,\transp\left(#2,#3\right)\right)}}
+\newcommand{\transpClosure}[5][\envsym]	{\closure{#2}{\sevalTransp{#3}{#5}}{#1}{#4}}
 
-\newcommand{\stretchScore}[2]				{\ensuremath{#1_{#2}'}}
-\newcommand{\stretchSeq}[3]					{\ensuremath{seq\left(\stretch\left(#1, #3\right), \stretch\left(#2, #3\right)\right)}}
-\newcommand{\stretchMix}[3]					{\ensuremath{mix\left(\stretch\left(#1, #3\right), \stretch\left(#2, #3\right)\right)}}
-\newcommand{\stretchApply}[3]				{\ensuremath{\noredex\left(#1, \stretch\left(#2,#3\right)\right)}}
-\newcommand{\stretchClosure}[5][\envsym]	{\ensuremath{\closure\left(#4\left(d:=d*#5\right),\ [\lambda \var{#2}. \stretch\left(#3,#5\right)],\ #1\right)}}
+\newcommand{\stretchScore}[2]	{\ensuremath{#1_{#2}'}}
+\newcommand{\stretchSeq}[3]		{\ensuremath{seq\left(\stretch\left(#1, #3\right), \stretch\left(#2, #3\right)\right)}}
+\newcommand{\stretchMix}[3]		{\ensuremath{mix\left(\stretch\left(#1, #3\right), \stretch\left(#2, #3\right)\right)}}
+\newcommand{\stretchApply}[3]	{\ensuremath{\noredex\left(#1, \stretch\left(#2,#3\right)\right)}}
+\newcommand{\stretchClosure}[5][\envsym]	{\closure{#2}{\sevalStretch{#3}{#5}}{#1}{#4(d:=d*#5)}}
 
-\newcommand{\headScore}[2]					{\ensuremath{#1_{#2}'}}
-\newcommand{\headSeq}[3]						{\ensuremath{seq\left(\head\left(#1, #3\right), \head\left(#2, \ #3 - \length\left(#1\right)\right)\right)}}
-\newcommand{\headMix}[3]						{\ensuremath{mix\left(\head\left(#1, #3\right), \head\left(#2, #3\right)\right)}}
-\newcommand{\headApply}[3]					{\ensuremath{\noredex\left(#1, \head\left(#2,#3\right)\right)}}
-\newcommand{\headClosure}[5][\envsym]		{\ensuremath{\closure \left(#4\left(l:=min\left(l,#5 \right)\right),\ \left[\lambda \var{#2}. \head\left(#3,#5 \right) \right],\ #1\right)}}
+\newcommand{\headScore}[2]		{\ensuremath{#1_{#2}'}}
+\newcommand{\headSeq}[3]			{\ensuremath{seq\left(\head\left(#1, #3\right), \head\left(#2, \ #3 - \length\left(#1\right)\right)\right)}}
+\newcommand{\headMix}[3]			{\ensuremath{mix\left(\head\left(#1, #3\right), \head\left(#2, #3\right)\right)}}
+\newcommand{\headApply}[3]		{\ensuremath{\noredex\left(#1, \head\left(#2,#3\right)\right)}}
+% headClosure args: #1 (opt) env, #2 var, #3 body, #4 bounds, #5 head value
+\newcommand{\headClosure}[5][\envsym]		{\closure{#2}{\sevalHead{#3}{#5}}{#1}{#4(l:=min(l,#5)}}
 
-\newcommand{\tailScore}[2]					{\ensuremath{#1_{#2'}'}}
-\newcommand{\tailSeq}[3]						{\ensuremath{seq\left(\tail\left(#1, #3\right), \tail\left(#2, \ #3 - \length\left(#1\right)\right)\right)}}
-\newcommand{\tailMix}[3]						{\ensuremath{mix\left(\tail\left(#1, #3\right), \tail\left(#2, #3\right)\right)}}
-\newcommand{\tailApply}[3]					{\ensuremath{\noredex\left(#1, \tail\left(#2,#3\right)\right)}}
-\newcommand{\tailClosure}[5][\envsym]		{\ensuremath{\closure\left(#4\left(l:=l-#5\right),\ [\lambda \var{#2}. \tail\left(#3,#5\right)],\ #1\right)}}
+\newcommand{\tailScore}[2]		{\ensuremath{#1_{#2'}'}}
+\newcommand{\tailSeq}[3]			{\ensuremath{seq\left(\tail\left(#1, #3\right), \tail\left(#2, \ #3 - \length\left(#1\right)\right)\right)}}
+\newcommand{\tailMix}[3]			{\ensuremath{mix\left(\tail\left(#1, #3\right), \tail\left(#2, #3\right)\right)}}
+\newcommand{\tailApply}[3]		{\ensuremath{\noredex\left(#1, \tail\left(#2,#3\right)\right)}}
+\newcommand{\tailClosure}[5][\envsym]		{\closure{#2}{\sevalTail{#3}{#5}}{#1}{#4(l:=l-#5)}}
 
-\newcommand{\topScore}[2]						{\ensuremath{#1_{#2'}'}}
-\newcommand{\topSeq}[3]						{\ensuremath{seq\left(\top\left(#1, #3\right), \top\left(#2, \ #3\right)\right)}}
-\newcommand{\topMix}[3]						{\ensuremath{mix\left(\top\left(#1, #3\right), \top\left(#2, #3-\voices\left(#1\right)\right)\right)}}
-\newcommand{\topApply}[3]						{\ensuremath{\noredex\left(#1, \top\left(#2,#3\right)\right)}}
-\newcommand{\topClosure}[5][\envsym]			{\ensuremath{\closure\left(#4\left(v:=min\left(v,#5\right)\right),\ [\lambda \var{#2}. \top\left(#3,#5\right)],\ #1\right)}}
+\newcommand{\topScore}[2]		{\ensuremath{#1_{#2'}'}}
+\newcommand{\topSeq}[3]			{\ensuremath{seq\left(\top\left(#1, #3\right), \top\left(#2, \ #3\right)\right)}}
+\newcommand{\topMix}[3]			{\ensuremath{mix\left(\top\left(#1, #3\right), \top\left(#2, #3-\voices\left(#1\right)\right)\right)}}
+\newcommand{\topApply}[3]		{\ensuremath{\noredex\left(#1, \top\left(#2,#3\right)\right)}}
+% topClosure args: #1 (opt) env, #2 var, #3 body, #4 bounds, #5 top value
+\newcommand{\topClosure}[5][\envsym]		{\closure{#2}{\sevalTop{#3}{#5}}{#1}{#4(v:=min(v,#5))}}
 
-\newcommand{\bottomScore}[2]					{\ensuremath{#1_{#2'}'}}
-\newcommand{\bottomSeq}[3]					{\ensuremath{seq\left(\bottom\left(#1, #3\right), \bottom\left(#2, \ #3\right)\right)}}
-\newcommand{\bottomMix}[3]					{\ensuremath{mix\left(\bottom\left(#1, #3\right), \bottom\left(#2, #3-\voices\left(#1\right)\right)\right)}}
-\newcommand{\bottomApply}[3]					{\ensuremath{\noredex\left(#1, \bottom\left(#2,#3\right)\right)}}
-\newcommand{\bottomClosure}[5][\envsym]		{\ensuremath{\closure\left(#4\left(v:=v-#5\right),\ [\lambda \var{#2}. \bottom\left(#3,#5\right)],\ #1\right)}}
+\newcommand{\bottomScore}[2]		{\ensuremath{#1_{#2'}'}}
+\newcommand{\bottomSeq}[3]		{\ensuremath{seq\left(\bottom\left(#1, #3\right), \bottom\left(#2, \ #3\right)\right)}}
+\newcommand{\bottomMix}[3]		{\ensuremath{mix\left(\bottom\left(#1, #3\right), \bottom\left(#2, #3-\voices\left(#1\right)\right)\right)}}
+\newcommand{\bottomApply}[3]		{\ensuremath{\noredex\left(#1, \bottom\left(#2,#3\right)\right)}}
+\newcommand{\bottomClosure}[5][\envsym]	{\closure{#2}{\sevalBottom{#3}{#5}}{#1}{#4(v:=v-#5)}}
 
 %%%%%%%%%%%%%%% bounded language definitions
-\newcommand{\bevalScore}[1]					{\ensuremath{\equivalence{#1}}}
-\newcommand{\bevalSeq}[2]						{\ensuremath{\seqOp{\evalexpr{#1}}{\evalexpr[\bounds(l:=l- \length(\evalexpr{#1}))]{#2}}}}
-\newcommand{\bevalMix}[2]						{\ensuremath{\mixOp{\evalexpr{#1}}{\evalexpr[\bounds(v:=v- \voices(\evalexpr{#1}))]{#2}}}}
+\newcommand{\bevalScore}[1]	{\ensuremath{\equivalence{#1}}}
+\newcommand{\bevalSeq}[2]	{\ensuremath{\seqOp{\evalexpr{#1}}{\evalexpr[\bounds(l:=l- \length(\evalexpr{#1}))]{#2}}}}
+\newcommand{\bevalMix}[2]	{\ensuremath{\mixOp{\evalexpr{#1}}{\evalexpr[\bounds(v:=v- \voices(\evalexpr{#1}))]{#2}}}}
+% args are similar to closure args: #1 var, #2 body, #3 env, #4 bounds
+\newcommand{\bevalLambda}[4]	{\ensuremath{\closure{#1}{\evalexpr{f}}{#3}{#4'(l:=min(l,#4(l)), v:=min(v,#4(v)))}}}
+\newcommand{\bevalApply}[3][\evalexpr]	{\ensuremath{\apply{#1{#2}}{#1{#3}}}}
+\newcommand{\bevalSApply}[2]	{\ensuremath{\apply{\evalss{#1}}{\evalss{f}}}}
+
+%%%%%%%%%%%%%%% bounded applications definitions
+\newcommand{\bapplyScore}[2]	{\ensuremath{\noredex(#1, \equivalence{#2})}}
+\newcommand{\bapplyApply}[2]	{\ensuremath{\noredex(#1, \equivalence{#2})}}
+\newcommand{\bapplySeq}[3]	{\ensuremath{\seqOp{\apply{#1}{\headOp{#3}{\dur(#1)}}}{\apply[\bounds(l:=l-\length\left(\apply{#1}{\headOp{#3}{\dur(#1)}}\right)]{#1}{\tailOp{#3}{\dur(#1)}}}}}
+\newcommand{\bapplyMix}[3]	{\ensuremath{\mixOp{\apply{#1}{\topOp{#3}{\voices(#1)}}}{\apply[\bounds(v:=v-\voices\left(\apply{#1}{\topOp{#3}{\voices(#1)}}\right)]{#1}{\bottomOp{#3}{\voices(#1)}}}}}
 
 
-\newcommand{\emptyScore}						{\ensuremath{\{\}}}
-\newcommand{\identity}[1]						{\ensuremath{#1}}
+\newcommand{\emptyScore}			{\ensuremath{\{\}}}
+\newcommand{\identity}[1]		{\ensuremath{#1}}
 
 
 
@@ -426,11 +436,11 @@ As mentioned above, when $e$ and $f$ are basic gmn scores, $\lambda e.f$ has a s
 %----------------------------------------------------------------
 \subsection{Beta reduction}
 
-$\beta$-reduction transforms recursively a \emph{simplified} expression into \emph{values} by replacing the named variable $\var{e}$ with the corresponding application argument. A \emph{value} is a $score$, a basic gmn score, or a closure $\closure$, or an application $\noredex$ that can't be reduced:
+$\beta$-reduction transforms recursively a \emph{simplified} expression into \emph{values} by replacing the named variable $\var{e}$ with the corresponding application argument. A \emph{value} is a $score$, a basic gmn score, or a closure $\clossym$, or an application $\noredex$ that can't be reduced:
 \begin{center}
 \begin{tabular}{rc@{ : }l}
  $score$				& & a guido music notation (gmn) score \\
- $\closenv{\bounds}$ 	& & a closure associating the expression dimensions $\bounds$, a $\lambda$-abstraction and an environment $\envsym$ \\
+ $\closure{e}{f}{\envsym}{\bounds}$  & & a closure associating the expression dimensions $\bounds$, a $\lambda$-abstraction and an environment $\envsym$ \\
  $\noredex(u,v)$ 		& & an application of $u$ to $v$ that can't be reduced \\
 \end{tabular}
 \end{center}
@@ -464,20 +474,20 @@ The functions required for the evaluation process are the following:
 \begin{tabular}{rl}
  \hline
  $\evalsimple{e}$ 			& evaluates $e$ with the environment $\envsym$ \\
- $\applysimple{u}{v}$ 	& apply $u$ to $v$ \\
+ $\applysimple{u}{v}$ 		& apply $u$ to $v$ \\
  $\head(u,l)$ 				& takes the head of $u$ up to the length $l$ \\
  $\head(u,d)$ 				& takes the head of $u$ up to the duration $d$ \\
  $\tail(u,l)$ 				& takes the tail of $u$ after the length $l$ \\
- $\tail(u,d)$ 		  & takes the tail of $u$ after the duration $d$ \\
+ $\tail(u,d)$ 				& takes the tail of $u$ after the duration $d$ \\
  $\top(u,v)$ 				& takes the top of $u$ up to the voice $v$ \\
- $\bottom(u,v)$ 			& takes the bottom of $u$ after the voice $v$ \\
- $\transp(u,i)$ 		   & transposes $u$ using the interval $i$ \\
- $\stretch(u,r)$ 		   & stretch $u$ using a coefficient $r$ \\
+ $\bottom(u,v)$ 				& takes the bottom of $u$ after the voice $v$ \\
+ $\transp(u,i)$ 		   		& transposes $u$ using the interval $i$ \\
+ $\stretch(u,r)$ 			& stretch $u$ using a coefficient $r$ \\
 \multicolumn{2}{c}{\dotfill{}} \\
  $\length(u)$ 				& computes the length of $u$ as $max$ of the voices events count \\
  $\voices(u)$ 				& computes the voices number of $u$ \\
  $\pitch(u)$ 				& computes the pitch of $u$ \\
- $\dur(u)$ 				& computes the duration of $u$ \\
+ $\dur(u)$ 					& computes the duration of $u$ \\
  \hline
 \end{tabular}
 \end{center}
@@ -491,9 +501,9 @@ The evaluation function $\evalsym(e,\envsym)$ : \sdomain{\expr}{\env}{\val} is d
 
 \evaltable[]
  \hline
- $\evalsimple{score}$					& \ra & \sevalScore{score} \\
+ $\evalsimple{score}$				& \ra & \sevalScore{score} \\
  $\evalsimple{\var{e}}$ 				& \ra & \sevalVar{e} \\
- $\evalsimple{\lambdaexpr{e}{f}}$ 	& \ra & \sevalLambda{e}{f}{\bounds'} \\
+ $\evalsimple{\lambdaexpr{e}{f}}$ 	& \ra & \sevalLambda{e}{f}{\envsym}{\bounds'} \\
  			& & \ with $\bounds'(l:=\length(VAL(f)), v:=\voices(VAL(f)), d=\dur(VAL(f)))$ \\
 			& & \ and $VAL(f) = \evalss{f},\envsym[\var{e}= \evalss{e}, \emptyenv]$\\
  $\evalsimple{\opexpr{\applyop}}$ 	& \ra & \sevalApply{e}{f} \\
@@ -517,10 +527,10 @@ The application function $\applysimple{u}{v}$ : \sdomain{\val}{\val}{\val} appli
 \evaltable
  \hline
  $\applysimple{score}{w}$					& & \sapplyScore{score}{w} \\
- $\applysimple{\apexpr{seq}}{w}$			& & \sapplySeq{u}{v}{w} \\
- $\applysimple{\apexpr{mix}}{w}$ 		& & \sapplyMix{u}{v}{w} \\
- $\applysimple{\noredex (u,v)}{w}$ 		& & \sapplyApply{u}{v}{w} \\
- $\applysimple{\closenv{\bounds}}{w}$ 	& & \sapplyClosure{e}{f}{w} \\
+ $\applysimple{\apexpr{seq}}{w}$				& & \sapplySeq{u}{v}{w} \\
+ $\applysimple{\apexpr{mix}}{w}$ 			& & \sapplyMix{u}{v}{w} \\
+ $\applysimple{\noredex (u,v)}{w}$ 			& & \sapplyApply{u}{v}{w} \\
+ $\applysimple{\closure{e}{f}{\envsym}{\bounds}}{w}$ 	& & \sapplyClosure{e}{f}{w} \\
  \hline
 \evaltablend
 
@@ -535,7 +545,7 @@ The function $\length(u)$ : $\val \rightarrow \mathbb{N}$ computes the length of
  $\length(\apexpr{seq})$			& & \lengthSeq{u}{v} \\
  $\length(\apexpr{mix})$ 			& & \lengthMix{u}{v} \\
  $\length(\noredex (u,v))$ 		& & $\length(v)$ \\
- $\length(\closenv{\bounds})$ 	& & \lengthClosure{e}{f}{\bounds} \\
+ $\length(\closure{e}{f}{\envsym}{\bounds})$ 	& & \lengthClosure{e}{f}{\bounds} \\
  \hline
 \evaltablend
 
@@ -549,7 +559,7 @@ The function $\dur(u)$ : $\val \rightarrow \mathbb{R}$ computes the duration of 
  $\dur(\apexpr{seq})$			& & \durSeq{u}{v} \\
  $\dur(\apexpr{mix})$ 		& & \durMix{u}{v} \\
  $\dur(\noredex (u,v))$ 		& & \durApply{u}{v} \\
- $\dur(\closenv{\bounds})$ 	& & \durClosure{e}{f}{\bounds} \\
+ $\dur(\closure{e}{f}{\envsym}{\bounds})$ 	& & \durClosure{e}{f}{\bounds} \\
  \hline
 \evaltablend
 
@@ -563,7 +573,7 @@ The function $\transp(u,n)$ :  \sdomain{\val}{\mathbb{Z}}{\val} operates a $n$ c
  $\transp(\apexpr{seq},n)$		& & \transpSeq{u}{v}{n} \\
  $\transp(\apexpr{mix},n)$ 		& & \transpMix{u}{v}{n} \\
  $\transp(\noredex (u,v),n)$ 	& & \transpApply{u}{v}{n} \\
- $\transp(\closenv{\bounds},n)$ 	& & \transpClosure{u}{v}{\bounds}{n} \\
+ $\transp(\closure{e}{f}{\envsym}{\bounds},n)$ 	& & \transpClosure{e}{f}{\bounds}{n} \\
  \hline
 \evaltablend
 
@@ -577,7 +587,7 @@ The function $\stretch(u,r)$ :  \sdomain{\val}{\mathbb{R}}{\val} stretches $u$ u
  $\stretch(\apexpr{seq},r)$			& & \stretchSeq{u}{v}{r} \\
  $\stretch(\apexpr{mix},r)$ 			& & \stretchMix{u}{v}{r} \\
  $\stretch(\noredex (u,v),r)$ 		& & \stretchApply{u}{v}{r} \\
- $\stretch(\closenv{\bounds},r)$ 	& & \stretchClosure{u}{v}{\bounds}{r} \\
+ $\stretch(\closure{e}{f}{\envsym}{\bounds},r)$ 	& & \stretchClosure{e}{f}{\bounds}{r} \\
  \hline
 \evaltablend
 
@@ -593,7 +603,7 @@ The function $\head(u,l)$ :  \sdomain{\val}{\mathbb{N}}{\val} computes the head 
  $\head(\apexpr{seq},l)$			& & \headSeq{u}{v}{l} \\
  $\head(\apexpr{mix},l)$ 			& & \headMix{u}{v}{l} \\
  $\head(\noredex (u,v),l)$ 		& & \headApply{u}{v}{l} \\
- $\head(\closenv{\bounds},l')$ 	& & \headClosure{e}{f}{\bounds}{l'} \\
+ $\head(\closure{e}{f}{\envsym}{\bounds},l')$ 	& & \headClosure{e}{f}{\bounds}{l'} \\
  \hline
 \evaltablend
 
@@ -609,7 +619,7 @@ The function $\tail(u,l)$ :  \sdomain{\val}{\mathbb{N}}{\val} computes the tail 
  $\tail(\apexpr{seq},l)$			& & \tailSeq{u}{v}{l} \\
  $\tail(\apexpr{mix},l)$ 			& & \tailMix{u}{v}{l} \\
  $\tail(\noredex (u,v),l)$ 		& & \tailApply{u}{v}{l} \\
- $\tail(\closenv{\bounds},l')$ 	& & \tailClosure{e}{f}{\bounds}{l'} \\
+ $\tail(\closure{e}{f}{\envsym}{\bounds},l')$ 	& & \tailClosure{e}{f}{\bounds}{l'} \\
  \hline
 \evaltablend
 
@@ -625,7 +635,7 @@ The function $\top(u,n)$ :  \sdomain{\val}{\mathbb{N}}{\val} computes the top of
  $\top(\apexpr{seq},n)$			& & \topSeq{u}{v}{n} \\
  $\top(\apexpr{mix},n)$ 			& & \topMix{u}{v}{n} \\
  $\top(\noredex (u,v),n)$ 		& & \topApply{u}{v}{n} \\
- $\top(\closenv{\bounds},n)$ 	& & \topClosure{e}{f}{\bounds}{n} \\
+ $\top(\closure{e}{f}{\envsym}{\bounds},n)$ 	& & \topClosure{e}{f}{\bounds}{n} \\
  \hline
 \evaltablend
 
@@ -641,7 +651,7 @@ The function $\bottom(u,n)$ :  \sdomain{\val}{\mathbb{N}}{\val} computes the bot
  $\bottom(\apexpr{seq},n)$		& & \bottomSeq{u}{v}{n} \\
  $\bottom(\apexpr{mix},n)$ 		& & \bottomMix{u}{v}{n} \\
  $\bottom(\noredex (u,v),n)$ 	& & \bottomApply{u}{v}{n} \\
- $\bottom(\closenv{\bounds},n)$ 	& & \bottomClosure{e}{f}{\bounds}{n} \\
+ $\bottom(\closure{e}{f}{\envsym}{\bounds},n)$ 	& & \bottomClosure{e}{f}{\bounds}{n} \\
  \hline
 \evaltablend
 
@@ -726,8 +736,8 @@ and   $\length(\evalexpr{e})$
 	& = & $min(\bounds(l), \length(e'))$ \\
 	& = & $\length(e')$ when  $\bounds(l) \geq \length(e')$ 
 \evalspace
-and when $\bounds(l) < \length(e')$ & &  $\evalexpr{\opexpr{\seq}} \ra \seqOp{\headOp{e'}{\bounds(l)}}{\emptyScore}$ \\
-	&   &  and $\headSeq{e'}{f'}{\bounds(l)} \ra \seqOp{\headOp{e'}{\bounds(l)}}{\emptyScore}$
+and when $\bounds(l) < \length(e')$ : \:\:  $\evalexpr{\opexpr{\seq}}$ & \ra & $\seqOp{\headOp{e'}{\bounds(l)}}{\emptyScore}$ \\
+\headSeq{e'}{f'}{\bounds(l)} & \ra & \seqOp{\headOp{e'}{\bounds(l)}}{\emptyScore}
 \evalspace
 thus $\evalexpr{\opexpr{\seq}}$ & \ra & $\equivalence{\evalss{\opexpr{\seq}}}$
 								
@@ -755,17 +765,19 @@ The proof that: \:\: $\evalexpr{\opexpr{\mix}} \rightarrow \equivalence{\evalss{
 %%%%%% abstraction evaluation %%%%%%
 \subsubsection{Bounded \emph{abstraction} ($\lambda$) evaluation}
 \evaltable
- $\evalexpr{\lambdaexpr{e}{f}}$ 	&  & $\result{\closenv{\bounds'(l:=min(l,\bounds(l)), v:=min(v,\bounds(v)), d:=min(d,\bounds(d)))}} 
- 				{\bounds'}$ \\
+ $\evalexpr{\lambdaexpr{e}{f}}$ 	& & \bevalLambda{e}{f}{\envsym}{\bounds} \\
+ % \closure{\envsym}{e}{f}{\bounds'(l:=min(l,\bounds(l)), v:=min(v,\bounds(v)), d:=min(d,\bounds(d)))} \\
 \evaltablend
 
 By definition of $\evalsimple{\lambdaexpr{e}{f}}$  (section \ref{evalsimple}):
 \evaltable[]
- $\evalsimple{\lambdaexpr{e}{f}}$ 	& \ra & $\closenv{\bounds'}$ \\
- 								& & \ with $\bounds'(l:=\length(VAL(f)), v:=\voices(VAL(f)), d=\dur(VAL(f)))$ \\
-			 			& & \ and $VAL(f) = \evalss{f},\envsym[\var{e}= \evalss{e}, \emptyenv]$ \\
-and $\head( \top (\evalss{\lambdaexpr{e}{f}}, \bounds(v)), \bounds(l))$ &  \ra & $\head( \top (\closenv{\bounds'}, \bounds(v)), \bounds(l))$ \\
-			&  \ra & $\closenv{\bounds'(l:=min(l,\bounds(l), v:=min(v, \bounds(v), d:=min(v,\bounds(v))} $
+ $\evalsimple{\lambdaexpr{e}{f}}$ 	& \ra & $\sevalLambda{e}{f}{\envsym}{\bounds'}$ \\
+ 				& & \ with $\bounds'(l:=\length(VAL(f)), v:=\voices(VAL(f)), d=\dur(VAL(f)))$ \\
+			 	& & \ and $VAL(f) = \evalss{f}\envsym\left(\var{e}= \evalss{e}\emptyenv\right)$ \\
+\equivalence{\sevalLambda{e}{f}{\envsym}{\bounds'}} 
+	&  \ra & $\head( \topClosure{e}{f}{\bounds'}{\bounds(v)}, \bounds(l))$ \\
+%and $\head( \top (\evalss{\lambdaexpr{e}{f}}, \bounds(v)), \bounds(l))$ &  \ra & $\head( \top (\closure{\envsym}{e}{f}{\bounds'}, \bounds(v)), \bounds(l))$ \\
+	&  \ra & \closure{e}{\headOp{\topOp{\evalss{f}}{\bounds(v)}}{\bounds(l)}}{\envsym}{\bounds'(l:=min(l,\bounds(l), v:=min(v, \bounds(v)}
 \evaltablend
 
 which corresponds to the bounded evaluation definition above. \\
@@ -776,8 +788,8 @@ Thus: \hspace{1cm} $\evalexpr{\lambdaexpr{e}{f}} \rightarrow \ \equivalence{\eva
 \subsubsection{Bounded \emph{application} ($\applyop$) evaluation}
 \evaltable
  $\evalexpr{\opexpr{\applyop}}$ 	
- 		&  & $\result{\apply{\evalexpr[\nobounds]{e}}{\evalexpr[\nobounds]{f}}}{\bounds(l:=l-l_f, v:=v-v_f)}$\\
- 		&  & $\apply{\evalss{e}}{\evalss{f}}$\\
+ 		&  & \bevalApply{e}{f} \\
+ 		&  & \bevalApply[\evalss]{e}{f} \\
 \evaltablend
 Note that we make use of the following equivalence: \hspace{1cm} $\evalexpr[\nobounds]{e} \rightarrow \evalss{e}$
 
@@ -786,19 +798,15 @@ Here we need first to define the application \boundapplysym{\bounds} to prove th
 %%%%%% application function %%%%%%
 \subsubsection{Bounded \emph{application} ($\boundapplysym{\bounds} $) function}
 \evaltable[]
- $\apply{score}{w}$ 	& \ra & $\result{\noredex(score, \equivalence{w})}{\bounds(l:=l-l_w, v:=v-v_w)}$ \\
-				 		& &		\: where $l_w=\length(w)$ and $v_w=\voices(w)$
+ $\apply{score}{w}$ 			& \ra & \bapplyScore{score}{w}
 \evalspace
- $\apply{\noredex (u,v)}{w}$ 	& \ra & $\result{\noredex(\noredex(u,v), \equivalence{w})}{\bounds(l:=l-l_w, v:=v-v_w)}$ \\
-				 		& &		\: where $l_w=\length(w)$ and $v_w=\voices(w)$
+ $\apply{\noredex (u,v)}{w}$ & \ra & \bapplyApply{\noredex (u,v)}{w}
 \evalspace
- $\apply{\apexpr{seq}}{w}$	& \ra & $\result{seq(\apply{u}{\head(w,\dur(u))}, \apply[\bounds(l:=l-l_1]{v}{\tail(w,\dur(u))})}{\bounds(l:=l-l_1-l_2)}$ \\
-				 		& &		\: where $l_1=\length(\apply{u}{\head(w,\dur(u))})$ 
+ $\apply{\apexpr{seq}}{w}$	& \ra & \bapplySeq{u}{v}{w} 
 \evalspace
- $\apply{\apexpr{mix}}{w}$ 	& \ra & $\result{mix(\apply{u}{\top(w,\voices(u))}, \apply[\bounds(v:=v-v_1]{v}{\bottom(w,\voices(u))})}{\bounds(v:=v-v_1-v_2)}$ \\
-				 		& &		\: where $v_1= \voices(\apply{u}{\top(w,\voices(u)})$
+ $\apply{\apexpr{mix}}{w}$ 	& \ra & \bapplyMix{u}{v}{w} 
 \evalspace
- $\apply{\closenv{\bounds'}}{w}$  & \ra & $\evalexpr{f}[\var{e} := w]$ \\
+ $\apply{\closure{\envsym}{e}{f}{\bounds'}}{w}$  & \ra & $\evalexpr{f}[\var{e} := w]$ \\
 
 \evaltablend
 
@@ -807,25 +815,25 @@ Now and for each application type, we'll examine the bounded evaluation equivale
 
 \evaltable
 \evaltitle {Score application equivalence}
- from the above: \: $\evalexpr{score \applyop w}$ 	& & $\apply{\evalss{score}}{\evalss{w}}$ \\
-									& & $\applysimple{score}{\equivalence{\evalss{w}}}$ \\
-									& & $\noredex(score, \equivalence{\evalss{w}})$
+ from the above: \: $\evalexpr{score \applyop w}$ 	
+ 		& & \bevalApply[\evalss]{score}{w} \\
+		& & \bapplyScore{score}{\evalss{w}}
 \evalspace
-from \evalsym\ definition: \: $\equivalence{\evalss{score \applyop w}}$  & & $\equivalence{\noredex(score, \evalss{w}}$ \\
-									& &  $\noredex(score, \equivalence{\evalss{w}})$
+from \evalsym\ definition: \: \equivalence{\evalss{score \applyop w}} 
+		& & \equivalence{\sapplyScore{score}{w}} \\
+		& & \sapplyScore{score}{\equivalence{\evalss{w}}}
 \evalspace
-thus $\evalexpr{score \applyop w}$ 	& & $\equivalence{\evalss{score \applyop w}}$
+thus $\evalexpr{score \applyop w}$ 	& & \equivalence{\evalss{score \applyop w}}
 \evaltablend
 
-\newpage
 %%%%%% Seq application evaluation proof %%%%%%
 \evaltable[]
 \evaltitle {Sequence application equivalence}
  $\evalexpr{(u \seq v) \applyop w}$ 
- 	& \ra & $\apply{\evalss{u \seq v}}{\evalss{w}}$ \\
-	& \ra & $\apply{seq(u, v)}{\evalss{w}}$ \\
-	& \ra & $seq(\apply{u}{\head(\evalss{w},\dur(u))}, \apply[\bounds(l:=l-l_{uw})]{v}{\tail(\evalss{w},\dur(u))}))$ \\
-	& &		\: where $l_{uw}= \length(\apply{u}{\head(\evalss{w},\dur(u))})$ \\
+ 	& \ra & \apply{\evalss{u \seq v}}{\evalss{w}} \\
+	& \ra & \apply{\sevalSeq{u}{v}}{\evalss{w}}  \\
+	& \ra & \bapplySeq{\evalss{u}}{\evalss{v}}{\evalss{w}} \\
+
 	& \ra & $seq(\equivalence{h_{uw}}, \equivl{t_{uw}}{l-l_{uw}})$ \\
 	& &		\: where $h_{uw}=\applysimple{u}{\head(\evalss{w},\dur(u))}$ and $t_{uw} = \applysimple{v}{\tail(\evalss{w},\dur(u))} $
 \evaltablend
