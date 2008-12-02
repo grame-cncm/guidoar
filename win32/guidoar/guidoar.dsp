@@ -109,6 +109,10 @@ SOURCE=..\..\src\lib\streambeautifuller.cpp
 # PROP Default_Filter ""
 # Begin Source File
 
+SOURCE=..\..\src\operations\bottomOperation.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\operations\durationOperation.cpp
 # End Source File
 # Begin Source File
@@ -141,15 +145,11 @@ SOURCE=..\..\src\operations\tailOperation.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\src\operations\topOperation.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\src\operations\transposeOperation.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\operations\vheadOperation.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\src\operations\vtailOperation.cpp
 # End Source File
 # End Group
 # Begin Group "parser"
@@ -208,6 +208,10 @@ SOURCE=..\..\src\visitors\durationvisitor.cpp
 # Begin Source File
 
 SOURCE=..\..\src\visitors\event2timevisitor.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\src\visitors\firstpitchvisitor.cpp
 # End Source File
 # Begin Source File
 
