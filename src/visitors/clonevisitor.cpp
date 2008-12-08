@@ -34,6 +34,7 @@
 #include "AROthers.h"
 #include "ARTag.h"
 #include "clonevisitor.h"
+#include "guidoelement.h"
 #include "tree_browser.h"
 
 using namespace std;

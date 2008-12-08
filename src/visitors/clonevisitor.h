@@ -25,9 +25,9 @@
 #define __cloneVisitor__
 
 #include <ostream>
+#include <stack>
 
 #include "export.h"
-#include "guidoelement.h"
 #include "ARTypes.h"
 #include "visitor.h"
 
@@ -55,6 +55,7 @@ class export clonevisitor :
        	virtual ~clonevisitor() {}
               
 		virtual Sguidoelement clone(const Sguidoelement&);
+		virtual Sguidoelement result()		{ Sguidoelement res = fStack.top(); fStack.pop(); return res; }
 
 	protected:
 		virtual void visitStart( SARMusic& elt );

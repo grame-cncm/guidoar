@@ -32,6 +32,7 @@
 #include "ARNote.h"
 #include "AROthers.h"
 #include "ARTag.h"
+#include "guidoelement.h"
 #include "unrolled_guido_browser.h"
 
 using namespace std;

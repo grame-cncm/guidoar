@@ -30,7 +30,6 @@
 #include "ARTypes.h"
 #include "browser.h"
 #include "export.h"
-#include "guidoelement.h"
 #include "rational.h"
 #include "visitor.h"
 
