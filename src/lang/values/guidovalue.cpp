@@ -53,11 +53,9 @@ void guidovalue::acceptOut(basevisitor& v) {
 }
 
 //______________________________________________________________________________
-void guidovalue::print(ostream& os) {
-
-//	guidoValPrinter gev(os);
-//	tree_browser<guidovalue> browser(&gev);
-//	browser.browse(*this);
+void guidovalue::print(ostream& os) 
+{
+	os << "guidovalue";
 }
 
 //______________________________________________________________________________

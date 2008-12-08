@@ -30,7 +30,11 @@
 
 #include "exceptions.h"
 #include "guidoexpression.h"
+#include "guidoApplyValue.h"
+#include "guidoEval.h"
+#include "guidoEvalSusp.h"
 #include "guidoClosureValue.h"
+#include "guidoErrValue.h"
 #include "guidoMixValue.h"
 #include "guidoScoreValue.h"
 #include "guidoSeqValue.h"
@@ -54,9 +58,10 @@ namespace guidolang
 
 //______________________________________________________________________________
 Sguidoelement valueRenderer::render(const Sguidoexpression& exp)
-{ 
+{
+	fPos = 0;
 	try {
-		SguidoEnv env = guidoEnv::create();		
+		SguidoEnv env = guidoEnv::create();				
 		Sguidovalue val = exp->eval(env);
 		if (val) return render(val);
 	} catch (const TException& e)  { 
@@ -72,6 +77,7 @@ Sguidoelement valueRenderer::render(const Sguidoexpression& exp)
 Sguidoelement valueRenderer::render(const Sguidovalue& val)
 { 
 	fScore = 0;
+cout << "valueRenderer::render " << val << endl;
 	val->acceptIn (*this);
 	return fScore;
 }
@@ -85,14 +91,47 @@ void valueRenderer::visitStart( Sguidovalue& exp )
 }
 
 //______________________________________________________________________________
+void valueRenderer::visitStart( SguidoApplyValue& exp )
+{
+	fPos++;
+	if (fPos < fLimit) {
+		Sguidovalue v1 = exp->getArg1();
+		Sguidovalue v2 = exp->getArg2();
+		fScore = render (v1->apply(v2));	
+	}
+	else {
+		cout << "SguidoApplyValue rendering limit reached" << endl;
+	}
+}
+
+//______________________________________________________________________________
+void valueRenderer::visitStart( SguidoEvalSusp& exp )
+{
+	fScore = render (exp->force());	
+}
+
+//______________________________________________________________________________
+void valueRenderer::visitStart( SguidoClosureValue& exp )
+{
+	cout << "valueRenderer SguidoClosureValue" << endl;
+}
+
+//______________________________________________________________________________
 void valueRenderer::visitStart( SguidoSeqValue& exp )
 {
-	valueRenderer v;
-	SARMusic s1 = dynamic_cast<ARMusic*> ((guidoelement*)v.render(exp->getArg1()));
-	SARMusic s2 = dynamic_cast<ARMusic*> ((guidoelement*)v.render(exp->getArg2()));
+	Sguidovalue v2 = exp->getArg2();
+	SARMusic s1 = dynamic_cast<ARMusic*> ((guidoelement*)render(exp->getArg1()));
+	SARMusic s2 = dynamic_cast<ARMusic*> ((guidoelement*)render(v2));
 	if (s1 && s2) {
 		seqOperation seq;
 		fScore = seq(s1, s2);
+	}
+	else {
+		SguidoErrValue err1 = dynamic_cast<guidoErrValue*> ((guidovalue*)exp->getArg1());
+		SguidoErrValue err2 = dynamic_cast<guidoErrValue*> ((guidovalue*)v2);
+		cout << "SguidoSeqValue err " << (void*)err1 << " - " << (void*)err2 << endl;
+		if (err2) fScore = s1;
+		else fScore = 0;
 	}
 }
 
@@ -105,13 +144,13 @@ void valueRenderer::visitStart( SguidoScoreValue& exp )
 //______________________________________________________________________________
 void valueRenderer::visitStart( SguidoMixValue& exp )
 {
-	valueRenderer v;
-	SARMusic s1 = dynamic_cast<ARMusic*> ((guidoelement*)v.render(exp->getArg1()));
-	SARMusic s2 = dynamic_cast<ARMusic*> ((guidoelement*)v.render(exp->getArg2()));
+	SARMusic s1 = dynamic_cast<ARMusic*> ((guidoelement*)render(exp->getArg1()));
+	SARMusic s2 = dynamic_cast<ARMusic*> ((guidoelement*)render(exp->getArg2()));
 	if (s1 && s2) {
 		parOperation mix;
 		fScore = mix(s1, s2);
 	}
+	else fScore = 0;
 }
 
 }

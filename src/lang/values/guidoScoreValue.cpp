@@ -61,6 +61,12 @@ Sguidovalue	guidoScoreValue::create ()
 }
 
 //______________________________________________________________________________
+void guidoScoreValue::print(ostream& os) 
+{
+	os << "guidoScoreValue";
+}
+
+//______________________________________________________________________________
 Sguidovalue	guidoScoreValue::create (Sguidoelement score)
 	{ guidoScoreValue * o = new guidoScoreValue(score); assert(o!=0); return o; }
 

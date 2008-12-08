@@ -41,6 +41,12 @@ Sguidovalue	guidoClosureValue::create (Sguidoexpression& id, Sguidoexpression& b
 	{ valuePrint("guidoClosureValue"); guidoClosureValue * o = new guidoClosureValue(id, body, env, length, dur, voices); assert(o!=0); return o; }
 
 //______________________________________________________________________________
+void guidoClosureValue::print(ostream& os) 
+{
+	os << "guidoClosureValue";
+}
+
+//______________________________________________________________________________
 Sguidovalue	guidoClosureValue::apply (Sguidovalue& v)
 { 
 	if (!fIdent)	throw(newException (kNullIdent)); 

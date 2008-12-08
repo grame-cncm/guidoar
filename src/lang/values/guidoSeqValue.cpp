@@ -40,6 +40,12 @@ Sguidovalue	guidoSeqValue::create (Sguidovalue v1, Sguidovalue v2)
 	{ valuePrint("guidoSeqValue"); guidoSeqValue * o = new guidoSeqValue(v1, v2); assert(o!=0); return o; }
 
 //______________________________________________________________________________
+void guidoSeqValue::print(ostream& os) 
+{
+	os << "guidoSeqValue";
+}
+
+//______________________________________________________________________________
 Sguidovalue	guidoSeqValue::apply (Sguidovalue& arg)
 {
 	rational dur = getArg1()->duration();

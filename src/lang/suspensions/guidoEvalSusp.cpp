@@ -43,6 +43,12 @@ Sguidovalue guidoEvalSusp::create(Sguidoexpression e, SguidoEnv env)
 	{ suspCreate("guidoEvalSusp"); guidoEvalSusp * o = new guidoEvalSusp(e,env); assert(o!=0); return o; }
 
 //______________________________________________________________________________
+void guidoEvalSusp::print(ostream& os) 
+{
+	os << "guidoEvalSusp";
+}
+
+//______________________________________________________________________________
 Sguidovalue	guidoEvalSusp::force()
 {
 	suspForce("guidoEvalSusp");

@@ -40,6 +40,12 @@ Sguidovalue	guidoApplyValue::create (Sguidovalue v1, Sguidovalue v2)
 	{ valuePrint("guidoApplyValue"); guidoApplyValue * o = new guidoApplyValue(v1, v2); assert(o!=0); return o; }
 
 //______________________________________________________________________________
+void guidoApplyValue::print(ostream& os) 
+{
+	os << "guidoApplyValue: " << getArg1() << "@" << getArg2() ;
+}
+
+//______________________________________________________________________________
 Sguidovalue	guidoApplyValue::apply	(Sguidovalue& arg)			{ return create(this, arg); }
 Sguidovalue	guidoApplyValue::head	(unsigned int length)		{ return propagate(head, length); }
 Sguidovalue	guidoApplyValue::head	(const rational& length)	{ return propagate(head, length); }

@@ -59,6 +59,7 @@ class export guidoSeqValue : public guidovalue
 
 		virtual void		acceptIn(guido::basevisitor& visitor);
 		virtual void		acceptOut(guido::basevisitor& visitor);
+		virtual	void		print(std::ostream& os);
 };
 typedef guido::SMARTP<guidoSeqValue> 	SguidoSeqValue;
 

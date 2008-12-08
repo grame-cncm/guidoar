@@ -40,6 +40,12 @@ Sguidovalue	guidoMixValue::create (Sguidovalue v1, Sguidovalue v2)
 	{ valuePrint("guidoMixValue"); guidoMixValue * o = new guidoMixValue(v1, v2); assert(o!=0); return o; }
 
 //______________________________________________________________________________
+void guidoMixValue::print(ostream& os) 
+{
+	os << "guidoMixValue";
+}
+
+//______________________________________________________________________________
 Sguidovalue	guidoMixValue::apply (Sguidovalue& arg)	
 { 
 	int voices = getArg1()->voices();

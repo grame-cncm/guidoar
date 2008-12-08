@@ -37,6 +37,8 @@ class guidoScoreValue;
 class guidoMixValue;
 class guidoClosureValue;
 class guidoApplyValue;
+class guidoErrValue;
+class guidoEvalSusp;
 
 typedef guido::SMARTP<guidovalue>			Sguidovalue;
 typedef guido::SMARTP<guidoSeqValue>		SguidoSeqValue;
@@ -44,6 +46,8 @@ typedef guido::SMARTP<guidoScoreValue>		SguidoScoreValue;
 typedef guido::SMARTP<guidoMixValue>		SguidoMixValue;
 typedef guido::SMARTP<guidoClosureValue> 	SguidoClosureValue;
 typedef guido::SMARTP<guidoApplyValue>		SguidoApplyValue;
+typedef guido::SMARTP<guidoErrValue>		SguidoErrValue;
+typedef guido::SMARTP<guidoEvalSusp>		SguidoEvalSusp;
 
 
 } // namespace

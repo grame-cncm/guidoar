@@ -26,6 +26,8 @@
 #include "exceptions.h"
 #include "guidoEval.h"
 #include "guidoexpression.h"
+#include "guidoErrValue.h"
+#include "guidoEvalSusp.h"
 #include "guidoClosureValue.h"
 #include "guidoMixValue.h"
 #include "guidoNamedExpr.h"
@@ -110,14 +112,16 @@ void guidoEval::visitStart( SguidoAbstractExpr& exp)
 	rational dur = valBody->duration();
 	unsigned int voices = valBody->voices();
 	fValue = guidoClosureValue::create(id, body, fEnv, length, dur, voices);
-//	fValue = guidoClosureValue::create(id, body, fEnv, 0, rational(0,1), 0);
 }
 
 void guidoEval::visitStart( SguidoApplyExpr& exp)
 {
-	evalPrint (exp->getName());
-	Sguidovalue earg1, earg2;
-	evalBinary (exp, earg1, earg2);
+	Sguidoexpression arg1 = exp->getArg(0);
+	Sguidoexpression arg2 = exp->getArg(1);
+	if (!arg1 || !arg2) throw (newException (kMissingArgument));
+
+	Sguidovalue earg1 = arg1->eval(fEnv);
+	Sguidovalue earg2 = guidoEvalSusp::create(arg2, fEnv);
 	fValue = earg1->apply(earg2);
 }
 
@@ -190,7 +194,8 @@ void guidoEval::visitStart( SguidoBottomExpr& exp)
 void guidoEval::visitStart( SguidoIdentExpr& exp)
 {
 //	evalPrint (exp->getName() << " '" << exp->getArg(0) << "' (" << (void*)exp << ") - " << fEnv);
-	evalPrint (exp->getName());	
+	evalPrint (exp->getName() << " '" << exp->getArg(0) << "'");
+//	evalPrint (exp->getName());	
 	Sguidoexpression e = exp;
 	if (!e) throw (newException (kMissingArgument));
 	if (!fEnv) throw (newException (kNullEnvironment));

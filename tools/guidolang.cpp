@@ -21,7 +21,7 @@ using namespace guidolang;
 
 guidoExpReader gReader;
 
-//#define debug
+#define debug
 
 //_______________________________________________________________________________
 static void usage(const char * name)

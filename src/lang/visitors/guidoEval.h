@@ -54,6 +54,7 @@ class export guidoEval :
 		SguidoEnv	fEnv;
 		
 	public:
+				 guidoEval() {}
 		virtual ~guidoEval() {}
 		
 		Sguidovalue eval(Sguidoexpression, SguidoEnv);
