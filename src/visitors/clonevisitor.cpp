@@ -151,7 +151,7 @@ void clonevisitor::visitStart( Sguidotag& elt )
 {
 	if (copy()) {
 		Sguidoelement cc = ARFactory::instance().createTag(elt->getName(), elt->getID() );
-		push( copy (elt, cc), elt->size() );
+		push( copy (elt, cc), elt->size() ? true : false );
 	}
 }
 

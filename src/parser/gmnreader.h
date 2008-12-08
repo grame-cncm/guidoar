@@ -25,7 +25,8 @@
 #define __gmnreader__
 
 #include <string>
-#include "guidoelement.h"
+
+#include "ARTypes.h"
 #include "rational.h"
 
 //class rational;

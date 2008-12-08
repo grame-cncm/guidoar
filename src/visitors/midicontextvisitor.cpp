@@ -410,7 +410,7 @@ void midicontextvisitor::visitStart( SARKey& elt )
 			string val = attr->getValue();
 			int key = transposeOperation::convertKey (val);
 			if (key != transposeOperation::kUndefinedKey) {
-				playKeySignChange (key, isupper (val[0]));				
+				playKeySignChange (key, isupper (val[0]) ? true : false);				
 			}
 		}
 		else playKeySignChange (int(*attr));

@@ -41,6 +41,8 @@ namespace guido
 
 //______________________________________________________________________________
 unrolled_guido_browser::unrolled_guido_browser(basevisitor* v) : fVisitor(v)	{ reset(); }
+void unrolled_guido_browser::enter (Sguidoelement& t)		{ t->acceptIn(*fVisitor); }
+void unrolled_guido_browser::leave (Sguidoelement& t)		{ t->acceptOut(*fVisitor); }
 
 //______________________________________________________________________________
 void unrolled_guido_browser::reset()

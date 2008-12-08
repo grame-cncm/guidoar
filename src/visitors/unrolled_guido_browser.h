@@ -122,8 +122,8 @@ class export unrolled_guido_browser : public browser<Sguidoelement>,
 		virtual ~unrolled_guido_browser() {}
 
 		virtual void browse (Sguidoelement& t);
-		virtual void enter (Sguidoelement& t)		{ t->acceptIn(*fVisitor); }
-		virtual void leave (Sguidoelement& t)		{ t->acceptOut(*fVisitor); }
+		virtual void enter (Sguidoelement& t);
+		virtual void leave (Sguidoelement& t);
 };
 
 /*! @} */
