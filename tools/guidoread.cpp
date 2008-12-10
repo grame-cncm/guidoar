@@ -6,6 +6,7 @@
 #include <iostream>
 #include <stdlib.h>
 
+#include "AROthers.h"
 #include "guidoelement.h"
 #include "guidoparser.h"
 

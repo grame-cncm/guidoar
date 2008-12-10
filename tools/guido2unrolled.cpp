@@ -18,7 +18,9 @@
 #include <stdlib.h>
 #include <iostream>
 
+#include "AROthers.h"
 #include "clonevisitor.h"
+#include "guidoelement.h"
 #include "guidoparser.h"
 #include "unrolled_guido_browser.h"
 

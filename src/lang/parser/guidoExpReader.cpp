@@ -26,6 +26,7 @@
 
 #include <iostream>
 
+#include "AROthers.h"
 #include "guidoExpFactory.h"
 #include "guidoExpReader.h"
 #include "guidoelement.h"

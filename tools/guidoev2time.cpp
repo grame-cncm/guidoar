@@ -12,6 +12,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "AROthers.h"
 #include "guidoelement.h"
 #include "guidoparser.h"
 #include "event2timevisitor.h"
