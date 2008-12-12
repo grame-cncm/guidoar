@@ -16,9 +16,10 @@ OBJ = $(patsubst %.cpp, %.o, $(SRC))
 CXXFLAGS = $(addprefix -I, $(subprojects))
 LDFLAGS =  -lstdc++
 
-TOOLS = guidoread guidopar guidorpar guidoseq guidodur guido2midi guidoinfo \
-	guidoev2time guidotime2ev guidoevhead guidoevtail guidovhead guidovtail \
-	guidohead guidotail guidotranspose
+TOOLS = guidoread guidopar guidorpar guidoseq guidodur guidoinfo \
+	guidoev2time guidotime2ev guidoevhead guidoevtail \
+	guidohead guidotail guidotranspose 
+# guido2midi
 
 .PHONY: $(TARGET)
 
@@ -36,12 +37,6 @@ guidotail : ../tools/guidotail.cpp $(TARGET)
 
 guidohead : ../tools/guidohead.cpp $(TARGET)
 	$(GCC) ../tools/guidohead.cpp $(CXXFLAGS) $(LDFLAGS) libguidoar.a -o guidohead
-
-guidovtail : ../tools/guidovtail.cpp $(TARGET)
-	$(GCC) ../tools/guidovtail.cpp $(CXXFLAGS) $(LDFLAGS) libguidoar.a -o guidovtail
-
-guidovhead : ../tools/guidovhead.cpp $(TARGET)
-	$(GCC) ../tools/guidovhead.cpp $(CXXFLAGS) $(LDFLAGS) libguidoar.a -o guidovhead
 
 guidoevtail : ../tools/guidoevtail.cpp $(TARGET)
 	$(GCC) ../tools/guidoevtail.cpp $(CXXFLAGS) $(LDFLAGS) libguidoar.a -o guidoevtail
@@ -91,25 +86,23 @@ clean:
 	rm $(TARGET) $(OBJ)
 # DO NOT DELETE
 
-../src/guido/guidoelement.o: /usr/include/stdlib.h /usr/include/available.h
-../src/guido/guidoelement.o: /usr/include/_types.h /usr/include/sys/_types.h
+../src/guido/guidoelement.o: /usr/include/stdlib.h /usr/include/features.h
 ../src/guido/guidoelement.o: /usr/include/sys/cdefs.h
-../src/guido/guidoelement.o: /usr/include/machine/_types.h
-../src/guido/guidoelement.o: /usr/include/ppc/_types.h
-../src/guido/guidoelement.o: /usr/include/sys/wait.h
-../src/guido/guidoelement.o: /usr/include/sys/signal.h
-../src/guido/guidoelement.o: /usr/include/sys/appleapiopts.h
-../src/guido/guidoelement.o: /usr/include/machine/signal.h
-../src/guido/guidoelement.o: /usr/include/ppc/signal.h
-../src/guido/guidoelement.o: /usr/include/ppc/_structs.h
-../src/guido/guidoelement.o: /usr/include/sys/_structs.h
-../src/guido/guidoelement.o: /usr/include/machine/_structs.h
-../src/guido/guidoelement.o: /usr/include/sys/resource.h
-../src/guido/guidoelement.o: /usr/include/machine/endian.h
-../src/guido/guidoelement.o: /usr/include/ppc/endian.h
-../src/guido/guidoelement.o: /usr/include/sys/_endian.h /usr/include/alloca.h
-../src/guido/guidoelement.o: /usr/include/machine/types.h
-../src/guido/guidoelement.o: /usr/include/ppc/types.h
+../src/guido/guidoelement.o: /usr/include/bits/wordsize.h
+../src/guido/guidoelement.o: /usr/include/gnu/stubs.h
+../src/guido/guidoelement.o: /usr/include/gnu/stubs-32.h
+../src/guido/guidoelement.o: /usr/include/sys/types.h
+../src/guido/guidoelement.o: /usr/include/bits/types.h
+../src/guido/guidoelement.o: /usr/include/bits/typesizes.h
+../src/guido/guidoelement.o: /usr/include/time.h /usr/include/endian.h
+../src/guido/guidoelement.o: /usr/include/bits/endian.h
+../src/guido/guidoelement.o: /usr/include/sys/select.h
+../src/guido/guidoelement.o: /usr/include/bits/select.h
+../src/guido/guidoelement.o: /usr/include/bits/sigset.h
+../src/guido/guidoelement.o: /usr/include/bits/time.h
+../src/guido/guidoelement.o: /usr/include/sys/sysmacros.h
+../src/guido/guidoelement.o: /usr/include/bits/pthreadtypes.h
+../src/guido/guidoelement.o: /usr/include/alloca.h
 ../src/guido/guidoelement.o: ../src/guido/guidoelement.h ../src/lib/export.h
 ../src/guido/guidoelement.o: ../src/visitors/visitable.h
 ../src/guido/guidoelement.o: ../src/visitors/basevisitor.h ../src/lib/ctree.h
@@ -147,28 +140,23 @@ clean:
 ../src/guido/abstract/ARFactory.o: ../src/guido/abstract/AROthers.h
 ../src/guido/abstract/ARFactory.o: ../src/guido/abstract/ARTag.h
 ../src/guido/abstract/ARFactory.o: ../src/visitors/visitor.h
-../src/guido/abstract/ARNote.o: /usr/include/stdlib.h
-../src/guido/abstract/ARNote.o: /usr/include/available.h
-../src/guido/abstract/ARNote.o: /usr/include/_types.h
-../src/guido/abstract/ARNote.o: /usr/include/sys/_types.h
+../src/guido/abstract/ARNote.o: /usr/include/stdlib.h /usr/include/features.h
 ../src/guido/abstract/ARNote.o: /usr/include/sys/cdefs.h
-../src/guido/abstract/ARNote.o: /usr/include/machine/_types.h
-../src/guido/abstract/ARNote.o: /usr/include/ppc/_types.h
-../src/guido/abstract/ARNote.o: /usr/include/sys/wait.h
-../src/guido/abstract/ARNote.o: /usr/include/sys/signal.h
-../src/guido/abstract/ARNote.o: /usr/include/sys/appleapiopts.h
-../src/guido/abstract/ARNote.o: /usr/include/machine/signal.h
-../src/guido/abstract/ARNote.o: /usr/include/ppc/signal.h
-../src/guido/abstract/ARNote.o: /usr/include/ppc/_structs.h
-../src/guido/abstract/ARNote.o: /usr/include/sys/_structs.h
-../src/guido/abstract/ARNote.o: /usr/include/machine/_structs.h
-../src/guido/abstract/ARNote.o: /usr/include/sys/resource.h
-../src/guido/abstract/ARNote.o: /usr/include/machine/endian.h
-../src/guido/abstract/ARNote.o: /usr/include/ppc/endian.h
-../src/guido/abstract/ARNote.o: /usr/include/sys/_endian.h
+../src/guido/abstract/ARNote.o: /usr/include/bits/wordsize.h
+../src/guido/abstract/ARNote.o: /usr/include/gnu/stubs.h
+../src/guido/abstract/ARNote.o: /usr/include/gnu/stubs-32.h
+../src/guido/abstract/ARNote.o: /usr/include/sys/types.h
+../src/guido/abstract/ARNote.o: /usr/include/bits/types.h
+../src/guido/abstract/ARNote.o: /usr/include/bits/typesizes.h
+../src/guido/abstract/ARNote.o: /usr/include/time.h /usr/include/endian.h
+../src/guido/abstract/ARNote.o: /usr/include/bits/endian.h
+../src/guido/abstract/ARNote.o: /usr/include/sys/select.h
+../src/guido/abstract/ARNote.o: /usr/include/bits/select.h
+../src/guido/abstract/ARNote.o: /usr/include/bits/sigset.h
+../src/guido/abstract/ARNote.o: /usr/include/bits/time.h
+../src/guido/abstract/ARNote.o: /usr/include/sys/sysmacros.h
+../src/guido/abstract/ARNote.o: /usr/include/bits/pthreadtypes.h
 ../src/guido/abstract/ARNote.o: /usr/include/alloca.h
-../src/guido/abstract/ARNote.o: /usr/include/machine/types.h
-../src/guido/abstract/ARNote.o: /usr/include/ppc/types.h
 ../src/guido/abstract/ARNote.o: ../src/guido/abstract/ARNote.h
 ../src/guido/abstract/ARNote.o: ../src/guido/guidoelement.h
 ../src/guido/abstract/ARNote.o: ../src/lib/export.h
@@ -192,22 +180,18 @@ clean:
 ../src/guido/abstract/ARTag.o: ../src/visitors/basevisitor.h
 ../src/guido/abstract/ARTag.o: ../src/lib/ctree.h ../src/lib/smartpointer.h
 ../src/guido/abstract/ARTag.o: ../src/visitors/visitor.h
-../src/lib/rational.o: /usr/include/stdlib.h /usr/include/available.h
-../src/lib/rational.o: /usr/include/_types.h /usr/include/sys/_types.h
-../src/lib/rational.o: /usr/include/sys/cdefs.h /usr/include/machine/_types.h
-../src/lib/rational.o: /usr/include/ppc/_types.h /usr/include/sys/wait.h
-../src/lib/rational.o: /usr/include/sys/signal.h
-../src/lib/rational.o: /usr/include/sys/appleapiopts.h
-../src/lib/rational.o: /usr/include/machine/signal.h
-../src/lib/rational.o: /usr/include/ppc/signal.h /usr/include/ppc/_structs.h
-../src/lib/rational.o: /usr/include/sys/_structs.h
-../src/lib/rational.o: /usr/include/machine/_structs.h
-../src/lib/rational.o: /usr/include/sys/resource.h
-../src/lib/rational.o: /usr/include/machine/endian.h
-../src/lib/rational.o: /usr/include/ppc/endian.h /usr/include/sys/_endian.h
-../src/lib/rational.o: /usr/include/alloca.h /usr/include/machine/types.h
-../src/lib/rational.o: /usr/include/ppc/types.h /usr/include/string.h
-../src/lib/rational.o: ../src/lib/rational.h ../src/lib/export.h
+../src/lib/rational.o: /usr/include/stdlib.h /usr/include/features.h
+../src/lib/rational.o: /usr/include/sys/cdefs.h /usr/include/bits/wordsize.h
+../src/lib/rational.o: /usr/include/gnu/stubs.h /usr/include/gnu/stubs-32.h
+../src/lib/rational.o: /usr/include/sys/types.h /usr/include/bits/types.h
+../src/lib/rational.o: /usr/include/bits/typesizes.h /usr/include/time.h
+../src/lib/rational.o: /usr/include/endian.h /usr/include/bits/endian.h
+../src/lib/rational.o: /usr/include/sys/select.h /usr/include/bits/select.h
+../src/lib/rational.o: /usr/include/bits/sigset.h /usr/include/bits/time.h
+../src/lib/rational.o: /usr/include/sys/sysmacros.h
+../src/lib/rational.o: /usr/include/bits/pthreadtypes.h /usr/include/alloca.h
+../src/lib/rational.o: /usr/include/string.h ../src/lib/rational.h
+../src/lib/rational.o: ../src/lib/export.h
 ../src/lib/streambeautifuller.o: ../src/lib/streambeautifuller.h
 ../src/lib/streambeautifuller.o: ../src/lib/export.h
 ../src/visitors/clonevisitor.o: ../src/guido/abstract/ARFactory.h
@@ -277,8 +261,14 @@ clean:
 ../src/visitors/event2timevisitor.o: ../src/visitors/visitor.h
 ../src/visitors/event2timevisitor.o: ../src/visitors/counteventsvisitor.h
 ../src/visitors/firstpitchvisitor.o: /usr/include/math.h
-../src/visitors/firstpitchvisitor.o: /usr/include/architecture/ppc/math.h
+../src/visitors/firstpitchvisitor.o: /usr/include/features.h
 ../src/visitors/firstpitchvisitor.o: /usr/include/sys/cdefs.h
+../src/visitors/firstpitchvisitor.o: /usr/include/bits/wordsize.h
+../src/visitors/firstpitchvisitor.o: /usr/include/gnu/stubs.h
+../src/visitors/firstpitchvisitor.o: /usr/include/gnu/stubs-32.h
+../src/visitors/firstpitchvisitor.o: /usr/include/bits/huge_val.h
+../src/visitors/firstpitchvisitor.o: /usr/include/bits/mathdef.h
+../src/visitors/firstpitchvisitor.o: /usr/include/bits/mathcalls.h
 ../src/visitors/firstpitchvisitor.o: ../src/guido/abstract/ARNote.h
 ../src/visitors/firstpitchvisitor.o: ../src/guido/guidoelement.h
 ../src/visitors/firstpitchvisitor.o: ../src/lib/export.h
@@ -315,12 +305,15 @@ clean:
 ../src/visitors/gmnvisitor.o: ../src/guido/abstract/AROthers.h
 ../src/visitors/gmnvisitor.o: ../src/guido/abstract/ARTag.h
 ../src/visitors/midicontextvisitor.o: /usr/include/ctype.h
-../src/visitors/midicontextvisitor.o: /usr/include/runetype.h
-../src/visitors/midicontextvisitor.o: /usr/include/_types.h
-../src/visitors/midicontextvisitor.o: /usr/include/sys/_types.h
+../src/visitors/midicontextvisitor.o: /usr/include/features.h
 ../src/visitors/midicontextvisitor.o: /usr/include/sys/cdefs.h
-../src/visitors/midicontextvisitor.o: /usr/include/machine/_types.h
-../src/visitors/midicontextvisitor.o: /usr/include/ppc/_types.h
+../src/visitors/midicontextvisitor.o: /usr/include/bits/wordsize.h
+../src/visitors/midicontextvisitor.o: /usr/include/gnu/stubs.h
+../src/visitors/midicontextvisitor.o: /usr/include/gnu/stubs-32.h
+../src/visitors/midicontextvisitor.o: /usr/include/bits/types.h
+../src/visitors/midicontextvisitor.o: /usr/include/bits/typesizes.h
+../src/visitors/midicontextvisitor.o: /usr/include/endian.h
+../src/visitors/midicontextvisitor.o: /usr/include/bits/endian.h
 ../src/visitors/midicontextvisitor.o: ../src/guido/abstract/ARChord.h
 ../src/visitors/midicontextvisitor.o: ../src/lib/export.h
 ../src/visitors/midicontextvisitor.o: ../src/guido/guidoelement.h
@@ -584,8 +577,14 @@ clean:
 ../src/operations/topOperation.o: ../src/lib/tree_browser.h
 ../src/operations/topOperation.o: ../src/lib/browser.h
 ../src/operations/transposeOperation.o: /usr/include/math.h
-../src/operations/transposeOperation.o: /usr/include/architecture/ppc/math.h
+../src/operations/transposeOperation.o: /usr/include/features.h
 ../src/operations/transposeOperation.o: /usr/include/sys/cdefs.h
+../src/operations/transposeOperation.o: /usr/include/bits/wordsize.h
+../src/operations/transposeOperation.o: /usr/include/gnu/stubs.h
+../src/operations/transposeOperation.o: /usr/include/gnu/stubs-32.h
+../src/operations/transposeOperation.o: /usr/include/bits/huge_val.h
+../src/operations/transposeOperation.o: /usr/include/bits/mathdef.h
+../src/operations/transposeOperation.o: /usr/include/bits/mathcalls.h
 ../src/operations/transposeOperation.o: ../src/guido/abstract/ARNote.h
 ../src/operations/transposeOperation.o: ../src/guido/guidoelement.h
 ../src/operations/transposeOperation.o: ../src/lib/export.h
@@ -613,35 +612,46 @@ clean:
 ../src/parser/parser.o: ../src/lib/smartpointer.h ../src/lib/export.h
 ../src/parser/parser.o: ../src/guido/guidotags.h ../src/lib/rational.h
 ../src/parser/parser.o: ../src/parser/guidoparse.cpp /usr/include/assert.h
-../src/parser/parser.o: /usr/include/sys/cdefs.h ../src/guido/guidoelement.h
+../src/parser/parser.o: /usr/include/features.h /usr/include/sys/cdefs.h
+../src/parser/parser.o: /usr/include/bits/wordsize.h /usr/include/gnu/stubs.h
+../src/parser/parser.o: /usr/include/gnu/stubs-32.h
+../src/parser/parser.o: ../src/guido/guidoelement.h
 ../src/parser/parser.o: ../src/visitors/visitable.h
 ../src/parser/parser.o: ../src/visitors/basevisitor.h ../src/lib/ctree.h
 ../src/parser/parser.o: ../src/parser/guidoparse.hpp
 ../src/parser/parser.o: ../src/parser/guidolex.cpp /usr/include/stdio.h
-../src/parser/parser.o: /usr/include/_types.h /usr/include/sys/_types.h
-../src/parser/parser.o: /usr/include/machine/_types.h
-../src/parser/parser.o: /usr/include/ppc/_types.h /usr/include/string.h
-../src/parser/parser.o: /usr/include/errno.h /usr/include/sys/errno.h
-../src/parser/parser.o: /usr/include/stdlib.h /usr/include/available.h
-../src/parser/parser.o: /usr/include/sys/wait.h /usr/include/sys/signal.h
-../src/parser/parser.o: /usr/include/sys/appleapiopts.h
-../src/parser/parser.o: /usr/include/machine/signal.h
-../src/parser/parser.o: /usr/include/ppc/signal.h /usr/include/ppc/_structs.h
-../src/parser/parser.o: /usr/include/sys/_structs.h
-../src/parser/parser.o: /usr/include/machine/_structs.h
-../src/parser/parser.o: /usr/include/sys/resource.h
-../src/parser/parser.o: /usr/include/machine/endian.h
-../src/parser/parser.o: /usr/include/ppc/endian.h /usr/include/sys/_endian.h
-../src/parser/parser.o: /usr/include/alloca.h /usr/include/machine/types.h
-../src/parser/parser.o: /usr/include/ppc/types.h /usr/include/math.h
-../src/parser/parser.o: /usr/include/architecture/ppc/math.h
-../src/parser/parser.o: /usr/include/stddef.h ../src/parser/unicode.cpp
+../src/parser/parser.o: /usr/include/bits/types.h
+../src/parser/parser.o: /usr/include/bits/typesizes.h /usr/include/libio.h
+../src/parser/parser.o: /usr/include/_G_config.h /usr/include/wchar.h
+../src/parser/parser.o: /usr/include/bits/stdio_lim.h
+../src/parser/parser.o: /usr/include/bits/sys_errlist.h /usr/include/string.h
+../src/parser/parser.o: /usr/include/errno.h /usr/include/bits/errno.h
+../src/parser/parser.o: /usr/include/linux/errno.h /usr/include/asm/errno.h
+../src/parser/parser.o: /usr/include/asm-generic/errno.h
+../src/parser/parser.o: /usr/include/asm-generic/errno-base.h
+../src/parser/parser.o: /usr/include/stdlib.h /usr/include/sys/types.h
+../src/parser/parser.o: /usr/include/time.h /usr/include/endian.h
+../src/parser/parser.o: /usr/include/bits/endian.h /usr/include/sys/select.h
+../src/parser/parser.o: /usr/include/bits/select.h /usr/include/bits/sigset.h
+../src/parser/parser.o: /usr/include/bits/time.h /usr/include/sys/sysmacros.h
+../src/parser/parser.o: /usr/include/bits/pthreadtypes.h
+../src/parser/parser.o: /usr/include/alloca.h /usr/include/math.h
+../src/parser/parser.o: /usr/include/bits/huge_val.h
+../src/parser/parser.o: /usr/include/bits/mathdef.h
+../src/parser/parser.o: /usr/include/bits/mathcalls.h
+../src/parser/parser.o: ../src/parser/unicode.cpp
 ../src/parser/guidoparser.o: ../src/parser/guidoparser.h /usr/include/stdio.h
-../src/parser/guidoparser.o: /usr/include/_types.h /usr/include/sys/_types.h
-../src/parser/guidoparser.o: /usr/include/sys/cdefs.h
-../src/parser/guidoparser.o: /usr/include/machine/_types.h
-../src/parser/guidoparser.o: /usr/include/ppc/_types.h ../src/lib/export.h
-../src/parser/guidoparser.o: ../src/parser/gmnreader.h
+../src/parser/guidoparser.o: /usr/include/features.h /usr/include/sys/cdefs.h
+../src/parser/guidoparser.o: /usr/include/bits/wordsize.h
+../src/parser/guidoparser.o: /usr/include/gnu/stubs.h
+../src/parser/guidoparser.o: /usr/include/gnu/stubs-32.h
+../src/parser/guidoparser.o: /usr/include/bits/types.h
+../src/parser/guidoparser.o: /usr/include/bits/typesizes.h
+../src/parser/guidoparser.o: /usr/include/libio.h /usr/include/_G_config.h
+../src/parser/guidoparser.o: /usr/include/wchar.h
+../src/parser/guidoparser.o: /usr/include/bits/stdio_lim.h
+../src/parser/guidoparser.o: /usr/include/bits/sys_errlist.h
+../src/parser/guidoparser.o: ../src/lib/export.h ../src/parser/gmnreader.h
 ../src/parser/guidoparser.o: ../src/guido/abstract/ARTypes.h
 ../src/parser/guidoparser.o: ../src/lib/smartpointer.h
 ../src/parser/guidoparser.o: ../src/guido/guidotags.h ../src/lib/rational.h
