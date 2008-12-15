@@ -46,7 +46,7 @@ midiconverter::~midiconverter()
 }
 
 //________________________________________________________________________
-int  midiconverter::score2midifile (Sguidoelement& score, char* fileName)
+int  midiconverter::score2midifile (Sguidoelement& score, const char* fileName)
 {
 	MidiName tmpName = "guido2midi";
 	short ref = MidiOpen (tmpName);
@@ -58,7 +58,7 @@ int  midiconverter::score2midifile (Sguidoelement& score, char* fileName)
 		infos.format = midifile1;
 		infos.timedef = TicksPerQuarterNote; 
 		infos.clicks = fTPQ;
-		err = MidiFileSave (fileName, fSeq, &infos);
+		err = MidiFileSave ((char *)fileName, fSeq, &infos);
 		MidiFreeSeq (fSeq);
 		fSeq = 0;
 	}

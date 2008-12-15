@@ -50,7 +50,7 @@ class export midiconverter : public midiwriter {
 		virtual ~midiconverter();
 		
 		// main services are provided under the form of a midifile export or a midishare player
-		virtual int   score2midifile (Sguidoelement& score, char* fileName);
+		virtual int   score2midifile (Sguidoelement& score,const char* fileName);
 		virtual short score2player   (Sguidoelement& score, const MidiName playerName);
 
 	protected:

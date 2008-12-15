@@ -18,7 +18,10 @@
 #include <stdlib.h>
 #include <iostream>
 
+#ifndef USEMidiShare
 #define USEMidiShare
+#endif
+
 #include "guidoparser.h"
 #include "midicontextvisitor.h"
 #include "midiconverter.h"
@@ -79,7 +82,7 @@ static SARMusic read (const char* file)
 }
 
 //_______________________________________________________________________________
-static char* gmn2mid (const char* file) 
+static const char* gmn2mid (const char* file) 
 {
 	static char outname[512];
 	if (!strcmp(file, "-")) return "guido2midi.mid";
@@ -94,14 +97,14 @@ static char* gmn2mid (const char* file)
 //_______________________________________________________________________________
 int main(int argc, char *argv[]) {
 #ifdef debug
-	char * file = "Dichter.gmn";
-	char * outfile = gmn2mid(file);
+	const char * file = "Dichter.gmn";
+	const char * outfile = gmn2mid(file);
 	bool play = true;
 #else
 	if (argc < 2) usage(argv[0]);
 	char * file = argv[1];
 	bool play = false;
-	char * outfile = 0;
+	const char * outfile = 0;
 	if (argc == 3) {
 		play = (strcmp (argv[2], "--play") == 0);
 		if (!play) outfile = argv[2];

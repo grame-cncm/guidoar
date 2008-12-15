@@ -2,23 +2,23 @@ TARGET=libguidoar.a
 
 
 BASE       = ../src
-subprojects := $(BASE)/guido $(BASE)/guido/abstract $(BASE)/lib $(BASE)/parser $(BASE)/operations $(BASE)/visitors
+subprojects := $(BASE)/guido $(BASE)/guido/abstract $(BASE)/lib $(BASE)/parser $(BASE)/operations $(BASE)/visitors $(BASE)/midi
 
 HEADERS = $(wildcard $(BASE)/include/GUIDO*.h) \
 	$(BASE)/include/VGDevice.h $(BASE)/include/GDeviceDefs.h \
 	$(BASE)/include/ScoreSymbolMap.h $(BASE)/include/VScoreSymbolMap.h  $(BASE)/include/TRect.h
 
-SRC = $(wildcard $(BASE)/guido/*.cpp $(BASE)/guido/abstract/*.cpp $(BASE)/lib/*.cpp $(BASE)/visitors/*.cpp \
+SRC = $(wildcard $(BASE)/guido/*.cpp $(BASE)/guido/abstract/*.cpp $(BASE)/lib/*.cpp $(BASE)/visitors/*.cpp $(BASE)/midi/*.cpp \
 			$(BASE)/operations/*.cpp) $(BASE)/parser/parser.cpp $(BASE)/parser/guidoparser.cpp
 
 GCC=g++
 OBJ = $(patsubst %.cpp, %.o, $(SRC))
-CXXFLAGS = $(addprefix -I, $(subprojects))
+CXXFLAGS = $(addprefix -I, $(subprojects)) -DUSEMidiShare
 LDFLAGS =  -lstdc++
 
 TOOLS = guidoread guidopar guidorpar guidoseq guidodur guidoinfo \
 	guidoev2time guidotime2ev guidoevhead guidoevtail \
-	guidohead guidotail guidotranspose 
+	guidohead guidotail guidotranspose guido2midi
 # guido2midi
 
 .PHONY: $(TARGET)
@@ -54,7 +54,7 @@ guidoinfo : ../tools/guidoinfo.cpp $(TARGET)
 	$(GCC) ../tools/guidoinfo.cpp $(CXXFLAGS) $(LDFLAGS) libguidoar.a -o guidoinfo
 
 guido2midi : ../tools/guido2midi.cpp $(TARGET)
-	$(GCC) ../tools/guido2midi.cpp $(CXXFLAGS) $(LDFLAGS) libguidoar.a -o guido2midi
+	$(GCC) ../tools/guido2midi.cpp $(CXXFLAGS) $(LDFLAGS) libguidoar.a -lMidiShare -lPlayer -o guido2midi
 
 guidoread : ../tools/guidoread.cpp $(TARGET)
 	$(GCC) ../tools/guidoread.cpp $(CXXFLAGS) $(LDFLAGS) libguidoar.a -o guidoread
