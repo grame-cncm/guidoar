@@ -139,17 +139,19 @@ ARNote::operator string() const {
     ostringstream str;
 
 	str << getName();
-	int n = GetAccidental();
-	if (n) {
-		char c = (n > 0) ? '#' : '&';
-		n = abs(n);
-		while (n--) str << c;
+	if ((getName() != "_") && (getName() != "empty")) {
+		int n = GetAccidental();
+		if (n) {
+			char c = (n > 0) ? '#' : '&';
+			n = abs(n);
+			while (n--) str << c;
+		}
+
+		n = GetOctave();
+		if ( n != ARNote::kUndefined) str << n;
 	}
 
-	n = GetOctave();
-	if (n != ARNote::kUndefined) str << n;
-
-	n = fDuration.getNumerator();
+	int n = fDuration.getNumerator();
 	if (n != kUndefined) {
 		if (n != 1)  str << '*' << n;
 		n = fDuration.getDenominator();
