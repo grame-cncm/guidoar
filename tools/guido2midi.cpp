@@ -16,6 +16,7 @@
 #endif
 
 #include <stdlib.h>
+#include <string.h>
 #include <iostream>
 
 #ifndef USEMidiShare
