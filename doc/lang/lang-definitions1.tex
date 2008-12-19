@@ -1,0 +1,167 @@
+
+%%%%%%%%%%%%%%% definitions for env, empty env a and so on
+\newcommand{\var}[1]		{\ensuremath{\diamond^#1}}
+\newcommand{\es}			{\{\}}
+\newcommand{\expr}			{\ensuremath{\mathbb{EXP}}}
+\newcommand{\val}			{\ensuremath{\mathbb{VAL}}}
+\newcommand{\env}			{\ensuremath{\mathbb{ENV}}}
+\newcommand{\clossym}		{\ensuremath{\Lambda}}
+\newcommand{\applyop}		{\ensuremath{@}}
+\newcommand{\noredex}		{\ensuremath{\applyop^o}}
+
+\newcommand{\bounddomain}		{\ensuremath{\mathbb{LIM}}}
+\newcommand{\ebounddomain}	{\ensuremath{\mathbb{N} \times \mathbb{N} \times \mathbb{Q}}}
+\newcommand{\sdomain}[3]		{$#1 \times #2 \rightarrow #3$}
+\newcommand{\edomain}[3]		{$#1 \times #2 \times \bounddomain \rightarrow #3$}
+\newcommand{\bdomain}[3]		{$#1 \times #2 \rightarrow #3$}
+
+\newcommand{\evalsym}				{\ensuremath{\epsilon}}
+\newcommand{\boundevalsym}		{\ensuremath{\xi}}
+\newcommand{\envsym}				{\ensuremath{\rho}}
+\newcommand{\emptyenv}			{\ensuremath{\theta}}
+\newcommand{\applysym}			{\ensuremath{\mathcal A}}
+\newcommand{\boundapplysym}[1]	{\ensuremath{\applysym^{#1}}}
+\newcommand{\closure}[4]			{\ensuremath{\clossym\left(#4,\ \left[\lambdaexpr{#1}{#2}\right],\ #3 \right)}}
+
+%:commands def
+\newcommand{\eval}[1]					{\ensuremath{\boundevalsym_\envsym^{#1}}}
+\newcommand{\evalexpr}[2][\bounds]	{\ensuremath{\eval{#1}\left[#2\right]}}
+\newcommand{\evalinfexpr}[1]			{\ensuremath{\eval{\nobounds}\left[#1\right]}}
+\newcommand{\evalss}[1]				{\ensuremath{\evalsym\left[#1\right]}}
+\newcommand{\evalsimple}[2][\envsym]	{\ensuremath{\evalsym\left[#2\right]#1}}
+\newcommand{\apply}[3][\bounds]		{\ensuremath{\boundapplysym{#1}\left(#2,#3\right)}}
+\newcommand{\applysimple}[2]			{\ensuremath{\applysym\left(#1,\ #2\right)}}
+\newcommand{\result}[2]				{#1}
+\newcommand{\equivalence}[1]			{\ensuremath{\head( \top (#1, \bounds(v)), \bounds(l))}}
+\newcommand{\equivl}[2]				{\ensuremath{\head( \top (#1, \bounds(v)), \bounds(#2))}}
+\newcommand{\equivv}[2]				{\ensuremath{\head( \top (#1, \bounds(#2)), \bounds(l))}}
+
+%%%%%%%%%%%%%%% definitions for syntactic expressions
+\newcommand{\opexpr}[1] 		{e #1 f}
+\newcommand{\apexpr}[1] 		{#1(u, v)}
+\newcommand{\lambdaexpr}[2]	{\lambda \var{#1}.#2}
+
+%%%%%%%%%%%%%%% definitions for functions symbols
+\newcommand{\seq}				{:}
+\newcommand{\mix}				{/}
+\newcommand{\length}			{\ensuremath{\mathcal L}}
+\newcommand{\voices}			{\ensuremath{\mathcal V}}
+\newcommand{\pitch}			{\ensuremath{\mathcal P}}
+\newcommand{\dur}				{\ensuremath{\mathcal D}}
+\newcommand{\head}				{\ensuremath{\mathcal H}}
+\newcommand{\tail}				{\ensuremath{\mathcal T}}
+\renewcommand{\top}			{\ensuremath{\mathcal U}}
+\newcommand{\bottom}			{\ensuremath{\mathcal B}}
+\newcommand{\transp}			{\ensuremath{\delta}}
+\renewcommand{\stretch}		{\ensuremath{\mathcal S}}
+\newcommand{\bounds}			{\ensuremath{\sigma}}
+\newcommand{\nullbounds}		{\ensuremath{\sigma_0}}
+\newcommand{\nobounds}		{\ensuremath{\infty}} 
+
+%%%%%%%%%%%%%%% operations definitions
+\newcommand{\seqOp}[2]		{\ensuremath{seq\left(#1, #2\right)}}
+\newcommand{\mixOp}[2]		{\ensuremath{mix\left(#1, #2\right)}}
+\newcommand{\headOp}[2]		{\ensuremath{\head\left(#1, #2\right)}}
+\newcommand{\tailOp}[2]		{\ensuremath{\tail\left(#1, #2\right)}}
+\newcommand{\topOp}[2]		{\ensuremath{\top\left(#1, #2\right)}}
+\newcommand{\bottomOp}[2]		{\ensuremath{\bottom\left(#1, #2\right)}}
+\newcommand{\durOp}[1]		{\ensuremath{\dur\left(#1\right)}}
+\newcommand{\voiceOp}[1]		{\ensuremath{\voices\left(#1\right)}}
+
+%%%%%%%%%%%%%%% language definitions
+\newcommand{\sevalScore}[1]				{\ensuremath{#1}}
+\newcommand{\sevalVar}[2][\envsym]		{\ensuremath{#1\left(\var{#2}\right)}}
+\newcommand{\sevalLambda}[4]				{\ensuremath{\closure{#1}{#2}{#3}{#4}}}
+\newcommand{\sevalApply}[2]				{\ensuremath{\applysimple{\evalss{#1}}{\evalss{#2}}}}
+\newcommand{\sevalSeq}[2]					{\ensuremath{seq\left(\evalss{#1}, \ \evalss{#2}\right)}}
+\newcommand{\sevalMix}[2]					{\ensuremath{mix\left(\evalss{#1}, \ \evalss{#2}\right)}}
+\newcommand{\sevalHead}[2]				{\ensuremath{\head \left(\evalss{#1},#2\right)}}
+\newcommand{\sevalTail}[2]				{\ensuremath{\tail \left(\evalss{#1},#2\right)}}
+\newcommand{\sevalTop}[2]					{\ensuremath{\top \left(\evalss{#1},#2\right)}}
+\newcommand{\sevalBottom}[2]				{\ensuremath{\bottom \left(\evalss{#1},#2\right)}}
+\newcommand{\sevalTransp}[2]				{\ensuremath{\transp \left(\evalss{#1},#2\right)}}
+\newcommand{\sevalStretch}[2]			{\ensuremath{\stretch \left(\evalss{#1},#2\right)}}
+
+\newcommand{\sapplyScore}[2]				{\ensuremath{\noredex\left(#1,#2\right)}}
+\newcommand{\sapplySeq}[3]				{\ensuremath{seq\left(\applysimple{#1}{\head\left(#3,\durOp{#1}\right)}, 
+											\applysimple{#2}{\tail\left(#3, \durOp{#1}\right)}\right)}}
+\newcommand{\sapplyMix}[3]				{\ensuremath{mix\left(\applysimple{#1}{\top\left(#3, \voices\left(#1\right)\right)}, 
+											\applysimple{#2}{\bottom\left(#3, \voices\left(#1\right)\right)} \right)}}
+\newcommand{\sapplyApply}[3]				{\ensuremath{\noredex\left(\noredex\left(#1,#2\right),#3\right)}}
+\newcommand{\sapplyClosure}[3]			{\ensuremath{\evalss{#2}[\var{#1} := #3]}}
+
+\newcommand{\lengthScore}					{\ensuremath{max\left(\length\left(v_1\right),..., \length\left(v_n\right)\right)}}
+\newcommand{\lengthSeq}[2]				{\ensuremath{\length\left(#1\right) + \length\left(#2\right)}}
+\newcommand{\lengthMix}[2]				{\ensuremath{max\left(\length\left(#1\right), \length\left(#2\right)\right)}}
+\newcommand{\lengthApply}[2]				{\ensuremath{\length\left(#2\right)}}
+\newcommand{\lengthClosure}[4][\envsym]	{\ensuremath{{#4}\left(l\right)}}
+
+\newcommand{\durScore}				{\ensuremath{max\left(\durOp{v_1},..., \durOp{v_n}\right)}}
+\newcommand{\durSeq}[2]				{\ensuremath{\durOp{#1} + \durOp{#2}}}
+\newcommand{\durMix}[2]				{\ensuremath{max\left(\durOp{#1}, \durOp{#2}\right)}}
+\newcommand{\durApply}[2]				{\ensuremath{\durOp{#2}}}
+\newcommand{\durClosure}[4][\envsym]	{\ensuremath{{#4}\left(d\right)}}
+
+\newcommand{\transpScore}[2]			{\ensuremath{#1_{#2}'}}
+\newcommand{\transpSeq}[3]			{\ensuremath{seq\left(\transp\left(#1, #3\right), \transp\left(#2, #3\right)\right)}}
+\newcommand{\transpMix}[3]			{\ensuremath{mix\left(\transp\left(#1, #3\right), \transp\left(#2, #3\right)\right)}}
+\newcommand{\transpApply}[3]			{\ensuremath{\noredex\left(#1,\transp\left(#2,#3\right)\right)}}
+\newcommand{\transpClosure}[5][\envsym]	{\closure{#2}{\sevalTransp{#3}{#5}}{#1}{#4}}
+
+\newcommand{\stretchScore}[2]	{\ensuremath{#1_{#2}'}}
+\newcommand{\stretchSeq}[3]		{\ensuremath{seq\left(\stretch\left(#1, #3\right), \stretch\left(#2, #3\right)\right)}}
+\newcommand{\stretchMix}[3]		{\ensuremath{mix\left(\stretch\left(#1, #3\right), \stretch\left(#2, #3\right)\right)}}
+\newcommand{\stretchApply}[3]	{\ensuremath{\noredex\left(#1, \stretch\left(#2,#3\right)\right)}}
+\newcommand{\stretchClosure}[5][\envsym]	{\closure{#2}{\sevalStretch{#3}{#5}}{#1}{#4(d:=d*#5)}}
+
+\newcommand{\headScore}[2]		{\ensuremath{#1_{#2}'}}
+\newcommand{\headSeq}[3]			{\ensuremath{seq\left(\head\left(#1, #3\right), \head\left(#2, \ #3 - \length\left(#1\right)\right)\right)}}
+\newcommand{\headMix}[3]					{\ensuremath{mix\left(\head\left(#1, #3\right), \head\left(#2, #3\right)\right)}}
+\newcommand{\headApply}[3]				{\ensuremath{\noredex\left(#1, \head\left(#2,#3\right)\right)}}
+\newcommand{\headClosure}[5][\envsym]	{\closure{#2}{\sevalHead{#3}{#5}}{#1}{#4(l:=min(l,#5)}}
+
+\newcommand{\tailScore}[2]				{\ensuremath{#1_{#2'}'}}
+\newcommand{\tailSeq}[3]					{\ensuremath{seq\left(\tail\left(#1, #3\right), 
+											\tail\left(#2, \ #3 - \length\left(#1\right)\right)\right)}}
+\newcommand{\tailMix}[3]					{\ensuremath{mix\left(\tail\left(#1, #3\right), \tail\left(#2, #3\right)\right)}}
+\newcommand{\tailApply}[3]				{\ensuremath{\noredex\left(#1, \tail\left(#2,#3\right)\right)}}
+\newcommand{\tailClosure}[5][\envsym]	{\closure{#2}{\sevalTail{#3}{#5}}{#1}{#4(l:=l-#5)}}
+
+\newcommand{\topScore}[2]					{\ensuremath{#1_{#2'}'}}
+\newcommand{\topSeq}[3]					{\ensuremath{seq\left(\top\left(#1, #3\right), \top\left(#2, \ #3\right)\right)}}
+\newcommand{\topMix}[3]					{\ensuremath{mix\left(\top\left(#1, #3\right), 
+											\top\left(#2, #3-\voices\left(#1\right)\right)\right)}}
+\newcommand{\topApply}[3]					{\ensuremath{\noredex\left(#1, \top\left(#2,#3\right)\right)}}
+\newcommand{\topClosure}[5][\envsym]		{\closure{#2}{\sevalTop{#3}{#5}}{#1}{#4(v:=min(v,#5))}}
+
+\newcommand{\bottomScore}[2]		{\ensuremath{#1_{#2'}'}}
+\newcommand{\bottomSeq}[3]		{\ensuremath{seq\left(\bottom\left(#1, #3\right), \bottom\left(#2, \ #3\right)\right)}}
+\newcommand{\bottomMix}[3]		{\ensuremath{mix\left(\bottom\left(#1, #3\right), \bottom\left(#2, #3-\voices\left(#1\right)\right)\right)}}
+\newcommand{\bottomApply}[3]				{\ensuremath{\noredex\left(#1, \bottom\left(#2,#3\right)\right)}}
+\newcommand{\bottomClosure}[5][\envsym]	{\closure{#2}{\sevalBottom{#3}{#5}}{#1}{#4(v:=v-#5)}}
+
+%%%%%%%%%%%%%%% bounded language definitions
+\newcommand{\bevalScore}[1]		{\ensuremath{\equivalence{#1}}}
+\newcommand{\bevalSeq}[2]			{\ensuremath{\seqOp{\evalexpr{#1}}{\evalexpr[\bounds(l:=l- \length(\evalexpr{#1}))]{#2}}}}
+\newcommand{\bevalMix}[2]			{\ensuremath{\mixOp{\evalexpr{#1}}{\evalexpr[\bounds(v:=v- \voices(\evalexpr{#1}))]{#2}}}}
+% args are similar to closure args: #1 var, #2 body, #3 env, #4 bounds
+\newcommand{\bevalLambda}[4]		{\ensuremath{\closure{#1}{\evalexpr{f}}{#3}{#4'(l:=min(l,#4(l)), v:=min(v,#4(v)))}}}
+\newcommand{\bevalApply}[3][\evalinfexpr]	{\ensuremath{\apply{#1{#2}}{#1{#3}}}}
+\newcommand{\bevalSApply}[2]		{\ensuremath{\apply{\evalss{#1}}{\evalss{f}}}}
+
+%%%%%%%%%%%%%%% bounded applications definitions
+\newcommand{\bapplyScore}[2]		{\ensuremath{\noredex(#1, \equivalence{#2})}}
+\newcommand{\bapplyApply}[2]		{\ensuremath{\noredex(#1, \equivalence{#2})}}
+\newcommand{\bapplySeqTermA}[2] {\ensuremath{\apply{#1} {\headOp{#2} {\durOp{#1}}}}}
+\newcommand{\bapplySeq}[3]		{\ensuremath{\seqOp{\bapplySeqTermA{#1}{#3}}
+									{\apply[\bounds(l:=l-\length\left(\bapplySeqTermA{#1}{#3}\right)]
+									{#2}{\tailOp{#3}{\durOp{#1}}}}}}
+
+\newcommand{\bapplyMixTermA}[2] {\ensuremath{\apply{#1} {\topOp{#2} {\voiceOp{#1}}}}}
+\newcommand{\bapplyMix}[3]		{\ensuremath{\mixOp{\bapplyMixTermA{#1}{#3}}
+									{\apply[\bounds(v:=v-\voices\left(\bapplyMixTermA{#1}{#3}\right)]
+									{#2}{\bottomOp{#3}{\voices(#1)}}}}}
+
+\newcommand{\emptyScore}			{\ensuremath{\{\}}}
+\newcommand{\identity}[1]			{\ensuremath{#1}}
+
