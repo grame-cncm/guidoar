@@ -143,6 +143,7 @@
 		D39419EC0E9F63290002FD03 /* libguidoar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoar.framework */; };
 		D39419EE0E9F63420002FD03 /* guidoevhead.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D39419ED0E9F63420002FD03 /* guidoevhead.cpp */; };
 		D39419F20E9F63510002FD03 /* guidoevtail.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D39419F10E9F63510002FD03 /* guidoevtail.cpp */; };
+		D39682180EFBE58A00B65EF9 /* guidoExpReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D39C11C20EADBA3800C4E199 /* guidoExpReader.cpp */; };
 		D39C11C50EADBA3800C4E199 /* guidoExpReader.h in Headers */ = {isa = PBXBuildFile; fileRef = D39C11C30EADBA3800C4E199 /* guidoExpReader.h */; };
 		D39C11D20EADC50600C4E199 /* guidolang.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D39C11D10EADC50600C4E199 /* guidolang.cpp */; };
 		D39C11D40EADC50F00C4E199 /* libguidoar.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EF9F00DEE0B5800A3AB8A /* libguidoar.framework */; };
@@ -1588,6 +1589,7 @@
 				D35ACDE00EF65827008CF4AF /* guidoNamedExpr.cpp in Sources */,
 				D35ACDE10EF65829008CF4AF /* guidoScoreExpr.cpp in Sources */,
 				D35ACDE30EF65834008CF4AF /* guidoErrValue.cpp in Sources */,
+				D39682180EFBE58A00B65EF9 /* guidoExpReader.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
