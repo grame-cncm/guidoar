@@ -163,7 +163,7 @@
 #include "rational.h"
 
 #include "guidoparse.hpp"
-#include "guidolex.cpp"
+#include "guidolex.c++"
 
 int guidoarerror(const char*s);
 int	guidoarwrap()		{ return(1); }
@@ -268,8 +268,8 @@ typedef union YYSTYPE
 	std::vector<guido::Sguidoattribute>* vattr;
 	rational *		r;
 }
-/* Line 187 of yacc.c.  */
-#line 273 "guidoparse.cpp"
+/* Line 193 of yacc.c.  */
+#line 273 "guidoparse.c++"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
@@ -282,7 +282,7 @@ typedef union YYSTYPE
 
 
 /* Line 216 of yacc.c.  */
-#line 286 "guidoparse.cpp"
+#line 286 "guidoparse.c++"
 
 #ifdef short
 # undef short
@@ -332,7 +332,7 @@ typedef short int yytype_int16;
 #define YYSIZE_MAXIMUM ((YYSIZE_T) -1)
 
 #ifndef YY_
-# if YYENABLE_NLS
+# if defined YYENABLE_NLS && YYENABLE_NLS
 #  if ENABLE_NLS
 #   include <libintl.h> /* INFRINGES ON USER NAME SPACE */
 #   define YY_(msgid) dgettext ("bison-runtime", msgid)
@@ -842,7 +842,7 @@ while (YYID (0))
    we won't break user code: when these are the locations we know.  */
 
 #ifndef YY_LOCATION_PRINT
-# if YYLTYPE_IS_TRIVIAL
+# if defined YYLTYPE_IS_TRIVIAL && YYLTYPE_IS_TRIVIAL
 #  define YY_LOCATION_PRINT(File, Loc)			\
      fprintf (File, "%d.%d-%d.%d",			\
 	      (Loc).first_line, (Loc).first_column,	\
@@ -1954,7 +1954,7 @@ yyreduce:
 
 
 /* Line 1267 of yacc.c.  */
-#line 1958 "guidoparse.cpp"
+#line 1958 "guidoparse.c++"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);

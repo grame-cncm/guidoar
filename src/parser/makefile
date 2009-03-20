@@ -1,19 +1,19 @@
 
-OUT  = guidolex.cpp guidoparse.cpp guidoparse.hpp
+OUT  = guidolex.c++ guidoparse.c++ guidoparse.hpp
 YACC = bison
 LEX = flex
 PREFIX := guidoar
 
 code : $(OUT)
 
-guidoparse.cpp : guido.y
-	$(YACC) -d -o guidoparse.cpp  -p $(PREFIX) guido.y
+guidoparse.c++ : guido.y
+	$(YACC) -d -o guidoparse.c++  -p $(PREFIX) guido.y
 
 guidoparse.hpp : guido.y
-	$(YACC) -d -o guidoparse.cpp  -p $(PREFIX) guido.y
+	$(YACC) -d -o guidoparse.c++  -p $(PREFIX) guido.y
 
-guidolex.cpp : guido.l guidoparse.hpp
-	$(LEX)  -oguidolex.cpp -I -P$(PREFIX) guido.l
+guidolex.c++ : guido.l guidoparse.hpp
+	$(LEX)  -oguidolex.c++ -I -P$(PREFIX) guido.l
 
 clean:
 	rm -f $(OUT)

@@ -10,7 +10,7 @@
 #include "rational.h"
 
 #include "guidoparse.hpp"
-#include "guidolex.cpp"
+#include "guidolex.c++"
 
 int guidoarerror(const char*s);
 int	guidoarwrap()		{ return(1); }

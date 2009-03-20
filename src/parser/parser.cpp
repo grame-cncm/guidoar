@@ -44,8 +44,8 @@ guido::gmnreader * gReader;
 #define YYDEBUG	1
 extern int yydebug;
 #endif
-#include "guidoparse.cpp"
-#include "unicode.cpp"
+#include "guidoparse.c++"
+#include "unicode.c++"
 
 using namespace std;
 
