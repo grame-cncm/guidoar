@@ -40,8 +40,8 @@ std::map<std::string, std::pair<char, int> > ARNote::fNormalizeMap;
 //______________________________________________________________________________
 ARNote::ARNote() 
 	:	fOctave(kUndefined), fAccidental(0), 
-		fDuration(kUndefined,4),
-		fDots(0)
+		fDots(0), fDuration(kUndefined,4)
+		
 {
 	if (!fNormalizeMap.size()) {
 		fNormalizeMap["c"]   = make_pair('c', 0);

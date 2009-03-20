@@ -111,7 +111,7 @@ void seqOperation::visitStart ( SARNote& elt )
 		if (octave != ARNote::kUndefined)
 			fCurrentOctave = octave;
 	}
-	else if (fState = kInSecondScore) {
+	else if (fState == kInSecondScore) {
 		SARNote	note = copy (elt);
 		push( note );
 		done = true;
@@ -138,6 +138,8 @@ void seqOperation::visitStart ( SAREndBar& elt )
 		case kInSecondScore:			
 			clonevisitor::visitStart (tag);
 			break;
+		default:
+			break;
 	}
 }
 
@@ -150,6 +152,8 @@ void seqOperation::visitStart ( SARVoice& elt )
 		case kRemainVoice:			
 			clonevisitor::visitStart (elt);
 			break;
+		default:
+			break;
 	}
 }
 
@@ -160,6 +164,8 @@ void seqOperation::visitEnd   ( SARVoice& elt )
 		case kInSecondScore:			
 		case kRemainVoice:			
 			clonevisitor::visitEnd (elt);
+			break;
+		default:
 			break;
 	}
 }
