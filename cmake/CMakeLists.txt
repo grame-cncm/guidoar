@@ -28,7 +28,7 @@ endif(WIN32)
 set (GAR 		${CMAKE_CURRENT_SOURCE_DIR}/..)
 set (GARSRC 	${GAR}/src)
 set (GARTOOLS   ${GAR}/tools)
-set (SRCFOLDERS  guido guido/abstract lib operations visitors midi parser)
+set (SRCFOLDERS  interface guido guido/abstract lib operations visitors midi parser)
 
 foreach(folder ${SRCFOLDERS})
 	set(SRC ${SRC} "${GARSRC}/${folder}/*.cpp")			# add source files

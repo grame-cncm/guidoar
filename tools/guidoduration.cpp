@@ -12,10 +12,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "AROthers.h"
-#include "guidoelement.h"
-#include "guidoparser.h"
-#include "durationOperation.h"
+#include "libguidoar.h"
 
 using namespace std;
 using namespace guido;
@@ -35,23 +32,10 @@ static void usage(char * name)
 }
 
 //_______________________________________________________________________________
-static void readErr(const char * name)
+static void readErr (const char * file) 
 {
-	cerr << name << ": read failed"  << endl;
-	exit (1);
-}
-
-//_______________________________________________________________________________
-static SARMusic read (const char* file) 
-{
-	guidoparser r;
-	SARMusic score;
-	if (!strcmp(file, "-"))
-		score = r.parseFile(stdin);
-	else
-		score = r.parseFile(file);
-	if (!score) readErr(file);
-	return score;
+	cerr << "failed to read '" << file << "'" << endl;
+	exit(1);
 }
 
 //_______________________________________________________________________________
@@ -64,19 +48,10 @@ static float floatArg (const char* str)
 }
 
 //_______________________________________________________________________________
-static rational durArg (const char* str) 
+static bool durArg (const char* str, int* num, int* denom) 
 {
-	int num=0, denum=0;
-	rational result (0,0);
-	int n = sscanf(str, "%d/%d", &num, &denum);
-	if (n == 2)
-		result.set( num, denum);
-	if (n == 1) {
-		if (num)	result.set ( num, 1);
-		if (denum)	result.set ( 1, denum);
-	}
-	if (result < rational(0,1)) result.set (0,0);
-	return result;
+	int n = sscanf(str, "%d/%d", num, denom);
+	return n == 2;
 }
 
 //_______________________________________________________________________________
@@ -90,23 +65,38 @@ int main(int argc, char *argv[])
 	if (argc != 3) usage(argv[0]);
 	char ** argsPtr = &argv[1];
 #endif
-	SARMusic score = read (argsPtr[0]);
-	durationOperation setdur;
-	Sguidoelement result;
+	
+	garErr err;
+	int num, denom;
 
-	float ratio = floatArg (argsPtr[1]);
-	rational dur = durArg (argsPtr[1]);
+	char *buff = strcmp(argsPtr[0],"-") ? guidoread(argsPtr[0]) : guidoread(stdin);
+	if (!buff) readErr(argsPtr[0]);
 
+	float ratio = floatArg(argsPtr[1]);
 	if (ratio > 0) {
-		result = setdur(score, ratio);
+		err = guidoMultDuration(buff, ratio, cout);
 	}
-	else if (dur.getNumerator() > 0) {
-		result = setdur(score, dur);
+	else if (durArg (argsPtr[1], &num, &denom)) {
+		err = guidoSetDuration(buff, rational(num, denom), cout);
 	}
 	else {
-		SARMusic dscore = read (argsPtr[1]);
-		result = setdur(score, dscore);
+		char *gmn = guidoread(argsPtr[1]);
+		if (!gmn) readErr(argsPtr[1]);
+		err = guidoSetDuration(buff, gmn, cout);
+		delete[] gmn;
 	}
-	if (result) cout << result << endl;
+	delete[] buff;
+
+
+	switch (err) {
+		case kInvalidArgument:
+			cerr << "invalid gmn file" << endl;
+			break;
+		case kOperationFailed:
+			cerr << "duration operation failed" << endl;
+			break;
+		default:
+			break;
+	}
 	return 0;
 }

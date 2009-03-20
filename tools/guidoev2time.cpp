@@ -12,10 +12,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "AROthers.h"
-#include "guidoelement.h"
-#include "guidoparser.h"
-#include "event2timevisitor.h"
+#include "libguidoar.h"
 
 using namespace std;
 using namespace guido;
@@ -34,19 +31,10 @@ static void usage(char * name)
 }
 
 //_______________________________________________________________________________
-static SARMusic read (const char* file) 
+static void readErr (const char * file) 
 {
-	guidoparser r;
-	SARMusic score;
-	if (!strcmp(file, "-"))
-		score = r.parseFile(stdin);
-	else
-		score = r.parseFile(file);
-	if (!score) {
-		cerr << file << ": read failed"  << endl;
-		exit (1);
-	}
-	return score;
+	cerr << "failed to read '" << file << "'" << endl;
+	exit(1);
 }
 
 //_______________________________________________________________________________
@@ -70,7 +58,10 @@ int main(int argc, char *argv[])
 	if ((argc != 3) && (argc != 4)) usage(name);
 	char ** argsPtr = &argv[1];
 #endif
+
 	const char *file = argsPtr[0];
+	char *buff = strcmp(file,"-") ? guidoread(file) : guidoread(stdin);
+	if (!buff) readErr(file);
 
 	int eventIndex = numArg (argsPtr[1]);		// get the event index argument
 	if (eventIndex <= 0) usage(name);
@@ -79,10 +70,8 @@ int main(int argc, char *argv[])
 	if (argc == 4) voiceIndex = numArg (argsPtr[2]);	// get the voice index argument
 	if (voiceIndex <= 0) usage(name);
 		
-	SARMusic score = read (file);
-	event2timevisitor convert;
-	rational time = convert.event2time (score, eventIndex-1, voiceIndex-1);
 	cout << file << ": voice " << voiceIndex << " event " << eventIndex
-		 << ": time " << string(time) << endl;
+		 << ": time " << string(guidoEv2Time(buff, eventIndex-1, voiceIndex-1)) << endl;
+	delete[] buff;
 	return 0;
 }

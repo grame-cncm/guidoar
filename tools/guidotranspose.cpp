@@ -9,12 +9,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-//#include <inttypes.h>
-
-#include "AROthers.h"
-#include "guidoelement.h"
-#include "guidoparser.h"
-#include "transposeOperation.h"
+#include "libguidoar.h"
 
 using namespace std;
 using namespace guido;
@@ -35,27 +30,14 @@ static void usage(const char * name)
 }
 
 //_______________________________________________________________________________
-static void readErr(const char * name)
+static void readErr (const char * file) 
 {
-	cerr << name << ": read failed"  << endl;
-	exit (1);
+	cerr << "failed to read '" << file << "'" << endl;
+	exit(1);
 }
 
 //_______________________________________________________________________________
-static SARMusic read (const char* file) 
-{
-	guidoparser r;
-	SARMusic score;
-	if (!strcmp(file, "-"))
-		score = r.parseFile(stdin);
-	else
-		score = r.parseFile(file);
-	if (!score) readErr(file);
-	return score;
-}
-
-//_______________________________________________________________________________
-static rational pitchArg (const char* vi) 
+static int pitchArg (const char* vi) 
 {
 	int num=0;
 	int n = sscanf(vi, "%d", &num);
@@ -74,18 +56,31 @@ int main(int argc, char *argv[])
 	if (argc != 3) usage(argv[0]);
 	char ** argsPtr = &argv[1];
 #endif
-	SARMusic score = read (argsPtr[0]);
-	transposeOperation trsp;
-	Sguidoelement result;
 
+	const char *file = argsPtr[0];
+	char *buff = strcmp(file,"-") ? guidoread(file) : guidoread(stdin);
+	if (!buff) readErr(file);
+
+	garErr err = kNoErr;
 	int steps = pitchArg (argsPtr[1]);
 	if (steps < 9999) {
-		result = trsp(score, steps);
+		err = guidoTranpose(buff, steps, cout);
 	}
 	else {
-		SARMusic pscore = read (argsPtr[1]);
-		result = trsp(score, pscore);
+		char *gmn = guidoread(argsPtr[1]);
+		if (!gmn) readErr(argsPtr[1]);
+		err = guidoTranpose(buff, gmn, cout);
 	}
-	if (result) cout << result << endl;
+
+	switch (err) {
+		case kInvalidArgument:
+			cerr << "invalid gmn file" << endl;
+			break;
+		case kOperationFailed:
+			cerr << "bottom operation failed" << endl;
+			break;
+		default:
+			break;
+	}
 	return 0;
 }

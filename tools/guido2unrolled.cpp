@@ -19,14 +19,10 @@
 #include <string.h>
 #include <iostream>
 
-#include "AROthers.h"
-#include "clonevisitor.h"
-#include "guidoelement.h"
-#include "guidoparser.h"
-#include "unrolled_guido_browser.h"
+#include "libguidoar.h"
 
 
-#define debug
+//#define debug
 
 using namespace std;
 using namespace guido;
@@ -41,23 +37,6 @@ static void usage(char * name)
 	exit (1);
 }
 
-
-//_______________________________________________________________________________
-static SARMusic read (const char* file) 
-{
-	guidoparser r;
-	SARMusic score;
-	if (!strcmp(file, "-"))
-		score = r.parseFile(stdin);
-	else
-		score = r.parseFile(file);
-	if (!score) {
-		cerr << file << ": read failed"  << endl;
-		exit (1);
-	}
-	return score;
-}
-
 //_______________________________________________________________________________
 int main(int argc, char *argv[]) {
 #ifdef debug
@@ -66,15 +45,26 @@ int main(int argc, char *argv[]) {
 	if (argc != 2) usage(argv[0]);
 	char * file = argv[1];
 #endif
+	
+	garErr err;
+	char * buff;
+	if (!strcmp(file, "-"))
+		buff = guidoread(stdin);
+	else
+		buff = guidoread(file);
+	if (!buff) cerr << "failed to read '" << file << "'" << endl;
+	else err = guido2unrolled(buff, cout);
+	delete[] buff;
 
-	Sguidoelement score = read (file);
-	if (score) {
-		clonevisitor cv;
-		unrolled_guido_browser ugb(&cv);
-		ugb.browse (score);
-//		Sguidoelement unrolled = cv.clone(score, true);
-		Sguidoelement unrolled = cv.result();
-		if (unrolled) cout << unrolled << endl;
+	switch (err) {
+		case kInvalidArgument:
+			cerr << "unable to parse gmn file '" << file << "'" << endl;
+			break;
+		case kOperationFailed:
+			cerr << "unroll operation failed" << endl;
+			break;
+		default:
+			break;
 	}
-	return 0;
+	return err;
 }

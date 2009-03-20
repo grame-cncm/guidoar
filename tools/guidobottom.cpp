@@ -13,10 +13,7 @@
 #include <string.h>
 
 
-#include "AROthers.h"
-#include "guidoelement.h"
-#include "guidoparser.h"
-#include "bottomOperation.h"
+#include "libguidoar.h"
 
 using namespace std;
 using namespace guido;
@@ -35,32 +32,19 @@ static void usage(char * name)
 }
 
 //_______________________________________________________________________________
-static void readErr(const char * name)
-{
-	cerr << name << ": read failed"  << endl;
-	exit (1);
-}
-
-//_______________________________________________________________________________
-static SARMusic read (const char* file) 
-{
-	guidoparser r;
-	SARMusic score;
-	if (!strcmp(file, "-"))
-		score = r.parseFile(stdin);
-	else
-		score = r.parseFile(file);
-	if (!score) readErr(file);
-	return score;
-}
-
-//_______________________________________________________________________________
 static int voiceArg (const char* vi) 
 {
 	int num=0;
 	int n = sscanf(vi, "%d", &num);
 	if (n != 1) num = -1;
 	return num;
+}
+
+//_______________________________________________________________________________
+static void readErr (const char * file) 
+{
+	cerr << "failed to read '" << file << "'" << endl;
+	exit(1);
 }
 
 //_______________________________________________________________________________
@@ -74,18 +58,35 @@ int main(int argc, char *argv[])
 	if (argc != 3) usage(argv[0]);
 	char ** argsPtr = &argv[1];
 #endif
-	SARMusic score = read (argsPtr[0]);
-	bottomOperation tail;
-	Sguidoelement result;
+	garErr err;
+	char * buff;
+	if (!strcmp(argsPtr[0], "-"))
+		buff = guidoread(stdin);
+	else
+		buff = guidoread(argsPtr[0]);
+	if (!buff) readErr(argsPtr[0]);
 
 	int nvoices = voiceArg (argsPtr[1]);
 	if (nvoices > 0) {
-		result = tail(score, nvoices);
+		err = guidoBottom(buff, nvoices, cout);
 	}
 	else {
-		SARMusic dscore = read (argsPtr[1]);
-		result = tail(score, dscore);
+		char* gmn = guidoread(argsPtr[1]);
+		if (!gmn) readErr(argsPtr[1]);
+		err = guidoBottom(buff, gmn, cout);
+		delete[] gmn;
 	}
-	if (result) cout << result << endl;
-	return 0;
+	delete[] buff;
+
+	switch (err) {
+		case kInvalidArgument:
+			cerr << "invalid gmn file" << endl;
+			break;
+		case kOperationFailed:
+			cerr << "bottom operation failed" << endl;
+			break;
+		default:
+			break;
+	}
+	return err;
 }
