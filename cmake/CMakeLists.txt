@@ -1,0 +1,101 @@
+#######################################
+# CMAKE libguidoar
+#######################################
+project(libguidoar)
+cmake_minimum_required(VERSION 2.4)
+
+if(UNIX)
+	add_definitions(-Wall -DGCC)
+endif(UNIX)
+
+if(APPLE)
+	set (CMAKE_OSX_SYSROOT /Developer/SDKs/MacOSX10.4u.sdk)
+	set (CMAKE_C++_FLAGS -mmacosx-version-min=10.4)
+endif(APPLE)
+
+if(WIN32)
+ add_definitions(-DWINVER=0x0400 -DWIN32)
+ if(${CMAKE_GENERATOR} STREQUAL "Visual Studio 6")
+  add_definitions(-DVC6)
+ elseif(${CMAKE_GENERATOR} STREQUAL "Visual Studio 8 2005")
+  add_definitions(-DVC2005)
+ endif(${CMAKE_GENERATOR} STREQUAL "Visual Studio 6")
+endif(WIN32)
+
+
+#######################################
+# set directories, src and headers.
+set (GAR 		${CMAKE_CURRENT_SOURCE_DIR}/..)
+set (GARSRC 	${GAR}/src)
+set (GARTOOLS   ${GAR}/tools)
+set (SRCFOLDERS  guido guido/abstract lib operations visitors midi parser)
+
+foreach(folder ${SRCFOLDERS})
+	set(SRC ${SRC} "${GARSRC}/${folder}/*.cpp")			# add source files
+endforeach(folder)
+file (GLOB CORESRC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${SRC})
+
+foreach(folder ${SRCFOLDERS})
+	set(HEADERS ${HEADERS} "${GARSRC}/${folder}/*.h")		# add header files
+endforeach(folder)
+file (GLOB COREH RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${HEADERS})
+
+foreach(folder ${SRCFOLDERS})
+	set(INCL ${INCL} "${GARSRC}/${folder}")				# add include folders
+endforeach(folder)
+
+
+#######################################
+# set includes
+include_directories( ${INCL})
+set_source_files_properties (${COREH} PROPERTIES HEADER_FILE_ONLY TRUE)
+
+
+#######################################
+# set library target
+if(APPLE OR WIN32)
+	set(target libguidoar)
+else(APPLE OR WIN32)
+	set(target guidoar)
+endif(APPLE OR WIN32)
+
+if(WIN32)
+	enable_language(RC)
+#	set(LIBCONTENT ${CORESRC} ${COREH} ${GAR}/win32/libmusicxml/libmusicxml.rc)
+	set(LIBCONTENT ${CORESRC} ${COREH})
+else(WIN32)
+	set(LIBCONTENT ${CORESRC} ${COREH})
+endif(WIN32)
+
+add_library(${target} SHARED ${LIBCONTENT})
+set_target_properties (${target} PROPERTIES 
+			FRAMEWORK TRUE 
+			FRAMEWORK_VERSION 0.80
+			PUBLIC_HEADER "${COREH}"
+			DEFINE_SYMBOL GUIDOAR_EXPORTS
+			MACOSX_FRAMEWORK_SHORT_VERSION_STRING "v.0.80"
+			MACOSX_FRAMEWORK_BUNDLE_VERSION "0.80"
+)
+
+
+#######################################
+# set sample targets
+set (TOOLS 	guido2unrolled guidobottom guidoduration guidoev2time guidoevhead
+			guidoevtail guidohead guidoinfo guidopar guidoread guidorpar 
+			guidoseq guidotail guidotime2ev guidotop guidotranspose)
+
+foreach(sample ${TOOLS})
+	add_executable( ${sample} ${GARTOOLS}/${sample}.cpp )
+	target_link_libraries( ${sample} ${target})
+	add_dependencies(${sample} ${target})
+endforeach(sample)
+
+
+#######################################
+# install setup
+install ( TARGETS ${target}
+    	LIBRARY DESTINATION lib
+    	ARCHIVE DESTINATION lib
+    	FRAMEWORK DESTINATION "/Library/Frameworks"
+    	PUBLIC_HEADER DESTINATION include/libguidoar
+)
