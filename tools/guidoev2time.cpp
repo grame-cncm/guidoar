@@ -1,21 +1,13 @@
+/*
 
-#ifdef WIN32
-# pragma warning (disable : 4786)
-# define basename(name)	(name)
-# define _CRT_SECURE_NO_DEPRECATE
-#else 
-# include <libgen.h>
-#endif
+  Copyright (C) 2003-2008  Grame
+  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  research@grame.fr
 
-#include <iostream>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+  This file is provided as an example of the MusicXML Library use.
+*/
 
-#include "libguidoar.h"
-
-using namespace std;
-using namespace guido;
+#include "common.cxx"
 
 //#define guidodebug
 
@@ -28,22 +20,6 @@ static void usage(char * name)
 	cerr << "       evIndex: the index of the target event (1 based)"  << endl;
 	cerr << "       voiceIndex: optional voice index (defaults to the first voice)"  << endl;
 	exit (1);
-}
-
-//_______________________________________________________________________________
-static void readErr (const char * file) 
-{
-	cerr << "failed to read '" << file << "'" << endl;
-	exit(1);
-}
-
-//_______________________________________________________________________________
-static int numArg (const char* vi) 
-{
-	int num=0;
-	int n = sscanf(vi, "%d", &num);
-	if (n != 1) num = -1;
-	return num;
 }
 
 //_______________________________________________________________________________
@@ -60,14 +36,13 @@ int main(int argc, char *argv[])
 #endif
 
 	const char *file = argsPtr[0];
-	char *buff = strcmp(file,"-") ? guidoread(file) : guidoread(stdin);
-	if (!buff) readErr(file);
+	char *buff = readgmn(file);
 
-	int eventIndex = numArg (argsPtr[1]);		// get the event index argument
+	int eventIndex = intArg (argsPtr[1], -1);		// get the event index argument
 	if (eventIndex <= 0) usage(name);
 	
 	int voiceIndex = 1;									// default voice is 1
-	if (argc == 4) voiceIndex = numArg (argsPtr[2]);	// get the voice index argument
+	if (argc == 4) voiceIndex = intArg (argsPtr[2], -1);// get the voice index argument
 	if (voiceIndex <= 0) usage(name);
 		
 	cout << file << ": voice " << voiceIndex << " event " << eventIndex

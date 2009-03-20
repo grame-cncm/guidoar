@@ -7,26 +7,9 @@
   This file is provided as an example of the MusicXML Library use.
 */
 
-#ifdef WIN32
-# pragma warning (disable : 4786)
-# define basename(name)	(name)
-# define _CRT_SECURE_NO_DEPRECATE
-#else 
-# include <libgen.h>
-#endif
-
-#include <stdlib.h>
-#include <string.h>
-#include <iostream>
-
-#include "libguidoar.h"
-
+#include "common.cxx"
 
 //#define debug
-
-using namespace std;
-using namespace guido;
-
 
 //_______________________________________________________________________________
 static void usage(char * name)
@@ -46,25 +29,9 @@ int main(int argc, char *argv[]) {
 	char * file = argv[1];
 #endif
 	
-	garErr err;
-	char * buff;
-	if (!strcmp(file, "-"))
-		buff = guidoread(stdin);
-	else
-		buff = guidoread(file);
-	if (!buff) cerr << "failed to read '" << file << "'" << endl;
-	else err = guido2unrolled(buff, cout);
+	char *buff = readgmn(file);
+	garErr err = guido2unrolled(buff, cout);
 	delete[] buff;
-
-	switch (err) {
-		case kInvalidArgument:
-			cerr << "unable to parse gmn file '" << file << "'" << endl;
-			break;
-		case kOperationFailed:
-			cerr << "unroll operation failed" << endl;
-			break;
-		default:
-			break;
-	}
+	checkErr (err, "unroll");
 	return err;
 }
