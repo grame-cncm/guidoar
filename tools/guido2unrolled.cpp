@@ -16,6 +16,7 @@
 #endif
 
 #include <stdlib.h>
+#include <string.h>
 #include <iostream>
 
 #include "AROthers.h"
@@ -60,7 +61,7 @@ static SARMusic read (const char* file)
 //_______________________________________________________________________________
 int main(int argc, char *argv[]) {
 #ifdef debug
-	char * file = "a.gmn";
+	const char * file = "a.gmn";
 #else
 	if (argc != 2) usage(argv[0]);
 	char * file = argv[1];
