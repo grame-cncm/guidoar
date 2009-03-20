@@ -30,7 +30,7 @@ float floatArg (const char* str, float nofloat)
 }
 
 //_______________________________________________________________________________
-int intArg (const char* str, float noint)  
+int intArg (const char* str, int noint)  
 {
 	int num=0;
 	int n = sscanf(str, "%d", &num);
