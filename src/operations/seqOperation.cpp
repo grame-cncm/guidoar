@@ -53,6 +53,7 @@ SARMusic seqOperation::operator() ( const SARMusic& score1, const SARMusic& scor
 		ctree<guidoelement>::literator s1i = sc1->lbegin();
 		ctree<guidoelement>::literator s2i = sc2->lbegin();
 
+		fFirstInScore = true;
 		tree_browser<guidoelement> browser(this);
 		while ((s1i != sc1->lend()) && (s2i != sc2->lend())) {
 			fCurrentKey = fCurrentMeter = fCurrentClef = 0;
@@ -108,6 +109,7 @@ void seqOperation::visitStart ( SARNote& elt )
 		// maintain the current duration status while in the first score
 		if (duration.getNumerator() != ARNote::kUndefined)
 			fCurrentDuration = duration;
+		// maintain the current octave number while in the first score
 		if (octave != ARNote::kUndefined)
 			fCurrentOctave = octave;
 	}
@@ -116,14 +118,15 @@ void seqOperation::visitStart ( SARNote& elt )
 		push( note );
 		done = true;
 
-		if ((octave == ARNote::kUndefined) && (fCurrentOctave != ARNote::kUndefined)) {
-			note->SetOctave(ARNote::kDefaultOctave);
-			fCurrentOctave = ARNote::kUndefined;
-		}
-		if (fCurrentDuration.getNumerator() != ARNote::kUndefined) {
-			if ((duration.getNumerator() == ARNote::kUndefined) && (fCurrentDuration != rational(1,4)))
-				*note = rational(1,4);
-			fCurrentDuration = ARNote::getImplicitDuration();
+		if (fFirstInScore) {		// force implicit values in second score when unspecified
+			 if (octave == ARNote::kUndefined) {
+				note->SetOctave(ARNote::kDefaultOctave);
+			}
+			if ( (duration.getNumerator() == ARNote::kUndefined) 
+			   && (fCurrentDuration != ARNote::getDefaultDuration()) ) {
+				*note = ARNote::getDefaultDuration();		// force explicit default duration
+			}
+			fFirstInScore = false;
 		}
 	}
 	if (!done) clonevisitor::visitStart (elt);

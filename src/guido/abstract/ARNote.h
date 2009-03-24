@@ -85,8 +85,10 @@ class export ARNote : public guidoelement
 	ARNote& operator -= (const rational&);
 	ARNote& operator *= (const rational&);
 	ARNote& operator /= (const rational&);
-	void implicitDuration()						{ fDuration.set(kUndefined,4); }
-	static rational getImplicitDuration()		{ return rational(kUndefined,4); }
+	void implicitDuration()							{ fDuration.set(kUndefined,4); }
+	static rational getImplicitDuration()			{ return rational(kUndefined,4); }
+	static bool implicitDuration(const rational& d)	{ return d.getNumerator() == kUndefined; }
+	static rational getDefaultDuration()			{ return rational(1,4); }
 	
 	static pitch NormalizedName2Pitch	(char note);
 

@@ -40,11 +40,11 @@ int main(int argc, char *argv[])
 	garErr err = kNoErr;
 	int steps = intArg (argsPtr[1], 9999);
 	if (steps < 9999) {
-		err = guidoTranpose(buff, steps, cout);
+		err = guidoVTranpose(buff, steps, cout);
 	}
 	else {
 		char *gmn = readgmn(argsPtr[1]);
-		err = guidoTranpose(buff, gmn, cout);
+		err = guidoGTranpose(buff, gmn, cout);
 		delete[] gmn;
 	}
 	delete[] buff;

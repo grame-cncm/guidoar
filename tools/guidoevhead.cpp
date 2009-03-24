@@ -1,24 +1,14 @@
+/*
 
-#ifdef WIN32
-# pragma warning (disable : 4786)
-# define basename(name)	(name)
-# define _CRT_SECURE_NO_DEPRECATE
-#else 
-# include <libgen.h>
-#endif
+  Copyright (C) 2009  Grame
+  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  research@grame.fr
 
-#include <iostream>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+  This file is provided as an example of the GuidoAR Library use.
+  
+*/
 
-#include "AROthers.h"
-#include "guidoelement.h"
-#include "guidoparser.h"
-#include "eheadOperation.h"
-
-using namespace std;
-using namespace guido;
+#include "common.cxx"
 
 //#define debug
 
@@ -34,31 +24,6 @@ static void usage(char * name)
 }
 
 //_______________________________________________________________________________
-static SARMusic read (const char* file) 
-{
-	guidoparser r;
-	SARMusic score;
-	if (!strcmp(file, "-"))
-		score = r.parseFile(stdin);
-	else
-		score = r.parseFile(file);
-	if (!score) {
-		cerr << file << ": read failed"  << endl;
-		exit (1);
-	}
-	return score;
-}
-
-//_______________________________________________________________________________
-static int numArg (const char* vi) 
-{
-	int num=0;
-	int n = sscanf(vi, "%d", &num);
-	if (n != 1) num = -1;
-	return num;
-}
-
-//_______________________________________________________________________________
 int main(int argc, char *argv[]) 
 {
 #ifdef debug
@@ -69,18 +34,20 @@ int main(int argc, char *argv[])
 	if (argc != 3) usage(argv[0]);
 	char ** argsPtr = &argv[1];
 #endif
-	SARMusic score = read (argsPtr[0]);
-	eheadOperation head;
-	Sguidoelement result;
 
-	int index = numArg (argsPtr[1]);
+	char *buff = readgmn(argsPtr[0]);
+	garErr err = kNoErr;
+
+	int index = intArg (argsPtr[1],-1);
 	if (index > 0) {
-		result = head(score, index-1);
+		err = guidoVEHead(buff, index, cout);
 	}
 	else {
-		SARMusic dscore = read (argsPtr[1]);
-		result = head(score, dscore);
+		char *gmn = readgmn(argsPtr[1]);
+		err = guidoGEHead(buff, gmn, cout);
+		delete[] gmn;
 	}
-	if (result) cout << result << endl;
-	return 0;
+	delete[] buff;
+	checkErr (err, "head");
+	return err;
 }

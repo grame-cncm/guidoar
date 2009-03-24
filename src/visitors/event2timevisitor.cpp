@@ -76,7 +76,7 @@ void event2timevisitor::reset ()
 bool event2timevisitor::done ()
 {
 	fDone = false;
-	if (fTargetEvent >= 0) fDone = (fCountVisitor.currentCount() == fTargetEvent);
+	if (fTargetEvent >= 0) fDone = (fCountVisitor.currentCount() == (int)fTargetEvent);
 	else fDone = (currentVoiceDate() >= fTargetDate);
 	return fDone;
 }

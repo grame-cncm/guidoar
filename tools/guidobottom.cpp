@@ -38,11 +38,11 @@ int main(int argc, char *argv[])
 
 	int nvoices = intArg (argsPtr[1], -1);
 	if (nvoices > 0) {
-		err = guidoBottom(buff, nvoices, cout);
+		err = guidoVBottom(buff, nvoices, cout);
 	}
 	else {
 		char *gmn = readgmn(argsPtr[1]);
-		err = guidoBottom(buff, gmn, cout);
+		err = guidoGBottom(buff, gmn, cout);
 		delete[] gmn;
 	}
 	delete[] buff;

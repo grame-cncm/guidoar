@@ -41,14 +41,14 @@ int main(int argc, char *argv[])
 
 	float ratio = floatArg(argsPtr[1], -1.0f);
 	if (ratio > 0) {
-		err = guidoMultDuration(buff, ratio, cout);
+		err = guidoVMultDuration(buff, ratio, cout);
 	}
 	else if (rationalArg (argsPtr[1], &num, &denom)) {
-		err = guidoSetDuration(buff, rational(num, denom), cout);
+		err = guidoVSetDuration(buff, rational(num, denom), cout);
 	}
 	else {
 		char *gmn = readgmn(argsPtr[1]);
-		err = guidoSetDuration(buff, gmn, cout);
+		err = guidoGSetDuration(buff, gmn, cout);
 		delete[] gmn;
 	}
 	delete[] buff;

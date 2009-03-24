@@ -1,3 +1,12 @@
+/*
+
+  Copyright (C) 2009  Grame
+  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  research@grame.fr
+
+  This file is provided as an example of the GuidoAR Library use.
+  
+*/
 
 #ifdef WIN32
 # pragma warning (disable : 4786)

@@ -70,7 +70,7 @@ void checkErr (garErr err, const char* operation)
 //_______________________________________________________________________________
 static char * readgmn (const char * file) 
 {
-	char *buff = strcmp(file,"-") ? guidoread(file) : guidoread(stdin);
+	char *buff = strcmp(file,"-") ? guidoread(file) : guidoreadfd(stdin);
 	if (!buff) readErr(file);
 	return buff;
 }

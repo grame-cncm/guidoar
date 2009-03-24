@@ -70,7 +70,7 @@ static void infos (const Sguidoelement& score)
 int main(int argc, char *argv[]) {
 	if (argc == 1) {
 #ifdef guidodebug
-		Sguidoelement score = read( "../test.gmn" );
+		Sguidoelement score = read( "test.gmn" );
 #else
 		Sguidoelement score = read( "-" );
 #endif

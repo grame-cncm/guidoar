@@ -62,6 +62,7 @@ class export seqOperation :
 	protected:
 		enum state { kInFirstScore, kInSecondScore, kRemainVoice };
 		state	fState;
+		bool	fFirstInScore;
 		
 		void visitStart ( SARClef& elt );
 		void visitStart ( SAREndBar& elt );

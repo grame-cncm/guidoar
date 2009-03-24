@@ -39,7 +39,7 @@ namespace guido
 
 //______________________________________________________________________________
 /*!
-\brief	A visitor to print the gmn description
+\brief	A visitor to put scores in parallel
 */
 class export parOperation : public operation
 {
@@ -58,6 +58,17 @@ class export parOperation : public operation
 
 		SARMusic parallel ( const SARMusic& score1, const SARMusic& score2 );
 		SARMusic extend   ( SARMusic& score, const rational& duration );
+};
+
+//______________________________________________________________________________
+/*!
+\brief	A visitor to put scores in parallel, right justified
+*/
+class export rparOperation : public parOperation
+{
+    public:
+				 rparOperation() : parOperation(kRight) {}
+		virtual ~rparOperation() {}
 };
 
 /*! @} */

@@ -27,14 +27,21 @@
 #include "libguidoar.h"
 
 #include "AROthers.h"
+#include "bottomOperation.h"
 #include "clonevisitor.h"
+#include "durationOperation.h"
+#include "eheadOperation.h"
+#include "etailOperation.h"
+#include "event2timevisitor.h"
 #include "guidoelement.h"
 #include "guidoparser.h"
-#include "unrolled_guido_browser.h"
-#include "bottomOperation.h"
-#include "durationOperation.h"
-#include "event2timevisitor.h"
+#include "headOperation.h"
+#include "parOperation.h"
+#include "seqOperation.h"
+#include "tailOperation.h"
+#include "topOperation.h"
 #include "transposeOperation.h"
+#include "unrolled_guido_browser.h"
 
 using namespace std;
 namespace guido
@@ -73,7 +80,7 @@ export char * guidoread (const char* file)
 	return buffer;
 }
 //----------------------------------------------------------------------------
-export char * guidoread (FILE * fd)
+export char * guidoreadfd (FILE * fd)
 {
 	if (!fd) return 0;
 	string str;
@@ -92,86 +99,14 @@ export garErr guido2unrolled(const char* gmn, std::ostream& out)
 {
 	garErr err = kNoErr;
 	Sguidoelement score =  read(gmn);
-	if (score) {
-		clonevisitor cv;
-		unrolled_guido_browser ugb(&cv);
-		ugb.browse (score);
-		score = cv.result();
-		if (score) out << score << endl;
-		else err = kOperationFailed;			
-	}
-	else err = kInvalidArgument;
-	return err;
-}
+	if (!score) return kInvalidArgument;
 
-//----------------------------------------------------------------------------
-export garErr guidoBottom(const char* gmn, const char* gmnSpec, std::ostream& out)
-{
-	SARMusic score =  read(gmn);
-	SARMusic dscore = read(gmnSpec);
-	if (!score || !dscore) return kInvalidArgument;
-
-	garErr err = kNoErr;
-	bottomOperation tail;
-	score = tail(score, dscore);
-	if (score) out << Sguidoelement(score) << endl;
+	clonevisitor cv;
+	unrolled_guido_browser ugb(&cv);
+	ugb.browse (score);
+	score = cv.result();
+	if (score) out << score << endl;
 	else err = kOperationFailed;			
-	return err;
-}
-
-export garErr guidoBottom(const char* gmn, int nvoices, std::ostream& out)
-{
-	Sguidoelement score =  read(gmn);
-	if (!score) return kInvalidArgument;
-
-	garErr err = kNoErr;
-	bottomOperation tail;
-	if (nvoices > 0)
-		score = tail(score, nvoices);
-	if (score) out << score << endl;
-	else err = kOperationFailed;		
-	return err;
-}
-
-//----------------------------------------------------------------------------
-export garErr guidoSetDuration(const char* gmn, const char* gmnSpec, std::ostream& out)
-{
-	SARMusic score =  read(gmn);
-	SARMusic dscore = read(gmnSpec);
-	if (!score || !dscore) return kInvalidArgument;
-	if (!score || !dscore) return kInvalidArgument;
-
-	garErr err = kNoErr;
-	durationOperation setdur;
-	score = setdur(score, dscore);
-	if (score) out << Sguidoelement(score) << endl;
-	else err = kOperationFailed;		
-	return err;
-}
-
-export garErr guidoSetDuration(const char* gmn, const rational& duration, std::ostream& out)
-{
-	Sguidoelement score =  read(gmn);
-	if (!score) return kInvalidArgument;
-
-	garErr err = kNoErr;
-	durationOperation setdur;
-	score = setdur(score, duration);
-	if (score) out << score << endl;
-	else err = kOperationFailed;		
-	return err;
-}
-
-export garErr guidoMultDuration(const char* gmn, float duration, std::ostream& out)
-{
-	Sguidoelement score =  read(gmn);
-	if (!score) return kInvalidArgument;
-
-	garErr err = kNoErr;
-	durationOperation setdur;
-	score = setdur(score, duration);
-	if (score) out << score << endl;
-	else err = kOperationFailed;		
 	return err;
 }
 
@@ -184,32 +119,95 @@ export rational	guidoEv2Time(const char* gmn, unsigned int index, unsigned int v
 	return convert.event2time (score, index, voice);
 }
 
+
 //----------------------------------------------------------------------------
-export garErr guidoTranpose	(const char* gmn, int interval, std::ostream& out)
+// wrappers for score operations
+//----------------------------------------------------------------------------
+template<typename OP, typename ARG> garErr opWrapper(const char* gmn, ARG param, std::ostream& out)
 {
-	Sguidoelement score =  read(gmn);
+	Sguidoelement score =  read(gmn); 
 	if (!score) return kInvalidArgument;
 
-	garErr err = kNoErr;
-	transposeOperation trsp;
-	score = trsp(score, interval);
+	OP op;
+	score = op(score, param);
 	if (score) out << score << endl;
-	else err = kOperationFailed;		
-	return err;
+	else return kOperationFailed;		
+	return kNoErr;
 }
 
-export garErr guidoTranpose	(const char* gmn, const char* gmnSpec, std::ostream& out)
+//----------------------------------------------------------------------------
+template<typename OP> garErr opgmnWrapper(const char* gmn, const char* gmnSpec,  std::ostream& out)
 {
 	SARMusic score =  read(gmn);
 	SARMusic dscore = read(gmnSpec);
 	if (!score || !dscore) return kInvalidArgument;
 
-	garErr err = kNoErr;
-	transposeOperation trsp;
-	score = trsp(score, dscore);
+	OP op;
+	score = op(score, dscore);
 	if (score) out << Sguidoelement(score) << endl;
-	else err = kOperationFailed;		
-	return err;
+	else return kOperationFailed;		
+	return kNoErr;
 }
+
+//----------------------------------------------------------------------------
+// score operations
+//----------------------------------------------------------------------------
+export garErr guidoGBottom(const char* gmn, const char* gmnSpec, std::ostream& out)
+							{ return opgmnWrapper<bottomOperation>(gmn, gmnSpec, out); }
+export garErr guidoVBottom(const char* gmn, int nvoices, std::ostream& out)
+							{ return opWrapper<bottomOperation, int>(gmn, nvoices, out); }
+
+//----------------------------------------------------------------------------
+export garErr guidoGTop(const char* gmn, const char* gmnSpec, std::ostream& out)
+							{ return opgmnWrapper<topOperation>(gmn, gmnSpec, out); }
+export garErr guidoVTop(const char* gmn, int nvoices, std::ostream& out)
+							{ return opWrapper<topOperation, int>(gmn, nvoices, out); }
+
+//----------------------------------------------------------------------------
+export garErr guidoGSetDuration(const char* gmn, const char* gmnSpec, std::ostream& out)
+							{ return opgmnWrapper<durationOperation>(gmn, gmnSpec, out); }
+export garErr guidoVSetDuration(const char* gmn, const rational& duration, std::ostream& out)
+							{ return opWrapper<durationOperation, const rational&>(gmn, duration, out); }
+export garErr guidoVMultDuration(const char* gmn, float duration, std::ostream& out)
+							{ return opWrapper<durationOperation, float>(gmn, duration, out); }
+
+//----------------------------------------------------------------------------
+export garErr guidoVTranpose	(const char* gmn, int interval, std::ostream& out)
+							{ return opWrapper<transposeOperation, int>(gmn, interval, out); }
+export garErr guidoGTranpose	(const char* gmn, const char* gmnSpec, std::ostream& out)
+							{ return opgmnWrapper<transposeOperation>(gmn, gmnSpec, out); }
+
+//----------------------------------------------------------------------------
+export garErr guidoVHead	(const char* gmn, const rational& duration, std::ostream& out)
+							{ return opWrapper<headOperation, const rational&>(gmn, duration, out); }
+export garErr guidoGHead (const char* gmn, const char* gmnSpec, std::ostream& out)
+							{ return opgmnWrapper<headOperation>(gmn, gmnSpec, out); }
+
+//----------------------------------------------------------------------------
+export garErr guidoVEHead	(const char* gmn, int duration, std::ostream& out)
+							{ return opWrapper<eheadOperation, int>(gmn, duration, out); }
+export garErr guidoGEHead (const char* gmn, const char* gmnSpec, std::ostream& out)
+							{ return opgmnWrapper<eheadOperation>(gmn, gmnSpec, out); }
+
+//----------------------------------------------------------------------------
+export garErr guidoVTail	(const char* gmn, const rational& duration, std::ostream& out)
+							{ return opWrapper<tailOperation, const rational&>(gmn, duration, out); }
+export garErr guidoGTail (const char* gmn, const char* gmnSpec, std::ostream& out)
+							{ return opgmnWrapper<tailOperation>(gmn, gmnSpec, out); }
+
+//----------------------------------------------------------------------------
+export garErr guidoVETail	(const char* gmn, int duration, std::ostream& out)
+							{ return opWrapper<etailOperation, int>(gmn, duration, out); }
+export garErr guidoGETail (const char* gmn, const char* gmnSpec, std::ostream& out)
+							{ return opgmnWrapper<etailOperation>(gmn, gmnSpec, out); }
+
+//----------------------------------------------------------------------------
+export garErr guidoGSeq (const char* gmn1, const char* gmn2, std::ostream& out)
+							{ return opgmnWrapper<seqOperation>(gmn1, gmn2, out); }
+export garErr guidoGPar (const char* gmn1, const char* gmn2, std::ostream& out)
+							{ return opgmnWrapper<parOperation>(gmn1, gmn2, out); }
+export garErr guidoGRPar (const char* gmn1, const char* gmn2, std::ostream& out)
+							{ return opgmnWrapper<rparOperation>(gmn1, gmn2, out); }
+
 
 }
