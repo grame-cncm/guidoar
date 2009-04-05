@@ -34,6 +34,57 @@ namespace guido
 {
 
 //_______________________________________________________________________________
+// octaveVisitor
+//_______________________________________________________________________________
+class octaveVisitor : public visitor<SARNote>
+{		
+    public:
+ 				 octaveVisitor() { fBrowser.set(this); }
+		virtual ~octaveVisitor() {}
+
+		int		getLastOctave(const Sguidoelement& elt);
+		void	forceOctave(const Sguidoelement& elt, int currentOctave);
+		
+    protected:
+		tree_browser<guidoelement>	fBrowser;
+		int		fCurrentOctave;
+		bool	fForceOctave;
+		virtual void visitStart		( SARNote& elt );
+};
+
+//_______________________________________________________________________________
+void octaveVisitor::forceOctave( const Sguidoelement& elt, int currentOctave ) 
+{	
+	fCurrentOctave = currentOctave;
+	fForceOctave = true;
+	if (elt) fBrowser.browse (*elt);
+}
+
+//_______________________________________________________________________________
+int octaveVisitor::getLastOctave( const Sguidoelement& elt ) 
+{	
+	fCurrentOctave = ARNote::getDefaultOctave();
+	fForceOctave = false;
+	if (elt) fBrowser.browse (*elt);
+	return fCurrentOctave;
+}
+
+//_______________________________________________________________________________
+void octaveVisitor::visitStart( SARNote& elt ) 
+{	
+	int octave = elt->GetOctave();
+	if (fForceOctave) {
+		if (octave == ARNote::getImplicitOctave())
+			elt->SetOctave(fCurrentOctave);
+		fBrowser.stop();
+	}
+	else if (octave != ARNote::getImplicitOctave())
+		fCurrentOctave = octave;
+}
+
+//_______________________________________________________________________________
+// pitchApplyBaseOperation
+//_______________________________________________________________________________
 Sguidoelement pitchApplyBaseOperation::browse( const Sguidoelement& score ) {
 	fInChord = false;
 	Sguidoelement outscore;
@@ -77,9 +128,16 @@ void pitchApplyBaseOperation::endChord  ( SARChord& elt, int targetpitch,  bool 
 {
 	fInChord = false;
 	if (!clone) {
+		octaveVisitor cv;
+		cv.forceOctave(elt, fLastOctave);
 		transposeOperation transpose;
 		Sguidoelement chord = transpose (Sguidoelement(elt), targetpitch - fChordBase);
-		if (chord) push (chord, false);
+		if (chord) {
+			int octave = cv.getLastOctave(chord);
+			if (octave != ARNote::getDefaultOctave())
+				fCurrentOctave = octave;
+			push (chord, false);
+		}
 	}
 	else clonevisitor::visitEnd (elt);
 }

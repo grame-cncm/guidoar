@@ -95,6 +95,7 @@ class export ARNote : public guidoelement
 	static bool		implicitDuration(const rational& d)	{ return d.getNumerator() == kUndefined; }
 	static rational getDefaultDuration()				{ return rational(1,4); }
 	static int		getDefaultOctave()					{ return 1; }
+	static int		getImplicitOctave()					{ return kUndefined; }
 	
 	static pitch OffsetPitch			(pitch p, int offset, int& octave, int& alter, int targetinterval);
 	static pitch NormalizedName2Pitch	(char note);

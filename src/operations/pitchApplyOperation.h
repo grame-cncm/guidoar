@@ -64,7 +64,7 @@ class export pitchApplyBaseOperation :
 		tree_browser<guidoelement>	fBrowser;
 		int		fCurrentScoreOctave;	// the original score current octave
 		int		fCurrentOctave;			// used to code implicit octave
-		int		fLastOctave;			// used to restore correct octave at iterator end pos
+		int		fLastOctave;			// used to restore correct octave at iterator end pos and at chords beginning
 		int		fChordBase;				// used to transpose chords		
 
 		Sguidoelement browse		( const Sguidoelement& score );
