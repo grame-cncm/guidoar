@@ -219,8 +219,8 @@ void transposeOperation::visitStart ( SARNote& elt )
 {
 	if (elt->isRest() || elt->isEmpty()) return;
 
-	char npitch; int alter;
-	elt->NormalizedPitchName (npitch, alter);
+	int alter;
+	char npitch = elt->NormalizedPitchName (&alter);
 	alter += elt->GetAccidental();
 	int octaveChge = 0;
 	transpose ( npitch, alter, octaveChge, fTableShift );

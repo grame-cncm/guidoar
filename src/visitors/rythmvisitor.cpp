@@ -1,7 +1,7 @@
 /*
 
   MusicXML Library
-  Copyright (C) 2006,2007  Grame
+  Copyright (C) 2006-2009  Grame
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -27,7 +27,7 @@
 #include "ARChord.h"
 #include "ARNote.h"
 #include "AROthers.h"
-#include "durationvisitor.h"
+#include "rythmvisitor.h"
 #include "tree_browser.h"
 
 using namespace std;
@@ -36,61 +36,45 @@ namespace guido
 {
 
 //______________________________________________________________________________
-rational durationvisitor::duration(const Sguidoelement& elt)
+void rythmvisitor::rythm(const Sguidoelement& score, int voice, std::vector<rational>* outrythm)
 { 
-	fDuration = rational(0,1);
-	reset();
-	if (elt) fBrowser.browse (*elt);
-	return fDuration;
-}
-
-//______________________________________________________________________________
-void durationvisitor::reset()
-{
 	fInChord = false;
-	fCurrentChordDuration = fCurrentVoiceDuration = rational(0,1);
+	fTargetVoice = voice;
+	fCurrentVoice = 0;
+	fRythm = outrythm;
 	fCurrentNoteDuration = ARNote::getDefaultDuration();
 	fCurrentDots = 0;
+	if (score) fBrowser.browse (*score);
 }
 
 //______________________________________________________________________________
 // the visit methods
 //______________________________________________________________________________
-void durationvisitor::visitStart( SARVoice& elt )	{ reset();	}
-
-//______________________________________________________________________________
-void durationvisitor::visitStart( SARChord& elt )
+void rythmvisitor::visitStart( SARVoice& elt )
 {
-	fCurrentChordDuration = rational(0,1);
-	fInChord = true;
-}
-
-//______________________________________________________________________________
-void durationvisitor::visitStart( SARNote& elt )
-{
-	rational duration = elt->totalduration(fCurrentNoteDuration, fCurrentDots);	
-	if ( fInChord ) {
-		if (duration > fCurrentChordDuration)
-			fCurrentChordDuration = duration;
-	}
-	else {
-		fCurrentVoiceDuration += duration;
-		fCurrentVoiceDuration.rationalise();
-	}
-}
-
-//______________________________________________________________________________
-void durationvisitor::visitEnd  ( SARVoice& elt )
-{ 
-	if (fCurrentVoiceDuration > fDuration) 
-		fDuration = fCurrentVoiceDuration;
-}
-
-//______________________________________________________________________________
-void durationvisitor::visitEnd  ( SARChord& elt )
-{ 
-	fCurrentVoiceDuration += fCurrentChordDuration;
+	stop(fCurrentVoice != fTargetVoice);
 	fInChord = false;
+	fCurrentNoteDuration = ARNote::getDefaultDuration();
+	fCurrentDots = 0;
+}
+
+//______________________________________________________________________________
+void rythmvisitor::visitEnd  ( SARVoice& elt )
+{ 
+	fCurrentVoice++;
+	stop(fCurrentVoice > fTargetVoice);
+}
+
+//______________________________________________________________________________
+void rythmvisitor::visitStart( SARChord& elt )		{ fInChord = true; }
+void rythmvisitor::visitEnd  ( SARChord& elt )		{ stop(fInChord=false); }
+
+//______________________________________________________________________________
+void rythmvisitor::visitStart( SARNote& elt )
+{
+	rational duration = elt->totalduration(fCurrentNoteDuration, fCurrentDots);
+	fRythm->push_back(duration);
+	if ( fInChord ) stop(true);			// done for chords: get the first note duration only
 }
 
 

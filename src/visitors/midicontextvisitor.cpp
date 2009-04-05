@@ -1,5 +1,5 @@
 /*
-  Copyright © Grame 2003,2007
+  Copyright ï¿½ Grame 2003,2007
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -92,6 +92,7 @@ int midicontextvisitor::rational2ticks(const rational& dur) const
 }
 
 //________________________________________________________________________
+/*
 int midicontextvisitor::midiPitch (const SARNote& elt)  const
 {
 	int alter; int midi = -1;
@@ -104,6 +105,7 @@ int midicontextvisitor::midiPitch (const SARNote& elt)  const
 	}
 	return midi;
 }
+*/
 
 //________________________________________________________________________
 rational midicontextvisitor::noteduration (const SARNote& elt, rational& currentDuration, int& currentDots ) const
@@ -299,8 +301,8 @@ void midicontextvisitor::visitStart( SARNote& elt )
 		return;										// but skip already tied notes
 	}
 	
-	int octave = elt->GetOctave();
-	if (octave != ARNote::kUndefined) fCurrentOctave = octave;
+//	int octave = elt->GetOctave();
+//	if (octave != ARNote::kUndefined) fCurrentOctave = octave;
 	int dur = 0;
 
 	if (fTieState == kInTie) {				// we've just entered a tie
@@ -316,7 +318,8 @@ void midicontextvisitor::visitStart( SARNote& elt )
 		}
 	}
 	else dur = noteDuration;
-	int pitch = midiPitch(elt);
+//	int pitch = midiPitch(elt);
+	int pitch = elt->midiPitch(fCurrentOctave);
 	if (pitch >= 0)	{
 		if (fInGrace) {
 			// play grace notes ahead of current position
@@ -353,7 +356,8 @@ void midicontextvisitor::visitStart( SARChord& elt )	{
 			ARNotes list;			
 			lookupTied (i, fEndTie, *note, list);
 			int dur = rational2ticks (totalDuration(list));
-			int pitch = midiPitch(*note);
+//			int pitch = midiPitch(*note);
+			int pitch = (*note)->midiPitch(fCurrentOctave);
 			if (pitch >= 0)	playNote (fCurrentDate, pitch, dur);
 		}
 	}

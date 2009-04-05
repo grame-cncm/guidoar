@@ -21,8 +21,8 @@
 
 */
 
-#ifndef __durationVisitor__
-#define __durationVisitor__
+#ifndef __rythmvisitor__
+#define __rythmvisitor__
 
 #include <ostream>
 
@@ -43,44 +43,38 @@ namespace guido
 
 //______________________________________________________________________________
 /*!
-\brief	A visitor to print the gmn description
+\brief	A visitor to extract the rythm of a score voice
 */
-class export durationvisitor :
+class export rythmvisitor :
 	public visitor<SARVoice>,
 	public visitor<SARChord>,
 	public visitor<SARNote>
 {
     public:
-				 durationvisitor() { fBrowser.set(this); }
-       	virtual ~durationvisitor() {}
+				 rythmvisitor() : fRythm(0) { fBrowser.set(this); }
+       	virtual ~rythmvisitor() {}
               
 		/*!
-			\brief computes the duration of a score
-			\param score an input score
-			\return the total duration of the input score expressed as a rational (where 1 is a whole note)
+			\brief collects the rythm of a score voice
+			\param score a score
+			\param voice the voice index (0 based)
+			\param outrythm a vector that collects the rythm values
 		*/
-		virtual rational duration(const Sguidoelement& score);
- 
-		virtual void reset();
+		virtual void rythm(const Sguidoelement& score, int voice, std::vector<rational>* outrythm);
 
+	protected: 
 		virtual void visitStart( SARVoice& elt );
 		virtual void visitStart( SARChord& elt );
 		virtual void visitStart( SARNote& elt );
-
 		virtual void visitEnd  ( SARVoice& elt );
 		virtual void visitEnd  ( SARChord& elt );
-
-		virtual rational  currentVoiceDate() const	{ return fCurrentVoiceDuration; }
-
-	protected:		
 		virtual void stop (bool state=true)	{ fBrowser.stop (state); }
 
-		rational	fCurrentVoiceDuration;
-		rational	fCurrentChordDuration;
+		int			fTargetVoice, fCurrentVoice;
+		std::vector<rational>*	fRythm;
+		bool		fInChord;
 		rational	fCurrentNoteDuration;
 		int			fCurrentDots;
-		rational	fDuration;
-		bool		fInChord;
 
 		tree_browser<guidoelement> fBrowser;
 };

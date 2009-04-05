@@ -71,18 +71,62 @@ ARNote::ARNote()
 }
 
 //______________________________________________________________________________
-void ARNote::NormalizedPitchName (char& name, int& alter) const
+char ARNote::NormalizedPitchName (const string& name, int* alter)
 {
 	pair<map<string, pair<char, int> >::const_iterator, map<string, pair<char, int> >::const_iterator>
-	erp = fNormalizeMap.equal_range( getName() );
-	if (erp.first == erp.second) {
-		name = 0;
-		alter = 0;
+	erp = fNormalizeMap.equal_range( name );
+	char outname = 0;
+	if (erp.first != erp.second) {
+		outname = (*erp.first).second.first;
+		if (alter) *alter = (*erp.first).second.second;
 	}
-	else {
-		name = (*erp.first).second.first;
-		alter = (*erp.first).second.second;
+	return outname;
+}
+
+//______________________________________________________________________________
+char ARNote::NormalizedPitchName (int* alter) const
+{
+	return NormalizedPitchName( getName(), alter );
+}
+
+//______________________________________________________________________________
+char ARNote::NormalizedPitch2Name (pitch p)
+{
+	if (p >= A) return 'a' + p - A;
+	else if (p >= C) return 'c' + p - C;
+	return 0;
+}
+
+//______________________________________________________________________________
+ARNote::pitch ARNote::OffsetPitch (pitch p, int offset, int& octave, int& alter, int targetInterval)
+{
+	octave += offset / 12;
+	offset %= 12;
+	int n = p;
+	while (offset > 0) {
+		if (n == E) { n++; offset--; }
+		else if (n == B) { n = C; octave++; offset--; }
+		else if (offset > 1) { n++; offset -= 2; }
+		else if (offset == 1) { alter++; offset--; }
 	}
+	while (offset < 0) {
+		if (n == C) { n = B; offset--; octave++; }
+		else if (n == F) { n--; octave--; offset++; }
+		else if (offset < -1) { n--; offset += 2; }
+		else if (offset == -1) { alter--; offset++; }
+	}
+	offset = n - p - targetInterval;
+	if (offset > 0) {
+		if (n == B) { n=C; octave++; alter--; }
+		else if (n == E) { n++; alter--; }
+		else { n++; alter-=2; }
+	}
+	else if (offset < 0) {
+		if (n == C) { n=B; octave--; alter++; }
+		else if (n == F) { n--; alter++; }
+		else { n--; alter+=2; }
+	}
+	return pitch(n);
 }
 
 //______________________________________________________________________________
@@ -101,12 +145,54 @@ ARNote::pitch ARNote::NormalizedName2Pitch	(char note)
 }
 
 //______________________________________________________________________________
+int ARNote::midiPitch (int& currentOctave) const
+{
+	int alter, midi = -1;
+	pitch notepitch = GetPitch (alter);
+
+	int octave = fOctave == kUndefined ? currentOctave : fOctave;
+	currentOctave = octave;
+	if (notepitch != ARNote::kNoPitch) {
+		// offset in octave numeration between guido and midi is 4
+		int midioctave = (octave + 4) * 12;
+		midi = midioctave + (notepitch*2) + alter;
+		if (notepitch > ARNote::E) midi--;
+	}
+	return midi;
+}
+
+//______________________________________________________________________________
 ARNote::pitch ARNote::GetPitch (int& alter) const
 {
-	char npitch;
-	NormalizedPitchName (npitch, alter);
+	char npitch = NormalizedPitchName (&alter);
 	alter += GetAccidental();
 	return NormalizedName2Pitch(npitch);
+}
+
+//______________________________________________________________________________
+rational ARNote::totalduration(rational& current, int& currentdots) const
+{
+	rational dur = duration();	// determine the note duration
+	if (dur == getImplicitDuration())
+		dur = current;			// when implicit, uses the current duration
+	else {
+		current = dur;			// else update the current duration
+		currentdots = 0;		// and reset the current dots count
+	}
+
+	int dots = GetDots();		// determine the dots count
+	if (dots)
+		currentdots = dots;	
+	else
+		dots = currentdots;		// when no dots, uses the current dots information
+		
+	int den = 1;
+	rational mult = rational(0,1);
+	while (dots--)
+		mult += rational(1, den *= 2);
+	dur += dur * mult;
+	dur.rationalise();
+	return dur;
 }
 
 //______________________________________________________________________________
@@ -138,6 +224,7 @@ void ARNote::acceptOut(basevisitor& v) {
 ARNote::operator string() const {
     ostringstream str;
 
+	bool octOut = false;
 	str << getName();
 	if ((getName() != "_") && (getName() != "empty")) {
 		int n = GetAccidental();
@@ -148,12 +235,15 @@ ARNote::operator string() const {
 		}
 
 		n = GetOctave();
-		if ( n != ARNote::kUndefined) str << n;
+		if ( n != ARNote::kUndefined) {
+			str << n;
+			octOut = true;
+		}
 	}
 
 	int n = fDuration.getNumerator();
 	if (n != kUndefined) {
-		if (n != 1)  str << '*' << n;
+		if ((n != 1) || octOut)  str << '*' << n;
 		n = fDuration.getDenominator();
 		if (n > 0) str << '/' << n;
 	}

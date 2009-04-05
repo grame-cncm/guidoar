@@ -68,29 +68,38 @@ class export ARNote : public guidoelement
 	void SetDots		(int dots)	{ fDots = dots; }
 
 	//! normalizes pitch names to 'a b c d...' notation, alter is to catch 'cis, dis...' notation
-	void NormalizedPitchName (char& name, int& alter) const;		
+	char NormalizedPitchName (int* alter = 0) const;		
 
 	int GetOctave		() const	{ return fOctave; }
 	int GetAccidental	() const	{ return fAccidental; }
 	int GetDots			() const	{ return fDots; }
 	bool isRest ()	const			{ return getName() == "_"; }
 	bool isEmpty ()	const			{ return getName() == "empty"; }
+	bool isPitched () const			{ return !isRest() && !isEmpty(); }
 	
-	pitch GetPitch		(int& alter) const;
+	pitch	GetPitch	(int& alter) const;
+	int		midiPitch	(int& currentOctave) const;
 	
 	// duration operations
-	rational&		duration()		{ return fDuration; }
+	const rational&	duration() const		{ return fDuration; }
+	rational		totalduration(rational& current, int& currentdots)	const;
 	ARNote& operator =  (const rational&);
 	ARNote& operator += (const rational&);
 	ARNote& operator -= (const rational&);
 	ARNote& operator *= (const rational&);
 	ARNote& operator /= (const rational&);
-	void implicitDuration()							{ fDuration.set(kUndefined,4); }
-	static rational getImplicitDuration()			{ return rational(kUndefined,4); }
-	static bool implicitDuration(const rational& d)	{ return d.getNumerator() == kUndefined; }
-	static rational getDefaultDuration()			{ return rational(1,4); }
+	bool	implicitDuration()						{ return fDuration == getImplicitDuration(); }
+	void	setImplicitDuration()					{ fDuration.set(kUndefined,4); }
+
+	static rational getImplicitDuration()				{ return rational(kUndefined,4); }
+	static bool		implicitDuration(const rational& d)	{ return d.getNumerator() == kUndefined; }
+	static rational getDefaultDuration()				{ return rational(1,4); }
+	static int		getDefaultOctave()					{ return 1; }
 	
+	static pitch OffsetPitch			(pitch p, int offset, int& octave, int& alter, int targetinterval);
 	static pitch NormalizedName2Pitch	(char note);
+	static char  NormalizedPitch2Name	(pitch p);
+	static char  NormalizedPitchName	(const std::string& name, int* outalter=0);		
 
 	operator std::string () const;
 };

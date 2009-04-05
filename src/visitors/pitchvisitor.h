@@ -21,14 +21,15 @@
 
 */
 
-#ifndef __durationVisitor__
-#define __durationVisitor__
+#ifndef __pitchvisitor__
+#define __pitchvisitor__
 
 #include <ostream>
 
 #include "export.h"
 #include "guidoelement.h"
 #include "ARTypes.h"
+#include "libguidoar.h"
 #include "rational.h"
 #include "tree_browser.h"
 #include "visitor.h"
@@ -43,44 +44,48 @@ namespace guido
 
 //______________________________________________________________________________
 /*!
-\brief	A visitor to print the gmn description
+\brief	A visitor to extract the pitch of a score voice
 */
-class export durationvisitor :
+class export pitchvisitor :
 	public visitor<SARVoice>,
 	public visitor<SARChord>,
 	public visitor<SARNote>
 {
     public:
-				 durationvisitor() { fBrowser.set(this); }
-       	virtual ~durationvisitor() {}
+		struct TPitch {
+			std::string fName;
+			int			fOctave;
+			int			fAlter;
+		};
+		
+				 pitchvisitor(chordPitchMode mode) : fPitch(0), fCMode(mode) { fBrowser.set(this); }
+       	virtual ~pitchvisitor() {}
               
 		/*!
-			\brief computes the duration of a score
-			\param score an input score
-			\return the total duration of the input score expressed as a rational (where 1 is a whole note)
+			\brief collects the pitches of a score voice
+			\param score a score
+			\param voice the voice index (0 based)
+			\param outpitch a vector that collects the pitch values
 		*/
-		virtual rational duration(const Sguidoelement& score);
- 
-		virtual void reset();
+		virtual void pitch(const Sguidoelement& score, int voice, std::vector<TPitch>* outpitch);
+		static  int  midiPitch (const TPitch& pitch);
 
+	protected:		 
+		virtual void storePitch( SARNote& elt, TPitch& dst );
 		virtual void visitStart( SARVoice& elt );
 		virtual void visitStart( SARChord& elt );
 		virtual void visitStart( SARNote& elt );
-
 		virtual void visitEnd  ( SARVoice& elt );
 		virtual void visitEnd  ( SARChord& elt );
-
-		virtual rational  currentVoiceDate() const	{ return fCurrentVoiceDuration; }
-
-	protected:		
 		virtual void stop (bool state=true)	{ fBrowser.stop (state); }
 
-		rational	fCurrentVoiceDuration;
-		rational	fCurrentChordDuration;
-		rational	fCurrentNoteDuration;
-		int			fCurrentDots;
-		rational	fDuration;
-		bool		fInChord;
+		int			fTargetVoice, fCurrentVoice;
+		std::vector<TPitch>*	fPitch;
+		TPitch			fCurrentChordPitch;
+		bool			fInChord;
+		chordPitchMode	fCMode;
+		int				fCurrentOctave;
+		int				fCurrentChordMidiPitch;
 
 		tree_browser<guidoelement> fBrowser;
 };

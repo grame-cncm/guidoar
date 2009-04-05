@@ -48,13 +48,7 @@ class export ARChord : public guidoelement
         virtual void	acceptIn(basevisitor& v);
         virtual void	acceptOut(basevisitor& v);
 		virtual void	duration(rationals&);
-/*
-		ARChord& operator =  (const rational&);
-		ARChord& operator += (const rational&);
-		ARChord& operator -= (const rational&);
-		ARChord& operator *= (const rational&);
-		ARChord& operator /= (const rational&);
-*/
+
     protected:	
 				 ARChord() {}
 		virtual ~ARChord() {}

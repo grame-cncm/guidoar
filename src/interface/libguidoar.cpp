@@ -41,6 +41,9 @@
 #include "tailOperation.h"
 #include "topOperation.h"
 #include "transposeOperation.h"
+#include "ringvector.h"
+#include "rythmApplyOperation.h"
+#include "pitchApplyOperation.h"
 #include "unrolled_guido_browser.h"
 
 using namespace std;
@@ -170,6 +173,48 @@ export garErr guidoVSetDuration(const char* gmn, const rational& duration, std::
 							{ return opWrapper<durationOperation, const rational&>(gmn, duration, out); }
 export garErr guidoVMultDuration(const char* gmn, float duration, std::ostream& out)
 							{ return opWrapper<durationOperation, float>(gmn, duration, out); }
+
+//----------------------------------------------------------------------------
+export garErr guidoApplyRythm(const char* gmn, const char* gmnSpec, TApplyMode mode, std::ostream& out)
+{ 
+	switch (mode) {
+		case kApplyOnce:
+			return opgmnWrapper<rythmApplyOperation<vector<rational> > >(gmn, gmnSpec, out); 
+		case kApplyForwardLoop:
+			return opgmnWrapper<rythmApplyOperation<ringvector<rational> > >(gmn, gmnSpec, out); 
+		case kApplyForwardBackwardLoop: ;
+			return opgmnWrapper<rythmApplyOperation<fwbwvector<rational> > >(gmn, gmnSpec, out); 
+	}
+	return kInvalidArgument;
+}
+
+//----------------------------------------------------------------------------
+export garErr guidoApplyPitch (const char* gmn, const char* gmnSpec, TApplyMode mode, chordPitchMode pmode, std::ostream& out)
+{ 
+	switch (pmode) {
+		 case kUseLowest:
+			switch (mode) {
+				case kApplyOnce:
+					return opgmnWrapper<pitchLowApplyOperation<vector<pitchvisitor::TPitch> > >(gmn, gmnSpec, out); 
+				case kApplyForwardLoop:
+					return opgmnWrapper<pitchLowApplyOperation<ringvector<pitchvisitor::TPitch> > >(gmn, gmnSpec, out); 
+				case kApplyForwardBackwardLoop: ;
+					return opgmnWrapper<pitchLowApplyOperation<fwbwvector<pitchvisitor::TPitch> > >(gmn, gmnSpec, out); 
+			}
+			break;
+		 case kUseHighest:
+			switch (mode) {
+				case kApplyOnce:
+					return opgmnWrapper<pitchHighApplyOperation<vector<pitchvisitor::TPitch> > >(gmn, gmnSpec, out); 
+				case kApplyForwardLoop:
+					return opgmnWrapper<pitchHighApplyOperation<ringvector<pitchvisitor::TPitch> > >(gmn, gmnSpec, out); 
+				case kApplyForwardBackwardLoop: ;
+					return opgmnWrapper<pitchHighApplyOperation<fwbwvector<pitchvisitor::TPitch> > >(gmn, gmnSpec, out); 
+			}
+			break;
+	}
+	return kInvalidArgument;
+}
 
 //----------------------------------------------------------------------------
 export garErr guidoVTranpose	(const char* gmn, int interval, std::ostream& out)

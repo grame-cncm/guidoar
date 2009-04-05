@@ -21,6 +21,8 @@
   research@grame.fr
 
 */
+#ifndef __libguidoar__
+#define __libguidoar__
 
 #ifdef VC6
 # pragma warning (disable : 4786)
@@ -280,6 +282,32 @@ export garErr			guidoGRPar		(const char* gmn1, const char* gmn2, std::ostream& o
 */
 export garErr			guidoGSetDuration(const char* gmn, const char* gmnSpec, std::ostream& out);
 
+enum TApplyMode { kApplyOnce, kApplyForwardLoop, kApplyForwardBackwardLoop};
+enum chordPitchMode { kUseLowest, kUseHighest };
+
+/*! \brief applies the rythmic structure of a score to another score
+	\param gmn a string containing gmn code
+	\param gmnSpec a string containing gmn code where rythmic structure is extracted
+	\param mode		specifies how the rythmic structure should be applied
+	\param out		the output stream
+	\return an error code
+	The rythmic structure is extracted from the first voice of the second score. It is applied to the first
+	score without realignment at the beginning of each voice.
+*/
+export garErr			guidoApplyRythm(const char* gmn, const char* gmnSpec, TApplyMode mode, std::ostream& out);
+
+/*! \brief applies the pitch structure of a score to another score
+	\param gmn a string containing gmn code
+	\param gmnSpec a string containing gmn code where pitch structure is extracted
+	\param mode		specifies how the pitch structure should be applied
+	\param pmode	specifies how a chord pitch is computed
+	\param out		the output stream
+	\return an error code
+	The pitch structure is extracted from the first voice of the second score. It is applied to the first
+	score without realignment at the beginning of each voice.
+*/
+export garErr			guidoApplyPitch(const char* gmn, const char* gmnSpec, TApplyMode mode, chordPitchMode pmode, std::ostream& out);
+
 /*! \brief set the duration of a score to a given duration
 	\param gmn a string containing gmn code
 	\param duration the target duration
@@ -329,3 +357,5 @@ export char *			guidoreadfd	    (FILE* fd);
 
 
 }
+
+#endif
