@@ -542,6 +542,47 @@ An evaluation $\evalexpr[\nullbounds]{e}$ and an application $\apply[\nullbounds
 %:The bounded evaluation function
 \subsection{The bounded evaluation function \boundevalsym}
 
+The bounded evaluation function $\evalexpr{e}$: \edomain{\expr}{\env}{\val} is defined as follow: 
+\evaltable
+ \hline
+ $\evalexpr{score}$	& & \bevalScore{score} 
+ \evalspace
+ $\evalexpr{\opexpr{\seq}}$	 	&  &  \bevalSeq{e}{f} 
+ \evalspace
+ $\evalexpr{\opexpr{\mix}}$	 &  &  \bevalMix{e}{f} 
+ \evalspace
+ $\evalexpr{\var{e}}$ 	&  & \headOp{\top(\ \envsym(\var{e}), \bounds(v))}{\bounds(l))} 
+ \evalspace
+ $\evalexpr{\lambdaexpr{e}{f}}$ 	& & \bevalLambda{e}{f}{\envsym}{\bounds} 
+ \evalspace
+ $\evalexpr{\opexpr{\applyop}}$ 	&  & \bevalApply{e}{f} \\
+ \hline
+\evaltablend
+
+%%%%%% application function %%%%%%
+\subsection{Bounded \emph{application} ($\boundapplysym{\bounds} $) function}
+
+The bounded application function $\apply{u}{v}$: \edomain{\val}{\val}{\val} applies $u$ to $v$ as follow:
+\evaltable[]
+ \hline
+ $\apply{score}{w}$ 			& \ra & \bapplyScore{score}{w}
+ \evalspace
+ $\apply{\noredex (u,v)}{w}$ & \ra & \bapplyApply{\noredex (u,v)}{w}
+ \evalspace
+ $\apply{\apexpr{seq}}{w}$	& \ra & \bapplySeq{u}{v}{w} 
+ \evalspace
+ $\apply{\apexpr{mix}}{w}$ 	& \ra & \bapplyMix{u}{v}{w} 
+ \evalspace
+ $\apply{\closure{\envsym}{e}{f}{\bounds'}}{w}$  & \ra & $\evalexpr{f}[\var{e} := w]$ \\
+ \hline
+\evaltablend
+
+
+%----------------------------------------------------------------
+% Equivalence proof
+\subsection{Equivalence proof}
+
+
 %%%%%% evaluation of a score %%%%%%
 \subsubsection{Bounded evaluation of a score}
 \evaltable
@@ -747,6 +788,8 @@ from the evaluation \evalsym\ definition:
 	& \ra & $mix(\equivalence{h'_{uw}}, \equivv{t'_{uw}}{v-v'_{uw}})$ \\
 	& where &	$v'_{uw}= \voices\left(\equivalence{h'_{uw}}\right)$ 
 \evaltablend
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% à faire - ci-dessous %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
