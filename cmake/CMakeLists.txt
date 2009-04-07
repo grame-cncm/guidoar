@@ -9,6 +9,7 @@ if(UNIX)
 endif(UNIX)
 
 if(APPLE)
+	set (CMAKE_OSX_ARCHITECTURES "i386 ppc")
 	set (CMAKE_OSX_SYSROOT /Developer/SDKs/MacOSX10.4u.sdk)
 	set (CMAKE_C++_FLAGS -mmacosx-version-min=10.4)
 endif(APPLE)
@@ -81,8 +82,8 @@ set_target_properties (${target} PROPERTIES
 # set sample targets
 set (TOOLS 	guido2unrolled guidobottom guidoduration guidoev2time guidoevhead
 			guidoevtail guidohead guidoinfo guidopar guidoread guidorpar 
-			guidoseq guidotail guidotime2ev guidotop guidotranspose 
-			guidoapplyrythm guidoapplypitch)
+			guidoseq guidotail guidotime2ev guidotop guidotranspose )
+#			guidoapplyrythm guidoapplypitch)
 
 foreach(sample ${TOOLS})
 	add_executable( ${sample} ${GARTOOLS}/${sample}.cpp )
