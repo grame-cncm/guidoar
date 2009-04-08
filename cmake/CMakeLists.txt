@@ -82,8 +82,8 @@ set_target_properties (${target} PROPERTIES
 # set sample targets
 set (TOOLS 	guido2unrolled guidobottom guidoduration guidoev2time guidoevhead
 			guidoevtail guidohead guidoinfo guidopar guidoread guidorpar 
-			guidoseq guidotail guidotime2ev guidotop guidotranspose )
-#			guidoapplyrythm guidoapplypitch)
+			guidoseq guidotail guidotime2ev guidotop guidotranspose
+			guidoapplyrythm guidoapplypitch)
 
 foreach(sample ${TOOLS})
 	add_executable( ${sample} ${GARTOOLS}/${sample}.cpp )
