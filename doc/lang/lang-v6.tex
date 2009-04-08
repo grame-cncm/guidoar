@@ -603,10 +603,10 @@ We'll show that: \hspace{1cm} $\evalexpr{\opexpr{\seq}} \ra \equivalence{\evalss
 
 By definition of $\evalss{\opexpr{\seq}}$ (section \ref{evalsimple}):
 \evaltable[]
-	 	&     & let $e'= \topOp{\evalss{e}}{\bounds(v)}$ and $f'=\topOp{\evalss{f}}{\bounds(v)}$ \\
   $\equivalence{\evalss{\opexpr{\seq}})}$						
   		& \ra & \equivalence{\sevalSeq{e}{f}} \\
 		& \ra & \headOp{\topSeq{\evalss{e}}{\evalss{f}}{\bounds(v)}}{\bounds(l)} \\
+	 	&     & let $e'= \topOp{\evalss{e}}{\bounds(v)}$ and $f'=\topOp{\evalss{f}}{\bounds(v)}$ \\
 		& \ra & \headOp{\seqOp{e'}{f'}}{\bounds(l)} \\
 		& \ra & $\headSeq{e'}{f'}{\bounds(l)}$
 \evalspace
@@ -719,7 +719,7 @@ thus \bevalApply[\evalss]{score}{w} 	& & \equivalence{\applysimple{score}{w}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% à faire - ci-dessous %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%% Seq application evaluation proof %%%%%%
-\newpage
+%\newpage
 \evaltable[]
 \evaltitle {Sequence application equivalence}
  $\evalexpr{(\seqOp{u}{v} \applyop w}$ 
