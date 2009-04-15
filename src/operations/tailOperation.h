@@ -1,5 +1,5 @@
 /*
-  Copyright © Grame 2008
+  Copyright ï¿½ Grame 2008
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -48,7 +48,12 @@ namespace guido
 class export tailOperation : 
 	public operation,
 	public clonevisitor,
+	public visitor<SARStemsAuto>,
+	public visitor<SARStemsDown>,
+	public visitor<SARStemsOff>,
+	public visitor<SARStemsUp>,
 	public visitor<SARStaff>,
+	public visitor<SARInstr>,
 	public visitor<SARKey>,
 	public visitor<SARMeter>,
 	public visitor<SARClef>
@@ -82,8 +87,10 @@ class export tailOperation :
 		int				fCurrentNoteDots;
 		// current key, meter, clef and staff are maintained to be flushed 
 		Sguidotag		fCurrentKey, fCurrentMeter, fCurrentClef, fCurrentStaff;
+		Sguidotag		fCurrentInstr, fCurrentStemsStatus;
 
 		virtual void visitStart( SARStaff& elt );
+		virtual void visitStart( SARInstr& elt );
 		virtual void visitStart( SARKey& elt );
 		virtual void visitStart( SARMeter& elt );
 		virtual void visitStart( SARClef& elt );
@@ -92,10 +99,17 @@ class export tailOperation :
 		virtual void visitStart( SARNote& elt );
 		virtual void visitStart( Sguidotag& elt );
 
+		virtual void visitStart( SARStemsAuto& elt );
+		virtual void visitStart( SARStemsDown& elt );
+		virtual void visitStart( SARStemsOff& elt );
+		virtual void visitStart( SARStemsUp& elt );
+
 		virtual void visitEnd  ( SARVoice& elt );
 		virtual void visitEnd  ( SARChord& elt );
 		virtual void visitEnd  ( Sguidotag& elt );
 		virtual void visitEnd  ( SARNote& elt );
+
+		virtual void stemsStatus( Sguidotag elt );
 
      private:
 		std::map<Sguidotag,int> fPendingTagsMap;

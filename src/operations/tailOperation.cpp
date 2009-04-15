@@ -87,10 +87,12 @@ void tailOperation::checkPendingHead()
 {
 	if (!fHeaderFlushed) {
 		if (fCurrentStaff)	clonevisitor::visitStart (fCurrentStaff);
+		if (fCurrentInstr)	clonevisitor::visitStart (fCurrentInstr);
 		if (fCurrentClef)	clonevisitor::visitStart (fCurrentClef);
 		if (fCurrentKey)	clonevisitor::visitStart (fCurrentKey);
 		if (fCurrentMeter)	clonevisitor::visitStart (fCurrentMeter);
-		fCurrentClef = fCurrentKey = fCurrentMeter = fCurrentStaff = 0;
+		if (fCurrentStemsStatus)	clonevisitor::visitStart (fCurrentStemsStatus);
+		fCurrentClef = fCurrentKey = fCurrentMeter = fCurrentStaff = fCurrentStemsStatus = fCurrentInstr = 0;
 		fHeaderFlushed = true;
 	}
 }
@@ -114,6 +116,7 @@ void tailOperation::checkPendingTags()
 void tailOperation::visitStart ( SARVoice& elt )
 {
 	fPendingTagsMap.clear();
+	fCurrentClef = fCurrentKey = fCurrentMeter = fCurrentStaff = fCurrentStemsStatus = fCurrentInstr =0;
 	fState = (float(fStartPoint) > 0.001) ? kSkip : kStartPending;
 	fHeaderFlushed = false;
 	fCurrentOctave = ARNote::kDefaultOctave;
@@ -212,6 +215,25 @@ void tailOperation::visitStart ( SARStaff& elt )
 	if (fState == kSkip)	fCurrentStaff = Sguidotag(elt);
 	else					cloneTag (elt);
 }
+
+//________________________________________________________________________
+void tailOperation::visitStart ( SARInstr& elt )
+{
+	if (fState == kSkip)	fCurrentInstr = Sguidotag(elt);
+	else					cloneTag (elt);
+}
+
+//________________________________________________________________________
+void tailOperation::stemsStatus( Sguidotag elt )
+{
+	if (fState == kSkip)	fCurrentStemsStatus = elt;
+	else					cloneTag (elt);
+}
+
+void tailOperation::visitStart( SARStemsAuto& elt )	{ stemsStatus(Sguidotag(elt)); }
+void tailOperation::visitStart( SARStemsDown& elt )	{ stemsStatus(Sguidotag(elt)); }
+void tailOperation::visitStart( SARStemsOff& elt )	{ stemsStatus(Sguidotag(elt)); }
+void tailOperation::visitStart( SARStemsUp& elt )	{ stemsStatus(Sguidotag(elt)); }
 
 //________________________________________________________________________
 void tailOperation::visitEnd ( SARNote& elt )
