@@ -62,7 +62,7 @@ class export guidotag : public guidoelement
         virtual void acceptOut(basevisitor& v);
 				
 		int  getType() const			{ return fType; }	/// return the tag type ie the tag template integer
-		long getID() const				{ return fID; }		/// return the tag id i.e. the xx of the \tag:xx form
+		long getID() const				{ return fID; }		/// return the tag id i.e. the xx of the \\tag:xx form
 		void setID(long id)				{ fID = id; }
 		operator std::string () const;
 
@@ -79,8 +79,8 @@ class export guidotag : public guidoelement
 				 guidotag(long id) : fID(id) {}
 		virtual ~guidotag() {}
 		std::string escape(const std::string&) const;
-		long fID;						// represents the tag id i.e the \tag:xx form of the tags where xx is a discriminant id
-		int  fType;						// the tag template integer
+		long fID;						/// represents the tag id i.e the \\tag:xx form of the tags where xx is a discriminant id
+		int  fType;						/// the tag template integer
 };
 
 //______________________________________________________________________________

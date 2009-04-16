@@ -61,8 +61,8 @@ class export ARFactory : public singleton<ARFactory>{
 		SARNote		createNote(const std::string& name) const;	
 };
 
-/*! @} */
-
 } // namespace
+
+/*! @} */
 
 #endif

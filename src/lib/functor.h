@@ -39,7 +39,7 @@ template <typename R>
 class rfunctor {
 	public:
 		virtual ~rfunctor() {}
-		virtual R operator ()() = 0;	///< the operator () supports a single parameter
+		virtual R operator ()() = 0;
 };
 
 /*!
@@ -61,8 +61,9 @@ class functor2 {
 		virtual ~functor2() {}
 		virtual R operator ()(T1, T2) = 0;
 };
-/*! @} */
 
 } // namespace
+
+/*! @} */
 
 #endif
