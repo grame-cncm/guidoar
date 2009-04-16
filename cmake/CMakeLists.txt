@@ -45,7 +45,6 @@ foreach(folder ${SRCFOLDERS})
 	set(INCL ${INCL} "${GARSRC}/${folder}")				# add include folders
 endforeach(folder)
 
-
 #######################################
 # set includes
 include_directories( ${INCL})
@@ -73,9 +72,23 @@ set_target_properties (${target} PROPERTIES
 			FRAMEWORK_VERSION A
 			PUBLIC_HEADER "${COREH}"
 			DEFINE_SYMBOL GUIDOAR_EXPORTS
+			COMPILE_FLAGS -I/usr/local/include
 			MACOSX_FRAMEWORK_SHORT_VERSION_STRING "v.0.80"
 			MACOSX_FRAMEWORK_BUNDLE_VERSION "0.80"
 )
+
+if(${USEMidiShare})
+	if(APPLE)
+		set (MSH "-framework MidiShare -framework Player" )
+	elseif(UNIX)
+		set (MSH "-lMidiShare -lPlayer" )
+	endif(APPLE)
+		target_link_libraries( ${target} ${MSH})
+		set_target_properties (${target} PROPERTIES DEFINE_SYMBOL USEMidiShare)
+	
+else(${USEMidiShare})
+	message ("call cmake with -DUSEMidiShare=1 option to include midishare support")
+endif(${USEMidiShare})
 
 
 #######################################
