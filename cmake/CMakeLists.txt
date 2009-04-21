@@ -83,8 +83,9 @@ if(${USEMidiShare})
 	elseif(UNIX)
 		set (MSH "-lMidiShare -lPlayer" )
 	endif(APPLE)
-		target_link_libraries( ${target} ${MSH})
-		set_target_properties (${target} PROPERTIES DEFINE_SYMBOL USEMidiShare)
+	target_link_libraries( ${target} ${MSH})
+	set_target_properties (${target} PROPERTIES DEFINE_SYMBOL USEMidiShare)
+	set (TOOLS 	${TOOLS} guido2midi)
 	
 else(${USEMidiShare})
 	message ("call cmake with -DUSEMidiShare=1 option to include midishare support")
@@ -93,7 +94,8 @@ endif(${USEMidiShare})
 
 #######################################
 # set sample targets
-set (TOOLS 	guido2unrolled guidobottom guidoduration guidoev2time guidoevhead
+set (TOOLS 	${TOOLS}  
+			guido2unrolled guidobottom guidoduration guidoev2time guidoevhead
 			guidoevtail guidohead guidoinfo guidopar guidoread guidorpar 
 			guidoseq guidotail guidotime2ev guidotop guidotranspose
 			guidoapplyrythm guidoapplypitch)
@@ -103,6 +105,12 @@ foreach(sample ${TOOLS})
 	target_link_libraries( ${sample} ${target})
 	add_dependencies(${sample} ${target})
 endforeach(sample)
+
+if(${USEMidiShare})
+	target_link_libraries( guido2midi ${MSH})
+	set_target_properties (guido2midi PROPERTIES COMPILE_FLAGS -I/usr/local/include)
+endif(${USEMidiShare})
+
 
 
 #######################################

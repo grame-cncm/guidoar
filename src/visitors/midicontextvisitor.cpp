@@ -367,9 +367,14 @@ void midicontextvisitor::visitEnd  ( SARChord& elt )	{ fInChord = false; fCurren
 //________________________________________________________________________
 void midicontextvisitor::visitStart( SARTempo& elt )
 {
-	string val = elt->getAttributeValue(1);
+	string val = elt->getAttributeValue(0);
 	int num, denum, tempo;
-	if (sscanf ( val.c_str(), "%d/%d=%d", &num, &denum, &tempo) == 3) {
+	int n = sscanf ( val.c_str(), "%d/%d=%d", &num, &denum, &tempo);
+	if (n != 3) {
+		val = elt->getAttributeValue(1);
+		n = sscanf ( val.c_str(), "%d/%d=%d", &num, &denum, &tempo);
+	}
+	if (n == 3) {
 		rational beat(num, denum);
 		rational quarter(1,4);
 		rational mult = beat / quarter;
