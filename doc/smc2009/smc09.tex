@@ -39,7 +39,7 @@
 \sloppy
 \newenvironment{contentsmall}	{\small}
 \sloppy
-\newenvironment{gmnsyntax}		{\vspace{-2mm} {\small}}{\vspace{-1mm}}
+\newenvironment{gmnsyntax}		{\vspace{-2mm}\small}{\vspace{-2mm}}
 
 \newcommand{\GMN}	{\emph{Guido Music Notation}}
 \newcommand{\Guido}	{Guido}
@@ -61,7 +61,7 @@
 \permission
 
 \begin{abstract}
-Based on the Guido Music Notation format, we have developed a library - the \GAR\ library - that provides a simple and efficient memory representation of the music notation as well as score level operations. Applying operations at score level (like \emph{head} or \emph{tail}) gives raise to a set of issues related to the music notation consistency. We present the Guido Music Notation format, the \GAR\ library, the score composition operations, the music notation related issues and a proposed way to solve them.
+Based on the Guido Music Notation format, we have developed a library - the \GAR\ library - that provides a simple and efficient memory representation of the music notation as well as score level operations. Applying operations at score level (like cutting the score head or tail) gives raise to a set of issues related to the music notation consistency. We present the Guido Music Notation format, the \GAR\ library, the score composition operations, the music notation related issues and a proposed way to solve them.
 \end{abstract}
 
 %----------------------------------------------------------------
@@ -73,12 +73,12 @@ Computer music is rich of many score level music representation languages \cite{
 
 Based on the GMN format, we have developed a C++ library, the \GAR\ library, more suitable to implement score composition operations than the Guido Engine internal memory representation. Composition operations are basic operations like transposition, cutting the head or the tail of a score, putting scores in sequence or in parallel, etc. Implementing these operations gave quickly raise to a set of issues related to the music notation consistency. To solve these issues, we propose a simple typology of the music notation elements and a set of rules based on this typology to enforce the music notation consistency.
 
-Although music operations pose more complex issues at score level than with most of the composing 
+Music notation is the most common representation used by musicians. Developing score level composition operations provides an homogeneous way to write scores and to manipulate them while remaining at a high music description level. Moreover, the design allows to use scores both as target and as arguments of the operations, enforcing the notation level metaphor.
 
 This paper introduces first the \Guido\ Music Notation format, next the \GAR\ library is presented and the last section presents the score composition operations, the related notation issues and the proposed solution.
 
 %----------------------------------------------------------------
-\section{The \Guido\ Music Notation format}
+\section{The Guido Music Notation format}
 %----------------------------------------------------------------
 
 \subsection{Basic concepts}
@@ -135,27 +135,12 @@ A note sequence is of the form \verb+[tagged-notes]+ where \code{tagged-notes} i
 Note segments represent multi-voiced scores; they are denoted by \verb+{seq-list}+ where \code{seq-list} is a list of note sequences separated by commas as shown by the example below:
 \begin{gmnsyntax} 
 \begin{verbatim} 
-{
- [\staff<1> \stemsUp \meter<"2/4"> 
-  \beam(g2/32 e/16 c*3/32) c/8 
-  \beam(a1/16 c2 f) 
-  \beam(g/32 d/16 h1*3/32) d2/8 
-  \beam(h1/16 d2 g)],
-
- [\staff<1>\stemsDown g1/8 e
-  \beam(g/16 d f a) a/8 e 
-  \beam(a/16 e g h)],
-
- [\staff<2> \meter<"2/4"> 
-  \stemsUp a0 f h c1],
- [\staff<2> \stemsDown f0 d g a]
-}
-\end{verbatim} 
+{ [ e g f ], [ a e a ] }\end{verbatim} 
 \end{gmnsyntax} 
 The corresponding output is given by figure \ref{ex1}.
 
 \begin{figure}[h]
-	\centering \includegraphics[width=70mm]{imgs/4voices}
+	\centering \includegraphics[width=35mm]{rsrc/voices}
  \caption{A multi-voices example}
  \label{ex1}
 \end{figure}
@@ -164,15 +149,21 @@ The corresponding output is given by figure \ref{ex1}.
 \subsection{Advanced \Guido.}
 %----------------------------------------------------------------
 The advanced \Guido\ specification provides more tags and more control over the score layout.
-In particular, it introduces tags parameters like $dx$ and $dy$ to indicate exact positioning of the score elements, notes and rests format specifications, etc. 
-%The figure \ref{bach} illustrates the result obtained using advanced \Guido\
-%\begin{figure}[htbp]
-%	\begin{center}
-%	\includegraphics[width=\columnwidth]{imgs/bach-inv}
-%	\caption{A more complex example}
-%	\label{bach}
-%	\end{center}
-%\end{figure}
+In particular, it introduces tags parameters like $dx$ and $dy$ to indicate exact positioning of the score elements, notes and rests format specifications, staff assignments, etc. 
+Below is an example of advanced guido with the corresponding output (figure \ref{advex}).
+
+\begin{gmnsyntax} 
+\begin{verbatim} 
+{ [  \barFormat<"system">  \staff<1> \stemsUp \meter<"2/4">   \intens<"p", dx=1hs,dy=-7hs>  \beam(g2/32 e/16 c*3/32) c/8   \beam(\noteFormat<dx=-0.9hs>(a1/16) c2 f)   \beam(g/32 d/16 h1*3/32) d2/8   \beam(h1/16 d2 g)], [\staff<1>\stemsDown g1/8 e  \beam(f/16 \noteFormat<dx=0.8hs>(g) f a) 
+   a/8 e   \beam(f/16 g f e)], [\staff<2> \meter<"2/4">   \stemsUp a0 f h c1], [\staff<2> \stemsDown c0 d g {d, a}]}\end{verbatim} 
+\end{gmnsyntax} 
+
+\begin{figure}[h]
+	\centering \includegraphics[width=77mm]{rsrc/4voices}
+ \caption{An advanced Guido example}
+ \label{advex}
+\end{figure}
+
 
 
 %----------------------------------------------------------------
@@ -185,7 +176,7 @@ number of notation elements: in addition to notes, chords, voices, the format in
 
 %----------------------------------------------------------------
 \subsection{Notation elements representation}
-The \GAR\ library is based on a single \code{guidoelement} class that contains a name and an attributes list (see figure \ref{guidoelt}). A \code{guidoattribute} has a name, a value and an optional unit (used for exact positioning).
+The \GAR\ library is based on a single \code{guidoelement} class that contains a name and an attributes list (figure \ref{guidoelt}). A \code{guidoattribute} has a name, a value and an optional unit (used for exact positioning).
 \begin{figure}[htbp]
 	\begin{center}
 	\includegraphics[width=5.2cm]{rsrc/guidoelt}
@@ -194,7 +185,7 @@ The \GAR\ library is based on a single \code{guidoelement} class that contains a
 	\end{center}
 \end{figure}
 
-The  \code{guidoelement} class is specialized to represent the main elements of the notation (see figure \ref{classes}). Guido tags are consistently covered by the \code{guidotag} class, derived into as many types as existing tags using templates.
+The  \code{guidoelement} class is specialized to represent the main elements of the notation (figure \ref{classes}). Guido tags are consistently covered by the \code{guidotag} class, derived into as many types as existing tags using templates.
 \begin{figure}[htbp]
 	\begin{center}
 	\includegraphics[width=\columnwidth]{rsrc/elements}
@@ -227,6 +218,8 @@ struct countnotespredicat {
   	(dynamic_cast<ARNote*>((guidoelement*)elt) 
     ? true : false); }
 };
+countnotespredicat p;
+count = count_if(score->begin(),score->end(),p);
 \end{verbatim} 
 \end{contentsmall}
 These mechanisms are at the basis of all the score composition operations supported by the library.
@@ -237,40 +230,44 @@ These mechanisms are at the basis of all the score composition operations suppor
 
 %----------------------------------------------------------------
 \subsection{Basic operations}
-Score level operations provided by the \GAR\ library are given by the table \ref{operations}. These operations are available as library API calls and as command line tools as well. Almost all of the operations takes a GMN score and a value parameter as input and produce a GMN score as output, but the value parameter can be indicated using another GMN score.
+Score level operations provided by the \GAR\ library are given by the table \ref{operations}. These operations are available as library API calls and as command line tools as well. Almost all of the operations take a GMN score and a value parameter as input and produce a GMN score as output, but the value parameter can also be indicated using another GMN score.
 For example, the \code{guidotop} operation cuts the bottom voices of a score after a given voice number; when using a score as parameter, the voice number is taken from the score voices count.
-\begin{table}[htdp]
+
+\begin{table*}[htdp]
 \caption{Score level operations}
 \begin{center}
 \begin{tabular}{rl}
-name		&	description \\
+tool name and args		&	description \\
 \hline
-guidoseq 		& puts 2 scores in sequence \\
-guidopar		& puts 2 scores in parallel \\ 
-guidorpar		& puts 2 scores in parallel but right aligned \\
-guidotop		& takes the top voices of a score; \\
-				& when using another score as parameter, the \\
-				& the voice number is taken from the score \\
-guidobottom	& takes the bottom voices of a score \\
-guidohead		& takes the head of a score on a time basis; \\
-				& when using another score as parameter, the \\
-				& cut date is taken from the score duration \\
-guidoevhead	& id. but on events basis i.e. the cut \\
-				& point is specified in events count; \\
-				& when using another score as parameter, the \\
-				& events count is taken from the score \\
-guidotail		& takes the tail of a score \\
-guidoevtail	& id. but on events basis \\
-guidotranspose	& transposes a score to an interval $i$; \\
-				& when using another score as parameter, the \\
-				& interval is the difference between the \\
-				& first voice, first notes of the scores \\
-guidoapplypitch	& applies the pitches of a score to a score \\
-guidoapplyrythm	& applies the rhythm of a score to a score \\
+guidoseq $s1\ s2$		& puts the scores $s1$ and $s2$ in sequence \\
+guidopar $s1\ s2$		& puts the scores $s1$ and $s2$ in parallel \\ 
+guidorpar $s1\ s2$		& puts the scores $s1$ and $s2$ in parallel but right aligned \\
+guidotop $s1\ [n\ | \ s2]$ 	& takes the $n$ top voices of $s1$; \\
+					& when using a score $s2$ as parameter, $n$ is taken from $s2$ voices count \\
+guidobottom $s1\ [n\ | \ s2]$ 	& takes the bottom voices of $s1$ after the $n$ voice;  \\
+					& when using a score $s2$ as parameter, $n$ is taken from $s2$ voices count \\
+guidohead	$s1\ [d\ | \ s2]$	& takes the head of $s1$ up to the date $d$; \\
+				& when using a score $s2$ as parameter, $d$ is taken from $s2$ duration \\
+guidoevhead $s1\ [n\ | \ s2]$	& id. but on events basis i.e. the cut point is specified in $n$ events count; \\
+				& when using a score $s2$ as parameter, $n$ is taken from $s2$ events count \\
+guidotail	$s1\ [d\ | \ s2]$ 	& takes the tail of a score after the date $d$; \\
+				& when using a score $s2$ as parameter, $d$ is taken from $s2$ duration \\
+guidoevtail $s1\ [n\ | \ s2]$ 	& id. but on events basis i.e. the cut point is specified in $n$ events count; \\
+				& when using a score $s2$ as parameter, $n$ is taken from $s2$ events count \\
+guidotranspose $s1\ [i\ | \ s2]$	& transposes $s1$ to an interval $i$; \\
+				& when using a score $s2$ as parameter, $i$ is computed as the difference between \\
+				& the first voice, first notes of $s1$ and $s2$ \\
+guidoduration $s1\ [d\ |\ f\ |\ s2]$	& stretches $s1$ to a duration $d$ or using a factor $f$; \\
+				& when using a score $s2$ as parameter, $d$ is computed from $s2$ duration \\
+guidoapplypitch $s1\ s2$	& applies the pitches of $s1$ to $s2$; \\
+				& the pitches list is applied in a loop up to the end of $s2$ \\
+guidoapplyrythm $s1\ s2$	& applies the rhythm of $s1$ to $s2$; \\
+				& the durations list is applied in a loop up to the end of $s2$ \\
+\hline
 \end{tabular}
 \end{center}
 \label{operations}
-\end{table}%
+\end{table*}
 
 %----------------------------------------------------------------
 \subsection{Notation issues}
@@ -287,7 +284,7 @@ A raw cut of the score after 2 notes would give the \code{[\ e\ c]} result which
 Another example with the \code{sequence} operation: a raw sequence of 
 \hspace{2mm} \code{[\gtag{clef}<"g"> c d]} \\
 and \hspace{14.5mm}\code{[\gtag{clef}<"g"> e c]} \\
-would give \hspace{3.1mm} \code{[\gtag{clef}<"g"> c d \gtag{clef}<"g"> e c ]} as result (see figure \ref{ex3}) while the clef repetition is unexpected.
+would give \hspace{3.1mm} \code{[\gtag{clef}<"g"> c d \gtag{clef}<"g"> e c ]} as result (figure \ref{ex3}) while the clef repetition is unexpected.
 \begin{figure}[h]
 	\centering \includegraphics[width=40mm]{imgs/seq2}
  \caption{A raw sequence operation}
@@ -307,7 +304,6 @@ There are many more cases, where the music notation consistency has to be preser
 One way to solve the problem is to make a typology of the notation elements regarding their time extend and to define adequate consistency policies according to the operations and the element type.
 
 The GMN format makes a distinction between \emph{position} tags (like \gtag{clef} or \gtag{meter}) and \emph{range} tags (\gtag{slur}, \gtag{beam}, etc.): range tags have an explicit time extend (the duration of the enclosed notes) and position tags are simply notations marks at a given time position. However, this distinction is not sufficient to cover the problem: many of the position tags have an implicit time duration and they generally last up to the next similar notation or to the end of the score. For example, a \gtag{meter} tag lasts to the end of the score or to the next meter notation.
-
 \begin{table}[htdp]
 \caption{Typology of notation elements.}
 \begin{center}
@@ -330,7 +326,6 @@ others 		& structure control	& coda, da capo, \\
 \end{center}
 \label{types}
 \end{table}
-
 The table \ref{types} presents a simple typology of the music notation elements.
 All the Guido range tags correspond to the explicit time extend elements and most of the position tags have an implicit time extend. Based on this typology, a set of simple rules for score level operations could partially solve the notation issues:
 \begin{itemize}
@@ -343,7 +338,7 @@ No provision is made for the notation elements falling into the \emph{other} tim
 
 %----------------------------------------------------------------
 \subsection{Operations reversibility}\label{reverse}
-The above rules solve most of the notation consistency issues but they do not permit the operations to be reversible. Consider a score including a slur, sliced in the middle of this slur and restored by putting the parts back in sequence. The resulting score will include two slurs (see figure \ref{ex4}) instead one, due to the rules that enforce closing \oend\ tags and starting \obeg\ tags.
+The above rules solve most of the notation consistency issues but they do not permit the operations to be reversible. Consider a score including a slur, sliced in the middle of this slur and restored by putting the parts back in sequence. The resulting score will include two slurs (figure \ref{ex4}) instead one, due to the rules that enforce closing \oend\ tags and starting \obeg\ tags.
 
 \begin{figure}[h]
 	\centering \includegraphics[width=80mm]{imgs/reverse}
@@ -373,13 +368,16 @@ Elements relevant to the \emph{others / structure control} time extend category 
 \item when computing the end of a score, every \emph{pending} repeat end must be closed with a repeat end tag.
 \item from successive unmatched repeat begin tags, only the first one must be retained and from successive repeat end tags, only the last one must be retained.
 \end{itemize}
-No additional provision is made for the other structure control elements: possible inconsistencies are ignored and this choice preserves the operations reversibility.
+No additional provision is made for the other structure control elements: possible inconsistencies are ignored but this choice preserves the operations reversibility.
 
 %----------------------------------------------------------------
 \section{Conclusion}
 %----------------------------------------------------------------
 Music notation is complex due to the large number of notation elements and to the heterogeneous status of these elements. The proposed typology in table \ref{types} is actually an arbitrary simplification intended to cover the needs of score level operations but is not representative of this complexity. However, it is based on the music notation semantic and thus could be reused with any score level music representation language. Apart from the reversibility rules defined in \ref{reverse} that require the support of the music representation language to operate, all the other rules are independent from the GMN format.
-Most of the elements relevant to the \emph{others} time extend category have been ignored by the proposed rules, which may result in \emph{non-standard} layout (e.g. incoherent formatting instructions), but it preserves the operations reversibility. Thus the score composition operations do not guaranty a correct automatic music layout, which is often a matter of user choice and also remains the Holy Grail quest of music notation by computer up to now\cite{BIRD84}.
+Most of the elements relevant to the \emph{others} time extend category have been ignored by the proposed rules, which may result in \emph{non-standard} layout (e.g. incoherent formatting instructions), but it preserves the operations reversibility. Thus the score composition operations do not guaranty a correct automatic music layout. 
+%but they proved to be very convenient for basic tasks like taking an excerpt of a score, separating voices, etc.
+In a future work, we plan to transform the notation into a lambda calculus based programming language \cite{Orlarey:94} with these operations as language operators.
+%which is often a matter of user choice and also remains the Holy Grail quest of music notation by computer up to now\cite{BIRD84}.
 
 \bibliographystyle{unsrt}
 \bibliography{smc2009}

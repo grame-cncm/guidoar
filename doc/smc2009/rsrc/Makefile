@@ -1,9 +1,12 @@
 src=../../../src
 
-ALL =  elements.pdf guidoelt.pdf
+ALL =  elements.pdf guidoelt.pdf 4voices.pdf voices.pdf
 
 %.pdf: %.dot
 	dot -Tpdf -o $@ $< 
+
+%.pdf: %.gmn
+	guido2Image -f PDF $< 
 
 all: $(ALL)
 
