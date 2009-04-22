@@ -133,10 +133,7 @@ The following GMN code illustrates the concision of the notation; figure \ref{ex
 %----------------------------------------------------------------
 A note sequence is of the form \verb+[tagged-notes]+ where \code{tagged-notes} is a series of notes, tags, and tagged ranges separated by spaces. Note sequences represent single-voiced scores.
 Note segments represent multi-voiced scores; they are denoted by \verb+{seq-list}+ where \code{seq-list} is a list of note sequences separated by commas as shown by the example below:
-\begin{gmnsyntax} 
-\begin{verbatim} 
-{ [ e g f ], [ a e a ] }\end{verbatim} 
-\end{gmnsyntax} 
+\codeindent\code{ \{ [ e g f ], [ a e a ] \} } \\
 The corresponding output is given by figure \ref{ex1}.
 
 \begin{figure}[h]
@@ -154,8 +151,26 @@ Below is an example of advanced guido with the corresponding output (figure \ref
 
 \begin{gmnsyntax} 
 \begin{verbatim} 
-{ [  \barFormat<"system">  \staff<1> \stemsUp \meter<"2/4">   \intens<"p", dx=1hs,dy=-7hs>  \beam(g2/32 e/16 c*3/32) c/8   \beam(\noteFormat<dx=-0.9hs>(a1/16) c2 f)   \beam(g/32 d/16 h1*3/32) d2/8   \beam(h1/16 d2 g)], [\staff<1>\stemsDown g1/8 e  \beam(f/16 \noteFormat<dx=0.8hs>(g) f a) 
-   a/8 e   \beam(f/16 g f e)], [\staff<2> \meter<"2/4">   \stemsUp a0 f h c1], [\staff<2> \stemsDown c0 d g {d, a}]}\end{verbatim} 
+{
+ [
+  \barFormat<"system">
+  \staff<1> \stemsUp \meter<"2/4"> 
+  \intens<"p", dx=1hs,dy=-7hs>
+  \beam(g2/32 e/16 c*3/32) c/8 
+  \beam(\noteFormat<dx=-0.9hs>(a1/16) c2 f) 
+  \beam(g/32 d/16 h1*3/32) d2/8 
+  \beam(h1/16 d2 g)],
+
+ [\staff<1>\stemsDown g1/8 e
+  \beam(f/16 \noteFormat<dx=0.8hs>(g) f a) 
+   a/8 e 
+  \beam(f/16 g f e)],
+
+ [\staff<2> \meter<"2/4"> 
+  \stemsUp a0 f h c1],
+ [\staff<2> \stemsDown c0 d g {d, a}]
+}
+\end{verbatim} 
 \end{gmnsyntax} 
 
 \begin{figure}[h]
