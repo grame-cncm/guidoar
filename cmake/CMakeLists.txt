@@ -78,6 +78,7 @@ set_target_properties (${target} PROPERTIES
 )
 
 if(${USEMidiShare})
+	message ("USEMidiShare is on. Call cmake -DUSEMidiShare=0 option to remove midishare support")
 	if(APPLE)
 		set (MSH "-framework MidiShare -framework Player" )
 	elseif(UNIX)
@@ -88,7 +89,7 @@ if(${USEMidiShare})
 	set (TOOLS 	${TOOLS} guido2midi)
 	
 else(${USEMidiShare})
-	message ("call cmake with -DUSEMidiShare=1 option to include midishare support")
+	message ("call cmake -DUSEMidiShare=1 option to include midishare support")
 endif(${USEMidiShare})
 
 
