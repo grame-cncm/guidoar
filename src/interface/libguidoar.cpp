@@ -23,6 +23,7 @@
 */
 
 #include <fstream>
+#include <string.h>
 
 #include "libguidoar.h"
 

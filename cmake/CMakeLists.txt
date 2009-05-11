@@ -2,7 +2,7 @@
 # CMAKE libguidoar
 #######################################
 project(libguidoar)
-cmake_minimum_required(VERSION 2.4)
+cmake_minimum_required(VERSION 2.6)
 
 if(UNIX)
 	add_definitions(-Wall -DGCC)
@@ -116,13 +116,9 @@ endif(${USEMidiShare})
 
 #######################################
 # install setup
-if(APPLE)
-set(FRMWK  FRAMEWORK DESTINATION "/Library/Frameworks" CONFIGURATIONS Release)
-endif(APPLE)
-
 install ( TARGETS ${target}
     	LIBRARY DESTINATION lib
     	ARCHIVE DESTINATION lib
-    	${FRMWK}
+    	FRAMEWORK DESTINATION "/Library/Frameworks" CONFIGURATIONS Release
     	PUBLIC_HEADER DESTINATION include/libguidoar
 )
