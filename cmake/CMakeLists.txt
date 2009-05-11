@@ -116,9 +116,13 @@ endif(${USEMidiShare})
 
 #######################################
 # install setup
+if(APPLE)
+set(FRMWK  FRAMEWORK DESTINATION "/Library/Frameworks" CONFIGURATIONS Release)
+endif(APPLE)
+
 install ( TARGETS ${target}
     	LIBRARY DESTINATION lib
     	ARCHIVE DESTINATION lib
-    	FRAMEWORK DESTINATION "/Library/Frameworks"
+    	${FRMWK}
     	PUBLIC_HEADER DESTINATION include/libguidoar
 )
