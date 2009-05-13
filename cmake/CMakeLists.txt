@@ -4,6 +4,11 @@
 project(libguidoar)
 cmake_minimum_required(VERSION 2.6)
 
+### for relative path to win32 libs
+if(COMMAND cmake_policy)
+      cmake_policy(SET CMP0003 NEW)
+endif(COMMAND cmake_policy)
+    
 if(UNIX)
 	add_definitions(-Wall -DGCC)
 endif(UNIX)
@@ -45,6 +50,10 @@ foreach(folder ${SRCFOLDERS})
 	set(INCL ${INCL} "${GARSRC}/${folder}")				# add include folders
 endforeach(folder)
 
+if(WIN32)
+	set(INCL ${INCL} "../win32")				# add win32 include
+endif(WIN32)
+
 #######################################
 # set includes
 include_directories( ${INCL})
@@ -67,11 +76,11 @@ else(WIN32)
 endif(WIN32)
 
 add_library(${target} SHARED ${LIBCONTENT})
+set_target_properties (${target} PROPERTIES DEFINE_SYMBOL GUIDOAR_EXPORTS)
+set_target_properties (${target} PROPERTIES PUBLIC_HEADER "${COREH}")
 set_target_properties (${target} PROPERTIES 
 			FRAMEWORK TRUE 
 			FRAMEWORK_VERSION A
-			PUBLIC_HEADER "${COREH}"
-			DEFINE_SYMBOL GUIDOAR_EXPORTS
 			COMPILE_FLAGS -I/usr/local/include
 			MACOSX_FRAMEWORK_SHORT_VERSION_STRING "v.0.80"
 			MACOSX_FRAMEWORK_BUNDLE_VERSION "0.80"
@@ -83,9 +92,11 @@ if(${USEMidiShare})
 		set (MSH "-framework MidiShare -framework Player" )
 	elseif(UNIX)
 		set (MSH "-lMidiShare -lPlayer" )
+	elseif(WIN32)
+		set (MSH "../win32/Player32" )
 	endif(APPLE)
 	target_link_libraries( ${target} ${MSH})
-	set_target_properties (${target} PROPERTIES DEFINE_SYMBOL USEMidiShare)
+	set_target_properties (${target} PROPERTIES COMPILE_FLAGS -DUSEMidiShare)
 	set (TOOLS 	${TOOLS} guido2midi)
 	
 else(${USEMidiShare})
