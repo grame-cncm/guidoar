@@ -4,6 +4,11 @@
 project(libguidoar)
 cmake_minimum_required(VERSION 2.6)
 
+#######################################
+# version management
+set (VERSION "0.90")
+set (VERSIONSTR "v.0.90")
+
 ### for relative path to win32 libs
 if(COMMAND cmake_policy)
       cmake_policy(SET CMP0003 NEW)
@@ -82,8 +87,8 @@ set_target_properties (${target} PROPERTIES
 			FRAMEWORK TRUE 
 			FRAMEWORK_VERSION A
 			COMPILE_FLAGS -I/usr/local/include
-			MACOSX_FRAMEWORK_SHORT_VERSION_STRING "v.0.80"
-			MACOSX_FRAMEWORK_BUNDLE_VERSION "0.80"
+			MACOSX_FRAMEWORK_SHORT_VERSION_STRING ${VERSIONSTR}
+			MACOSX_FRAMEWORK_BUNDLE_VERSION ${VERSION}
 )
 
 if(${USEMidiShare})

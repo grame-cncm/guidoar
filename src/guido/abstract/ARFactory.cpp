@@ -216,6 +216,9 @@ ARFactory::ARFactory()
 	fMap["DrHoos"]		= new newTagFunctor<kTDrHoos>;
 	fMap["DrRenz"]		= new newTagFunctor<kTDrRenz>;
 	fMap["backward"]	= new newTagFunctor<kTBackward>;
+	// new tags Guido v.1.38
+	fMap["harmonic"]	= new newTagFunctor<kTHarmonic>;
+	fMap["pizz"]		= new newTagFunctor<kTPizz>;
 }
 
 } // namespace

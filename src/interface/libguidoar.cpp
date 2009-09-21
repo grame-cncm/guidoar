@@ -52,8 +52,8 @@ namespace guido
 {
 
 //----------------------------------------------------------------------------
-export int				guidoarVersion()	{ return 80; }
-export const char*		guidoarVersionStr()	{ return "v.0.80"; }
+export int				guidoarVersion()	{ return 90; }
+export const char*		guidoarVersionStr()	{ return "v.0.90"; }
 
 //----------------------------------------------------------------------------
 static SARMusic read (const char* buff)

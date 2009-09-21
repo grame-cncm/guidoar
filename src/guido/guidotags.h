@@ -145,6 +145,9 @@ enum {
 	kTDrHoos,
 	kTDrRenz,
 	kTBackward,		// a tag specific to the normal form of a chord
+	// new tags Guido v.1.38
+	kTHarmonic,
+	kTPizz,
 	kTagEnd
 };
 
