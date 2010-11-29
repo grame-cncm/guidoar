@@ -19,8 +19,8 @@ if(UNIX)
 endif(UNIX)
 
 if(APPLE)
-	set (CMAKE_OSX_ARCHITECTURES "i386 ppc")
-	set (CMAKE_OSX_SYSROOT /Developer/SDKs/MacOSX10.4u.sdk)
+	set (CMAKE_OSX_ARCHITECTURES "x86_64 i386 ppc")
+	set (CMAKE_OSX_SYSROOT /Developer/SDKs/MacOSX10.5.sdk)
 	set (CMAKE_C++_FLAGS -mmacosx-version-min=10.4)
 endif(APPLE)
 
@@ -57,6 +57,8 @@ endforeach(folder)
 
 if(WIN32)
 	set(INCL ${INCL} "../win32")				# add win32 include
+elseif(APPLE)
+	set(INCL ${INCL} "/usr/local/include")
 endif(WIN32)
 
 #######################################
