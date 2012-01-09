@@ -147,7 +147,7 @@ ARNote::pitch ARNote::NormalizedName2Pitch	(char note)
 //______________________________________________________________________________
 int ARNote::midiPitch (int& currentOctave) const
 {
-	int alter, midi = -1;
+	int alter=0, midi = -1;
 	pitch notepitch = GetPitch (alter);
 
 	int octave = fOctave == kUndefined ? currentOctave : fOctave;
