@@ -13,7 +13,11 @@ set (VERSIONSTR "v.0.90")
 if(COMMAND cmake_policy)
       cmake_policy(SET CMP0003 NEW)
 endif(COMMAND cmake_policy)
-    
+
+if(CMAKE_CONFIGURATION_TYPES)
+	set(CMAKE_CONFIGURATION_TYPES Debug Release)
+endif()
+ 
 if(UNIX)
 	add_definitions(-Wall -DGCC)
 endif(UNIX)
