@@ -110,9 +110,9 @@ if(${USEMidiShare})
 	set_target_properties (${target} PROPERTIES COMPILE_FLAGS -DUSEMidiShare)
 	set (TOOLS 	${TOOLS} guido2midi)
 	
-else(${USEMidiShare})
+else()
 	message ("call cmake -DUSEMidiShare=1 option to include midishare support")
-endif(${USEMidiShare})
+endif()
 
 
 #######################################
@@ -127,20 +127,20 @@ foreach(sample ${TOOLS})
 	add_executable( ${sample} ${GARTOOLS}/${sample}.cpp )
 	target_link_libraries( ${sample} ${target})
 	add_dependencies(${sample} ${target})
-endforeach(sample)
+endforeach()
 
 if(${USEMidiShare})
 	target_link_libraries( guido2midi ${MSH})
 	set_target_properties (guido2midi PROPERTIES COMPILE_FLAGS -I/usr/local/include)
-endif(${USEMidiShare})
+endif()
 
 
-
+if(UNIX AND NOT APPLE)
 #######################################
 # install setup
 install ( TARGETS ${target}
-    	LIBRARY DESTINATION lib
-    	ARCHIVE DESTINATION lib
-    	FRAMEWORK DESTINATION "/Library/Frameworks" CONFIGURATIONS Release
-    	PUBLIC_HEADER DESTINATION include/libguidoar
+    	LIBRARY DESTINATION /usr/local/lib
+     	PUBLIC_HEADER DESTINATION /usr/local/include/guidoar
 )
+
+endif()
