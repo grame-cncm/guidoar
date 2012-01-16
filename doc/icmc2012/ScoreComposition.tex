@@ -24,15 +24,16 @@
 \newenvironment{gmncode}		{\vspace{-2mm}\small\verbatim}{\endverbatim\vspace{-2mm}}
 
 
-\newcommand{\GMN}	{\emph{Guido Music Notation}}
-\newcommand{\Guido}	{\textsc{Guido}}
-\newcommand{\GAR}		{GuidoAR}
-\newcommand{\syntax}[1]	{\vspace{-3mm} \small #1}
-\newcommand{\code}[1]	{{\small \texttt{#1}}}
-\newcommand{\gtag}[1]	{$\backslash$\code{#1}}
-\newcommand{\todo}[1]	{{\\ \hspace*{-8mm} \textbf{Todo:} \texttt{#1}}}
-\newcommand{\oend}		{\emph{opened-end}}
-\newcommand{\obeg}		{\emph{opened-begin}}
+\newcommand{\GMN}			{\emph{Guido Music Notation}}
+\newcommand{\Guido}		{\textsc{Guido}}
+\newcommand{\GAR}			{GuidoAR}
+%\newcommand{\syntax}[1]	{\vspace{-3mm} \small #1}
+\newcommand{\code}[1]		{{\small \texttt{#1}}}
+\newcommand{\gtag}[1]		{$\backslash$\code{#1}}
+%\newcommand{\todo}[1]		{{\\ \hspace*{-8mm} \textbf{Todo:} \texttt{#1}}}
+\newcommand{\rulenum}[1]	{\textbf{#1}}
+\newcommand{\oend}			{\emph{opened-end}}
+\newcommand{\obeg}			{\emph{opened-begin}}
 \newcommand{\codeindent}	{\\ \hspace*{9mm}}
 
 %____________________________________________________________
@@ -103,8 +104,8 @@
 \maketitle
 
 \begin{abstract}
-Based on the Guido Music Notation format, we have developed tools for music score composition, i.e. operators taking score both as target and as arguments of high level transformations applicable for example to the time domain (e.g. cutting the head or the tail of a score) or to the structural domains (e.g. putting scores in sequence or in parallel). 
-Providing these operations at the score level is particularly convenient to express music ideas and to compose these ideas in an homogeneous representation space. However, scores composition gives raise to a set of issues related to the music notation consistency. The paper introduces the Guido Music Notation format, presents the score composition operations, the notation issues and a proposal to solve them.
+Based on the Guido Music Notation format, we have developed tools for music score composition, i.e. operators taking scores both as target and arguments of high level transformations, applicable for example to the time domain (e.g. cutting the head or the tail of a score) or to the structural domains (e.g. putting scores in sequence or in parallel). 
+Providing these operations at score level is particularly convenient to express music ideas and to compose these ideas in an homogeneous representation space. However, scores composition gives raise to a set of issues related to the music notation consistency. This paper introduces the Guido Music Notation format, presents the score composition operations, the notation issues and a proposal to solve them.
 \end{abstract}
 
 
@@ -121,7 +122,7 @@ Music notation is the most common representation used by musicians. Developing s
 
 However, applied at score level, these operations raise a set of issues related to the music notation consistency. As a solution, we propose a simple typology of the music notation elements and a set of rules based on this typology, to enforce the music notation coherence.
 
-This paper introduces the \Guido\ Music Notation format, the next sections present the score composition operations, the related notation issues and the proposed solutions.
+This paper introduces the \Guido\ Music Notation format, the next sections present the score composition operations, the related notation problems and the proposed solutions, including a language extension to handle reversibility issues.
 
 %----------------------------------------------------------------
 \section{The Guido Music Notation format}
@@ -267,7 +268,7 @@ Actually, the score composition functions operate on a memory representation of 
 
 Let's take an example with the \code{tail} operation applied to the following simple score: 
 \codeindent \code{[\gtag{clef}<"f"> c d e c]}\\
-A raw cut of the score after 2 notes would give \code{[e\ c]} as result, removing the clef information and potentially leading to unexpected results (figure \ref{fig:tail}).
+A raw cut of the score after 2 notes would give \code{[e\ c]}, removing the clef information and potentially leading to unexpected results (figure \ref{fig:tail}).
 \begin{figure}[h]
 	\centering \includegraphics[width=60mm]{imgs/tail}
  \caption{Tail operation consistency}
@@ -288,10 +289,10 @@ where the clef repetition (figure \ref{fig:seq2}) is useless and blurs the readi
 Some operations may also result in syntactically incorrect results. Consider the following code:
 \codeindent \code{[g \gtag{slur}(f e) c]} \\
 slicing the score in 2 parts after \code{f} would result in 
-\codeindent a)\ \ \code{[g \gtag{slur}(f]} \ \  and b) \ \  \code{[e) c]} \\
+\codeindent \textbf{a)}\ \ \code{[g \gtag{slur}(f]} \ \  and \textbf{b)} \ \  \code{[e) c]} \\
 i.e. with uncompleted range tags. We'll use the terms \oend\ tags to refer the a) form and \obeg\ tags for the b) form.
 
-These simple examples illustrate the problem but there are many more cases where the music notation consistency has to be preserved across score level operations.
+These simple examples illustrate the problem and there are many more cases where the music notation consistency has to be preserved across score level operations.
 
 %----------------------------------------------------------------
 \section{Music Notation consistency}
@@ -304,29 +305,6 @@ We propose a simple typology of the notation elements regarding their time exten
 
 The GMN format makes a distinction between \emph{position} tags (e.g. \gtag{clef}, \gtag{meter}) and \emph{range} tags (e.g. \gtag{slur}, \gtag{beam}). Position tags are simple notations marks at a given time position while range tags have an explicit time extent: the duration of the enclosed notes. 
 However, this distinction is not sufficient to cover the problem: many of the position tags have an implicit time duration and generally, they last up to the next similar notation or to the end of the score. For example, a dynamics last to the next dynamic or the end of the score.
-%\begin{table}[htdp]
-%\begin{center}
-%\begin{tabular}{cll}
-%time extend & description & sample \\
-%\hline
-%explicit 	& duration is explicit 	& slurs, cresc. \\
-%			& from the notation		& etc. \\
-%implicit 	& element lasts to the	& meter, clef, \\
-%			& end of the score or to	& key, etc. \\
-%			& the next similar element	& \\
-%others 		& structure control	& coda, da capo, \\
-%			& 	& repeats, etc. \\
-%	 		& formatting instructions	& new line, \\
-%			& 	& new page, etc. \\
-%	 		& notation marks	& breath mark, \\
-%			& 	& bar, etc. \\
-%\hline
-%\end{tabular}
-%\end{center}
-%\caption{Typology of notation elements.}
-%\label{types}
-%\end{table}
-%
 \begin{table*}[htdp]
 \begin{center}
 \begin{tabular}{cll}
@@ -361,18 +339,20 @@ Based on this typology, provisions have to be made when:
 	\item[4)] implicit time extent elements starting the second score must be skipped when they correspond to current existing elements.
 \end{description}
 \end{itemize}
-%Based on this typology, a set of simple rules for score level operations could solve most of the notation issues:
-%\begin{itemize}
-%\item when computing the end of a score, all the explicit time extent elements must be properly closed,
-%\item when computing the beginning of a score, all the pending explicit time extent elements (i.e. \obeg\ tags) must be recalled,
-%\item when computing the beginning of a score, all the current implicit time extent elements must be recalled,
-%\item when putting scores in sequence, implicit time extent elements starting the second score must be skipped when they correspond to current existing elements.
-%\end{itemize}
-Concerning the \emph{other} time extent category, provisions are made for the \emph{structure control} elements (see section \ref{sc}).
+
+%----------------------------------------------------------------
+\subsection{Structure control issues} \label{sc}
+Elements relevant to the \emph{others / structure control} time extent category may also give rise to inconsistent notation: a \emph{repeat begin} bar without \emph{repeat end}, a \emph{dal segno} without \emph{segno}, a \emph{da capo al fine} without \emph{fine}, etc. We introduce new rules to catch the repeat bar issue. Let's first define a \emph{pending} repeat end as the case of a voice with a repeat begin tag without matching repeat end.
+\begin{itemize}
+\item[\rulenum{5)}] when computing the end of a score, every \emph{pending} repeat end must be closed with a repeat end tag.
+\item[\rulenum{6)}] from successive unmatched repeat begin tags, only the first one must be retained.
+\item[\rulenum{7)}] from successive repeat end tags, only the last one must be retained.
+\end{itemize}
+No additional provision is made for the other structure control elements: possible inconsistencies are ignored but this choice preserves the operations reversibility.
 
 %----------------------------------------------------------------
 \subsection{Operations reversibility}\label{reverse}
-The above rules solve most of the notation issues but they do not permit the operations to be reverted: consider a score including a slur, sliced in the middle of the slur and reverted by putting the parts back in sequence. The result will include two slurs (figure \ref{fig:rev}) due to the rules 1) and 3)  that enforce opening \obeg\ tags and closing \oend\ tags.
+The above rules solve most of the notation issues but they do not permit the operations to be reverted: consider a score including a slur, sliced in the middle of the slur and reverted by putting the parts back in sequence. The result will include two slurs (figure \ref{fig:rev}) due to the rules \rulenum{1)} and \rulenum{3)}  that enforce opening \obeg\ tags and closing \oend\ tags.
 \begin{figure}[h]
 	\centering \includegraphics[width=80mm]{imgs/reverse}
  \caption{A score sliced and put back in sequence}
@@ -386,7 +366,7 @@ where \code{type} is in [\code{begin}, \code{end}], corresponding respectively t
 
 Next, we introduce a new rule for score level operations. Let's first define \emph{adjacent} tags as tags placed on the same voice and not separated by any note or chord.
 \begin{itemize}
-\item \emph{adjacent} similar tags carrying an \code{open} parameter are mutually cancelled when the first one is \oend\ and the second one \obeg .
+\item[\rulenum{8)}] \emph{adjacent} similar tags carrying an \code{open} parameter are mutually cancelled when the first one is \oend\ and the second one \obeg .
 \end{itemize}
 Thus when a score level operation encounters a form like: 
 \codeindent \code{\gtag{anytag}<open="end">(f g) 
@@ -395,19 +375,12 @@ it should transform it to:
 \codeindent\code{\gtag{anytag}(f g f e)} 
 
 %----------------------------------------------------------------
-\subsection{Structure control issues} \label{sc}
-Elements relevant to the \emph{others / structure control} time extent category may also give rise to inconsistent notation: a \emph{repeat begin} bar without \emph{repeat end}, a \emph{dal segno} without \emph{segno}, a \emph{da capo al fine} without \emph{fine}, etc. We introduce new rules to catch the repeat bar issue. Let's first define a \emph{pending} repeat end as the case of a voice with a repeat begin tag without matching repeat end.
-\begin{itemize}
-\item when computing the end of a score, every \emph{pending} repeat end must be closed with a repeat end tag.
-\item from successive unmatched repeat begin tags, only the first one must be retained.
-\item from successive repeat end tags, only the last one must be retained.
-\end{itemize}
-No additional provision is made for the other structure control elements: possible inconsistencies are ignored but this choice preserves the operations reversibility.
-
-%----------------------------------------------------------------
 \section{Conclusion}
 %----------------------------------------------------------------
 Music notation is complex due to the large number of notation elements and to the heterogeneous status of these elements. The typology proposed in table \ref{types} is actually a simplification intended to cover the needs of score level operations but it is not representative of this complexity. However, it reflects the music notation semantic and could be reused with other score level music representation language. Thus apart for the reversibility rule that requires the support of the music representation language, all the other rules are independent from the GMN format and applicable in other contexts.
+
+Score level operations could be very useful in the context of batch processing (e.g. voices separation from a conductor, excerpt extraction, etc.). The operations presented in table \ref{operations} support this kind of processing but they also open the door a new approach of the music creative process. 
+
 
 \bibliographystyle{IEEEtranS}
 \bibliography{../guido} % requires file template.bib
