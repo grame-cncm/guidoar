@@ -79,10 +79,10 @@ Cet article donne un aperçu du format de notation musicale \Guido , puis il pr�
 \section{Introduction}\label{sec:intro}
 %----------------------------------------------------------------
 Le format de notation musicale \Guido\ [GMN] \cite{hoos98} \cite{guido} a été définit par H. Hoos et K. Hamel il y a plus de 10 ans.
-Il est très proche du format adopté par Lilypond format\cite{lilypond03} \cite{lilypond06} mais il est apparu antérieurement.
-Le format GMN est un langage textuel et lisible de représentation de partitions musicales. Il est basé sur un formalisme simple mais puissant, se concentrant sur les grands concepts musicaux (en opposition aux caractéristiques graphiques). Une caractéristique clé de \Guido\ est l'idée que des concepts musicaux simples doivent être notés simplement, et que seules les notions complexes nécessitent des notations complexes.
+Il est très proche du format adopté par Lilypond \cite{lilypond03} \cite{lilypond06} mais il est apparu antérieurement.
+Le format GMN est un langage textuel et lisible de représentation de partitions musicales. Il est basé sur un formalisme simple mais puissant, se concentrant sur les grands concepts musicaux (en opposition aux caractéristiques graphiques). L'approche développée par \Guido\ repose sur l'idée que des concepts musicaux simples doivent être notés simplement, et que seules les notions complexes nécessitent des notations complexes.
 
-Basée sur le format GMN, la librairie \Guido\ \cite{daudin09a,Fober:04b} constitue un puissant moteur de mise en page de partitions, qui se différencie notamment des approches de type \emph{compilateur}  \cite{lilypond03,musixtex} par sa capacité à être embarqué dans une application indépendante et par la rapidité et l'efficacité du moteur de rendu, qui le rendent utilisable dans un contexte \emph{temps réel} pour des partitions simples.
+Basée sur le format GMN, la librairie \Guido\ \cite{daudin09a,Fober:04b} fournit un puissant moteur de mise en page de partitions, qui se différencie notamment des approches de type \emph{compilateur}  \cite{lilypond03,musixtex} par sa capacité à être embarquée dans une application indépendante et par la rapidité et l'efficacité du moteur de rendu, qui le rendent utilisable dans un contexte \emph{temps réel} pour des partitions simples.
 
 Basées sur la combinaison du langage et du moteur de rendu \Guido , des opérations de composition de partitions ont été développées, fournissant des transformations rythmiques, de hauteur, des sélections temporelles ou événementielles, des opérations de mise en séquence ou en parallèle, etc.
 
@@ -98,7 +98,7 @@ Cet article donnera quelques rappels sur le format de notation \Guido , les sect
 
 \subsection{Concepts de base}
 %----------------------------------------------------------------
-Le format de base recouvre les notes, silences, altérations, voix indépendantes, et les concepts les plus courants de la notation musicale comme les clefs, métriques, armures, articulations, liaisons, etc.
+Le format de base de \Guido\ recouvre les notes, silences, altérations, voix indépendantes, et les concepts les plus courants de la notation musicale comme les clefs, métriques, armures, articulations, liaisons, etc.
 Les notes sont représentées par leur nom \texttt{(a b c d e f g h)}, une altération optionnelle ('\#' et '\&' pour dièse et bémol), un numéro d'octave optionnel et une durée optionnelle. \\
 La durée est spécifiée par l'une des formes suivantes: 
 \begin{gmncode} 
@@ -113,7 +113,7 @@ Si omises, les valeurs optionnelles sont les dernières utilisée pour la note p
 Les accords sont décrits par des notes entre accolades séparées par des virgules, i.e. \code\{{c, e, g}\}
 
 
-\subsection{Tags Guido}
+\subsection{Tags \Guido}
 %----------------------------------------------------------------
 Les tags sont utilisés pour donner des informations musicales supplémentaires, comme les liaisons, clés, armures, etc. Un tag a l'une des formes suivantes:
 \begin{gmncode} 
@@ -133,14 +133,14 @@ Le code GMN suivant illustre la concision de la notation ; la figure \ref{ex1} d
 
 \begin{figure}[h]
 	\centering \includegraphics[width=47mm]{imgs/ex1}
- \caption{A simple GMN example}
+ \caption{Un exemple GMN simple}
  \label{ex1}
 \end{figure}
 
 
-\subsection{Notes sequences and segments}
+\subsection{Séquences et segments}
 %----------------------------------------------------------------
-Une séquence de notes a la forme \verb+[tagged-notes]+ où \code{tagged-notes} est une série de notes, tags, tags temporels séparés par des espaces. Les séquences de notes représentent une seule voix.
+Une séquence de notes a la forme \verb+[tagged-notes]+ où \code{tagged-notes} est une série de notes, tags, tags temporels séparés par des espaces. Une séquence de notes représente une seule voix.
 Les segments de notes représentent plusieurs voix ; ils sont notés par \verb+{seq-list}+ où \code{seq-list} est une liste de séquences de notes séparées par des virgules, comme dans l'exemple suivant (figure \ref{fig:voices}):
 \codeindent\code{ \{ [ e g f ], [ a e a ] \} }
 \begin{figure}[h]
@@ -187,7 +187,7 @@ Un exemple de code est donné ci-dessous avec le rendu correspondant (figure \re
 \section{Composition de partitions}
 %----------------------------------------------------------------
 \subsection{Operations}
-Les opérations de composition de partitions ont été implémentées sous forme de librairie indépendante (\GAR ) et sont données par la table  \ref{operations}. Ces opérations sont disponibles sous forme d'API, d'utilitaires pour la ligne de commande, ou encore dans l'environnement graphique de l'application \Guido Calculus.
+Des opérations de composition de partitions ont été implémentées sous forme de librairie indépendante (\GAR ). Elles sont décrites par la table  \ref{operations}. Ces opérations sont disponibles sous forme d'API, d'utilitaires pour la ligne de commande, ou encore dans l'environnement graphique de l'application \Guido Calculus.
 La plupart de ces opérations prennent une partition et une valeur en entrée pour produire une nouvelle partition en sortie. La valeur passée en entrée peut-être donnée sous forme de partition: par exemple, l'opération  \code{top} coupe les voix d'une partition après un nombre de voix $n$ ; en utilisant une partition à la place de ce paramètre, c'est le nombre de voix de cette partition qui sera pris comme valeur.
 Ainsi, toutes les opérations peuvent s'effectuer de manière consistante au niveau symbolique de la notation. 
 
@@ -236,7 +236,7 @@ Dans les faits, les fonctions de composition de partition opèrent sur une repr�
 
 Prenons l'exemple de l'opération \code{tail} appliquée à la partition suivante:
 \codeindent \code{[\gtag{clef}<"f"> c d e c]}\\
-Une coupure brute de la partition après 2 notes donne le code \code{[e\ c]} où l'information de clef a disparu, pouvant conduire à un rendu non souhaité (figure \ref{fig:tail}).
+Une coupure \emph{brute} de la partition après 2 notes donne le code \code{[e\ c]} où l'information de clef a disparu, pouvant conduire à un rendu non souhaité (figure \ref{fig:tail}).
 \begin{figure}[h]
 	\centering \includegraphics[width=60mm]{imgs/tail}
  \caption{Cohérence de l'opération \code{tail}}
@@ -257,7 +257,7 @@ où la clef est répétée inutilement (figure \ref{fig:seq2})  ce qui rend la l
 Certaines opérations peuvent également donner des résultats syntactiquement incorrects. Considérons le code suivant :
 \codeindent \code{[g \gtag{slur}(f e) c]} \\
 le partage de la partition en 2 après \code{f} donnerai 
-\codeindent \textbf{a)}\ \ \code{[g \gtag{slur}(f]} \ \  et \textbf{b)} \ \  \code{[e) c]} \\
+\codeindent \textbf{a)}\ \ \code{[g \gtag{slur}(f]} \ \  et\ \ \textbf{b)} \ \  \code{[e) c]} \\
 i.e. comprenant des tags temporels inachevés. Nous utiliserons les termes tags à \oend\ pour faire référence au cas a) et tag à \obeg\ pour le cas b).
 
 Ces quelques exemples illustrent une partie du problème et il y a beaucoup d'autres cas où la cohérence de la notation doit être préservée lors d'opérations sur les partitions.
@@ -266,7 +266,7 @@ Ces quelques exemples illustrent une partie du problème et il y a beaucoup d'au
 \subsection{Etendue temporelle des éléments}
 Nous proposons de traiter le problème en définissant une typologie des éléments de notation en fonction de leur étendue temporelle, et en spécifiant des règles de cohérence basées sur ces types.
 
-Le format GMN fait une distinction entre les tags de position (comme \gtag{clef} ou \gtag{meter}) et les tags temporels (\gtag{slur}, \gtag{beam}, etc.) : les tags temporels ont une durée explicite (la durée des notes qu'ils contiennent) et les tags de position sont de simples marques de notations à une position donnée. Cette distinction n'est toutefois pas suffisante pour couvrir le problème : beaucoup de tags de position ont une durée implicite qui s'étend généralement jusqu'à un signde de notation similaire ou jusqu'à la fin de la partition. C'est le cas par exemple de la notation de l'intensité.
+Le format GMN fait une distinction entre les tags de position (comme \gtag{clef} ou \gtag{meter}) et les tags temporels (\gtag{slur}, \gtag{beam}, etc.) : les tags temporels ont une durée explicite (la durée des notes qu'ils contiennent) et les tags de position sont de simples marques de notations à une position donnée. Cette distinction n'est toutefois pas suffisante pour couvrir le problème : beaucoup de tags de position ont une durée implicite, qui s'étend généralement jusqu'à un signe de de notation similaire ou jusqu'à la fin de la partition. C'est le cas par exemple de la notation de l'intensité.
 \begin{table*}[htdp]
 \begin{center}
 \begin{tabular}{cll}
@@ -289,7 +289,7 @@ La table  \ref{types} présente une typologie simple des éléments de notation 
 \begin{itemize}
 \item calcul du début d'une partition :  
 \begin{description}
-	\item[1)] les éléments d'étendue temporelle explicite (i.e. les tags à \obeg , voir section \ref{issues}) doivent être ouverts
+	\item[1)] tous les éléments d'étendue temporelle explicite doivent être ouverts (i.e. les tags à \obeg , voir section \ref{issues})
 	\item[2)] les éléments courants d'étendue temporelle implicite  doivent être rappelés,
 \end{description}
 \item calcul de la fin d'une partition : 
@@ -325,19 +325,19 @@ Les règles définies ci-dessus résolvent la majorité des problèmes de notati
  \label{fig:rev}
 \end{figure}
 
-La résolution du problème requiert le support du langage GMN : nous introduisons un nouveau paramètre pour les tags d'étendue temporelle explicite, conservant l'histoire du tag et indiquant un antécédent de forme \oend\ et/ou \obeg\ .
-Ce paramètre est e la forme : 
+La résolution du problème requiert le support du langage GMN : nous introduisons un nouveau paramètre pour les tags d'étendue temporelle explicite, conservant l'histoire du tag et indiquant un antécédent de type \oend\ et/ou \obeg\ .
+Ce paramètre est de la forme : 
 \codeindent \code{\gtag{tag}<open="type">} \\
 où \code{type} est parmi [\code{begin}, \code{end}], correspondant respectivement à des antécédents \obeg\ et \oend .
 
-Nous introduisons ensuite une nouvelle règle pour la composition de partitions, qui nécessite de définir des tags \emph{adjacents} comme des tags placés sur la même voix et qui ne sont séparés par aucune note ou accord.
+Nous introduisons ensuite une nouvelle règle pour la composition de partitions, qui nécessite de définir des \emph{tags adjacents} comme des tags placés sur la même voix et qui ne sont séparés par aucune note ou accord.
 \begin{itemize}
 \item[\rulenum{8)}] les tags \emph{adjacents} similaires qui portent un paramètre \code{open} s'annulent mutuellement quand le premier est de type \oend\ et le second \obeg .
 \end{itemize}
-Ainsi, si une opération rencontre une forme de type :
+Ainsi, une opération rencontrant une forme de type :
 \codeindent \code{\gtag{anytag}<open="end">(f g) 
 \codeindent \gtag{anytag}<open="begin">(f e)} \\
-elle sera transformée en :
+la transformera en :
 \codeindent\code{\gtag{anytag}(f g f e)} 
 
 
@@ -348,7 +348,7 @@ elle sera transformée en :
 La complexité de la notation musicale repose en grande partie sur le grand nombre d'éléments de notation et sur leur statut hétérogène. La typologie que nous avons proposé (table \ref{types}) en est une simplification arbitraire, destinée à couvrir les besoins d'opérations de composition de partitions. Elle n'est  pas représentative de cette complexité mais comme elle se base sur la sémantique de la notation, elle peut être appliquée à tout format de représentation de la notation musicale.
 Hormis les règles de réversibilité définies en \ref{reverse} qui nécessitent le support du langage de représentation de la musique pour opérer, toutes les autres règles sont indépendantes du format GMN.
 
-Les opérations sur les partitions peuvent se révéler très utiles dans le cas de traitements par lot (par exemple : séparation des voix d'un conducteur, extraction d'extraits, etc.).  Les opérations présentées en table \ref{operations} permettent ce type de traitement, mais elles ouvrent également la voie vers de nouvelles approches créatives de la musique.
+Les opérations sur les partitions peuvent se révéler très utiles dans le cas de traitements par lot (par exemple : séparation des voix d'un conducteur, extraction d'extraits, etc.).  Les opérateurs présentés en table \ref{operations} permettent ce type de traitement, mais ouvrent également la voie à de nouvelles approches créatives de la musique.
 
 \bibliographystyle{unsrt}
 \bibliography{../guido}
