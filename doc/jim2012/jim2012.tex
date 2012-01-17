@@ -15,10 +15,12 @@
 %\usepackage{pxfonts}
 \usepackage{graphicx}
 \usepackage{url}
+\usepackage{verbatim}
+
 
 % Title.
 % ------
-\title{Scores Composition based on the Guido Music Notation}
+\title{Composition de partitions musicales}
 
 % Single \textsc{address}
 % To use with only one author or several with the same address
@@ -43,21 +45,24 @@
 %  {Auteur 3} {Organisme \\ Adresse électronique}
 
 
+
+%____________________________________________________________
 \sloppy
 \newenvironment{contentsmall}	{\small}
-\sloppy
-\newenvironment{gmnsyntax}		{\vspace{-2mm}\small}{\vspace{-2mm}}
 
-\newcommand{\GMN}	{\emph{Guido Music Notation}}
-\newcommand{\Guido}	{Guido}
-\newcommand{\GAR}		{GuidoAR}
+\newenvironment{gmncode}		{\vspace{-2mm}\small\verbatim}{\endverbatim\vspace{-2mm}}
+
+
+\newcommand{\GMN}			{\emph{Guido Music Notation}}
+\newcommand{\Guido}		{\textsc{Guido}}
+\newcommand{\GAR}			{GuidoAR}
 \newcommand{\syntax}[1]	{\vspace{-3mm} \small #1}
-\newcommand{\code}[1]	{{\small \texttt{#1}}}
-\newcommand{\gtag}[1]	{$\backslash$\code{#1}}
-\newcommand{\todo}[1]	{{\\ \hspace*{-8mm} \textbf{Todo:} \texttt{#1}}}
-\newcommand{\oend}		{\emph{opened-end}}
-\newcommand{\obeg}		{\emph{opened-begin}}
+\newcommand{\code}[1]		{{\small \texttt{#1}}}
+\newcommand{\gtag}[1]		{$\backslash$\code{#1}}
+\newcommand{\oend}			{\emph{fin-ouverte}}
+\newcommand{\obeg}			{\emph{début-ouvert}}
 \newcommand{\codeindent}	{\\ \hspace*{9mm}}
+\newcommand{\rulenum}[1]	{\textbf{#1}}
 
 
 \begin{document}
@@ -65,96 +70,93 @@
 \maketitle
 %
 \begin{abstract}
-Based on the Guido Music Notation format, we have developed a library - the \GAR\ library - that provides a simple and efficient memory representation of the music notation as well as score level operations. Applying operations at score level (like cutting the score head or tail) gives raise to a set of issues related to the music notation consistency. We present the Guido Music Notation format, the \GAR\ library, the score composition operations, the music notation related issues and a proposed way to solve them.
+Basé sur le format de notation musicale \Guido , nous avons développé un ensemble d'outils pour la composition de partitions musicales. Il s'agit d'opérations de transformation de haut niveau, prenant des partitions en entrée pour en générer de nouvelles  en sortie. Ces opérations peuvent par exemple s'appliquer au domaine temporel (e.g. couper le début ou la fin d'une partition) ou concerner la structure de la partition (mise en séquence, en parallèle).
+La définition d'opérateurs applicables au niveau de la notation permet d'englober l'expression d'idées musicales et leur composition dans une même métaphore. Cela soulève toutefois un certain nombres de problèmes liés à la cohérence de la notation.
+Cet article donne un aperçu du format de notation musicale \Guido , puis il présente les opérations de composition de partitions, les problèmes qui se posent pour la cohérence de la notation et les solutions proposées.
 \end{abstract}
 
 %----------------------------------------------------------------
 \section{Introduction}\label{sec:intro}
 %----------------------------------------------------------------
-The \Guido\ Music Notation format (GMN) \cite{hoos98} \cite{guido} has been designed by H. Hoos and K. Hamel more than ten years ago. It is very close to the Lilypond format\cite{lilypond03} \cite{lilypond06} but appeared first. The GMN format is a general purpose formal language for representing score level music in a platform independent plain text and human readable way. It is based on a conceptually simple but powerful formalism: its design concentrates on general musical concepts (as opposed to graphical features). A key feature of the \Guido\ design is adequacy which means that simple musical concepts are represented in a simple way and only complex notions require complex representations.
+Le format de notation musicale \Guido\ [GMN] \cite{hoos98} \cite{guido} a été définit par H. Hoos et K. Hamel il y a plus de 10 ans.
+Il est très proche du format adopté par Lilypond format\cite{lilypond03} \cite{lilypond06} mais il est apparu antérieurement.
+Le format GMN est un langage textuel et lisible de représentation de partitions musicales. Il est basé sur un formalisme simple mais puissant, se concentrant sur les grands concepts musicaux (en opposition aux caractéristiques graphiques). Une caractéristique clé de \Guido\ est l'idée que des concepts musicaux simples doivent être notés simplement, et que seules les notions complexes nécessitent des notations complexes.
 
-Computer music is rich of many score level music representation languages \cite{Hewlett97}\cite{Huron97}\cite{darms}\cite{SCORE}\cite{good01}. This paper doesn't aim at making a comparison between these languages and the main reason we chose the GMN format for this work is the language simplicity and readability, in combination with the availability of the Guido Engine \cite{Fober:04b}\cite{daudin09a}, a powerful open source C/C++ library for music score layout and graphic rendering engine based on the GMN format, providing an easy way to dynamically experiment with score level operations. 
+Basée sur le format GMN, la librairie \Guido\ \cite{daudin09a,Fober:04b} constitue un puissant moteur de mise en page de partitions, qui se différencie notamment des approches de type \emph{compilateur}  \cite{lilypond03,musixtex} par sa capacité à être embarqué dans une application indépendante et par la rapidité et l'efficacité du moteur de rendu, qui le rendent utilisable dans un contexte \emph{temps réel} pour des partitions simples.
 
-Based on the GMN format, we have developed a C++ library, the \GAR\ library, more suitable to implement score composition operations than the Guido Engine internal memory representation. Composition operations are basic operations like transposition, cutting the head or the tail of a score, putting scores in sequence or in parallel, etc. However, applied at score level, these operation quickly raised to a set of issues related to the music notation consistency. To solve these issues, we propose a simple typology of the music notation elements and a set of rules based on this typology, to enforce the music notation consistency.
+Basées sur la combinaison du langage et du moteur de rendu \Guido , des opérations de composition de partitions ont été développées, fournissant des transformations rythmiques, de hauteur, des sélections temporelles ou événementielles, des opérations de mise en séquence ou en parallèle, etc.
 
-Music notation is the most common representation used by musicians. Developing score level composition operations provides an homogeneous way to write scores and to manipulate them while remaining at a high music description level. Moreover, the design allows to use scores both as target and as arguments of the operations, enforcing the notation level metaphor.
+La notation musicale reste l'une des représentations les plus utilisées par les musiciens. La définition d'opérateurs de composition de partitions constitue un moyen homogène de concilier écriture et transformation tout en restant à un haut niveau de description symbolique de la musique. De plus, la conception de ces opérateurs permet d'utiliser des partitions tant comme cible que comme argument de ces opérations, renforçant encore la métaphore de la notation.
 
-This paper introduces first the \Guido\ Music Notation format, next the \GAR\ library is presented and the last section presents the score composition operations, the related notation issues and the proposed solution.
+Toutefois, appliquées au niveau de la notation, ces opérations soulèvent un certain nombre de problèmes liés à la cohérence de la notation. Pour résoudre un grand nombre de ces problèmes, nous proposons une typologie simple des éléments de notation musicale ainsi qu'un ensemble de règles basées sur cette typologie.
+
+Cet article donnera quelques rappels sur le format de notation \Guido , les sections suivantes présenteront les opérations de composition de partitions, les problèmes soulevés par ces opérations et les solutions proposées. Nous considérerons enfin une extension du langage GMN pour prendre  en compte la réversibilité des opérations.
 
 %----------------------------------------------------------------
-\section{The Guido Music Notation format}
+\section{Le format de notation Guido}
 %----------------------------------------------------------------
 
-\subsection{Basic concepts}
+\subsection{Concepts de base}
 %----------------------------------------------------------------
-Basic \Guido\ notation covers the representation of notes, rests, accidentals, single and multi-voiced music and the most common concepts from conventional music notation such as clefs, meter, key, slurs, ties, beaming, stem directions, etc.
-Notes are specified by their name \code{(a b c d e f g h)}, optional accidentals ('\#' and '\&' for sharp and flat), an optional octave number and an optional duration. \\
-Duration is specified in one of the forms: 
-\begin{gmnsyntax} 
-\begin{verbatim} 
+Le format de base recouvre les notes, silences, altérations, voix indépendantes, et les concepts les plus courants de la notation musicale comme les clefs, métriques, armures, articulations, liaisons, etc.
+Les notes sont représentées par leur nom \texttt{(a b c d e f g h)}, une altération optionnelle ('\#' et '\&' pour dièse et bémol), un numéro d'octave optionnel et une durée optionnelle. \\
+La durée est spécifiée par l'une des formes suivantes: 
+\begin{gmncode} 
    '*'enum'/'denom dotting
    '*'enum dotting 
    '/'denom dotting
-\end{verbatim}
-\end{gmnsyntax} 
-\noindent where $enum$ and $denom$ are positive integers and $dotting$ is either empty, '.', or '..', with the same semantic than the music notation. When $enum$ or $denom$ is omitted, it is assumed to be 1. The duration represents a whole note fractional.
+\end{gmncode} 
+\noindent où $enum$ et $denom$ sont des entiers positifs et $dotting$ est soit vide, '.', ou '..', avec la même sémantique que dans la notation musicale. 1 est la valeur par défaut si $enum$ ou $denom$ sont omis. La durée exprime une fraction de ronde.
 
-When omitted, optional note description parts are assumed to be equal to the previous specification before in the current sequence.
+Si omises, les valeurs optionnelles sont les dernières utilisée pour la note précédente de la séquence.
 
-Chords are described using comma separated notes enclosed in brackets e.g \code{\{c, e, g\}}
+Les accords sont décrits par des notes entre accolades séparées par des virgules, i.e. \code\{{c, e, g}\}
 
-\subsection{\Guido\ tags}
+
+\subsection{Tags Guido}
 %----------------------------------------------------------------
-Tags are used to represent additional musical information, such as slurs, clefs, keys, etc. A basic tag has one of the forms:
-\begin{gmnsyntax} 
-\begin{verbatim} 
+Les tags sont utilisés pour donner des informations musicales supplémentaires, comme les liaisons, clés, armures, etc. Un tag a l'une des formes suivantes:
+\begin{gmncode} 
    \tagname 
    \tagname<param-list>
-\end{verbatim} 
-\end{gmnsyntax}
-\noindent where \code{param-list} is a list of string or numerical arguments, separated by commas (','). In addition, a tag may have a time range and be applied to a series of notes (like slurs, ties etc.); the corresponding form is:
-\begin{gmnsyntax} 
-\begin{verbatim} 
+\end{gmncode}
+\noindent où \code{param-list} est une liste de chaînes de caractères ou de nombres, séparés par des virgules. Un tag peut avoir une étendue temporelle et s'appliquer à un ensemble de notes (par ex. les liaisons) ; la forme correspondante est:
+\begin{gmncode} 
    \tagname(note-series)
    \tagname<param-list>(note-series)
-\end{verbatim} 
-\end{gmnsyntax} 
+\end{gmncode} 
 
-The following GMN code illustrates the concision of the notation; figure \ref{ex1} represents the corresponding \Guido\ engine output. 
-\begin{gmnsyntax} 
-\begin{verbatim} 
+Le code GMN suivant illustre la concision de la notation ; la figure \ref{ex1} donne le rendu effectué par le moteur \Guido. 
+\begin{gmncode} 
   [ \meter<"4/4"> \key<-2> c d e& f/8 g ]
-\end{verbatim}
-\end{gmnsyntax} 
+\end{gmncode} 
 
 \begin{figure}[h]
-	\centering \includegraphics[width=50mm]{imgs/ex1}
+	\centering \includegraphics[width=47mm]{imgs/ex1}
  \caption{A simple GMN example}
  \label{ex1}
 \end{figure}
 
+
 \subsection{Notes sequences and segments}
 %----------------------------------------------------------------
-A note sequence is of the form \verb+[tagged-notes]+ where \code{tagged-notes} is a series of notes, tags, and tagged ranges separated by spaces. Note sequences represent single-voiced scores.
-Note segments represent multi-voiced scores; they are denoted by \verb+{seq-list}+ where \code{seq-list} is a list of note sequences separated by commas as shown by the example below:
-\codeindent\code{ \{ [ e g f ], [ a e a ] \} } \\
-The corresponding output is given by figure \ref{ex1}.
-
+Une séquence de notes a la forme \verb+[tagged-notes]+ où \code{tagged-notes} est une série de notes, tags, tags temporels séparés par des espaces. Les séquences de notes représentent une seule voix.
+Les segments de notes représentent plusieurs voix ; ils sont notés par \verb+{seq-list}+ où \code{seq-list} est une liste de séquences de notes séparées par des virgules, comme dans l'exemple suivant (figure \ref{fig:voices}):
+\codeindent\code{ \{ [ e g f ], [ a e a ] \} }
 \begin{figure}[h]
-	\centering \includegraphics[width=35mm]{rsrc/voices}
- \caption{A multi-voices example}
- \label{ex1}
+	\centering \includegraphics[width=32mm]{rsrc/voices}
+ \caption{Exemple à plusieurs voix}
+ \label{fig:voices}
 \end{figure}
 
 
-\subsection{Advanced \Guido.}
+\subsection{\Guido\ Avancé}
 %----------------------------------------------------------------
-The advanced \Guido\ specification provides more tags and more control over the score layout.
-In particular, it introduces tags parameters like $dx$ and $dy$ for fine positioning of the score elements, notes and rests format specifications, staff assignments, etc. 
-Below is an example of advanced guido with the corresponding output (figure \ref{advex}).
+Le format \Guido\ Avancé inclus des tags supplémentaires et un contrôle plus fin de la mise en page.
+Il définit notamment des paramètres tels que $dx$ et $dy$ pour ajuster le positionnement des éléments de la partition, autorise le formatage de notes et de silences, les assignations à des portées, etc.
+Un exemple de code est donné ci-dessous avec le rendu correspondant (figure \ref{advex}).
 
-\begin{gmnsyntax} 
-\begin{verbatim} 
+\begin{gmncode} 
 {
  [
   \barFormat<"system">
@@ -164,238 +166,189 @@ Below is an example of advanced guido with the corresponding output (figure \ref
   \beam(\noteFormat<dx=-0.9hs>(a1/16) c2 f) 
   \beam(g/32 d/16 h1*3/32) d2/8 
   \beam(h1/16 d2 g)],
-
  [\staff<1>\stemsDown g1/8 e
-  \beam(f/16 \noteFormat<dx=0.8hs>(g) f a) 
-   a/8 e 
-  \beam(f/16 g f e)],
-
+  f/16 \noteFormat<dx=0.8hs>(g) f a a/8 e 
+  f/16 g f e],
  [\staff<2> \meter<"2/4"> 
   \stemsUp a0 f h c1],
  [\staff<2> \stemsDown c0 d g {d, a}]
 }
-\end{verbatim} 
-\end{gmnsyntax} 
+\end{gmncode} 
 
 \begin{figure}[h]
-	\centering \includegraphics[width=77mm]{rsrc/4voices}
- \caption{An advanced Guido example}
+	\centering \includegraphics[width=0.85\columnwidth]{rsrc/4voices}
+ \caption{Exemple \Guido\ Avancé}
  \label{advex}
 \end{figure}
 
 
 
 %----------------------------------------------------------------
-\section{The GuidoAR Library}
+\section{Composition de partitions}
 %----------------------------------------------------------------
-The \GAR\ library is a C/C++ framework providing a memory representation of the Guido Music Notation as well as basic operations on this representation. The library name - \GAR\ - stands for Guido Abstract Representation, referring to the \Guido Engine \cite{RENZ02} \cite{Fober:04b} terminology and opposed to the Guido Graphic Representation. The abstract representation is the pending memory representation of the GMN and deals with the logical score layout (stems direction, beaming, etc.) while the graphic representation is intended to provide exact graphic formatting information.
+\subsection{Operations}
+Les opérations de composition de partitions ont été implémentées sous forme de librairie indépendante (\GAR ) et sont données par la table  \ref{operations}. Ces opérations sont disponibles sous forme d'API, d'utilitaires pour la ligne de commande, ou encore dans l'environnement graphique de l'application \Guido Calculus.
+La plupart de ces opérations prennent une partition et une valeur en entrée pour produire une nouvelle partition en sortie. La valeur passée en entrée peut-être donnée sous forme de partition: par exemple, l'opération  \code{top} coupe les voix d'une partition après un nombre de voix $n$ ; en utilisant une partition à la place de ce paramètre, c'est le nombre de voix de cette partition qui sera pris comme valeur.
+Ainsi, toutes les opérations peuvent s'effectuer de manière consistante au niveau symbolique de la notation. 
 
-The main issue in designing a library to support music notation relies on the large number of notation elements: in addition to notes, chords, voices, the \Guido\ format includes over hundred tags. Thus the cost of describing all the notations elements, the design of an adequate and efficient memory representation and the easiness to maintain and to manipulate have been at the center of the library design.
-
-%----------------------------------------------------------------
-\subsection{Notation elements representation}
-The \GAR\ library is based on a single \code{guidoelement} class that contains a name and an attributes list (figure \ref{guidoelt}). A \code{guidoattribute} has a name, a value and an optional unit (used for exact positioning).
-\begin{figure}[htbp]
-	\begin{center}
-	\includegraphics[width=5.2cm]{rsrc/guidoelt}
-	\caption{Basic objects.}
-	\label{guidoelt}
-	\end{center}
-\end{figure}
-
-The  \code{guidoelement} class is specialized to represent the main elements of the notation (figure \ref{classes}). Guido tags are consistently covered by the \code{guidotag} class, derived into as many types as existing tags using templates.
-\begin{figure}[htbp]
-	\begin{center}
-	\includegraphics[width=\columnwidth]{rsrc/elements}
-	\caption{The notation elements classes}
-	\label{classes}
-	\end{center}
-\end{figure}
-
-An automatic memory management using smart pointers simplifies the programming task. This homogeneous design leads to simplicity.
-
-%----------------------------------------------------------------
-\subsection{Browsing the representation}
-
-The memory representation is organized into a tree similarly to the GMN hierarchy. The elements support the acyclic visitor pattern \cite{alex01} and STL iterators as well, providing simple and powerful ways to browse the music representation. The following sample code illustrates how to count the notes of a score using a visitor design: 
-\begin{contentsmall} 
-\begin{verbatim} 
-struct countnotes : public visitor<SARNote> {
-  int fCount;
-        countnotes() : fCount(0)	{}
-  void visitStart(SARNote&) {fCount++;}
-};
-\end{verbatim} 
-\end{contentsmall}
-And the following code implements the same feature with STL iterators and the \code{count\_if} algorithm.
-\begin{contentsmall} 
-\begin{verbatim} 
-struct countnotespredicat {
-  bool operator () (const Sguidoelement elt) 
-  { return 
-  	(dynamic_cast<ARNote*>((guidoelement*)elt) 
-    ? true : false); }
-};
-countnotespredicat p;
-count=count_if(score->begin(),score->end(),p);
-\end{verbatim} 
-\end{contentsmall}
-These mechanisms are at the basis of all the score composition operations supported by the library.
-
-%----------------------------------------------------------------
-\section{Scores Composition}
-%----------------------------------------------------------------
-
-%----------------------------------------------------------------
-\subsection{Basic operations}
-Score level operations provided by the \GAR\ library are given by the table \ref{operations}. These operations are available as library API calls and as command line tools as well. Almost all of the operations take a GMN score and a value parameter as input and produce a GMN score as output, but the value parameter can also be indicated using another GMN score.
-For example, the \code{guidotop} operation cuts the bottom voices of a score after a given voice number; when using a score as parameter, the voice number is taken from the score voices count.
+Ce design permet également d'exprimer des séries de transformations en ligne de commande, comme le pipe-line de partitions à travers de opérateurs e.g. \\
+\hspace*{4mm} \code{head s1 s2 | par s2 | transpose "[ c ]" }
 
 \begin{table*}[htdp]
-\caption{Score level operations}
 \begin{center}
-\begin{tabular}{rl}
-tool name and args		&	description \\
+\begin{tabular}{rcl}
 \hline
-guidoseq $s1\ s2$		& puts the scores $s1$ and $s2$ in sequence \\
-guidopar $s1\ s2$		& puts the scores $s1$ and $s2$ in parallel \\ 
-guidorpar $s1\ s2$		& puts the scores $s1$ and $s2$ in parallel but right aligned \\
-guidotop $s1\ [n\ | \ s2]$ 	& takes the $n$ top voices of $s1$; \\
-					& when using a score $s2$ as parameter, $n$ is taken from $s2$ voices count \\
-guidobottom $s1\ [n\ | \ s2]$ 	& takes the bottom voices of $s1$ after the $n$ voice;  \\
-					& when using a score $s2$ as parameter, $n$ is taken from $s2$ voices count \\
-guidohead	$s1\ [d\ | \ s2]$	& takes the head of $s1$ up to the date $d$; \\
-				& when using a score $s2$ as parameter, $d$ is taken from $s2$ duration \\
-guidoevhead $s1\ [n\ | \ s2]$	& id. but on events basis i.e. the cut point is specified in $n$ events count; \\
-				& when using a score $s2$ as parameter, $n$ is taken from $s2$ events count \\
-guidotail	$s1\ [d\ | \ s2]$ 	& takes the tail of a score after the date $d$; \\
-				& when using a score $s2$ as parameter, $d$ is taken from $s2$ duration \\
-guidoevtail $s1\ [n\ | \ s2]$ 	& id. but on events basis i.e. the cut point is specified in $n$ events count; \\
-				& when using a score $s2$ as parameter, $n$ is taken from $s2$ events count \\
-guidotranspose $s1\ [i\ | \ s2]$	& transposes $s1$ to an interval $i$; \\
-				& when using a score $s2$ as parameter, $i$ is computed as the difference between \\
-				& the first voice, first notes of $s1$ and $s2$ \\
-guidoduration $s1\ [d\ |\ f\ |\ s2]$	& stretches $s1$ to a duration $d$ or using a factor $f$; \\
-				& when using a score $s2$ as parameter, $d$ is computed from $s2$ duration \\
-guidoapplypitch $s1\ s2$	& applies the pitches of $s1$ to $s2$; \\
-				& the pitches list is applied in a loop up to the end of $s2$ \\
-guidoapplyrythm $s1\ s2$	& applies the rhythm of $s1$ to $s2$; \\
-				& the durations list is applied in a loop up to the end of $s2$ \\
+operation & args		&	description \\
+\hline
+seq 	&	$s1\ s2$		& met $s1$ et $s2$ en séquence \\
+par 	&	$s1\ s2$		& met $s1$ et $s2$ en parallèle \\ 
+rpar	&	$s1\ s2$		& met $s1$ et $s2$ en parallèle, alignés à droite \\
+top 	&	$s1\ [n\ | \ s2]$ 	& prend les $n$ premières voix de $s1$; \\
+		&	& quand  on utilise une partition $s2$ comme paramètre, $n$ est le nombre de voix de $s2$ \\
+bottom 	&	$s1\ [n\ | \ s2]$ 	& coupe les $n$ première voix de $s1$;  \\
+		&	& quand  on utilise une partition $s2$ comme paramètre, $n$ est le nombre de voix de $s2$ \\
+head	& 	$s1\ [d\ | \ s2]$	& prend le début de $s1$ jusqu'à la date $d$; \\
+		& 	& quand  on utilise une partition $s2$ comme paramètre, $d$ est la durée de $s2$ \\
+evhead 	&	$s1\ [n\ | \ s2]$	& prend les $n$ premiers événements $s1$ ; \\
+		& 	& quand  on utilise une partition $s2$ comme paramètre, $n$ est le nombre d'événements de $s2$ \\
+tail	&	$s1\ [d\ | \ s2]$ 	& coupe le début de $s1$ jusqu'à la date $d$; \\
+		& 	& quand  on utilise une partition $s2$ comme paramètre, $d$ est la durée de $s2$ \\
+evtail 	&	$s1\ [n\ | \ s2]$ 	& coupe les $n$ premiers événements de $s1$ ; \\
+		& 	& quand  on utilise une partition $s2$ comme paramètre, $n$ est le nombre d'événements de $s2$ \\
+transpose 	&	$s1\ [i\ | \ s2]$	& transpose $s1$ d'un intervale $i$; \\
+			& 	& quand  on utilise une partition $s2$ comme paramètre, $i$ est calculé comme la différence  \\
+			& 	& entre la première note de la première voix de $s1$ et $s2$ \\
+duration 	&	$s1\ [d\ |\ r\ |\ s2]$	& étire $s1$ à une durée $d$ ou selon un facteur $r$; \\
+			& 	& quand  on utilise une partition $s2$ comme paramètre, $d$ est la durée de $s2$ \\
+applypitch 	&	$s1\ s2$	& applique les hauteurs de $s1$ à $s2$ en boucle \\
+applyrythm 	&	$s1\ s2$	& applique le rythme de $s1$ à $s2$ en boucle \\
 \hline
 \end{tabular}
 \end{center}
+\caption{Opérations sur les partitions}
 \label{operations}
 \end{table*}
 
 %----------------------------------------------------------------
-\subsection{Notation issues}
-Actually and to preserve the notation consistency, most of the score level operations are more complex than simply cutting or adding a branch in the memory representation. We'll illustrate the problem with the textual representation which is equivalent to the memory representation.
-Let's take the example of the \code{tail} operation with the following simple score: 
+\subsection{Les problèmes de notation}
+\label{issues}
+Dans les faits, les fonctions de composition de partition opèrent sur une représentation en mémoire de la notation musicale. Toutefois, nous allons illustrer les problèmes liés avec la représentation textuelle qui est équivalente à la représentation mémoire.
+
+Prenons l'exemple de l'opération \code{tail} appliquée à la partition suivante:
 \codeindent \code{[\gtag{clef}<"f"> c d e c]}\\
-A raw cut of the score after 2 notes would give the \code{[\ e\ c]} result which would be naturally rendered as illustrated by the figure \ref{ex2} while the use of the same clef is expected.
+Une coupure brute de la partition après 2 notes donne le code \code{[e\ c]} où l'information de clef a disparu, pouvant conduire à un rendu non souhaité (figure \ref{fig:tail}).
 \begin{figure}[h]
 	\centering \includegraphics[width=60mm]{imgs/tail}
- \caption{Tail operation consistency}
- \label{ex2}
+ \caption{Cohérence de l'opération \code{tail}}
+ \label{fig:tail}
 \end{figure}
 
-Another example with the \code{sequence} operation: a raw sequence of 
-\hspace{2mm} \code{[\gtag{clef}<"g"> c d]} \\
-and \hspace{14.5mm}\code{[\gtag{clef}<"g"> e c]} \\
-would give \hspace{3.1mm} \code{[\gtag{clef}<"g"> c d \gtag{clef}<"g"> e c ]} as result (figure \ref{ex3}). The clef repetition is useless and blurs the reading.
+Voici un autre exemple avec l'opération \code{seq} : la mise en séquence de
+	\hspace{1mm} \code{[\gtag{clef}<"g"> c d]} \\
+et 	\hspace{20.5mm}\code{[\gtag{clef}<"g"> e c]} \\
+donnera 	\hspace{7.1mm} \code{[\gtag{clef}<"g"> c d \gtag{clef}<"g"> e c ]} 
+où la clef est répétée inutilement (figure \ref{fig:seq2})  ce qui rend la lecture plus confuse.
 \begin{figure}[h]
 	\centering \includegraphics[width=40mm]{imgs/seq2}
- \caption{A raw sequence operation}
- \label{ex3}
+ \caption{Mise en séquence \emph{brute}}
+ \label{fig:seq2}
 \end{figure}
 
-Some operations may also result in syntactically incorrect results. Consider the following code:
+Certaines opérations peuvent également donner des résultats syntactiquement incorrects. Considérons le code suivant :
 \codeindent \code{[g \gtag{slur}(f e) c]} \\
-slicing the score in 2 parts after \code{f} would result in 
-\codeindent \code{[g \gtag{slur}(f]} (a) \ \  and \ \  \code{[e) c]} (b) \\
-i.e. with uncompleted range tags. We'll further use the terms \oend\ tags to refer the a) form and \obeg\ tags for the b) form.
+le partage de la partition en 2 après \code{f} donnerai 
+\codeindent \textbf{a)}\ \ \code{[g \gtag{slur}(f]} \ \  et \textbf{b)} \ \  \code{[e) c]} \\
+i.e. comprenant des tags temporels inachevés. Nous utiliserons les termes tags à \oend\ pour faire référence au cas a) et tag à \obeg\ pour le cas b).
 
-These are just simple examples to explain the problem and there are many more cases, where the music notation consistency has to be preserved during scores composition operations.
+Ces quelques exemples illustrent une partie du problème et il y a beaucoup d'autres cas où la cohérence de la notation doit être préservée lors d'opérations sur les partitions.
 
 %----------------------------------------------------------------
-\subsection{Notation elements time extend}
-One way to solve the problem is to make a typology of the notation elements regarding their time extend and to define adequate consistency policies according to the operations and the element type.
+\subsection{Etendue temporelle des éléments}
+Nous proposons de traiter le problème en définissant une typologie des éléments de notation en fonction de leur étendue temporelle, et en spécifiant des règles de cohérence basées sur ces types.
 
-The GMN format makes a distinction between \emph{position} tags (like \gtag{clef} or \gtag{meter}) and \emph{range} tags (\gtag{slur}, \gtag{beam}, etc.): range tags have an explicit time extend (the duration of the enclosed notes) and position tags are simply notations marks at a given time position. However, this distinction is not sufficient to cover the problem: many of the position tags have an implicit time duration and they generally last up to the next similar notation or to the end of the score. For example, a \gtag{meter} tag lasts to the end of the score or to the next meter notation.
-\begin{table}[htdp]
-\caption{Typology of notation elements.}
+Le format GMN fait une distinction entre les tags de position (comme \gtag{clef} ou \gtag{meter}) et les tags temporels (\gtag{slur}, \gtag{beam}, etc.) : les tags temporels ont une durée explicite (la durée des notes qu'ils contiennent) et les tags de position sont de simples marques de notations à une position donnée. Cette distinction n'est toutefois pas suffisante pour couvrir le problème : beaucoup de tags de position ont une durée implicite qui s'étend généralement jusqu'à un signde de notation similaire ou jusqu'à la fin de la partition. C'est le cas par exemple de la notation de l'intensité.
+\begin{table*}[htdp]
 \begin{center}
 \begin{tabular}{cll}
-time extend & description & sample \\
+étendue temporelle & description & exemple \\
 \hline
-explicit 	& duration is explicit 	& slurs, cresc. \\
-			& from the notation		& etc. \\
-implicit 	& element lasts to the	& meter, clef, \\
-			& end of the score or to	& key, etc. \\
-			& the next similar element	& \\
-others 		& structure control	& coda, da capo, \\
-			& 	& repeats, etc. \\
-	 		& formatting instructions	& new line, \\
-			& 	& new page, etc. \\
-	 		& notation marks	& breath mark, \\
-			& 	& bar, etc. \\
+explicite 	& la durée est explicite dans la notation	& slur, cresc \\
+implicite 	& la durée s'étend jusqu'au prochain signe similaire ou jusqu'à la fin	& meter, dynamics, key \\
+autres 		& contrôle de la structure			& coda, da capo, repeats\\
+	- 		& instructions	 de formatage 	& new line, new page \\
+	- 		& marques de notation & breath mark, bar \\
 \hline
 \end{tabular}
 \end{center}
+\caption{Typologie des éléments de notation.}
 \label{types}
-\end{table}
-The table \ref{types} presents a simple typology of the music notation elements.
-All the Guido range tags correspond to the explicit time extend elements and most of the position tags have an implicit time extend. Based on this typology, a set of simple rules for score level operations could partially solve the notation issues:
+\end{table*}
+
+La table  \ref{types} présente une typologie simple des éléments de notation musicale, principalement fondée sur leur étendue temporelle. Basé sur cette typologie, des précautions sont à prendre lors des opérations suivantes :
+
 \begin{itemize}
-\item when computing the end of a score, all the explicit time extend elements must be properly closed,
-\item when computing the beginning of a score, all the pending explicit time extend elements (i.e. \obeg\ tags) must be recalled,
-\item when computing the beginning of a score, all the current implicit time extend elements must be recalled,
-\item when putting scores in sequence, implicit time extend elements starting the second score must be skipped when they correspond to current existing elements.
+\item calcul du début d'une partition :  
+\begin{description}
+	\item[1)] les éléments d'étendue temporelle explicite (i.e. les tags à \obeg , voir section \ref{issues}) doivent être ouverts
+	\item[2)] les éléments courants d'étendue temporelle implicite  doivent être rappelés,
+\end{description}
+\item calcul de la fin d'une partition : 
+\begin{description}
+	\item[3)] les éléments d'étendue temporelle explicite doivent être fermés (i.e. les tags à \oend )
+\end{description}
+\item mise en séquence de partitions : 
+\begin{description}
+	\item[4)] les éléments d'étendue temporelle implicite de la deuxième partition doivent être supprimés quand ils correspondent à un élément courant.
+\end{description}
 \end{itemize}
-No provision is made for the notation elements falling into the \emph{other} time extend category except for the \emph{structure control} elements (see section \ref{sc}).
 
-%----------------------------------------------------------------
-\subsection{Operations reversibility}\label{reverse}
-The above rules solve most of the notation consistency issues but they do not permit the operations to be reversible. Consider a score including a slur, sliced in the middle of this slur and restored by putting the parts back in sequence. The resulting score will include two slurs (figure \ref{ex4}) instead one, due to the rules that enforce closing \oend\ tags and starting \obeg\ tags.
-
-\begin{figure}[h]
-	\centering \includegraphics[width=80mm]{imgs/reverse}
- \caption{A score sliced and put back in sequence}
- \label{ex4}
-\end{figure}
-
-Here to solve the problem, we'll need the support of the GMN language. The idea is to keep the history of the range tags by introducing a new tag parameter to indicate tags creation corresponding to \oend\ and \obeg\ tags. The parameter has the form: 
-\codeindent \code{\gtag{tag}<open="type">} 
-\codeindent where \code{open} is the parameter name
-\codeindent and \code{type} is between \code{begin} and \code{end} \\
-corresponding respectively to \obeg\ and \oend\ tags.
-Next, we introduce a new rule for score level operations. Let's first define \emph{adjacent} tags as tags placed on the same voice and not separated by any note or chord.
-\begin{itemize}
-\item \emph{adjacent} similar tags carrying an \code{open} parameter are mutually cancelled when the first one is \oend\ and the second one \obeg .
-\end{itemize}
-Thus when a score level operation encounters a form like: \\
-\hspace*{-2mm}\code{\gtag{tag}<open="end">(f g) \gtag{tag}<open="begin">(f e)} \\
-it should transform it to:
-\codeindent \code{\gtag{tag}(f g f e)} \\
-which solves the reversibility issue.
 
 %----------------------------------------------------------------
 \subsection{Structure control issues} \label{sc}
-Elements relevant to the \emph{others / structure control} time extend category may also give rise to inconsistent notation: a \emph{repeat begin} bar without \emph{repeat end}, a \emph{dal segno} without \emph{segno}, a \emph{da capo al fine} without \emph{fine}, etc. We introduce 2 new rules to catch the repeat bars issue. Let's first define a \emph{pending} repeat end as the case of a voice with a repeat begin tag without matching repeat end.
+Les éléments qui relèvent de la catégorie \emph{autres / contrôle de la structure} peuvent également donner lieu à des incohérences de notation : une barre de début de répétition sans barre de fin de répétition, un \emph{dal segno} sans \emph{segno}, un \emph{da capo al fine} sans \emph{fine}, etc.
+Nous introduisons de nouvelles règles pour la consistance des barres de répétitions. Nous définissons tout d'abord une barre de répétition \emph{en suspens} comme le cas d'une barre de début de répétition sans barre de fin correspondante. 
 \begin{itemize}
-\item when computing the end of a score, every \emph{pending} repeat end must be closed with a repeat end tag.
-\item from successive unmatched repeat begin tags, only the first one must be retained and from successive repeat end tags, only the last one must be retained.
+\item[\rulenum{5)}] lors du calcul de la fin d'une partition, les barres de répétition \emph{en suspens} doivent être fermées avec une barre de fin de répétition.
+\item[\rulenum{6)}] dans le cas de barres de début de répétition successives, seule la première sera retenue
+\item[\rulenum{7)}] dans le cas de barres de fin de répétition successives, seule la dernière sera retenue
 \end{itemize}
-No additional provision is made for the other structure control elements: possible inconsistencies are ignored but this choice preserves the operations reversibility.
+
+Il n'y a pas de préconisation particulière pour les autres éléments de contrôle de la structure : les incohérences qui peuvent se produire sont ignorées mais ce choix préserve la réversibilité des opérations.
+
+
+%----------------------------------------------------------------
+\subsection{Réversibilité des opérations}\label{reverse}
+Les règles définies ci-dessus résolvent la majorité des problèmes de notation mais ne permettent pas d'inverser les opérations : considérons une partition comportant une liaison qui est coupée en son milieu et rassemblée par une mise en séquences. Le résultat comportera deux liaisons (figure \ref{fig:rev}) en raison des règles \rulenum{1)} et \rulenum{3)} qui forcent l'ouverture des tags à \obeg\ et la fermeture des tags à \oend .
+\begin{figure}[h]
+	\centering \includegraphics[width=80mm]{imgs/reverse}
+ \caption{Une partition découpée et remise en séquence}
+ \label{fig:rev}
+\end{figure}
+
+La résolution du problème requiert le support du langage GMN : nous introduisons un nouveau paramètre pour les tags d'étendue temporelle explicite, conservant l'histoire du tag et indiquant un antécédent de forme \oend\ et/ou \obeg\ .
+Ce paramètre est e la forme : 
+\codeindent \code{\gtag{tag}<open="type">} \\
+où \code{type} est parmi [\code{begin}, \code{end}], correspondant respectivement à des antécédents \obeg\ et \oend .
+
+Nous introduisons ensuite une nouvelle règle pour la composition de partitions, qui nécessite de définir des tags \emph{adjacents} comme des tags placés sur la même voix et qui ne sont séparés par aucune note ou accord.
+\begin{itemize}
+\item[\rulenum{8)}] les tags \emph{adjacents} similaires qui portent un paramètre \code{open} s'annulent mutuellement quand le premier est de type \oend\ et le second \obeg .
+\end{itemize}
+Ainsi, si une opération rencontre une forme de type :
+\codeindent \code{\gtag{anytag}<open="end">(f g) 
+\codeindent \gtag{anytag}<open="begin">(f e)} \\
+elle sera transformée en :
+\codeindent\code{\gtag{anytag}(f g f e)} 
+
 
 %----------------------------------------------------------------
 \section{Conclusion}
 %----------------------------------------------------------------
-Music notation is complex due to the large number of notation elements and to the heterogeneous status of these elements. The proposed typology in table \ref{types} is actually an arbitrary simplification intended to cover the needs of score level operations but is not representative of this complexity. However, it is based on the music notation semantic and thus could be reused with any score level music representation language. Apart from the reversibility rules defined in \ref{reverse} that require the support of the music representation language to operate, all the other rules are independent from the GMN format.
-Most of the elements relevant to the \emph{others} time extend category have been ignored by the proposed rules, which may result in \emph{non-standard} layout (e.g. incoherent formatting instructions), but it preserves the operations reversibility. Thus the score composition operations do not guaranty a correct automatic music layout. 
-%but they proved to be very convenient for basic tasks like taking an excerpt of a score, separating voices, etc.
-In a future work, we plan to transform the notation into a lambda calculus based programming language \cite{Orlarey:94} with these operations as language operators.
-%which is often a matter of user choice and also remains the Holy Grail quest of music notation by computer up to now\cite{BIRD84}.
+
+La complexité de la notation musicale repose en grande partie sur le grand nombre d'éléments de notation et sur leur statut hétérogène. La typologie que nous avons proposé (table \ref{types}) en est une simplification arbitraire, destinée à couvrir les besoins d'opérations de composition de partitions. Elle n'est  pas représentative de cette complexité mais comme elle se base sur la sémantique de la notation, elle peut être appliquée à tout format de représentation de la notation musicale.
+Hormis les règles de réversibilité définies en \ref{reverse} qui nécessitent le support du langage de représentation de la musique pour opérer, toutes les autres règles sont indépendantes du format GMN.
+
+Les opérations sur les partitions peuvent se révéler très utiles dans le cas de traitements par lot (par exemple : séparation des voix d'un conducteur, extraction d'extraits, etc.).  Les opérations présentées en table \ref{operations} permettent ce type de traitement, mais elles ouvrent également la voie vers de nouvelles approches créatives de la musique.
 
 \bibliographystyle{unsrt}
 \bibliography{../guido}
