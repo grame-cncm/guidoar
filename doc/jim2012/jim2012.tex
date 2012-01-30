@@ -80,17 +80,17 @@ Cet article donne un aperçu du format de notation musicale \Guido , puis il pr�
 %----------------------------------------------------------------
 Le format de notation musicale \Guido\ [GMN] \cite{hoos98} \cite{guido} a été définit par H. Hoos et K. Hamel il y a plus de 10 ans.
 Il est très proche du format adopté par Lilypond \cite{lilypond03} \cite{lilypond06} mais il est apparu antérieurement.
-Le format GMN est un langage textuel et lisible de représentation de partitions musicales. Il est basé sur un formalisme simple mais puissant, se concentrant sur les grands concepts musicaux (en opposition aux caractéristiques graphiques). L'approche développée par \Guido\ repose sur l'idée que des concepts musicaux simples doivent être notés simplement, et que seules les notions complexes nécessitent des notations complexes.
+Le format GMN est un langage textuel de représentation de partitions musicales. Il est basé sur un formalisme simple mais puissant, se concentrant sur les grands concepts musicaux (en opposition aux caractéristiques graphiques). L'approche développée par \Guido\ repose sur l'idée \emph{d'adéquation}, qui invite à noter simplement les concepts musicaux simples, et à ne recourir à des notations complexes que pour les notions musicales complexes.
 
-Basée sur le format GMN, la librairie \Guido\ \cite{daudin09a,Fober:04b} fournit un puissant moteur de mise en page de partitions, qui se différencie notamment des approches de type \emph{compilateur}  \cite{lilypond03,musixtex} par sa capacité à être embarquée dans une application indépendante et par la rapidité et l'efficacité du moteur de rendu, qui le rendent utilisable dans un contexte \emph{temps réel} pour des partitions simples.
+Basée sur le format GMN, la librairie \Guido\ \cite{daudin09a,Fober:04b} fournit un puissant moteur de mise en page de partitions, qui se différencie notamment des approches de type \emph{compilateur}  \cite{lilypond03,musixtex} par sa capacité à être embarquée dans une application indépendante, et par la rapidité et l'efficacité du moteur de rendu, qui le rendent utilisable dans un contexte \emph{temps réel} pour des partitions simples.
 
-Basées sur la combinaison du langage et du moteur de rendu \Guido , des opérations de composition de partitions ont été développées, fournissant des transformations rythmiques, de hauteur, des sélections temporelles ou événementielles, des opérations de mise en séquence ou en parallèle, etc.
+Basées sur la combinaison du langage et du moteur de rendu \Guido , des opérations de composition de partitions ont été développées : opérations de transformation rythmique, de hauteur, de sélection temporelle ou événementielle, de mise en séquence ou en parallèle, etc.
 
-La notation musicale reste l'une des représentations les plus utilisées par les musiciens. La définition d'opérateurs de composition de partitions constitue un moyen homogène de concilier écriture et transformation tout en restant à un haut niveau de description symbolique de la musique. De plus, la conception de ces opérateurs permet d'utiliser des partitions tant comme cible que comme argument de ces opérations, renforçant encore la métaphore de la notation.
+La notation musicale reste l'une des représentations les plus utilisées par les musiciens. La définition d'opérateurs de composition de partitions constitue un moyen homogène de concilier écriture et transformation tout en restant à un haut niveau de description symbolique de la musique. De plus, la conception de ces opérateurs permet d'utiliser des partitions tant comme cible que comme argument de ces opérations, renforçant la métaphore de la notation comme support d'idées musicales aussi bien que d'opérations de composition.
 
-Toutefois, appliquées au niveau de la notation, ces opérations soulèvent un certain nombre de problèmes liés à la cohérence de la notation. Pour résoudre un grand nombre de ces problèmes, nous proposons une typologie simple des éléments de notation musicale ainsi qu'un ensemble de règles basées sur cette typologie.
+Toutefois, ces opérations de composition de partitions musicales soulèvent un certain nombre de problèmes liés à la cohérence de la notation. Comme élément de réponse à ces problèmes, nous proposons une typologie simple des éléments de notation musicale ainsi qu'un ensemble de règles de composition basées sur cette typologie.
 
-Cet article donnera quelques rappels sur le format de notation \Guido , les sections suivantes présenteront les opérations de composition de partitions, les problèmes soulevés par ces opérations et les solutions proposées. Nous considérerons enfin une extension du langage GMN pour prendre  en compte la réversibilité des opérations.
+Cet article donnera quelques rappels sur le format de notation \Guido , les sections suivantes présenteront les opérations de composition de partitions, les problèmes soulevés par ces opérations et les solutions proposées. Nous proposerons ensuite une extension du langage GMN pour prendre  en compte la réversibilité des opérations.
 
 %----------------------------------------------------------------
 \section{Le format de notation Guido}
@@ -153,7 +153,7 @@ Les segments de notes représentent plusieurs voix ; ils sont notés par \verb+{
 \subsection{\Guido\ Avancé}
 %----------------------------------------------------------------
 Le format \Guido\ Avancé inclus des tags supplémentaires et un contrôle plus fin de la mise en page.
-Il définit notamment des paramètres tels que $dx$ et $dy$ pour ajuster le positionnement des éléments de la partition, autorise le formatage de notes et de silences, les assignations à des portées, etc.
+Il définit notamment des paramètres tels que $dx$ et $dy$ pour ajuster le positionnement des éléments de la partition. Il autorise le formatage de notes et de silences, les assignations à des portées, etc.
 Un exemple de code est donné ci-dessous avec le rendu correspondant (figure \ref{advex}).
 
 \begin{gmncode} 
@@ -187,9 +187,9 @@ Un exemple de code est donné ci-dessous avec le rendu correspondant (figure \re
 \section{Composition de partitions}
 %----------------------------------------------------------------
 \subsection{Operations}
-Des opérations de composition de partitions ont été implémentées sous forme de librairie indépendante (\GAR ). Elles sont décrites par la table  \ref{operations}. Ces opérations sont disponibles sous forme d'API, d'utilitaires pour la ligne de commande, ou encore dans l'environnement graphique de l'application \Guido Calculus.
+Des opérations de composition de partitions ont été implémentées sous forme de librairie indépendante (\GAR ). Elles sont décrites par la table  \ref{operations}. Ces opérations sont disponibles sous forme d'API, d'utilitaires pour la ligne de commande, ou encore dans l'environnement graphique d'une application indépendants : \Guido Calculus.
 La plupart de ces opérations prennent une partition et une valeur en entrée pour produire une nouvelle partition en sortie. La valeur passée en entrée peut-être donnée sous forme de partition: par exemple, l'opération  \code{top} coupe les voix d'une partition après un nombre de voix $n$ ; en utilisant une partition à la place de ce paramètre, c'est le nombre de voix de cette partition qui sera pris comme valeur.
-Ainsi, toutes les opérations peuvent s'effectuer de manière consistante au niveau symbolique de la notation. 
+Ainsi, toutes les opérations peuvent se décrire de manière homogène au niveau symbolique de la notation. 
 
 Ce design permet également d'exprimer des séries de transformations en ligne de commande, comme le pipe-line de partitions à travers de opérateurs e.g. \\
 \hspace*{4mm} \code{head s1 s2 | par s2 | transpose "[ c ]" }
@@ -266,7 +266,12 @@ Ces quelques exemples illustrent une partie du problème et il y a beaucoup d'au
 \subsection{Etendue temporelle des éléments}
 Nous proposons de traiter le problème en définissant une typologie des éléments de notation en fonction de leur étendue temporelle, et en spécifiant des règles de cohérence basées sur ces types.
 
-Le format GMN fait une distinction entre les tags de position (comme \gtag{clef} ou \gtag{meter}) et les tags temporels (\gtag{slur}, \gtag{beam}, etc.) : les tags temporels ont une durée explicite (la durée des notes qu'ils contiennent) et les tags de position sont de simples marques de notations à une position donnée. Cette distinction n'est toutefois pas suffisante pour couvrir le problème : beaucoup de tags de position ont une durée implicite, qui s'étend généralement jusqu'à un signe de de notation similaire ou jusqu'à la fin de la partition. C'est le cas par exemple de la notation de l'intensité.
+Le format GMN fait une distinction entre les tags de position (comme \gtag{clef} ou \gtag{meter}) et les tags temporels (\gtag{slur}, \gtag{beam}, etc.) : 
+\begin{itemize}
+\item les tags temporels ont une durée explicite : la durée des notes qu'ils contiennent, 
+\item les tags de position sont de simples marques de notations à une position donnée. 
+\end{itemize}
+Cette distinction n'est toutefois pas suffisante pour couvrir le problème : beaucoup de tags de position ont une durée implicite, qui s'étend généralement jusqu'à un signe de de notation similaire ou jusqu'à la fin de la partition. C'est le cas par exemple de la notation de l'intensité.
 \begin{table*}[htdp]
 \begin{center}
 \begin{tabular}{cll}
@@ -276,7 +281,7 @@ explicite 	& la durée est explicite dans la notation	& slur, cresc \\
 implicite 	& la durée s'étend jusqu'au prochain signe similaire ou jusqu'à la fin	& meter, dynamics, key \\
 autres 		& contrôle de la structure			& coda, da capo, repeats\\
 	- 		& instructions	 de formatage 	& new line, new page \\
-	- 		& marques de notation & breath mark, bar \\
+	- 		& notations diverses & breath mark, bar \\
 \hline
 \end{tabular}
 \end{center}
@@ -284,21 +289,23 @@ autres 		& contrôle de la structure			& coda, da capo, repeats\\
 \label{types}
 \end{table*}
 
-La table  \ref{types} présente une typologie simple des éléments de notation musicale, principalement fondée sur leur étendue temporelle. Basé sur cette typologie, des précautions sont à prendre lors des opérations suivantes :
+La table  \ref{types} présente une typologie simple des éléments de notation musicale, principalement fondée sur leur étendue temporelle. Nous définissons également la notion \emph{de tag courant} : pour un type de tag d'étendue temporelle implicite donné (clef, meter...), il s'agit de la dernière valeur rencontrée. 
+
+Basées sur cette typologie, des précautions sont à prendre lors des opérations suivantes :
 
 \begin{itemize}
 \item calcul du début d'une partition :  
 \begin{description}
-	\item[1)] tous les éléments d'étendue temporelle explicite doivent être ouverts (i.e. les tags à \obeg , voir section \ref{issues})
-	\item[2)] les éléments courants d'étendue temporelle implicite  doivent être rappelés,
+	\item[1)] tous les tags d'étendue temporelle explicite doivent être ouverts (i.e. les tags à \obeg , voir section \ref{issues})
+	\item[2)] les tags courants d'étendue temporelle implicite  doivent être rappelés,
 \end{description}
 \item calcul de la fin d'une partition : 
 \begin{description}
-	\item[3)] les éléments d'étendue temporelle explicite doivent être fermés (i.e. les tags à \oend )
+	\item[3)] les tags d'étendue temporelle explicite doivent être fermés (i.e. les tags à \oend )
 \end{description}
 \item mise en séquence de partitions : 
 \begin{description}
-	\item[4)] les éléments d'étendue temporelle implicite de la deuxième partition doivent être supprimés quand ils correspondent à un élément courant.
+	\item[4)] les tags d'étendue temporelle implicite de la deuxième partition doivent être supprimés quand ils correspondent à un tag courant.
 \end{description}
 \end{itemize}
 
