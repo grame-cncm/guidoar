@@ -49,8 +49,8 @@ enum garErr { kNoErr, kInvalidFile, kInvalidArgument, kOperationFailed };
 extern "C" {
 #endif
 
-/// \brief gives the library version number as a \c ccc based number
-export int				guidoarVersion();
+/// \brief gives the library version number as a float number
+export float			guidoarVersion();
 /// \brief gives the library version string
 export const char*		guidoarVersionStr();
 

@@ -1,7 +1,7 @@
 /*
 
   guidoar Library
-  Copyright (C) 2008-2009  Grame
+  Copyright (C) 2008-2012  Grame
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -52,7 +52,7 @@ namespace guido
 {
 
 //----------------------------------------------------------------------------
-export int				guidoarVersion()	{ return 90; }
+export float			guidoarVersion()	{ return 0.90; }
 export const char*		guidoarVersionStr()	{ return "v.0.90"; }
 
 //----------------------------------------------------------------------------
