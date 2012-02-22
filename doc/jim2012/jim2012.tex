@@ -78,7 +78,7 @@ Cet article donne un aperçu du format de notation musicale \Guido , puis il pr�
 %----------------------------------------------------------------
 \section{Introduction}\label{sec:intro}
 %----------------------------------------------------------------
-Le format de notation musicale \Guido\ [GMN] \cite{hoos98} \cite{guido} a été définit par H. Hoos et K. Hamel il y a plus de 10 ans.
+Le format de notation musicale \Guido\ [GMN] \cite{hoos98} \cite{guido} a été défini par H. Hoos et K. Hamel il y a plus de 10 ans.
 Il est très proche du format adopté par Lilypond \cite{lilypond03} \cite{lilypond06} mais il est apparu antérieurement.
 Le format GMN est un langage textuel de représentation de partitions musicales. Il est basé sur un formalisme simple mais puissant, se concentrant sur les grands concepts musicaux (en opposition aux caractéristiques graphiques). L'approche développée par \Guido\ repose sur l'idée \emph{d'adéquation}, qui invite à noter simplement les concepts musicaux simples, et à ne recourir à des notations complexes que pour les notions musicales complexes.
 
@@ -301,7 +301,7 @@ Basées sur cette typologie, des précautions sont à prendre lors des opératio
 \end{description}
 \item calcul de la fin d'une partition : 
 \begin{description}
-	\item[3)] les tags d'étendue temporelle explicite doivent être fermés (i.e. les tags à \oend )
+	\item[3)] les tags d'étendue temporelle explicite doivent être fermés (i.e. les tags à \oend ),
 \end{description}
 \item mise en séquence de partitions : 
 \begin{description}
@@ -311,13 +311,13 @@ Basées sur cette typologie, des précautions sont à prendre lors des opératio
 
 
 %----------------------------------------------------------------
-\subsection{Structure control issues} \label{sc}
+\subsection{Cohérence de la structure} \label{sc}
 Les éléments qui relèvent de la catégorie \emph{autres / contrôle de la structure} peuvent également donner lieu à des incohérences de notation : une barre de début de répétition sans barre de fin de répétition, un \emph{dal segno} sans \emph{segno}, un \emph{da capo al fine} sans \emph{fine}, etc.
 Nous introduisons de nouvelles règles pour la consistance des barres de répétitions. Nous définissons tout d'abord une barre de répétition \emph{en suspens} comme le cas d'une barre de début de répétition sans barre de fin correspondante. 
 \begin{itemize}
-\item[\rulenum{5)}] lors du calcul de la fin d'une partition, les barres de répétition \emph{en suspens} doivent être fermées avec une barre de fin de répétition.
-\item[\rulenum{6)}] dans le cas de barres de début de répétition successives, seule la première sera retenue
-\item[\rulenum{7)}] dans le cas de barres de fin de répétition successives, seule la dernière sera retenue
+\item[\rulenum{5)}] lors du calcul de la fin d'une partition, les barres de répétition \emph{en suspens} doivent être fermées avec une barre de fin de répétition,
+\item[\rulenum{6)}] dans le cas de barres de début de répétition successives, seule la première sera retenue,
+\item[\rulenum{7)}] dans le cas de barres de fin de répétition successives, seule la dernière sera retenue.
 \end{itemize}
 
 Il n'y a pas de préconisation particulière pour les autres éléments de contrôle de la structure : les incohérences qui peuvent se produire sont ignorées mais ce choix préserve la réversibilité des opérations.
