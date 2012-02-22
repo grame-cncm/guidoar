@@ -24,7 +24,7 @@
 #ifndef __libguidoar__
 #define __libguidoar__
 
-#ifdef VC6
+#ifdef WIN32
 # pragma warning (disable : 4786)
 #endif
 

@@ -1,8 +1,10 @@
 #######################################
-# CMAKE libguidoar
+# CMAKE guidoar
 #######################################
-project(libguidoar)
+project(guidoar)
 cmake_minimum_required(VERSION 2.6)
+
+set(target guidoar)
 
 #######################################
 # version management
@@ -10,9 +12,9 @@ set (VERSION "0.90")
 set (VERSIONSTR "v.0.90")
 
 ### for relative path to win32 libs
-if(COMMAND cmake_policy)
-      cmake_policy(SET CMP0003 NEW)
-endif(COMMAND cmake_policy)
+#if(COMMAND cmake_policy)
+#      cmake_policy(SET CMP0003 NEW)
+#endif()
 
 if(CMAKE_CONFIGURATION_TYPES)
 	set(CMAKE_CONFIGURATION_TYPES Debug Release)
@@ -20,22 +22,17 @@ endif()
  
 if(UNIX)
 	add_definitions(-Wall -DGCC)
-endif(UNIX)
+endif()
 
 if(APPLE)
 	set (CMAKE_OSX_ARCHITECTURES "x86_64 i386 ppc")
 	set (CMAKE_OSX_SYSROOT /Developer/SDKs/MacOSX10.5.sdk)
 	set (CMAKE_C++_FLAGS -mmacosx-version-min=10.4)
-endif(APPLE)
+endif()
 
 if(WIN32)
  add_definitions(-DWINVER=0x0400 -DWIN32)
- if(${CMAKE_GENERATOR} STREQUAL "Visual Studio 6")
-  add_definitions(-DVC6)
- elseif(${CMAKE_GENERATOR} STREQUAL "Visual Studio 8 2005")
-  add_definitions(-DVC2005)
- endif(${CMAKE_GENERATOR} STREQUAL "Visual Studio 6")
-endif(WIN32)
+endif()
 
 
 #######################################
@@ -61,9 +58,7 @@ endforeach(folder)
 
 if(WIN32)
 	set(INCL ${INCL} "../win32")				# add win32 include
-elseif(APPLE)
-	set(INCL ${INCL} "/usr/local/include")
-endif(WIN32)
+endif()
 
 #######################################
 # set includes
@@ -73,18 +68,11 @@ set_source_files_properties (${COREH} PROPERTIES HEADER_FILE_ONLY TRUE)
 
 #######################################
 # set library target
-if(APPLE OR WIN32)
-	set(target libguidoar)
-else(APPLE OR WIN32)
-	set(target guidoar)
-endif(APPLE OR WIN32)
-
+set(LIBCONTENT ${CORESRC} ${COREH})
 if(WIN32)
 	enable_language(RC)
-	set(LIBCONTENT ${CORESRC} ${COREH} ${GAR}/win32/libguidoar.rc)
-else(WIN32)
-	set(LIBCONTENT ${CORESRC} ${COREH})
-endif(WIN32)
+	set(LIBCONTENT ${LIBCONTENT} ${GAR}/rsrc/libguidoar.rc)
+endif()
 
 add_library(${target} SHARED ${LIBCONTENT})
 set_target_properties (${target} PROPERTIES DEFINE_SYMBOL GUIDOAR_EXPORTS)
@@ -92,13 +80,12 @@ set_target_properties (${target} PROPERTIES PUBLIC_HEADER "${COREH}")
 set_target_properties (${target} PROPERTIES 
 			FRAMEWORK TRUE 
 			FRAMEWORK_VERSION A
-			COMPILE_FLAGS -I/usr/local/include
 			MACOSX_FRAMEWORK_SHORT_VERSION_STRING ${VERSIONSTR}
 			MACOSX_FRAMEWORK_BUNDLE_VERSION ${VERSION}
 )
 
 if(${USEMidiShare})
-	message ("USEMidiShare is on. Call cmake -DUSEMidiShare=0 option to remove midishare support")
+	message (STATUS "MidiShare support is on. Call cmake -DUSEMidiShare=0 to change.")
 	if(APPLE)
 		set (MSH "-framework MidiShare -framework Player" )
 	elseif(UNIX)
@@ -111,7 +98,7 @@ if(${USEMidiShare})
 	set (TOOLS 	${TOOLS} guido2midi)
 	
 else()
-	message ("call cmake -DUSEMidiShare=1 option to include midishare support")
+	message (STATUS "MidiShare support is off. Use -DUSEMidiShare=1 to change.")
 endif()
 
 

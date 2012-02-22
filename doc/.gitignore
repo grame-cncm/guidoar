@@ -2,4 +2,5 @@
 *.log
 *.bbl
 *.blg
-.DS_Store
+html
+latex
