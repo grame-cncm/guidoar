@@ -53,7 +53,7 @@ namespace guido
 
 //----------------------------------------------------------------------------
 export float			guidoarVersion()	{ return 0.90; }
-export const char*		guidoarVersionStr()	{ return "v.0.90"; }
+export const char*		guidoarVersionStr()	{ return "0.90"; }
 
 //----------------------------------------------------------------------------
 static SARMusic read (const char* buff)
