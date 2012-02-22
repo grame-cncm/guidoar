@@ -5,5 +5,5 @@ Debug/
 Release/
 build/
 cmake_install.cmake
-libguidoar.build/
-libguidoar.xcodeproj/
+guidoar.build/
+guidoar.xcodeproj/
