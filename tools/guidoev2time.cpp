@@ -1,10 +1,10 @@
 /*
 
-  Copyright (C) 2003-2008  Grame
+  Copyright (C) 2009-2012  Grame
   Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
   research@grame.fr
 
-  This file is provided as an example of the MusicXML Library use.
+  This file is provided as an example of the GuidoAR Library use.
 */
 
 #include "common.cxx"
@@ -14,10 +14,11 @@
 //_______________________________________________________________________________
 static void usage(char * name)
 {
-	cerr << "usage: " << basename(name) << " <score> <evIndex> [voiceIndex]"  << endl;
+	cerr << "usage: " << basename(name) << " score|-  evIndex [voiceIndex]"  << endl;
 	cerr << "       converts an event index to a time position"  << endl;
-	cerr << "       score: the input file or '-' to read stdin"  << endl;
-	cerr << "       evIndex: the index of the target event (1 based)"  << endl;
+	cerr << "       score: the input file"  << endl;
+	cerr << "       use '-' to read score from standard input"  << endl;
+	cerr << "       evIndex   : the index of the target event (1 based)"  << endl;
 	cerr << "       voiceIndex: optional voice index (defaults to the first voice)"  << endl;
 	exit (1);
 }

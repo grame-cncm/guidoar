@@ -1,6 +1,6 @@
 /*
 
-  Copyright (C) 2009  Grame
+  Copyright (C) 2009-2012  Grame
   Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
   research@grame.fr
 
@@ -15,11 +15,11 @@
 //_______________________________________________________________________________
 static void usage(char * name)
 {
-	cerr << "usage: " << basename(name) << " <score> <voicenum | vscore>"  << endl;
-	cerr << "       cut a score after a given duration"  << endl;
-	cerr << "       score: the input file or '-' to read stdin"  << endl;
+	cerr << "usage: " << basename(name) << " score|-  voicenum|vscore"  << endl;
+	cerr << "       cut score after a given duration"  << endl;
+	cerr << "       use '-' to read score from standard input"  << endl;
 	cerr << "       voicenum: number of voices to preserve,"  << endl;
-	cerr << "       vscore: a score file used as voice specifier"  << endl;
+	cerr << "       vscore  : a score file used as voice specifier"  << endl;
 	exit (1);
 }
 

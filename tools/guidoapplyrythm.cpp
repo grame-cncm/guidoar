@@ -1,6 +1,6 @@
 /*
 
-  Copyright (C) 2009  Grame
+  Copyright (C) 2009-2012  Grame
   Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
   research@grame.fr
 
@@ -15,12 +15,13 @@
 //_______________________________________________________________________________
 static void usage(const char * name)
 {
-	cerr << "usage: " << name << " <-once|-loop|-fbloop> score1 score2"  << endl;
+	cerr << "usage: " << name << " -low|-high -once|-loop|-fbloop  score1|-  score2"  << endl;
 	cerr << "       applies the rythm of score1 to score2"  << endl;
-	cerr << "       where the first arg indicates the apply mode:"  << endl;
+	cerr << "       use '-' to read score1 from standard input"  << endl;
+	cerr << "       the options indicate the apply mode:"  << endl;
 	cerr << "             -once applies the rythmic structure only once"  << endl;
-	cerr << "             -loop applies the rythmic structure endlessly in a loop"  << endl;
-	cerr << "             -fbloop applies the rythmic structure endlessly in a forward-backward loop"  << endl;
+	cerr << "             -loop applies the rythmic structure in a loop"  << endl;
+	cerr << "             -fbloop applies the rythmic structure in a forward-backward loop"  << endl;
 	exit (1);
 }
 

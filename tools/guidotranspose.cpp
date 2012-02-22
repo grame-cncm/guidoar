@@ -1,6 +1,6 @@
 /*
 
-  Copyright (C) 2009  Grame
+  Copyright (C) 2009-2012  Grame
   Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
   research@grame.fr
 
@@ -13,15 +13,14 @@
 //#define debug
 
 //_______________________________________________________________________________
-static void usage(const char * name)
+static void usage (char * name)
 {
-	cerr << "usage: " << name << " <file> <interval | pscore>"  << endl;
-	cerr << "       transpose the input gmn files"  << endl;
-	cerr << "       file    : the file to be transposed"  << endl;
-	cerr << "                 use '-' for stdin input"  << endl;
+	cerr << "usage: " << basename(name) << " score|-  interval|pscore"  << endl;
+	cerr << "       transpose the input score"  << endl;
+	cerr << "       use '-' to read score from standard input"  << endl;
 	cerr << "       interval: the transposing interval"  << endl;
-	cerr << "       pscore  : a score file used as a pitch specifier:"  << endl;
-	cerr << "                 uses first voice, first note, lowest pitch."  << endl;
+	cerr << "       pscore  : a score file used as a pitch specifier"  << endl;
+	cerr << "                 using first voice, first note, lowest pitch."  << endl;
 	exit (1);
 }
 

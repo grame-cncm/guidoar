@@ -1,3 +1,12 @@
+/*
+
+  Copyright (C) 2009-2012  Grame
+  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  research@grame.fr
+
+  This file is provided as an example of the GuidoAR Library use.
+  
+*/
 
 #ifdef WIN32
 # pragma warning (disable : 4786)
@@ -26,10 +35,10 @@ using namespace guido;
 //_______________________________________________________________________________
 static void usage(char * name)
 {
-	cerr << "usage: " << basename(name) << " <score> <time> [voiceIndex]"  << endl;
-	cerr << "       converts a time position to an event index"  << endl;
-	cerr << "       score: the input file or '-' to read stdin"  << endl;
-	cerr << "       time: a time position expressed as a rational (where 1 is a whole note)"  << endl;
+	cerr << "usage: " << basename(name) << " score|-  time [voiceIndex]"  << endl;
+	cerr << "       converts a score time position to an event index"  << endl;
+	cerr << "       use '-' to read score from standard input"  << endl;
+	cerr << "       time      : a time position expressed as a rational (where 1 is a whole note)"  << endl;
 	cerr << "       voiceIndex: optional voice index (defaults to the first voice)"  << endl;
 	exit (1);
 }

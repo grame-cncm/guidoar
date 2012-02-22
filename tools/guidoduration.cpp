@@ -1,6 +1,6 @@
 /*
 
-  Copyright (C) 2009  Grame
+  Copyright (C) 2009-2012  Grame
   Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
   research@grame.fr
 
@@ -15,12 +15,12 @@
 //_______________________________________________________________________________
 static void usage(char * name)
 {
-	cerr << "usage: " << basename(name) << " <score> <duration | mult | dscore>"  << endl;
-	cerr << "       stretch a score duration"  << endl;
-	cerr << "       score: the input file or '-' to read stdin"  << endl;
+	cerr << "usage: " << basename(name) << " score|-  duration|mult|dscore"  << endl;
+	cerr << "       stretch score duration"  << endl;
+	cerr << "       use '-' to read score from standard input"  << endl;
 	cerr << "       duration: the target duration expressed as a rational (where 1 is a whole note),"  << endl;
-	cerr << "       mult: a non null multiplier expressed as a float value in the form of 'x<float number>',"  << endl;
-	cerr << "       dscore: a score file used as a target duration"  << endl;
+	cerr << "       mult    : a non null multiplier expressed as a float value in the form of 'x<float number>',"  << endl;
+	cerr << "       dscore  : a score file used as target duration"  << endl;
 	exit (1);
 }
 

@@ -12,6 +12,8 @@
 #include "guidoparser.h"
 #include "interleaveOperation.h"
 
+#include "common.cxx"
+
 using namespace std;
 using namespace guido;
 
@@ -22,13 +24,7 @@ static void usage(const char * name)
 {
 	cerr << "usage: " << name << " files..."  << endl;
 	cerr << "       interleaves the input gmn files"  << endl;
-	exit (1);
-}
-
-//_______________________________________________________________________________
-static void readErr(const char * name)
-{
-	cerr << name << ": read failed"  << endl;
+	cerr << "       use '-' for standard input"  << endl;
 	exit (1);
 }
 
@@ -44,11 +40,16 @@ int main(int argc, char *argv[])
 	char ** argsPtr = &argv[1];
 #endif
 	guidoparser r;
-	SARMusic g1 = r.parseFile( *argsPtr );
+	char *buff = readgmn(*argsPtr);
+	SARMusic g1 = r.parseString( buff );
+	delete[] buff;
 	if (!g1) readErr(*argsPtr);
+
 	argsPtr++;
 	for (int i=2; i<argc; i++, argsPtr++) {
-		SARMusic g2 = r.parseFile(  *argsPtr );
+		char *buff = readgmn(*argsPtr);
+		SARMusic g2 = r.parseString( buff );
+		delete[] buff;
 		if (!g2) readErr(*argsPtr);
 		interleaveOperation inter;
 		g1 = inter(g1, g2);

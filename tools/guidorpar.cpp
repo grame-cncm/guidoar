@@ -1,6 +1,6 @@
 /*
 
-  Copyright (C) 2009  Grame
+  Copyright (C) 2009-2012  Grame
   Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
   research@grame.fr
 
@@ -15,10 +15,11 @@
 //#define debug
 
 //_______________________________________________________________________________
-static void usage(const char * name)
+static void usage(char * name)
 {
-	cerr << "usage: " << name << " files..."  << endl;
+	cerr << "usage: " << basename(name) << " files..."  << endl;
 	cerr << "       put the input gmn files in parrallel with right alignment"  << endl;
+	cerr << "       use '-' for standard input"  << endl;
 	exit (1);
 }
 

@@ -1,6 +1,6 @@
 /*
 
-  Copyright (C) 2009  Grame
+  Copyright (C) 2009-2012  Grame
   Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
   research@grame.fr
 
@@ -15,12 +15,12 @@
 //_______________________________________________________________________________
 static void usage(char * name)
 {
-	cerr << "usage: " << basename(name) << " <score> <duration | dscore>"  << endl;
-	cerr << "       cut a score after a given duration"  << endl;
-	cerr << "       score: the input file or '-' the read stdin"  << endl;
+	cerr << "usage: " << basename(name) << " score|-  duration|dscore"  << endl;
+	cerr << "       cut score after a given duration"  << endl;
+	cerr << "       use '-' to read score from standard input"  << endl;
 	cerr << "       duration: the score duration to preserve,"  << endl;
 	cerr << "                 expressed as a non null rational where 1 is a whole note"  << endl;
-	cerr << "       dscore: a score file used as duration specifier"  << endl;
+	cerr << "       dscore  : a score file used as duration specifier"  << endl;
 	exit (1);
 }
 

@@ -1,10 +1,10 @@
 /*
 
-  Copyright (C) 2003-2008  Grame
+  Copyright (C) 2009-2012  Grame
   Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
   research@grame.fr
 
-  This file is provided as an example of the MusicXML Library use.
+  This file is provided as an example of the GuidoAR Library use.
 */
 
 #include "common.cxx"
@@ -14,9 +14,9 @@
 //_______________________________________________________________________________
 static void usage(char * name)
 {
-	cerr << "usage: " << basename(name) << " <score>"  << endl;
+	cerr << "usage: " << basename(name) << " score|-"  << endl;
 	cerr << "       generates an unrolled version of a score"  << endl;
-	cerr << "       score: the input file or '-' to read stdin"  << endl;
+	cerr << "       use '-' to read score from standard input"  << endl;
 	exit (1);
 }
 

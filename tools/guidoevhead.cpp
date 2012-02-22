@@ -1,6 +1,6 @@
 /*
 
-  Copyright (C) 2009  Grame
+  Copyright (C) 2009-2012  Grame
   Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
   research@grame.fr
 
@@ -15,11 +15,11 @@
 //_______________________________________________________________________________
 static void usage(char * name)
 {
-	cerr << "usage: " << basename(name) << " <score> <evIndex | dscore>"  << endl;
-	cerr << "       cut a score after a given event"  << endl;
-	cerr << "       score: the input file or '-' the read stdin"  << endl;
+	cerr << "usage: " << basename(name) << " score|-  evIndex|dscore"  << endl;
+	cerr << "       cut score after a given event"  << endl;
+	cerr << "       use '-' to read score from standard input"  << endl;
 	cerr << "       evIndex: index of the cut point event (1 based),"  << endl;
-	cerr << "       dscore: a score file used as index specifier"  << endl;
+	cerr << "       dscore : a score file used as index specifier"  << endl;
 	exit (1);
 }
 

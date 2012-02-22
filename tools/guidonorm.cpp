@@ -1,3 +1,12 @@
+/*
+
+  Copyright (C) 2009-2012  Grame
+  Grame Research Laboratory, 9 rue du Garet, 69001 Lyon - France
+  research@grame.fr
+
+  This file is provided as an example of the GuidoAR Library use.
+  
+*/
 
 #ifdef WIN32
 # pragma warning (disable : 4786)
@@ -21,8 +30,8 @@ using namespace guido;
 static void usage(const char * name)
 {
 	cerr << "usage: " << name << " score"  << endl;
-	cerr << "       put the input gmn files in normal form"  << endl;
-	cerr << "       score: the input file or '-' the read stdin"  << endl;
+	cerr << "       put score in normal form"  << endl;
+	cerr << "       use '-' to read score from standard input"  << endl;
 	exit (1);
 }
 
