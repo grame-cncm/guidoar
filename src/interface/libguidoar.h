@@ -144,7 +144,7 @@ export garErr			guidoGBottom	(const char* gmn, const char* gmnSpec, std::ostream
 	\param out		the output stream
 	\return an error code
 */
-export garErr			guidoVHead		(const char* gmn, const rational& duration, std::ostream& out);
+export garErr			guidoVHead		(const char* gmn, rational duration, std::ostream& out);
 
 /*! \brief takes the head of a score using another score
 
@@ -187,7 +187,7 @@ export garErr			guidoGEHead		(const char* gmn, const char* gmnSpec, std::ostream
 	\param out		the output stream
 	\return an error code
 */
-export garErr			guidoVTail		(const char* gmn, const rational& duration, std::ostream& out);
+export garErr			guidoVTail		(const char* gmn, rational duration, std::ostream& out);
 
 /*! \brief takes the tail of a score using another score
 
@@ -314,7 +314,7 @@ export garErr			guidoApplyPitch(const char* gmn, const char* gmnSpec, TApplyMode
 	\param out		the output stream
 	\return an error code
 */
-export garErr			guidoVSetDuration(const char* gmn, const rational& duration, std::ostream& out);
+export garErr			guidoVSetDuration(const char* gmn, rational duration, std::ostream& out);
 
 /*! \brief multiply the duration of a score
 	\param gmn a string containing gmn code
@@ -332,22 +332,13 @@ export garErr			guidoVMultDuration(const char* gmn, float mult, std::ostream& ou
 */
 export rational			guidoEv2Time(const char* gmn, unsigned int index, unsigned int voice);
 
-//--------------------------------------------------------------------------------
-// tools
-//--------------------------------------------------------------------------------
+/*! \brief export to midifile
+	\param gmn a string containing gmn code
+	\param file the midi file name
+	\return an error code
+*/
+export garErr			guido2midifile(const char* gmn, const char* file);
 
-/*! \brief read a file
-	\param file the file name
-	\return a null terminated string with the file content
-	\note the returned value must be freed with delete[]
-*/
-export char *			guidoread	    (const char* file);
-/*! \brief read a file descriptor
-	\param fd the file descriptor
-	\return a null terminated string with the file content
-	\note the returned value must be freed with delete[]
-*/
-export char *			guidoreadfd	    (FILE* fd);
 
 #ifdef __cplusplus
 }

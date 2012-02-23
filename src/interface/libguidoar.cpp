@@ -37,6 +37,7 @@
 #include "guidoelement.h"
 #include "guidoparser.h"
 #include "headOperation.h"
+#include "midiconverter.h"
 #include "parOperation.h"
 #include "seqOperation.h"
 #include "tailOperation.h"
@@ -61,41 +62,6 @@ static SARMusic read (const char* buff)
 	if (!buff) return 0;
 	guidoparser r;
 	return r.parseString(buff);
-}
-
-//----------------------------------------------------------------------------
-export char * guidoread (const char* file)
-{
-	ifstream is (file, ios::in );
-	if (!is.is_open()) return 0;
-	
-	// get length of file:
-	is.seekg (0, ios::end);
-	int length = is.tellg();
-	is.seekg (0, ios::beg);
-
-	// allocate memory:
-	char * buffer = new char [length + 1];
-
-	// read data as a block:
-	is.read (buffer,length);
-	is.close();
-	buffer[length] = 0;
-	return buffer;
-}
-//----------------------------------------------------------------------------
-export char * guidoreadfd (FILE * fd)
-{
-	if (!fd) return 0;
-	string str;
-	while (feof(fd))
-		str += getc(fd);
-
-	// allocate memory:
-	char * buffer = new char [str.size()+1];
-	memcpy(buffer, str.c_str(), str.size());
-	buffer[str.size()] = 0;
-	return buffer;
 }
 
 //----------------------------------------------------------------------------
@@ -170,8 +136,8 @@ export garErr guidoVTop(const char* gmn, int nvoices, std::ostream& out)
 //----------------------------------------------------------------------------
 export garErr guidoGSetDuration(const char* gmn, const char* gmnSpec, std::ostream& out)
 							{ return opgmnWrapper<durationOperation>(gmn, gmnSpec, out); }
-export garErr guidoVSetDuration(const char* gmn, const rational& duration, std::ostream& out)
-							{ return opWrapper<durationOperation, const rational&>(gmn, duration, out); }
+export garErr guidoVSetDuration(const char* gmn, rational duration, std::ostream& out)
+							{ return opWrapper<durationOperation, rational>(gmn, duration, out); }
 export garErr guidoVMultDuration(const char* gmn, float duration, std::ostream& out)
 							{ return opWrapper<durationOperation, float>(gmn, duration, out); }
 
@@ -224,8 +190,8 @@ export garErr guidoGTranpose	(const char* gmn, const char* gmnSpec, std::ostream
 							{ return opgmnWrapper<transposeOperation>(gmn, gmnSpec, out); }
 
 //----------------------------------------------------------------------------
-export garErr guidoVHead	(const char* gmn, const rational& duration, std::ostream& out)
-							{ return opWrapper<headOperation, const rational&>(gmn, duration, out); }
+export garErr guidoVHead	(const char* gmn, rational duration, std::ostream& out)
+							{ return opWrapper<headOperation, rational>(gmn, duration, out); }
 export garErr guidoGHead (const char* gmn, const char* gmnSpec, std::ostream& out)
 							{ return opgmnWrapper<headOperation>(gmn, gmnSpec, out); }
 
@@ -236,8 +202,8 @@ export garErr guidoGEHead (const char* gmn, const char* gmnSpec, std::ostream& o
 							{ return opgmnWrapper<eheadOperation>(gmn, gmnSpec, out); }
 
 //----------------------------------------------------------------------------
-export garErr guidoVTail	(const char* gmn, const rational& duration, std::ostream& out)
-							{ return opWrapper<tailOperation, const rational&>(gmn, duration, out); }
+export garErr guidoVTail	(const char* gmn, rational duration, std::ostream& out)
+							{ return opWrapper<tailOperation, rational>(gmn, duration, out); }
 export garErr guidoGTail (const char* gmn, const char* gmnSpec, std::ostream& out)
 							{ return opgmnWrapper<tailOperation>(gmn, gmnSpec, out); }
 
@@ -255,5 +221,15 @@ export garErr guidoGPar (const char* gmn1, const char* gmn2, std::ostream& out)
 export garErr guidoGRPar (const char* gmn1, const char* gmn2, std::ostream& out)
 							{ return opgmnWrapper<rparOperation>(gmn1, gmn2, out); }
 
+
+//----------------------------------------------------------------------------
+export garErr guido2midifile(const char* gmn, const char* file)
+{
+	Sguidoelement score =  read(gmn); 
+	if (!score) return kInvalidArgument;
+
+	midiconverter mc;
+	return mc.score2midifile(score, file) ? kNoErr : kOperationFailed; 
+}
 
 }
