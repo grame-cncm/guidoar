@@ -1,5 +1,3 @@
-#ifdef USEMidiShare
-
 /*
   Copyright � Grame 2003,2007
 
@@ -22,8 +20,7 @@
 
 */
 
-#define __Types__		// this is for midishare types only
-#include <Player.h>
+#include "midifile.h"
 #include "midiconverter.h"
 #include "tree_browser.h"
 
@@ -42,45 +39,20 @@ namespace guido {
 //________________________________________________________________________
 midiconverter::~midiconverter()
 {
-	if (fSeq) MidiFreeSeq (fSeq);
+	if (fSeq) midi()->FreeSeq (fSeq);
 }
 
 //________________________________________________________________________
-int  midiconverter::score2midifile (Sguidoelement& score, const char* fileName)
+bool  midiconverter::score2midifile (Sguidoelement& score, const char* fileName)
 {
-	MidiName tmpName = "guido2midi";
-	short ref = MidiOpen (tmpName);
-	if (ref < 0) return ref;
-
-	int err = noErr;
+	bool ret = false;
 	if (getMidi(score)) {
-		MidiFileInfos infos;
-		infos.format = midifile1;
-		infos.timedef = TicksPerQuarterNote; 
-		infos.clicks = fTPQ;
-		err = MidiFileSave ((char *)fileName, fSeq, &infos);
-		MidiFreeSeq (fSeq);
+		if (fMidifile.Create(fileName, midifile1, TicksPerQuarterNote, fTPQ))
+			ret = fMidifile.WriteTrack (fSeq);
+		midi()->FreeSeq (fSeq);
 		fSeq = 0;
 	}
-	MidiClose (ref);
-	return err;
-}
-
-//________________________________________________________________________
-short midiconverter::score2player (Sguidoelement& score, const MidiName playerName)
-{
-	short ref = OpenPlayer (playerName);
-	if (ref > 0) {
-		 if (getMidi(score)) {
-			SetAllTrackPlayer (ref, fSeq, fTPQ);
-			fSeq = 0;		// the sequence is now owned by the player
-		 }
-		 else {
-			ClosePlayer (ref);
-			ref = -1;
-		}
-	}
-	return ref;
+	return ret;
 }
 
 //________________________________________________________________________
@@ -88,8 +60,8 @@ bool midiconverter::getMidi (Sguidoelement& score)
 {
 	if (!score) return false;
 
-	if (fSeq) MidiClearSeq (fSeq);
-	else fSeq = MidiNewSeq();
+	if (fSeq) midi()->ClearSeq (fSeq);
+	else fSeq = midi()->NewSeq();
 	if (fSeq) {
 		fTimeSignDone = false;
 		fVoiceNumber  = 0;
@@ -118,16 +90,16 @@ void midiconverter::startVoice ()
 
 void midiconverter::endVoice (long date)
 {
-	MidiEvPtr ev = MidiNewEv(typeEndTrack);
+	MidiEvPtr ev = midi()->NewEv(typeEndTrack);
 	if (ev) {
 		setCommon(ev, date);
-		MidiAddSeq (fSeq, ev);
+		midi()->AddSeq (fSeq, ev);
 	}	
 }
 
 void midiconverter::newNote (long date, int pitch, int vel, int duration, int art)
 {
-	MidiEvPtr ev = MidiNewEv(typeNote);
+	MidiEvPtr ev = midi()->NewEv(typeNote);
 	if (ev) {
 		setCommon(ev, date);
 		Pitch(ev)	= pitch;
@@ -139,27 +111,27 @@ void midiconverter::newNote (long date, int pitch, int vel, int duration, int ar
 		else 
 			duration *= kNormalCoef;
 		Dur(ev)		= duration;
-		MidiAddSeq (fSeq, ev);
+		midi()->AddSeq (fSeq, ev);
 	}	
 }
 
 void midiconverter::tempoChange (long date, int bpm)
 {
-	MidiEvPtr ev = MidiNewEv(typeTempo);
+	MidiEvPtr ev = midi()->NewEv(typeTempo);
 	if (ev) {
 		setCommon(ev, date);
 		Tempo(ev)	= 60000000 / bpm;
-		MidiAddSeq (fSeq, ev);
+		midi()->AddSeq (fSeq, ev);
 	}	
 }
 
 void midiconverter::progChange (long date, int prog)
 {
-	MidiEvPtr ev = MidiNewEv(typeProgChange);
+	MidiEvPtr ev = midi()->NewEv(typeProgChange);
 	if (ev) {
 		setCommon(ev, date);
 		Data(ev)[0]	= prog;
-		MidiAddSeq (fSeq, ev);
+		midi()->AddSeq (fSeq, ev);
 	}	
 }
 
@@ -167,7 +139,7 @@ void midiconverter::timeSignChange (long date, unsigned int num, unsigned int de
 {
 	if (fTimeSignDone) return;
 	
-	MidiEvPtr ev = MidiNewEv(typeTimeSign);
+	MidiEvPtr ev = midi()->NewEv(typeTimeSign);
 	if (ev) {
 		setCommon(ev, date);
 		TSNum(ev)	= num;
@@ -180,23 +152,20 @@ void midiconverter::timeSignChange (long date, unsigned int num, unsigned int de
 		}
 		TSClocks(ev)= 96 / clocksDiv;	
 		TS32nd(ev)	= 8;		// number of 32th note in a quarter note
-		MidiAddSeq (fSeq, ev);
+		midi()->AddSeq (fSeq, ev);
 		fTimeSignDone = true;
 	}	
 }
 
 void midiconverter::keySignChange (long date, int signature, bool major)
 {
-	MidiEvPtr ev = MidiNewEv(typeKeySign);
+	MidiEvPtr ev = midi()->NewEv(typeKeySign);
 	if (ev) {
 		setCommon(ev, date);
 		KSTon(ev)	= signature;
 		KSMode(ev)	= major ? 0 : 1;
-		MidiAddSeq (fSeq, ev);
+		midi()->AddSeq (fSeq, ev);
 	}	
 }
 
-
 } // end namespace
-
-#endif // USEMidiShare

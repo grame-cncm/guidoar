@@ -1,5 +1,3 @@
-#ifdef USEMidiShare
-
 /*
 
   guidoar Library
@@ -31,8 +29,8 @@
 #include "guidoelement.h"
 #include "midicontextvisitor.h"
 
-#define __Types__		// this is for midishare types only
-#include <MidiShare.h>
+#include "MidiShareLight.h"
+#include "midifile.h"
 
 struct TMidiSeq;
 
@@ -49,11 +47,12 @@ class export midiconverter : public midiwriter {
 				 midiconverter(long tpq=480) : fTPQ(tpq), fSeq(0), fTimeSignDone(false), fVoiceNumber(0) {}
 		virtual ~midiconverter();
 		
-		// main services are provided under the form of a midifile export or a midishare player
-		virtual int   score2midifile (Sguidoelement& score,const char* fileName);
-		virtual short score2player   (Sguidoelement& score, const MidiName playerName);
+		// main services are provided under the form of a midifile export
+		virtual bool   score2midifile (Sguidoelement& score, const char* fileName);
 
 	protected:
+		MidiLight* midi()		{ return fMidifile.midi(); }
+
 		// midiwriter interface support
 		virtual void startVoice ();
 		virtual void endVoice (long date);
@@ -68,12 +67,12 @@ class export midiconverter : public midiwriter {
 		virtual void setCommon (MidiEvPtr ev, long date) const;
 		
 		long		fTPQ;
-		TMidiSeq *	fSeq;
+		MidiSeqPtr	fSeq;
 		bool		fTimeSignDone;
 		short		fVoiceNumber;
+		MIDIFile	fMidifile;
 };
 
 }
 
 #endif // __midiConverter__
-#endif // USEMidiShare
