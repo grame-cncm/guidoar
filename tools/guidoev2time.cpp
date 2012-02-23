@@ -9,45 +9,33 @@
 
 #include "common.cxx"
 
-//#define guidodebug
-
 //_______________________________________________________________________________
 static void usage(char * name)
 {
-	cerr << "usage: " << basename(name) << " score|-  evIndex [voiceIndex]"  << endl;
+	cerr << "usage: " << basename(name) << " score  evIndex [voiceIndex]"  << endl;
 	cerr << "       converts an event index to a time position"  << endl;
-	cerr << "       score: the input file"  << endl;
-	cerr << "       use '-' to read score from standard input"  << endl;
+	cerr << "       " << scoredesc << endl;
 	cerr << "       evIndex   : the index of the target event (1 based)"  << endl;
 	cerr << "       voiceIndex: optional voice index (defaults to the first voice)"  << endl;
-	exit (1);
+	exit (-1);
 }
 
 //_______________________________________________________________________________
 int main(int argc, char *argv[]) 
 {
-	char *name = argv[0];
-#ifdef guidodebug
-	argc = 4;
-	char * args[] = {"a.gmn", "2", "1", 0};
-	char ** argsPtr = args;
-#else
-	if ((argc != 3) && (argc != 4)) usage(name);
-	char ** argsPtr = &argv[1];
-#endif
+	if ((argc != 3) && (argc != 4)) usage(argv[0]);
 
-	const char *file = argsPtr[0];
-	char *buff = readgmn(file);
-
-	int eventIndex = intArg (argsPtr[1], -1);		// get the event index argument
-	if (eventIndex <= 0) usage(name);
+	string gmn;
+	if (!gmnVal (argv[1], gmn)) {
+		cerr << "error while reading " << argv[1] << endl;
+		return -1;
+	}
 	
+	int eventIndex = 0;
+	if (!intVal(argv[2], eventIndex)) usage(argv[0]);
 	int voiceIndex = 1;									// default voice is 1
-	if (argc == 4) voiceIndex = intArg (argsPtr[2], -1);// get the voice index argument
-	if (voiceIndex <= 0) usage(name);
-		
-	cout << file << ": voice " << voiceIndex << " event " << eventIndex
-		 << ": time " << string(guidoEv2Time(buff, eventIndex-1, voiceIndex-1)) << endl;
-	delete[] buff;
+	if ((argc == 4) && !intVal(argv[3], voiceIndex)) usage(argv[0]);
+
+	cout << string(guidoEv2Time(gmn.c_str(), eventIndex-1, voiceIndex-1)) << endl;
 	return 0;
 }

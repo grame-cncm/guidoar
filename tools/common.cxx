@@ -1,17 +1,18 @@
 
+#include <stdio.h>
+#include <string.h>
+#include <string>
 
 #ifdef WIN32
 # pragma warning (disable : 4786)
-# define basename(name)	(name)
+static const char* basename (const char* name) {
+	const char * sep = strrchr (name, '\\');
+	return sep ? ++sep : name;
+}
 # define _CRT_SECURE_NO_DEPRECATE
 #else 
 # include <libgen.h>
 #endif
-
-#include <iostream>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 
 #include "libguidoar.h"
@@ -19,58 +20,87 @@
 using namespace std;
 using namespace guido;
 
+static const char* scoredesc = 	"score may refer to a file, standard input when '-' or litteral gmn code";
 
 //_______________________________________________________________________________
-float floatArg (const char* str, float nofloat) 
+bool floatVal (const char* str, float& val) 
 {
-	float num=0;
-	int n = sscanf(str, "x%f", &num);
-	if (n != 1) num = nofloat;
-	return num;
+	int n = sscanf(str, "x%f", &val);
+	return n == 1;
 }
 
 //_______________________________________________________________________________
-int intArg (const char* str, int noint)  
+bool intVal (const char* str, int& val)  
 {
-	int num=0;
-	int n = sscanf(str, "%d", &num);
-	if (n != 1) num = noint;
-	return num;
+	int n = sscanf(str, "%d", &val);
+	return n == 1;
 }
 
 //_______________________________________________________________________________
-bool rationalArg (const char* str, int* num, int* denom)  
+bool rationalVal (const char* str, rational& val)  
 {
-	int n = sscanf(str, "%d/%d", num, denom);
-	return n == 2;
+	int num, denom;
+	int n = sscanf(str, "%d/%d", &num, &denom);
+	if (n==2) {
+		val.set (num, denom);
+		return true;
+	}
+	return false;
 }
 
 //_______________________________________________________________________________
-void readErr (const char * file) 
+static bool checkfile (const char* file) 
 {
-	cerr << "failed to read '" << file << "'" << endl;
-	exit(1);
+	FILE* fd = fopen(file, "r");
+	if (fd) {
+		fclose (fd);
+		return true;
+	}
+	return false;
 }
 
 //_______________________________________________________________________________
-void checkErr (garErr err, const char* operation) 
+static bool readfile (FILE * fd, string& content) 
+{
+	if (!fd) return false;
+	while (feof(fd) == 0)
+		content += getc(fd);
+	return ferror(fd) == 0;
+}
+
+//_______________________________________________________________________________
+void error(garErr err)
 {
 	switch (err) {
+		case kNoErr:
+			cerr << "no error" << endl;
+			break;
+		case kInvalidFile:
+			cerr << "invalid file" << endl;
+			break;
 		case kInvalidArgument:
-			cerr << "invalid gmn file" << endl;
+			cerr << "invalid argument" << endl;
 			break;
 		case kOperationFailed:
-			cerr << operation << " operation failed" << endl;
-			break;
-		default:
+			cerr << "operation failed" << endl;
 			break;
 	}
 }
 
 //_______________________________________________________________________________
-static char * readgmn (const char * file) 
+static bool gmnVal (const char* str, string& val)  
 {
-	char *buff = strcmp(file,"-") ? guidoread(file) : guidoreadfd(stdin);
-	if (!buff) readErr(file);
-	return buff;
+	string pipe ("-");
+	if (pipe == str)
+		return readfile (stdin, val);
+
+	if (checkfile (str)) {
+		FILE* fd = fopen(str, "r");
+		bool ret = readfile (fd, val);
+		fclose (fd);
+		return ret;
+	}
+	
+	val = str;		// not a file, assume it is gmn code
+	return true;
 }
