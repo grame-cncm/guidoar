@@ -3,8 +3,7 @@
 
 /*
 	GUIDO Library
-	Copyright (C) 2002  Holger Hoos, Juergen Kilian, Kai Renz
-	Copyright (C) 2003  Grame
+	Copyright (C) 2003 - 2012  Grame
 
 	This library is free software; you can redistribute it and/or
 	modify it under the terms of the GNU Lesser General Public
