@@ -11,11 +11,6 @@ set(target guidoar)
 set (VERSION "0.90")
 set (VERSIONSTR "v.0.90")
 
-### for relative path to win32 libs
-#if(COMMAND cmake_policy)
-#      cmake_policy(SET CMP0003 NEW)
-#endif()
-
 if(CMAKE_CONFIGURATION_TYPES)
 	set(CMAKE_CONFIGURATION_TYPES Debug Release)
 endif()
@@ -25,7 +20,7 @@ if(UNIX)
 endif()
 
 if(APPLE)
-	set (CMAKE_OSX_ARCHITECTURES "x86_64 i386 ppc")
+	set (CMAKE_OSX_ARCHITECTURES "x86_64 i386")
 	set (CMAKE_OSX_SYSROOT /Developer/SDKs/MacOSX10.5.sdk)
 	set (CMAKE_C++_FLAGS -mmacosx-version-min=10.4)
 endif()
@@ -56,13 +51,10 @@ foreach(folder ${SRCFOLDERS})
 	set(INCL ${INCL} "${GARSRC}/${folder}")				# add include folders
 endforeach(folder)
 
-if(WIN32)
-	set(INCL ${INCL} "../win32")				# add win32 include
-endif()
 
 #######################################
 # set includes
-include_directories( ${INCL})
+include_directories( ${INCL} ${GARSRC}/midisharelight)
 set_source_files_properties (${COREH} PROPERTIES HEADER_FILE_ONLY TRUE)
 
 
@@ -84,36 +76,25 @@ set_target_properties (${target} PROPERTIES
 			MACOSX_FRAMEWORK_BUNDLE_VERSION ${VERSION}
 )
 
-if(${USEMidiShare})
-	message (STATUS "MidiShare support is on. Call cmake -DUSEMidiShare=0 to change.")
-	if(APPLE)
-		set (MSH "-framework MidiShare -framework Player" )
-	elseif(UNIX)
-		set (MSH "-lMidiShare -lPlayer" )
-	elseif(WIN32)
-		set (MSH "../win32/Player32" )
-	endif(APPLE)
-	target_link_libraries( ${target} ${MSH})
-	set_target_properties (${target} PROPERTIES COMPILE_FLAGS -DUSEMidiShare)
-	set (TOOLS 	${TOOLS} guido2midi)
-	
-else()
-	message (STATUS "MidiShare support is off. Use -DUSEMidiShare=1 to change.")
+if(APPLE)
+	set (MSH "-L${GARSRC}/midisharelight/macos -lmidisharelight")
+elseif(UNIX)
+	set (MSH "-L/usr/local/lib -lmidisharelight")
+elseif(WIN32)
+	set (MSH "${GARSRC}/midisharelight/win32/midisharelight.lib")
 endif()
+target_link_libraries( ${target} ${MSH})
 
 
 #######################################
-# set sample targets
-set (TOOLS 	${TOOLS}  
-			guido2unrolled guidobottom guidoduration guidoev2time guidoevhead
-			guidoevtail guidohead guidoinfo guidopar guidoread guidorpar 
-			guidoseq guidotail guidotime2ev guidotop guidotranspose
-			guidoapplyrythm guidoapplypitch guidoarversion)
+# set tools targets
+file (GLOB TOOLS RELATIVE ${GARTOOLS} "${GARTOOLS}/*.cpp")
 
-foreach(sample ${TOOLS})
-	add_executable( ${sample} ${GARTOOLS}/${sample}.cpp )
-	target_link_libraries( ${sample} ${target})
-	add_dependencies(${sample} ${target})
+foreach(toolcpp ${TOOLS})
+	string(REPLACE ".cpp" "" tool ${toolcpp})
+	add_executable( ${tool} ${GARTOOLS}/${tool}.cpp )
+	target_link_libraries( ${tool} ${target})
+	add_dependencies(${tool} ${target})
 endforeach()
 
 if(${USEMidiShare})
