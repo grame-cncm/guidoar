@@ -97,10 +97,9 @@ Sguidoelement durationOperation::operator() ( const Sguidoelement& score, float 
 Sguidoelement durationOperation::operator() ( const Sguidoelement& score, const rational& targetDuration )
 {
 	if (!score) return 0;
-
 	durationvisitor dv;
 	rational dur = dv.duration (score);
-	rational r = dur / targetDuration;
+	rational r = targetDuration / dur;
 	return stretch (score, r.rationalise());
 }
 
