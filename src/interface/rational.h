@@ -1,5 +1,5 @@
 /*
-  Copyright © Grame 2003
+  Copyright ï¿½ Grame 2003
 
   This library is free software; you can redistribute it and modify it under
   the terms of the GNU Library General Public License as published by the
@@ -104,6 +104,7 @@ class export rational {
 };
 
 typedef std::vector<rational> rationals;
-std::ostream& operator << (std::ostream& os, rationals l);
+std::ostream& operator << (std::ostream& os, rational);
+std::ostream& operator << (std::ostream& os, rationals );
 
 #endif

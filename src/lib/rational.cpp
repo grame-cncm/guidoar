@@ -1,5 +1,5 @@
 /*
-  Copyright © Grame 2003
+  Copyright ï¿½ Grame 2003
 
   This library is free software; you can redistribute it and modify it under
   the terms of the GNU Library General Public License as published by the
@@ -223,6 +223,11 @@ double rational::toDouble() const
 float rational::toFloat() const
 {
     return (fDenominator != 0) ? ((float)fNumerator/(float)fDenominator) : 0;
+}
+
+ostream& operator << (ostream& os, rational r) {
+	os << string(r);
+	return os;
 }
 
 ostream& operator << (ostream& os, rationals l) {
