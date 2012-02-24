@@ -1,8 +1,8 @@
-#ifndef __GUIDOExport__
-#define __GUIDOExport__
+#ifndef __export__
+#define __export__
 
 /*
-	GUIDO Library
+	GuidoAR Library
 	Copyright (C) 2003 - 2012  Grame
 
 	This library is free software; you can redistribute it and/or
