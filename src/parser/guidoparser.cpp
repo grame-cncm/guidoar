@@ -25,7 +25,9 @@
 # pragma warning (disable : 4786)
 #endif
 
+#include <locale.h>
 #include <iostream>
+
 #include "guidoparser.h"
 #include "guidoelement.h"
 #include "ARFactory.h"
@@ -151,21 +153,27 @@ int guidoparser::error(const char * msg, int lineno)
 //______________________________________________________________________________
 SARMusic guidoparser::parseFile(FILE* fd)
 {
+	setlocale(LC_NUMERIC, "C");
 	readfile (fd, this);
+	setlocale(LC_NUMERIC, 0);
 	return fMusic;
 }
 
 //______________________________________________________________________________
 SARMusic guidoparser::parseFile(const char* file)
 {
+	setlocale(LC_NUMERIC, "C");
 	readfile (file, this);
+	setlocale(LC_NUMERIC, 0);
 	return fMusic;
 }
 
 //______________________________________________________________________________
 SARMusic guidoparser::parseString(const char* str)
 {
+	setlocale(LC_NUMERIC, "C");
 	readstring (str, this);
+	setlocale(LC_NUMERIC, 0);
 	return fMusic;
 }
 
