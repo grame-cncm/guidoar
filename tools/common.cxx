@@ -25,7 +25,7 @@ static const char* scoredesc = 	"score may refer to a file, standard input when 
 //_______________________________________________________________________________
 bool floatVal (const char* str, float& val) 
 {
-	int n = sscanf(str, "x%f", &val);
+	int n = sscanf(str, "%f", &val);
 	return n == 1;
 }
 
