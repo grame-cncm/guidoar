@@ -324,6 +324,12 @@ export garErr			guidoVSetDuration(const char* gmn, rational duration, std::ostre
 */
 export garErr			guidoVMultDuration(const char* gmn, float mult, std::ostream& out);
 
+/*! \brief gives a score duration
+	\param gmn a string containing gmn code
+	\return a rational value (1 is a whole note), negative in case of error
+*/
+export rational			guidoDuration(const char* gmn);
+
 /*! \brief gives an event date
 	\param gmn a string containing gmn code
 	\param index the target event index
@@ -346,6 +352,11 @@ export int				guidoTime2Ev(const char* gmn, const rational& date, unsigned int v
 	\return an error code
 */
 export garErr			guido2midifile(const char* gmn, const char* file);
+
+/*! \brief check gmn code correctness
+	\return a boolean value
+*/
+export bool				guidocheck(const char* gmn);
 
 
 #ifdef __cplusplus

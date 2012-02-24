@@ -95,7 +95,7 @@ export int guidoTime2Ev(const char* gmn, const rational& date, unsigned int voic
 	Sguidoelement score =  read(gmn);
 	if (!score) return kInvalidArgument;
 	event2timevisitor convert;
-	return convert.time2event (score, date, voice-1);
+	return convert.time2event (score, date, voice);
 }
 
 
@@ -230,6 +230,17 @@ export garErr guidoGPar (const char* gmn1, const char* gmn2, std::ostream& out)
 export garErr guidoGRPar (const char* gmn1, const char* gmn2, std::ostream& out)
 							{ return opgmnWrapper<rparOperation>(gmn1, gmn2, out); }
 
+//----------------------------------------------------------------------------
+export rational guidoDuration(const char* gmn) 
+{
+	rational duration (-1,1);
+	Sguidoelement score =  read(gmn); 
+	if (score) {
+		durationvisitor dv;
+		duration = dv.duration (score);
+	}
+	return duration;
+}
 
 //----------------------------------------------------------------------------
 export garErr guido2midifile(const char* gmn, const char* file)
@@ -239,6 +250,13 @@ export garErr guido2midifile(const char* gmn, const char* file)
 
 	midiconverter mc;
 	return mc.score2midifile(score, file) ? kNoErr : kOperationFailed; 
+}
+
+//----------------------------------------------------------------------------
+export bool guidocheck(const char* gmn)
+{
+	Sguidoelement score =  read(gmn); 
+	return score ? true : false;
 }
 
 }
