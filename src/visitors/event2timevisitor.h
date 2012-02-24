@@ -80,7 +80,7 @@ class export event2timevisitor : public durationvisitor
 		counteventsvisitor fCountVisitor;
 
 		bool done ();
-		void reset ();
+		void init ();
 
 		virtual void visitStart ( SARVoice& elt );
 		virtual void visitStart ( SARNote& elt );

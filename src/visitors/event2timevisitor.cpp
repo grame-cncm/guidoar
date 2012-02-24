@@ -40,7 +40,7 @@ rational event2timevisitor::event2time (const Sguidoelement& score, unsigned int
 	fTargetVoice = voiceIndex;
 	fTargetDate.set(-1,1);
 	fTargetEvent = evIndex;
-	reset();
+	init();
 	fBrowser.browse(*score);
 	return fDone ? currentVoiceDate().rationalise() : rational(-1,1);
 }
@@ -51,7 +51,7 @@ int	event2timevisitor::time2event (const Sguidoelement& score, const rational& t
 	fTargetVoice = voiceIndex;
 	fTargetDate = time;
 	fTargetEvent = -1;
-	reset();
+	init();
 	fBrowser.browse(*score);
 	int evIndex = -1;
 	if (fDone)
@@ -64,7 +64,7 @@ int	event2timevisitor::time2event (const Sguidoelement& score, const rational& t
 }
 
 //______________________________________________________________________________
-void event2timevisitor::reset ()
+void event2timevisitor::init ()
 {
 	fCurrentVoice = 0;
 	fDone = false;
@@ -89,7 +89,9 @@ void event2timevisitor::visitStart ( SARVoice& elt )
 	if (fCurrentVoice == fTargetVoice) {
 		durationvisitor::visitStart(elt);
 	}
-	else fBrowser.stop();		// this is to visit only the target voice
+	else {
+		fBrowser.stop();		// this is to visit only the target voice
+	}
 }
 
 //________________________________________________________________________
@@ -131,6 +133,5 @@ void event2timevisitor::visitEnd  ( SARChord& elt )
 		fCountVisitor.visitEnd(elt);
 	}
 }
-
 
 }
