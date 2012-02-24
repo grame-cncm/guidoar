@@ -73,7 +73,7 @@ class export event2timevisitor : public durationvisitor
 
 	protected:
 		rational		fTargetDate;
-		unsigned int	fTargetEvent;
+		int				fTargetEvent;
 		unsigned int	fTargetVoice;
 		unsigned int	fCurrentVoice;
 		bool			fDone;
