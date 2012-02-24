@@ -24,16 +24,18 @@ template <typename T> class operation
 {
 	typedef garErr (*TOperator)(const char*, T, ostream&);
 	TOperator	fOperator;
-	string		fScore;
-	string		fScoreArg;
+	string		fScore;			// the score argument
+	string		fScoreArg;		// to store the second score argument
 	T			fArg;
+	string		fSdtIn;			// intended to share stdin
+	
 
 	bool readArg(const char* arg, int& value) const			{ return intVal (arg, value); }
 	bool readArg(const char* arg, float& value) const		{ return floatVal (arg, value); }
 	bool readArg(const char* arg, rational& value) const	{ return rationalVal (arg, value); }
-	bool readArg(const char* arg, string& value) const		{ return gmnVal (arg, value); }
+	bool readArg(const char* arg, string& value)			{ return gmnVal (arg, value, fSdtIn); }
 	bool readArg(const char* arg, const char*& value)		{
-			if (gmnVal (arg, fScoreArg)) {
+			if (gmnVal (arg, fScoreArg, fSdtIn)) {
 				value = fScoreArg.c_str();
 				return true;
 			} 

@@ -9,29 +9,22 @@
 
 #include "common.cxx"
 
-//#define debug
-
 //_______________________________________________________________________________
 static void usage(char * name)
 {
-	cerr << "usage: " << basename(name) << " score|-"  << endl;
+	cerr << "usage: " << basename(name) << " score"  << endl;
 	cerr << "       generates an unrolled version of a score"  << endl;
-	cerr << "       use '-' to read score from standard input"  << endl;
+	cerr << "       " << scoredesc << endl;
 	exit (1);
 }
 
 //_______________________________________________________________________________
 int main(int argc, char *argv[]) {
-#ifdef debug
-	const char * file = "a.gmn";
-#else
 	if (argc != 2) usage(argv[0]);
-	char * file = argv[1];
-#endif
-	
-	char *buff = readgmn(file);
-	garErr err = guido2unrolled(buff, cout);
-	delete[] buff;
-	checkErr (err, "unroll");
+	string gmn, _stdin;
+	if (!gmnVal (argv[1], gmn, _stdin)) return -1;
+
+	garErr err = guido2unrolled (gmn.c_str(), cout);
+	if (err != kNoErr) error (err);
 	return err;
 }

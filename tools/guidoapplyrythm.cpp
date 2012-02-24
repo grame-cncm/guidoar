@@ -10,14 +10,12 @@
 
 #include "common.cxx"
 
-#define debug 0
-
 //_______________________________________________________________________________
 static void usage(const char * name)
 {
-	cerr << "usage: " << name << " -low|-high -once|-loop|-fbloop  score1|-  score2"  << endl;
+	cerr << "usage: " << name << " -once|-loop|-fbloop  score1 score2"  << endl;
 	cerr << "       applies the rythm of score1 to score2"  << endl;
-	cerr << "       use '-' to read score1 from standard input"  << endl;
+	cerr << "       " << scoredesc << endl;
 	cerr << "       the options indicate the apply mode:"  << endl;
 	cerr << "             -once applies the rythmic structure only once"  << endl;
 	cerr << "             -loop applies the rythmic structure in a loop"  << endl;
@@ -37,24 +35,16 @@ static TApplyMode getmode (const char * str)
 //_______________________________________________________________________________
 int main(int argc, char *argv[]) 
 {
-#if debug
-	argc = 4;
-	char * args[] = {"test.gmn", "simple.gmn", 0};
-	char ** argsPtr = args;
-	TApplyMode mode = kApplyForwardLoop;
-#else
 	if (argc != 4) usage(argv[0]);
-	char ** argsPtr = &argv[1];
-	TApplyMode mode = getmode(*argsPtr++);
-#endif
+
+	TApplyMode mode = getmode(argv[1]);
 	if (mode < 0) usage(argv[0]);
-	
-	char *rythm = readgmn(*argsPtr++);
-	char *gmn = readgmn(*argsPtr++);
-	garErr err = kNoErr;
-	err = guidoApplyRythm(gmn, rythm, mode, cout);
-	delete[] gmn;
-	delete[] rythm;
-	checkErr (err, "rythm");
+
+	string rythm, gmn, _stdin;
+	if (!gmnVal (argv[2], rythm, _stdin)) return -1;	
+	if (!gmnVal (argv[3], gmn, _stdin)) return -1;	
+
+	garErr err = guidoApplyRythm(gmn.c_str(), rythm.c_str(), mode, cout);
+	if (err != kNoErr) error (err);
 	return err;
 }

@@ -25,12 +25,8 @@ int main(int argc, char *argv[])
 {
 	if ((argc != 3) && (argc != 4)) usage(argv[0]);
 
-	string gmn;
-	if (!gmnVal (argv[1], gmn)) {
-		cerr << "error while reading " << argv[1] << endl;
-		return -1;
-	}
-	
+	string gmn, _stdin;
+	if (!gmnVal (argv[1], gmn, _stdin)) return -1;	
 	int eventIndex = 0;
 	if (!intVal(argv[2], eventIndex)) usage(argv[0]);
 	int voiceIndex = 1;									// default voice is 1

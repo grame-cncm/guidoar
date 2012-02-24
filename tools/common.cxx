@@ -63,8 +63,11 @@ static bool checkfile (const char* file)
 static bool readfile (FILE * fd, string& content) 
 {
 	if (!fd) return false;
-	while (feof(fd) == 0)
-		content += getc(fd);
+	do {
+		int c = getc(fd);
+		if (feof(fd) || ferror(fd)) break;
+		content += c;
+	} while (true);
 	return ferror(fd) == 0;
 }
 
@@ -88,19 +91,23 @@ void error(garErr err)
 }
 
 //_______________________________________________________________________________
-static bool gmnVal (const char* str, string& val)  
+static bool gmnVal (const char* str, string& val, string& _stdin)  
 {
 	string pipe ("-");
-	if (pipe == str)
-		return readfile (stdin, val);
-
-	if (checkfile (str)) {
+	if (pipe == str) {			// value to be read from stdin
+		if (_stdin.empty() && !readfile (stdin, _stdin)) goto err;
+		val = _stdin;
+	}
+	else if (checkfile (str)) {	// value to be read from a file
 		FILE* fd = fopen(str, "r");
 		bool ret = readfile (fd, val);
 		fclose (fd);
-		return ret;
-	}
-	
-	val = str;		// not a file, assume it is gmn code
+		if (!ret) goto err;
+	}	
+	else val = str;				// not a file, assume it is gmn code
 	return true;
+
+err:
+	cerr << "error while reading score \"" << str << "\"" << endl;
+	return false;	
 }

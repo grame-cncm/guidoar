@@ -24,13 +24,10 @@ int main(int argc, char *argv[])
 {
 	if (argc != 3) usage(argv[0]);
 	
-	string gmn;
-	if (!gmnVal (argv[1], gmn)) {
-		cerr << "error while reading " << argv[1] << endl;
-		return -1;
-	}
-	const char * outfile = argv[2];
-	
+	string gmn, _stdin;
+	if (!gmnVal (argv[1], gmn, _stdin)) return -1;
+
+	const char * outfile = argv[2];	
 	garErr err = guido2midifile(gmn.c_str(), outfile);
 	if (err != kNoErr) error (err);
 	return err;
