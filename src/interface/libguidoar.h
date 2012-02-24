@@ -332,6 +332,14 @@ export garErr			guidoVMultDuration(const char* gmn, float mult, std::ostream& ou
 */
 export rational			guidoEv2Time(const char* gmn, unsigned int index, unsigned int voice);
 
+/*! \brief gives an event index at a given date
+	\param gmn a string containing gmn code
+	\param date a date expressed as a rational (1 is a whole note)
+	\param voice the target voice index
+	\return an event index
+*/
+export int				guidoTime2Ev(const char* gmn, const rational& date, unsigned int voice);
+
 /*! \brief export to midifile
 	\param gmn a string containing gmn code
 	\param file the midi file name

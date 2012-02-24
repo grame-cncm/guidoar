@@ -89,6 +89,15 @@ export rational	guidoEv2Time(const char* gmn, unsigned int index, unsigned int v
 	return convert.event2time (score, index, voice);
 }
 
+//----------------------------------------------------------------------------
+export int guidoTime2Ev(const char* gmn, const rational& date, unsigned int voice)
+{
+	Sguidoelement score =  read(gmn);
+	if (!score) return kInvalidArgument;
+	event2timevisitor convert;
+	return convert.time2event (score, date, voice-1);
+}
+
 
 //----------------------------------------------------------------------------
 // wrappers for score operations
