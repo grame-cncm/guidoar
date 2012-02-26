@@ -1,5 +1,5 @@
 /*
-  Copyright © Grame 2008
+  Copyright ï¿½ Grame 2008
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -48,7 +48,7 @@ class export headOperation :
 	public clonevisitor
 {		
     public:
- 				 headOperation()	{}
+ 				 headOperation() : fBrowser(this)	{}
 		virtual ~headOperation()	{}
 
 		/*! cuts the tail of a score after a given duration
@@ -83,6 +83,7 @@ class export headOperation :
      private:
 		std::map<std::string,int> fOpenedTagsMap;
 		void checkOpenedTags ();
+		tree_browser<guidoelement> fBrowser;
 };
 
 /*! @} */
