@@ -70,7 +70,8 @@ class export durationvisitor :
 		virtual void visitEnd  ( SARVoice& elt );
 		virtual void visitEnd  ( SARChord& elt );
 
-		virtual rational  currentVoiceDate() const	{ return fCurrentVoiceDuration; }
+		virtual rational  currentVoiceDate() const		{ return fCurrentVoiceDuration; }
+		virtual rational  currentNoteDuration() const	{ return fCurrentNoteDuration; }
 
 	protected:		
 		virtual void stop (bool state=true)	{ fBrowser.stop (state); }
