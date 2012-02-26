@@ -57,8 +57,7 @@ Sguidoelement headOperation::operator() ( const Sguidoelement& score, const rati
 	fCutPoint = duration;
 	Sguidoelement outscore;
 	if (score) {
-		tree_browser<guidoelement> tb(this);
-		tb.browse (*score);
+		fBrowser.browse (*score);
 		outscore = fStack.top();
 		fStack.pop();
 	}
@@ -106,10 +105,28 @@ void headOperation::visitStart ( SARChord& elt )
 //________________________________________________________________________
 void headOperation::visitStart ( SARNote& elt )
 {
-	if (fCopy) {
+	rational remain = fCutPoint - fDuration.currentVoiceDate();
+	if (float(remain) > 0) {
+		rational dur = elt->duration();
+		if (ARNote::implicitDuration (dur)) {
+			dur = fDuration.currentNoteDuration();
+			*elt = remain;		
+		}
+		else {
+			rational excess = remain - dur;
+			excess.rationalise();
+			if (float(excess) < 0) {
+				*elt += excess;
+			}
+		}
 		clonevisitor::visitStart (elt);
 		fDuration.visitStart (elt);
 	}
+	else fBrowser.stop();
+//	if (fCopy) {
+//		clonevisitor::visitStart (elt);
+//		fDuration.visitStart (elt);
+//	}
 }
 
 //________________________________________________________________________
@@ -117,7 +134,6 @@ void headOperation::visitStart ( Sguidotag& elt )
 {
 	if (fCopy) {
 		clonevisitor::visitStart (elt);
-
 
 		string name = elt->getName();
 		if (elt->beginTag())
@@ -132,6 +148,7 @@ void headOperation::visitStart ( Sguidotag& elt )
 void headOperation::visitEnd ( SARNote& elt )
 {
 	if (fCopy && (fDuration.currentVoiceDate() >= fCutPoint)) {
+		rational remain = fCutPoint - fDuration.currentVoiceDate();
 		fCopy = false;
 		checkOpenedTags();
 	}
