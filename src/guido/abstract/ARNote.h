@@ -56,7 +56,7 @@ class export ARNote : public guidoelement
 	static std::map<std::string, std::pair<char, int> >	fNormalizeMap;
 
 	public:
-		enum { kUndefined = -99, kDefaultOctave=1 };
+		enum { kUndefinedOctave = -999, kUndefinedDuration = 0, kDefaultOctave=1 };
 		enum pitch { kNoPitch = -1, C, D, E, F, G, A, B };
 
 		static SMARTP<ARNote> create();
@@ -88,14 +88,16 @@ class export ARNote : public guidoelement
 	ARNote& operator -= (const rational&);
 	ARNote& operator *= (const rational&);
 	ARNote& operator /= (const rational&);
-	bool	implicitDuration()						{ return fDuration == getImplicitDuration(); }
-	void	setImplicitDuration()					{ fDuration.set(kUndefined,4); }
+	bool	implicitDuration() const					{ return fDuration == getImplicitDuration(); }
+	bool	implicitOctave() const						{ return fOctave == getImplicitOctave(); }
+	void	setImplicitDuration()						{ fDuration.set(kUndefinedDuration,4); }
 
-	static rational getImplicitDuration()				{ return rational(kUndefined,4); }
-	static bool		implicitDuration(const rational& d)	{ return d.getNumerator() == kUndefined; }
+	static rational getImplicitDuration()				{ return rational(kUndefinedDuration,4); }
+	static bool		implicitDuration(const rational& d)	{ return d.getNumerator() == kUndefinedDuration; }
 	static rational getDefaultDuration()				{ return rational(1,4); }
 	static int		getDefaultOctave()					{ return 1; }
-	static int		getImplicitOctave()					{ return kUndefined; }
+	static int		getImplicitOctave()					{ return kUndefinedOctave; }
+	static bool		implicitOctave(int o)				{ return o == kUndefinedOctave; }
 	
 	static pitch OffsetPitch			(pitch p, int offset, int& octave, int& alter, int targetinterval);
 	static pitch NormalizedName2Pitch	(char note);

@@ -39,8 +39,8 @@ std::map<std::string, std::pair<char, int> > ARNote::fNormalizeMap;
 
 //______________________________________________________________________________
 ARNote::ARNote() 
-	:	fOctave(kUndefined), fAccidental(0), 
-		fDots(0), fDuration(kUndefined,4)
+	:	fOctave(kUndefinedOctave), fAccidental(0), 
+		fDots(0), fDuration(kUndefinedDuration,4)
 		
 {
 	if (!fNormalizeMap.size()) {
@@ -150,7 +150,7 @@ int ARNote::midiPitch (int& currentOctave) const
 	int alter=0, midi = -1;
 	pitch notepitch = GetPitch (alter);
 
-	int octave = fOctave == kUndefined ? currentOctave : fOctave;
+	int octave = fOctave == kUndefinedOctave ? currentOctave : fOctave;
 	currentOctave = octave;
 	if (notepitch != ARNote::kNoPitch) {
 		// offset in octave numeration between guido and midi is 4
@@ -235,14 +235,14 @@ ARNote::operator string() const {
 		}
 
 		n = GetOctave();
-		if ( n != ARNote::kUndefined) {
+		if ( n != ARNote::kUndefinedOctave) {
 			str << n;
 			octOut = true;
 		}
 	}
 
 	int n = fDuration.getNumerator();
-	if (n != kUndefined) {
+	if (n != kUndefinedDuration) {
 		if ((n != 1) || octOut)  str << '*' << n;
 		n = fDuration.getDenominator();
 		if (n > 0) str << '/' << n;
