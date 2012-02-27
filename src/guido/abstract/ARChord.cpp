@@ -22,11 +22,10 @@
 */
 
 #include "ARChord.h"
-//#include "durationvisitor.h"
-//#include "targetvisitor.h"
 #include "ARNote.h"
 #include "ARTypes.h"
 #include "functor.h"
+#include "tree_browser.h"
 #include "visitor.h"
 
 using namespace std;
@@ -35,34 +34,65 @@ namespace guido
 {
 
 //______________________________________________________________________________
-/*
-class durationfunctor : public functor<void, SARNote> {
+// a class chord duration transformation
+//______________________________________________________________________________
+class chorddurationchange : public visitor<SARNote>
+{
+	public:
+				 chorddurationchange() : fBrowser(this) {}
+		virtual ~chorddurationchange() {}
+		
+		virtual void operator ()(const ARChord* chord, const rational& d) {
+			fDuration = d;
+			fBrowser.browse (*(guidoelement*)chord);
+		}
+	
 	protected:
 		rational fDuration;
-	public:
-		durationfunctor(const rational& d) : fDuration(d) {}
+		tree_browser<guidoelement> fBrowser;
 };
 
-#define opclass(name,op) class name : public durationfunctor { \
-	public: \
-		name(const rational& d) : durationfunctor(d) {} \
-		void operator ()(SARNote note) { (*note) op fDuration; } }
+class chordequal : public chorddurationchange		{ protected: inline void visitStart ( SARNote& elt ) { *elt  = fDuration; } };
+class chordplusequal : public chorddurationchange	{ protected: inline void visitStart ( SARNote& elt ) { *elt += fDuration; } };
+class chordminusequal : public chorddurationchange	{ protected: inline void visitStart ( SARNote& elt ) { *elt -= fDuration; } };
+class chordmultequal : public chorddurationchange	{ protected: inline void visitStart ( SARNote& elt ) { *elt *= fDuration; } };
+class chorddivequal : public chorddurationchange	{ protected: inline void visitStart ( SARNote& elt ) { *elt /= fDuration; } };
 
-opclass (equal, =);
-opclass (plusequal,  +=);
-opclass (minusequal, -=);
-opclass (multequal,  *=);
-opclass (divequal,   /=);
-*/
+
+//______________________________________________________________________________
+// a class to collect a chord notes durations
+//______________________________________________________________________________
+class chorddurationvisitor : public visitor<SARNote>
+{
+	public:
+				 chorddurationvisitor() : fBrowser(this) {}
+		virtual ~chorddurationvisitor() {}
+		
+		void	durations (const ARChord* chord, rationals& dlist);
+	
+	protected:		 
+		virtual void visitStart( SARNote& elt )		{ fDurations.push_back (elt->duration()); }
+
+		rationals	fDurations;
+		tree_browser<guidoelement> fBrowser;
+};
+
+//______________________________________________________________________________
+void chorddurationvisitor::durations (const ARChord* chord, rationals& dlist)
+{
+	fDurations.clear();
+	fBrowser.browse (*(guidoelement*)chord);
+	dlist = fDurations;
+}
+
 
 //______________________________________________________________________________
 //
 //   ARChord
 //______________________________________________________________________________
-void ARChord::duration(rationals& dur) {
-//	chorddurationvisitor v(dur);
-//	SARChord c(this);
-//	v.startvisit(c);
+void ARChord::duration (rationals& dur) const {
+	chorddurationvisitor v;
+	v.durations (this, dur);
 }
 
 //______________________________________________________________________________
@@ -87,18 +117,27 @@ void ARChord::acceptOut(basevisitor& v) {
 SMARTP<ARChord> ARChord::create()
     { ARChord* o = new ARChord; assert(o!=0); return o; }
 
-/*
-#define apply(op,d)  \
-	op f(d); \
-	TargetVisitor<SARNote> v(f); \
-	Sguidoelement g(this); \
-	v.startvisit(g)
 
-ARChord& ARChord::operator =  (const rational& d)	{ apply(equal, d); return *this;  }
-ARChord& ARChord::operator +=  (const rational& d)	{ apply(plusequal, d); return *this;  }
-ARChord& ARChord::operator -=  (const rational& d)	{ apply(minusequal, d); return *this;  }
-ARChord& ARChord::operator *=  (const rational& d)	{ apply(multequal, d); return *this;  }
-ARChord& ARChord::operator /=  (const rational& d)	{ apply(divequal, d); return *this;  }
-*/
+//______________________________________________________________________________
+rational ARChord::duration() const
+{
+	rationals dlist;
+	duration (dlist);
+	rational maxd (0,1);
+	bool implicit = false;
+	for (unsigned int i=0; i<dlist.size(); i++) {
+		if (ARNote::implicitDuration (dlist[i])) implicit = true;
+		if (dlist[i] > maxd) maxd = dlist[i];
+	}
+	if (implicit && maxd.getNumerator())
+		maxd.setNumerator (-maxd.getNumerator());
+	return maxd;
+}
+
+ARChord& ARChord::operator  =  (const rational& d)	{ chordequal dc; dc(this, d); return *this;  }
+ARChord& ARChord::operator +=  (const rational& d)	{ chordplusequal dc; dc(this, d); return *this;  }
+ARChord& ARChord::operator -=  (const rational& d)	{ chordminusequal dc; dc(this, d); return *this;  }
+ARChord& ARChord::operator *=  (const rational& d)	{ chordmultequal dc; dc(this, d); return *this;  }
+ARChord& ARChord::operator /=  (const rational& d)	{ chorddivequal dc; dc(this, d); return *this;  }
 
 } // namespace
