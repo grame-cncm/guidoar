@@ -35,6 +35,7 @@
 #include "ARTag.h"
 #include "clonevisitor.h"
 #include "headOperation.h"
+#include "markers.h"
 #include "tree_browser.h"
 
 using namespace std;
@@ -67,8 +68,7 @@ Sguidoelement headOperation::operator() ( const Sguidoelement& score, const rati
 //________________________________________________________________________
 void headOperation::checkOpenedTags()
 {
-	map<std::string,int>::iterator i;
-	for (i = fOpenedTagsMap.begin(); i != fOpenedTagsMap.end(); i++) {
+	for (map<std::string,int>::iterator i = fOpenedTagsMap.begin(); i != fOpenedTagsMap.end(); i++) {
 		if (i->second) {
 			string name = i->first;
 			size_t n = name.find("Begin", 0);
@@ -80,6 +80,13 @@ void headOperation::checkOpenedTags()
 			i->second = 0;
 		}
 	}
+	fOpenedTagsMap.clear();
+
+	for (map<std::string,Sguidotag>::iterator i = fRangeTagsMap.begin(); i != fRangeTagsMap.end(); i++) {
+		Sguidotag tag = i->second;
+		if (tag) markers::markOpened (tag, true);
+	}
+	fRangeTagsMap.clear();
 }
 
 //________________________________________________________________________
@@ -88,9 +95,13 @@ void headOperation::checkOpenedTags()
 void headOperation::visitStart ( SARVoice& elt )
 {
 	fOpenedTagsMap.clear();
-	fCopy = (float(fCutPoint) > 0.001) ? true: false;
-	clonevisitor::visitStart (elt);
-	if (fCopy) fDuration.visitStart (elt);
+//	fCopy = (float(fCutPoint) > 0.001) ? true: false;
+	if (float(fCutPoint) > 0.001) {
+		fCopy = true;
+		clonevisitor::visitStart (elt);
+		fDuration.visitStart (elt);
+	}
+	else fCopy = false;
 }
 
 //________________________________________________________________________
@@ -106,27 +117,38 @@ void headOperation::visitStart ( SARChord& elt )
 void headOperation::visitStart ( SARNote& elt )
 {
 	rational remain = fCutPoint - fDuration.currentVoiceDate();
+	bool tie = false;
 	if (float(remain) > 0) {
-		rational dur = elt->duration();
-		if (ARNote::implicitDuration (dur)) {
-			dur = fDuration.currentNoteDuration();
-			*elt = remain;		
+		rational dur = elt->implicitDuration() ? fDuration.currentNoteDuration() : elt->duration();
+		if (dur > remain) {
+			*elt = remain;
+			tie = true;
 		}
-		else {
-			rational excess = remain - dur;
-			excess.rationalise();
-			if (float(excess) < 0) {
-				*elt += excess;
-			}
+//		if (elt->implicitDuration ()) {
+//			dur = fDuration.currentNoteDuration();
+//			if (dur > remain) {
+//				*elt = remain;
+//				tie = true;
+//			}
+//		}
+//		else {
+//			rational excess = remain - dur;
+//			excess.rationalise();
+//			if (float(excess) < 0) {
+//				*elt += excess;
+//				tie = true;
+//			}
+//		}
+		if (tie) {		// notes splitted by the operation are marked using an opened tie
+			Sguidotag tag = ARTag<kTTie>::create();
+			tag->setName ("tie");
+			markers::markOpened (tag, true);
+			Sguidoelement etag(tag);
+			push(etag, true);
 		}
 		clonevisitor::visitStart (elt);
 		fDuration.visitStart (elt);
 	}
-	else fBrowser.stop();
-//	if (fCopy) {
-//		clonevisitor::visitStart (elt);
-//		fDuration.visitStart (elt);
-//	}
 }
 
 //________________________________________________________________________
@@ -138,8 +160,10 @@ void headOperation::visitStart ( Sguidotag& elt )
 		string name = elt->getName();
 		if (elt->beginTag())
 			fOpenedTagsMap[name] += 1;
-		else if (elt->endTag()) {
+		else if (elt->endTag())
 			fOpenedTagsMap[elt->matchTag()] -= 1;
+		else if (elt->size()) {
+			fRangeTagsMap[name] = dynamic_cast<guidotag*>((guidoelement*)fStack.top());
 		}
 	}
 }
@@ -148,7 +172,6 @@ void headOperation::visitStart ( Sguidotag& elt )
 void headOperation::visitEnd ( SARNote& elt )
 {
 	if (fCopy && (fDuration.currentVoiceDate() >= fCutPoint)) {
-		rational remain = fCutPoint - fDuration.currentVoiceDate();
 		fCopy = false;
 		checkOpenedTags();
 	}
@@ -182,6 +205,8 @@ void headOperation::visitEnd ( Sguidotag& elt )
 {
 	if (fCopy) {
 		clonevisitor::visitEnd (elt);
+		if (elt->size())
+			fRangeTagsMap[elt->getName()] = 0;
 	}
 }
 

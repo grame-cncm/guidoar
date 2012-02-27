@@ -81,6 +81,7 @@ class export headOperation :
 		virtual void visitEnd  ( SARNote& elt );
 
      private:
+		std::map<std::string,Sguidotag> fRangeTagsMap;
 		std::map<std::string,int> fOpenedTagsMap;
 		void checkOpenedTags ();
 		tree_browser<guidoelement> fBrowser;

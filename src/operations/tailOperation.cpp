@@ -29,10 +29,12 @@
 #include <iostream>
 #include <string>
 
+#include "ARChord.h"
 #include "ARNote.h"
 #include "AROthers.h"
 #include "ARTag.h"
 #include "clonevisitor.h"
+#include "markers.h"
 #include "tailOperation.h"
 #include "tree_browser.h"
 
@@ -56,58 +58,43 @@ SARMusic tailOperation::operator() ( const SARMusic& score1, const SARMusic& sco
 //_______________________________________________________________________________
 Sguidoelement tailOperation::operator() ( const Sguidoelement& score, const rational& duration )
 {
-	fPendingTagsMap.clear();
+	fCurrentTagsMap.clear();
 	fCurrentOctave = ARNote::kDefaultOctave;
 	fCurrentNoteDots = 0;
-	fCurrentNoteDuration.set(1,4);
 	fStartPoint = duration;
 
 	Sguidoelement outscore;
 	if (score) {
 		tree_browser<guidoelement> tb(this);
 		tb.browse (*score);
-		outscore = fStack.top();
-		fStack.pop();
+		if (fStack.size()) {
+			outscore = fStack.top();
+			fStack.pop();
+		}
 	}
 	return outscore;
 }
 
 //________________________________________________________________________
-void tailOperation::checkStart()
+void tailOperation::flushTags()
 {
-	if ((fState == kSkip) && (fDuration.currentVoiceDate() >= fStartPoint)) {
-		fState = kStartPending;
-		checkPendingHead();
-		checkPendingTags();
-	}
-}
+//	for (map<std::string,Sguidotag>::iterator i = fCurrentTagsMap.begin(); i != fCurrentTagsMap.end(); i++) {
+//		Sguidotag tag = i->second;
+//		if (tag) {
+//			if (tag->size()) markers::markOpened (tag, false);
+//			clonevisitor::visitStart (tag);
+//		}
+//	}
 
-//________________________________________________________________________
-void tailOperation::checkPendingHead()
-{
-	if (!fHeaderFlushed) {
-		if (fCurrentStaff)	clonevisitor::visitStart (fCurrentStaff);
-		if (fCurrentInstr)	clonevisitor::visitStart (fCurrentInstr);
-		if (fCurrentClef)	clonevisitor::visitStart (fCurrentClef);
-		if (fCurrentKey)	clonevisitor::visitStart (fCurrentKey);
-		if (fCurrentMeter)	clonevisitor::visitStart (fCurrentMeter);
-		if (fCurrentStemsStatus)	clonevisitor::visitStart (fCurrentStemsStatus);
-		fCurrentClef = fCurrentKey = fCurrentMeter = fCurrentStaff = fCurrentStemsStatus = fCurrentInstr = 0;
-		fHeaderFlushed = true;
-	}
-}
-
-//________________________________________________________________________
-void tailOperation::checkPendingTags()
-{
-	map<Sguidotag,int>::iterator i;
-	for (i = fPendingTagsMap.begin(); i != fPendingTagsMap.end(); i++) {
-		if (i->second) {
-			Sguidotag tag = i->first;
+	for (unsigned int i = 0; i < fCurrentTags.size(); i++) {
+		Sguidotag tag = fCurrentTags[i];
+		if (tag) {
+			if (tag->size()) markers::markOpened (tag, false);
 			clonevisitor::visitStart (tag);
-			i->second = 0;
 		}
 	}
+	fCurrentTags.clear();
+	fCurrentTagsMap.clear();
 }
 
 //________________________________________________________________________
@@ -115,13 +102,11 @@ void tailOperation::checkPendingTags()
 //________________________________________________________________________
 void tailOperation::visitStart ( SARVoice& elt )
 {
-	fPendingTagsMap.clear();
-	fCurrentClef = fCurrentKey = fCurrentMeter = fCurrentStaff = fCurrentStemsStatus = fCurrentInstr =0;
-	fState = (float(fStartPoint) > 0.001) ? kSkip : kStartPending;
-	fHeaderFlushed = false;
+	fCurrentTags.clear();
+	fCurrentTagsMap.clear();
+	fCopy = false;
 	fCurrentOctave = ARNote::kDefaultOctave;
 	fCurrentNoteDots = 0;
-	fCurrentNoteDuration.set(1,4);
 	clonevisitor::visitStart (elt);
 	fDuration.visitStart (elt);
 }
@@ -129,129 +114,117 @@ void tailOperation::visitStart ( SARVoice& elt )
 //________________________________________________________________________
 void tailOperation::visitStart ( SARChord& elt )
 {
-	fDuration.visitStart (elt);
-	if (fState) clonevisitor::visitStart (elt);
+	if (fCopy) clonevisitor::visitStart (elt);
+	else {						// check if startpoint is reached
+		rational remain = fStartPoint - fDuration.currentVoiceDate();
+		rational dur = elt->duration();
+		if (elt->implicitDuration(dur)) {
+			if (ARNote::implicitDuration (dur)) dur = fDuration.currentNoteDuration();
+			else dur.set (-dur.getNumerator(), dur.getDenominator());
+			dur = max(fDuration.currentNoteDuration(), dur);
+		}
+
+		if (remain < dur) {
+			fCopy = true;
+			flushTags();
+			clonevisitor::visitStart (elt);
+		}
+		fDuration.visitStart (elt);
+	}
 }
 
 //________________________________________________________________________
 void tailOperation::visitStart ( SARNote& elt )
 {
-	fDuration.visitStart (elt);
-
-	int octave = elt->GetOctave();
-	if (octave != ARNote::kUndefined) fCurrentOctave = octave;
-
-	rational duration = elt->duration();
-	if (duration.getNumerator() != ARNote::kUndefined) fCurrentNoteDuration = duration;
-	if (fState) {
-		if (fState == kStartPending) {
-			if (!elt->isRest() && !elt->isEmpty()) {
-				if ((elt->GetOctave() == ARNote::kUndefined) && (fCurrentOctave != ARNote::kDefaultOctave)) {
-					elt->SetOctave(fCurrentOctave);
-				}
-				fState = kCopy;
-			}
-			if (duration.getNumerator() == ARNote::kUndefined) (*elt) = fCurrentNoteDuration;
-			
-		}
+	
+	if (fStartPoint < fDuration.currentVoiceDate()) {
 		clonevisitor::visitStart (elt);
+	}
+	else {						// check if startpoint is reached
+		rational remain = fStartPoint - fDuration.currentVoiceDate();
+		rational dur = elt->implicitDuration() ? fDuration.currentNoteDuration() : elt->duration();
+		if (remain >= dur) {	// not yet
+			// maintains the current state
+			int octave = elt->GetOctave();
+			if (!ARNote::implicitOctave(octave)) fCurrentOctave = octave;			
+			fDuration.visitStart (elt);
+		}
+		else {
+			fDuration.visitStart (elt);
+			fCopy = true;
+			*elt = dur - remain;
+			if (elt->implicitOctave()) elt->SetOctave (fCurrentOctave);
+			flushTags();
+			clonevisitor::visitStart (elt);
+//			if (tie) {		// notes splitted by the operation are marked using an opened tie
+//				Sguidoelement tag = ARTag<kTTie>::create();
+//				tag->setName ("tie");
+//				markers::markOpened (tag, true);
+//				push(tag, true);
+//			}
+		}
+	}
+}
+
+//________________________________________________________________________
+void tailOperation::pushTag ( Sguidotag& elt )
+{
+	fCurrentTagsMap[elt->getName()] = elt;
+	for (unsigned int i=0; i < fCurrentTags.size(); i++) {
+		if (fCurrentTags[i] && (fCurrentTags[i]->getName() == elt->getName())) {
+			fCurrentTags[i] = elt;
+			return;
+		}
+	}
+	fCurrentTags.push_back(elt);
+}
+
+//________________________________________________________________________
+void tailOperation::popTag ( Sguidotag& elt )
+{
+	if (elt->endTag())
+		fCurrentTagsMap[elt->matchTag()] = 0;
+	else if (elt->size())
+		fCurrentTagsMap[elt->getName()] = 0;
+
+	if (elt->endTag() || elt->size()) {
+		for (unsigned int i=0; i < fCurrentTags.size(); i++) {
+			if (fCurrentTags[i]) {
+				if (fCurrentTags[i]->getName() == elt->getName()) {
+					fCurrentTags[i] = 0;
+					return;
+				}
+				if (fCurrentTags[i]->getName() == elt->matchTag()) {
+					fCurrentTags[i] = 0;
+					return;
+				}
+			}
+		}
 	}
 }
 
 //________________________________________________________________________
 void tailOperation::visitStart ( Sguidotag& elt )
 {
-	if (fState) {
+	if (fCopy) {
 		clonevisitor::visitStart (elt);
 	}
 	else {
-		if (elt->size()) fPendingTagsMap[elt] = 1;
-
-		switch (elt->getType()) {
-			case kTComposer:
-			case kTNewLine:
-			case kTNewPage:
-			case kTNewSystem:
-			case kTPageFormat:
-			case kTSystemFormat:
-			case kTTitle:
-				break;
-			case kTStaffFormat:
-			case kTBarFormat:
-			case kTInstr:
-				clonevisitor::visitStart (elt);
-				break;
-			default:
-				checkPendingHead();
-				
-		}
+		pushTag (elt);
 	}
-}
-
-//________________________________________________________________________
-void tailOperation::visitStart ( SARKey& elt )
-{
-	if (fState == kSkip)	fCurrentKey = Sguidotag(elt);
-	else					cloneTag (elt);
-}
-
-//________________________________________________________________________
-void tailOperation::visitStart ( SARMeter& elt )
-{
-	if (fState == kSkip)	fCurrentMeter = Sguidotag(elt);
-	else					cloneTag (elt);
-}
-
-//________________________________________________________________________
-void tailOperation::visitStart ( SARClef& elt )
-{
-	if (fState == kSkip)	fCurrentClef = Sguidotag(elt);
-	else					cloneTag (elt);
-}
-
-//________________________________________________________________________
-void tailOperation::visitStart ( SARStaff& elt )
-{
-	if (fState == kSkip)	fCurrentStaff = Sguidotag(elt);
-	else					cloneTag (elt);
-}
-
-//________________________________________________________________________
-void tailOperation::visitStart ( SARInstr& elt )
-{
-	if (fState == kSkip)	fCurrentInstr = Sguidotag(elt);
-	else					cloneTag (elt);
-}
-
-//________________________________________________________________________
-void tailOperation::stemsStatus( Sguidotag elt )
-{
-	if (fState == kSkip)	fCurrentStemsStatus = elt;
-	else					cloneTag (elt);
-}
-
-void tailOperation::visitStart( SARStemsAuto& elt )	{ stemsStatus(Sguidotag(elt)); }
-void tailOperation::visitStart( SARStemsDown& elt )	{ stemsStatus(Sguidotag(elt)); }
-void tailOperation::visitStart( SARStemsOff& elt )	{ stemsStatus(Sguidotag(elt)); }
-void tailOperation::visitStart( SARStemsUp& elt )	{ stemsStatus(Sguidotag(elt)); }
-
-//________________________________________________________________________
-void tailOperation::visitEnd ( SARNote& elt )
-{
-	checkStart();
 }
 
 //________________________________________________________________________
 void tailOperation::visitEnd ( SARChord& elt )
 {
 	fDuration.visitEnd (elt);
-	if (fState)	clonevisitor::visitEnd (elt);
-	else		checkStart();
+	if (fCopy) clonevisitor::visitEnd (elt);
 }
 
 //________________________________________________________________________
 void tailOperation::visitEnd ( SARVoice& elt )
 {
+	flushTags();
 	clonevisitor::visitEnd (elt);
 	// adjusts the stack
 	// may be necessary due to potential end inside range tags
@@ -262,9 +235,9 @@ void tailOperation::visitEnd ( SARVoice& elt )
 //________________________________________________________________________
 void tailOperation::visitEnd ( Sguidotag& elt )
 {
-	if (fState) clonevisitor::visitEnd (elt);
-	else if (elt->size()) {
-		fPendingTagsMap[elt] = 0;
+	if (fCopy) clonevisitor::visitEnd (elt);
+	else {
+		popTag (elt);
 	}
 }
 

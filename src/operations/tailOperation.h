@@ -47,16 +47,7 @@ namespace guido
 */
 class export tailOperation : 
 	public operation,
-	public clonevisitor,
-	public visitor<SARStemsAuto>,
-	public visitor<SARStemsDown>,
-	public visitor<SARStemsOff>,
-	public visitor<SARStemsUp>,
-	public visitor<SARStaff>,
-	public visitor<SARInstr>,
-	public visitor<SARKey>,
-	public visitor<SARMeter>,
-	public visitor<SARClef>
+	public clonevisitor
 {		
     public:
  				 tailOperation();
@@ -80,43 +71,27 @@ class export tailOperation :
 		enum state  { kSkip, kStartPending, kCopy };
 		rational		fStartPoint;
 		durationvisitor	fDuration;
-		state			fState;
-		bool			fHeaderFlushed;
-		int				fCurrentOctave;
-		rational		fCurrentNoteDuration;
-		int				fCurrentNoteDots;
-		// current key, meter, clef and staff are maintained to be flushed 
-		Sguidotag		fCurrentKey, fCurrentMeter, fCurrentClef, fCurrentStaff;
-		Sguidotag		fCurrentInstr, fCurrentStemsStatus;
+		bool			fCopy;				// a flag to start copy
 
-		virtual void visitStart( SARStaff& elt );
-		virtual void visitStart( SARInstr& elt );
-		virtual void visitStart( SARKey& elt );
-		virtual void visitStart( SARMeter& elt );
-		virtual void visitStart( SARClef& elt );
+		int				fCurrentOctave;
+		int				fCurrentNoteDots;
+
 		virtual void visitStart( SARVoice& elt );
 		virtual void visitStart( SARChord& elt );
 		virtual void visitStart( SARNote& elt );
 		virtual void visitStart( Sguidotag& elt );
 
-		virtual void visitStart( SARStemsAuto& elt );
-		virtual void visitStart( SARStemsDown& elt );
-		virtual void visitStart( SARStemsOff& elt );
-		virtual void visitStart( SARStemsUp& elt );
-
 		virtual void visitEnd  ( SARVoice& elt );
 		virtual void visitEnd  ( SARChord& elt );
 		virtual void visitEnd  ( Sguidotag& elt );
-		virtual void visitEnd  ( SARNote& elt );
-
-		virtual void stemsStatus( Sguidotag elt );
 
      private:
-		std::map<Sguidotag,int> fPendingTagsMap;
-		void checkStart ();
-		void checkPendingHead ();
-		void checkPendingTags ();
-		void cloneTag (Sguidotag tag)		{ clonevisitor::visitStart (tag); }
+		void pushTag (Sguidotag& elt );
+		void popTag (Sguidotag& elt );
+		
+		std::map<std::string,Sguidotag> fCurrentTagsMap;
+		std::vector<Sguidotag> fCurrentTags;
+		void flushTags ();
 };
 
 /*! @} */
