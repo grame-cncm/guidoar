@@ -62,6 +62,7 @@ class export durationvisitor :
 		virtual rational duration(const Sguidoelement& score);
  
 		virtual void reset();
+		bool  inChord() const	{ return fInChord; }
 
 		virtual void visitStart( SARVoice& elt );
 		virtual void visitStart( SARChord& elt );
