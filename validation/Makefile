@@ -21,7 +21,7 @@ endif
 
 gmnfiles     = $(shell find ../gmn -name "*.gmn")
 gmnout		:= $(patsubst ../%.gmn, $(version)/$(tool)/%.gmn, $(gmnfiles))
-allgmn 		 = $(shell [ -d $(version) ] && find $(version) -name "*.gmn")
+allgmn 		 = $(shell [ -d $(version)/$(tool) ] && find $(version)/$(tool) -name "*.gmn")
 
 checkgmn 	= $(patsubst %.gmn, %.checkgmn, $(allgmn))
 durgmn 	 	= $(patsubst %.gmn, %.durgmn, $(allgmn))
