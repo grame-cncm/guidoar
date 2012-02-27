@@ -92,7 +92,7 @@ class export guidotag : public guidoelement
 template <int elt> class ARTag : public guidotag
 {
 	public:
-		static SMARTP<ARTag<elt> > create(long id)
+		static SMARTP<ARTag<elt> > create(long id=0)
 			{ ARTag<elt>* o = new ARTag<elt>(id); assert(o!=0); o->fType=elt; return o; }
 
         virtual void acceptIn(basevisitor& v) {
