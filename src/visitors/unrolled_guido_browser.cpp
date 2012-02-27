@@ -73,9 +73,9 @@ void unrolled_guido_browser::visitStart( Sguidoelement& elt)
 void unrolled_guido_browser::visitStart( SARNote& elt)
 {
 	int octave = elt->GetOctave();
-	if (octave != ARNote::kUndefined) fCurrentNoteState.octave = octave;
+	if (!ARNote::implicitOctave(octave)) fCurrentNoteState.octave = octave;
 	rational dur = elt->duration();
-	if (dur.getNumerator() != ARNote::kUndefined) {
+	if (!ARNote::implicitDuration (dur)) {
 		fCurrentNoteState.duration = dur;
 		fCurrentNoteState.dots = 0;
 	}

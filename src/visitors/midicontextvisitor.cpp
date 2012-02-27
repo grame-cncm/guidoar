@@ -111,7 +111,7 @@ int midicontextvisitor::midiPitch (const SARNote& elt)  const
 rational midicontextvisitor::noteduration (const SARNote& elt, rational& currentDuration, int& currentDots ) const
 {
 	rational dur = elt->duration();
-	if (dur.getNumerator() != ARNote::kUndefined) {
+	if (!ARNote::implicitDuration (dur)) {
 		currentDuration = dur;
 		currentDots = 0;
 	}
@@ -218,9 +218,9 @@ void midicontextvisitor::storeNotes( SARChord& elt, ARNotes& dest )
 bool midicontextvisitor::equalPitch (const SARNote& n1, const SARNote& n2) const
 {
 	int octave1 = n1->GetOctave();
-	if (octave1 == ARNote::kUndefined) octave1 = fCurrentOctave;
+	if (ARNote::implicitOctave(octave1)) octave1 = fCurrentOctave;
 	int octave2 = n2->GetOctave();
-	if (octave2 == ARNote::kUndefined) octave2 = fCurrentOctave;
+	if (ARNote::implicitOctave(octave2)) octave2 = fCurrentOctave;
 
 	return	(n1->getName() == n2->getName()) &&
 			(octave1 == octave2) &&

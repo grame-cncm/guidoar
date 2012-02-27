@@ -68,7 +68,7 @@ void pitchvisitor::visitStart( SARChord& elt )
 { 
 	fInChord = true; 
 	fCurrentChordPitch.fName = "";
-	fCurrentChordPitch.fOctave = ARNote::kUndefined;
+	fCurrentChordPitch.fOctave = ARNote::getImplicitOctave();
 	fCurrentChordPitch.fAlter = 0;
 	fCurrentChordMidiPitch = (fCMode == kUseHighest ? -1 : 999);
 }
@@ -85,7 +85,7 @@ void pitchvisitor::storePitch( SARNote& elt, TPitch& dst )
 {
 	dst.fName = elt->getName();
 	int octave = elt->GetOctave();
-	if (octave == ARNote::kUndefined) 
+	if (ARNote::implicitOctave (octave)) 
 		octave = fCurrentOctave;
 	else 
 		fCurrentOctave = octave;

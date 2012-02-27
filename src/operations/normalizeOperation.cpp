@@ -77,11 +77,12 @@ void normalizeOperation::visitStart ( SARNote& elt )
 	SARNote copy = clonevisitor::copy(elt);
 
 	int octave = elt->GetOctave();
-	if (octave != ARNote::kUndefined) fCurrentOctave = octave;
+	
+	if (!ARNote::implicitOctave(octave)) fCurrentOctave = octave;
 	else copy->SetOctave (fCurrentOctave);
 
 	rational duration = elt->duration();
-	if (duration.getNumerator() != ARNote::kUndefined) fCurrentDuration = duration;
+	if (!ARNote::implicitDuration(duration)) fCurrentDuration = duration;
 	else (*copy) = fCurrentDuration;
 	push (copy);	
 }

@@ -108,7 +108,7 @@ void pitchApplyBaseOperation::visitStart( SARVoice& elt )
 void pitchApplyBaseOperation::setPitch( SARNote& note, const pitchvisitor::TPitch& pitch, int& currentOctave ) const 
 {
 	int octave = pitch.fOctave;
-	if (octave == currentOctave) octave = ARNote::kUndefined;
+	if (octave == currentOctave) octave = ARNote::getImplicitOctave();
 	else currentOctave = octave;
 	note->setName(pitch.fName);
 	note->SetOctave(pitch.fOctave);
@@ -159,10 +159,10 @@ void pitchApplyBaseOperation::setChordBase  ( SARNote& currentelt )
 //_______________________________________________________________________________
 void pitchApplyBaseOperation::octaveCheck	( SARNote& elt )
 {
-	if (fLastOctave != ARNote::kUndefined) {
+	if (fLastOctave != ARNote::getImplicitOctave()) {
 		int octave = elt->GetOctave();
-		if (octave == ARNote::kUndefined) elt->SetOctave(fLastOctave);
-		fLastOctave = ARNote::kUndefined;
+		if (ARNote::implicitOctave(octave)) elt->SetOctave(fLastOctave);
+		fLastOctave = ARNote::getImplicitOctave();
 	}
 }
 
@@ -171,11 +171,11 @@ SARNote pitchApplyBaseOperation::startNote	( SARNote& elt )
 {
 	if (!elt->isPitched()) { clonevisitor::visitStart (elt); return 0; }
 
-	if (elt->GetOctave() != ARNote::kUndefined) 
+	if (!elt->implicitOctave()) 
 		fCurrentScoreOctave = elt->GetOctave();
 	SARNote note = copy(elt);
 	if (note) {
-		if (note->GetOctave() != ARNote::kUndefined) 
+		if (!note->implicitOctave()) 
 			fLastOctave = note->GetOctave();		// store the last explicit octave
 	}
 	return note;

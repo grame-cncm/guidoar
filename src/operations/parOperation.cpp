@@ -63,7 +63,7 @@ void firstnotechecker::visitStart(SARNote& elt)
 {
 	if (!fDone) {
 		rational d = elt->duration();
-		if (d.getNumerator() == ARNote::kUndefined)
+		if (ARNote::implicitDuration (d))
 			*elt = rational(1,4);
 		fDone = true;
 	}

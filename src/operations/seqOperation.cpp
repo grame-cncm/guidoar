@@ -107,10 +107,10 @@ void seqOperation::visitStart ( SARNote& elt )
 
 	if (fState == kInFirstScore) {
 		// maintain the current duration status while in the first score
-		if (duration.getNumerator() != ARNote::kUndefined)
+		if (!ARNote::implicitDuration (duration))
 			fCurrentDuration = duration;
 		// maintain the current octave number while in the first score
-		if (octave != ARNote::kUndefined)
+		if (!ARNote::implicitOctave (octave))
 			fCurrentOctave = octave;
 	}
 	else if (fState == kInSecondScore) {
@@ -119,11 +119,10 @@ void seqOperation::visitStart ( SARNote& elt )
 		done = true;
 
 		if (fFirstInScore) {		// force implicit values in second score when unspecified
-			 if (octave == ARNote::kUndefined) {
+			 if (ARNote::implicitOctave (octave)) {
 				note->SetOctave(ARNote::kDefaultOctave);
 			}
-			if ( (duration.getNumerator() == ARNote::kUndefined) 
-			   && (fCurrentDuration != ARNote::getDefaultDuration()) ) {
+			if ( ARNote::implicitDuration (duration) && (fCurrentDuration != ARNote::getDefaultDuration()) ) {
 				*note = ARNote::getDefaultDuration();		// force explicit default duration
 			}
 			fFirstInScore = false;

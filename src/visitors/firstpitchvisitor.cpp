@@ -57,7 +57,7 @@ void firstpitchvisitor::visitEnd  ( SARChord& elt )	{ fInChord=false; fDone = tr
 void firstpitchvisitor::visitStart( SARNote& elt )	
 {
 	int octave = elt->GetOctave();
-	if (octave != ARNote::kUndefined) fCurrentOctave = octave;
+	if (!ARNote::implicitOctave(octave)) fCurrentOctave = octave;
 
 	int alter; int midi = -1;
 	ARNote::pitch pitch = elt->GetPitch (alter);

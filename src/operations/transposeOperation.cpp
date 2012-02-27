@@ -225,7 +225,7 @@ void transposeOperation::visitStart ( SARNote& elt )
 	int octaveChge = 0;
 	transpose ( npitch, alter, octaveChge, fTableShift );
 	int octave = elt->GetOctave();
-	if (octave == ARNote::kUndefined) octave = fCurrentOctaveIn;
+	if (ARNote::implicitOctave (octave)) octave = fCurrentOctaveIn;
 	else fCurrentOctaveIn = octave;
 	octave += octaveChge + fOctaveChange;
 
@@ -233,7 +233,7 @@ void transposeOperation::visitStart ( SARNote& elt )
 	string npname; 
 	npname += npitch;
 	elt->setName(npname);
-	if ((octave != fCurrentOctaveOut) || (elt->GetOctave() != ARNote::kUndefined))
+	if ((octave != fCurrentOctaveOut) || !elt->implicitOctave())
 		elt->SetOctave(octave);
 	fCurrentOctaveOut = octave;
 	elt->SetAccidental(alter);
