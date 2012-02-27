@@ -185,14 +185,14 @@ rational durationOperation::boundedMult ( const rational& dur1, const rational& 
 rational durationOperation::stretch ( const rational& duration )
 {
 	
-	if (duration.getNumerator() != ARNote::kUndefined)
+	if (!ARNote::implicitDuration (duration))
 		fCurrentDurationIn = duration;
 	rational stretched = fCurrentDurationIn;
 	stretched.rationalise();
 	stretched = boundedMult(stretched, fFactor);
 
 	if (stretched == fCurrentDurationOut)
-		stretched.set (ARNote::kUndefined, 4);
+		stretched.set (ARNote::kUndefinedDuration, 4);
 	else
 		fCurrentDurationOut = stretched;
 	return stretched;
