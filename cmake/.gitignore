@@ -7,3 +7,4 @@ build/
 cmake_install.cmake
 guidoar.build/
 guidoar.xcodeproj/
+tools
