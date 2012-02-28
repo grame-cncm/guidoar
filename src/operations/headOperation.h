@@ -82,7 +82,7 @@ class export headOperation :
 
      private:
 		std::map<std::string,Sguidotag> fRangeTagsMap;
-		std::map<std::string,int> fOpenedTagsMap;
+		std::map<std::string,Sguidotag> fOpenedTagsMap;
 		void checkOpenedTags ();
 		tree_browser<guidoelement> fBrowser;
 };

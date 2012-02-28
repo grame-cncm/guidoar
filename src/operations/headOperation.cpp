@@ -68,14 +68,15 @@ Sguidoelement headOperation::operator() ( const Sguidoelement& score, const rati
 //________________________________________________________________________
 void headOperation::checkOpenedTags()
 {
-	for (map<std::string,int>::iterator i = fOpenedTagsMap.begin(); i != fOpenedTagsMap.end(); i++) {
-		if (i->second) {
+	for (map<std::string,Sguidotag>::iterator i = fOpenedTagsMap.begin(); i != fOpenedTagsMap.end(); i++) {
+		Sguidotag tag = i->second;
+		if (tag) {
 			string name = i->first;
 			size_t n = name.find("Begin", 0);
 			if (n !=string::npos) {
 				name.replace (n, name.length(), "End");
-				Sguidoelement tag = ARFactory::instance().createTag(name);
-				if (tag) push (tag, false);
+				Sguidoelement endtag = ARFactory::instance().createTag(name);
+				if (endtag) push (endtag, false);
 			}
 			i->second = 0;
 		}
@@ -95,13 +96,9 @@ void headOperation::checkOpenedTags()
 void headOperation::visitStart ( SARVoice& elt )
 {
 	fOpenedTagsMap.clear();
-//	fCopy = (float(fCutPoint) > 0.001) ? true: false;
-	if (float(fCutPoint) > 0.001) {
-		fCopy = true;
-		clonevisitor::visitStart (elt);
-		fDuration.visitStart (elt);
-	}
-	else fCopy = false;
+	fCopy = (float(fCutPoint) > 0.001) ? true: false;
+	clonevisitor::visitStart (elt);
+	fDuration.visitStart (elt);
 }
 
 //________________________________________________________________________
@@ -122,23 +119,9 @@ void headOperation::visitStart ( SARNote& elt )
 		rational dur = elt->implicitDuration() ? fDuration.currentNoteDuration() : elt->duration();
 		if (dur > remain) {
 			*elt = remain;
-			tie = true;
+			tie = !fDuration.inChord();
 		}
-//		if (elt->implicitDuration ()) {
-//			dur = fDuration.currentNoteDuration();
-//			if (dur > remain) {
-//				*elt = remain;
-//				tie = true;
-//			}
-//		}
-//		else {
-//			rational excess = remain - dur;
-//			excess.rationalise();
-//			if (float(excess) < 0) {
-//				*elt += excess;
-//				tie = true;
-//			}
-//		}
+
 		if (tie) {		// notes splitted by the operation are marked using an opened tie
 			Sguidotag tag = ARTag<kTTie>::create();
 			tag->setName ("tie");
@@ -159,9 +142,9 @@ void headOperation::visitStart ( Sguidotag& elt )
 
 		string name = elt->getName();
 		if (elt->beginTag())
-			fOpenedTagsMap[name] += 1;
+			fOpenedTagsMap[name] = elt;
 		else if (elt->endTag())
-			fOpenedTagsMap[elt->matchTag()] -= 1;
+			fOpenedTagsMap[elt->matchTag()] = 0;
 		else if (elt->size()) {
 			fRangeTagsMap[name] = dynamic_cast<guidotag*>((guidoelement*)fStack.top());
 		}
