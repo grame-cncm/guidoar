@@ -1,15 +1,8 @@
-#!/bin/sh
-#
 
-_install () {
-	cmd="install $1 $HOME/bin"
-	echo $cmd
-	$cmd
-}
+TOOLS := $(shell find Release -name "guido*" -type f -maxdepth 1)
+DEST  := $(HOME)/bin
 
-files=$(ls Release/* | grep -v framework | grep guido | grep -v guidoread)
-for a in $files
-do
-	[ -x $a ] && _install $a
-done
+.PHONY: install
 
+install:
+	install $(TOOLS) $(DEST)
