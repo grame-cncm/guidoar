@@ -58,7 +58,6 @@ SARMusic tailOperation::operator() ( const SARMusic& score1, const SARMusic& sco
 //_______________________________________________________________________________
 Sguidoelement tailOperation::operator() ( const Sguidoelement& score, const rational& duration )
 {
-	fCurrentTagsMap.clear();
 	fCurrentOctave = ARNote::kDefaultOctave;
 	fCurrentNoteDots = 0;
 	fStartPoint = duration;
@@ -76,25 +75,19 @@ Sguidoelement tailOperation::operator() ( const Sguidoelement& score, const rati
 }
 
 //________________________________________________________________________
+
+//________________________________________________________________________
 void tailOperation::flushTags()
 {
-//	for (map<std::string,Sguidotag>::iterator i = fCurrentTagsMap.begin(); i != fCurrentTagsMap.end(); i++) {
-//		Sguidotag tag = i->second;
-//		if (tag) {
-//			if (tag->size()) markers::markOpened (tag, false);
-//			clonevisitor::visitStart (tag);
-//		}
-//	}
-
 	for (unsigned int i = 0; i < fCurrentTags.size(); i++) {
 		Sguidotag tag = fCurrentTags[i];
 		if (tag) {
 			if (tag->size()) markers::markOpened (tag, false);
+			else if (ornament(tag)) continue;		// don't flush empty ornaments
 			clonevisitor::visitStart (tag);
 		}
 	}
 	fCurrentTags.clear();
-	fCurrentTagsMap.clear();
 }
 
 //________________________________________________________________________
@@ -102,8 +95,8 @@ void tailOperation::flushTags()
 //________________________________________________________________________
 void tailOperation::visitStart ( SARVoice& elt )
 {
+//cerr << "start voice --------------" << endl;
 	fCurrentTags.clear();
-	fCurrentTagsMap.clear();
 	fCopy = false;
 	fCurrentOctave = ARNote::kDefaultOctave;
 	fCurrentNoteDots = 0;
@@ -119,13 +112,13 @@ void tailOperation::visitStart ( SARChord& elt )
 		rational remain = fStartPoint - fDuration.currentVoiceDate();
 		rational dur = elt->duration();
 		if (elt->implicitDuration(dur)) {
-			if (ARNote::implicitDuration (dur)) dur = fDuration.currentNoteDuration();
+			if (!dur.getNumerator()) dur = fDuration.currentNoteDuration();
 			else dur.set (-dur.getNumerator(), dur.getDenominator());
 			dur = max(fDuration.currentNoteDuration(), dur);
 		}
 
 		if (remain < dur) {
-			fCopy = true;
+//			fCopy = true;
 			flushTags();
 			clonevisitor::visitStart (elt);
 		}
@@ -136,24 +129,38 @@ void tailOperation::visitStart ( SARChord& elt )
 //________________________________________________________________________
 void tailOperation::visitStart ( SARNote& elt )
 {
-	
 	if (fStartPoint < fDuration.currentVoiceDate()) {
+		if (!elt->isRest()) {
+			if (fForceOctave && elt->implicitOctave())
+				elt->SetOctave (fCurrentOctave);
+			fForceOctave = false;
+		}
+		if (fForceDuration && elt->implicitDuration())
+			*elt = fDuration.currentNoteDuration();
+		fForceDuration = false;
 		clonevisitor::visitStart (elt);
 	}
-	else {						// check if startpoint is reached
+	else {												// check if startpoint will be reached
 		rational remain = fStartPoint - fDuration.currentVoiceDate();
 		rational dur = elt->implicitDuration() ? fDuration.currentNoteDuration() : elt->duration();
-		if (remain >= dur) {	// not yet
+		if (remain >= dur) {							// not yet
 			// maintains the current state
 			int octave = elt->GetOctave();
-			if (!ARNote::implicitOctave(octave)) fCurrentOctave = octave;			
+			if (elt->isPitched() && !ARNote::implicitOctave(octave))
+				fCurrentOctave = octave;
 			fDuration.visitStart (elt);
 		}
 		else {
 			fDuration.visitStart (elt);
 			fCopy = true;
 			*elt = dur - remain;
-			if (elt->implicitOctave()) elt->SetOctave (fCurrentOctave);
+			fForceDuration = (elt->duration() != fDuration.currentNoteDuration());
+			fForceOctave = false;
+			if (elt->implicitOctave()) {
+				if (!elt->isRest()) elt->SetOctave (fCurrentOctave);
+				else fForceOctave = true;
+			}
+
 			flushTags();
 			clonevisitor::visitStart (elt);
 //			if (tie) {		// notes splitted by the operation are marked using an opened tie
@@ -169,7 +176,6 @@ void tailOperation::visitStart ( SARNote& elt )
 //________________________________________________________________________
 void tailOperation::pushTag ( Sguidotag& elt )
 {
-	fCurrentTagsMap[elt->getName()] = elt;
 	for (unsigned int i=0; i < fCurrentTags.size(); i++) {
 		if (fCurrentTags[i] && (fCurrentTags[i]->getName() == elt->getName())) {
 			fCurrentTags[i] = elt;
@@ -180,13 +186,24 @@ void tailOperation::pushTag ( Sguidotag& elt )
 }
 
 //________________________________________________________________________
+bool tailOperation::ornament ( Sguidotag& elt )
+{
+	switch (elt->getType() == kTAccent) {
+		case kTMord:
+		case kTTurn:
+		case kTTrill:
+		case kTStacc:
+		case kTPizz:
+		case kTHarmonic:
+		case kTFermata:
+			return true;
+	}
+	return false;
+}
+
+//________________________________________________________________________
 void tailOperation::popTag ( Sguidotag& elt )
 {
-	if (elt->endTag())
-		fCurrentTagsMap[elt->matchTag()] = 0;
-	else if (elt->size())
-		fCurrentTagsMap[elt->getName()] = 0;
-
 	if (elt->endTag() || elt->size()) {
 		for (unsigned int i=0; i < fCurrentTags.size(); i++) {
 			if (fCurrentTags[i]) {

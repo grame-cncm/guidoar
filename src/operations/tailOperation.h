@@ -72,6 +72,8 @@ class export tailOperation :
 		rational		fStartPoint;
 		durationvisitor	fDuration;
 		bool			fCopy;				// a flag to start copy
+		bool			fForceDuration;		// a flag to force explicit duration
+		bool			fForceOctave;		// a flag to force explicit octave
 
 		int				fCurrentOctave;
 		int				fCurrentNoteDots;
@@ -86,10 +88,10 @@ class export tailOperation :
 		virtual void visitEnd  ( Sguidotag& elt );
 
      private:
+		bool ornament (Sguidotag& elt );
 		void pushTag (Sguidotag& elt );
 		void popTag (Sguidotag& elt );
 		
-		std::map<std::string,Sguidotag> fCurrentTagsMap;
 		std::vector<Sguidotag> fCurrentTags;
 		void flushTags ();
 };
