@@ -126,11 +126,15 @@ rational ARChord::duration() const
 	rational maxd (0,1);
 	bool implicit = false;
 	for (unsigned int i=0; i<dlist.size(); i++) {
-		if (ARNote::implicitDuration (dlist[i])) implicit = true;
+		if (!i && ARNote::implicitDuration (dlist[i])) implicit = true;
 		if (dlist[i] > maxd) maxd = dlist[i];
 	}
-	if (implicit && maxd.getNumerator())
-		maxd.setNumerator (-maxd.getNumerator());
+	if (implicit) {
+		if (maxd.getNumerator() > 0)					// some notes have explicit duration
+			maxd.setNumerator (-maxd.getNumerator());	// indicated using a negative value
+		else											// all notes have implicit durations
+			maxd.setNumerator (0);						// indicated using a null value
+	}
 	return maxd;
 }
 
