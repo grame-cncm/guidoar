@@ -43,6 +43,8 @@ void markers::markOpened ( Sguidotag& elt, bool end )
 	// filters tags where it doesn't make sense
 	if (elt->getType() == kTAccent) return;	
 	if (elt->getType() == kTLyrics) return;	
+	if (elt->getType() == kTText) return;	
+	if (elt->getType() == kTFingering) return;	
 	if (elt->getType() == kTFermata) return;
 	if (elt->getType() == kTPizz) return;
 	if (elt->getType() == kTHarmonic) return;
