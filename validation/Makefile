@@ -15,12 +15,11 @@ system	:= $(shell uname -s)
 tool	:= guidohead
 arg		:= "[ a a a ]"
 
-ifdef TOOL
-	TOOLPATH := $(shell basename $(TOOL))
-endif
+
 
 gmnfiles     = $(shell find ../gmn -name "*.gmn")
 gmnout		:= $(patsubst ../%.gmn, $(version)/$(tool)/%.gmn, $(gmnfiles))
+seqout		:= $(patsubst ../%.gmn, $(version)/guidoseq/%.gmn, $(gmnfiles))
 allgmn 		 = $(shell [ -d $(version)/$(tool) ] && find $(version)/$(tool) -name "*.gmn")
 
 checkgmn 	= $(patsubst %.gmn, %.checkgmn, $(allgmn))
@@ -29,9 +28,6 @@ validgmn 	= $(patsubst %.gmn, %.outgmn, $(allgmn))
 
 
 default : cut
-
-test:
-	echo tool: $(tool)
 
 help:
 	@echo "Makefile for testing the guidoar tools output. Available targets are:"
@@ -64,10 +60,17 @@ clean:
 	rm -f $(gmnout)
 
 #########################################################################
-# tools to generate svg files
+# tools to generate output files
 cut: $(gmnout)
+seq: $(seqout)
 
 $(version)/$(tool)/%.gmn: ../%.gmn
 	@[ -d $(@D) ] || mkdir -p $(@D)
 	-$(tool) $< $(arg) > $@
+
+$(version)/guidoseq/%.gmn: ../%.gmn
+	@[ -d $(@D) ] || mkdir -p $(@D)
+	$(eval a := $(patsubst $(version)/guidoseq/%, $(version)/guidohead/%, $@))	
+	$(eval b := $(patsubst $(version)/guidoseq/%, $(version)/guidotail/%, $@))	
+	-guidoseq $(a) $(b) > $@
 
