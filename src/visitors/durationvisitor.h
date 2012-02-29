@@ -73,6 +73,7 @@ class export durationvisitor :
 
 		virtual rational  currentVoiceDate() const		{ return fCurrentVoiceDuration; }
 		virtual rational  currentNoteDuration() const	{ return fCurrentNoteDuration; }
+		virtual int		  currentDots() const			{ return fCurrentDots; }
 
 	protected:		
 		virtual void stop (bool state=true)	{ fBrowser.stop (state); }
