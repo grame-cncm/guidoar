@@ -102,8 +102,8 @@ void gmnvisitor::barline ( Sguidotag& bar )
 
 //______________________________________________________________________________
 void gmnvisitor::visitStart ( SARBar& bar )			{ Sguidotag t(bar); barline(t); }
-void gmnvisitor::visitStart ( SARRepeatBegin& bar )	{ fOut << "\n " << string(*bar); }
-void gmnvisitor::visitStart ( SARRepeatEnd& bar )	{ fOut << "\n " << string(*bar); }
+void gmnvisitor::visitStart ( SARRepeatBegin& bar )	{ fOut << "\n " << string(*bar) << " "; }
+void gmnvisitor::visitStart ( SARRepeatEnd& bar )	{ fOut << "\n " << string(*bar) << " "; }
 
 //______________________________________________________________________________
 void gmnvisitor::visitStart ( SARMusic& music )
