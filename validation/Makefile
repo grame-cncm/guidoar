@@ -52,14 +52,12 @@ checkdur: $(durgmn)
 #########################################################################
 # tools to validate the output, based diff
 validate: $(validgmn)
-	@$(eval tmp := $(shell [ -f $(version)/ignore.$(VERSION).txt ] && echo "using $(version)/ignore.$(VERSION).txt"))	
-	@echo Validating version $(version) with $(VERSION) $(tmp)
+	@echo Validating $(tool) - version $(version) with $(VERSION)
 	
 %.outgmn: %.gmn
-	$(eval tmp := $(patsubst $(version)/$(tool)/%, $(VERSION)/%, $<))	
+	$(eval tmp := $(patsubst $(version)/$(tool)/%, $(VERSION)/$(tool)/%, $<))	
 	@[ -f  $(tmp) ] || echo $< : new file
-	$(eval ignored := $(shell grep $< $(version)/ignore.$(VERSION).txt 2>/dev/null || echo _none_))
-	@[ -f  $(ignored) ] || (diff $< $(tmp) 2>/dev/null >/dev/null || [ -f  $(tmp) ] && echo "open $< $(patsubst $(version)/%, $(VERSION)/%, $<) # to check changes"; true)
+	@diff $< $(tmp) 2>/dev/null >/dev/null || ([ -f  $(tmp) ] && echo "open -t $< $(patsubst $(version)/$(tool)/%, $(VERSION)/$(tool)/%, $<) # to check changes"; true)
 
 #########################################################################
 clean: 
