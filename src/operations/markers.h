@@ -40,7 +40,8 @@ namespace guido
 class markers 
 {		
     public:
-		static  void markOpened  ( Sguidotag& elt, bool end=true );
+		static  void markOpened ( Sguidotag& elt, bool end=true );
+		static  bool opened		( Sguidotag& elt);
 };
 
 /*! @} */

@@ -38,6 +38,13 @@ namespace guido
 {
 
 //________________________________________________________________________
+bool markers::opened ( Sguidotag& elt )
+{
+	Sguidoattribute attr = elt->getAttribute ("opened");
+	return (attr != 0);
+}
+
+//________________________________________________________________________
 void markers::markOpened ( Sguidotag& elt, bool end )
 {
 	// filters tags where it doesn't make sense
