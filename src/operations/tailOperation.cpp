@@ -135,14 +135,18 @@ void tailOperation::visitStart ( SARNote& elt )
 				elt->SetOctave (fCurrentOctave);
 			fForceOctave = false;
 		}
-		if (fForceDuration && elt->implicitDuration())
+		if (fForceDuration && elt->implicitDuration()) {
 			*elt = fDuration.currentNoteDuration();
+			elt->SetDots (fDuration.currentDots());
+		}
 		fForceDuration = false;
 		clonevisitor::visitStart (elt);
 	}
 	else {												// check if startpoint will be reached
 		rational remain = fStartPoint - fDuration.currentVoiceDate();
-		rational dur = elt->implicitDuration() ? fDuration.currentNoteDuration() : elt->duration();
+		rational currentDur = fDuration.currentNoteDuration();
+		int currentDots = fDuration.currentDots();
+		rational dur = elt->totalduration(currentDur, currentDots);
 		if (remain >= dur) {							// not yet
 			// maintains the current state
 			int octave = elt->GetOctave();
@@ -154,6 +158,7 @@ void tailOperation::visitStart ( SARNote& elt )
 			fDuration.visitStart (elt);
 			fCopy = true;
 			*elt = dur - remain;
+			elt->SetDots(0);
 			fForceDuration = (elt->duration() != fDuration.currentNoteDuration());
 			fForceOctave = false;
 			if (elt->implicitOctave()) {
@@ -162,13 +167,16 @@ void tailOperation::visitStart ( SARNote& elt )
 			}
 
 			flushTags();
-			clonevisitor::visitStart (elt);
-//			if (tie) {		// notes splitted by the operation are marked using an opened tie
-//				Sguidoelement tag = ARTag<kTTie>::create();
-//				tag->setName ("tie");
-//				markers::markOpened (tag, true);
-//				push(tag, true);
-//			}
+			if (remain.getNumerator() && !fDuration.inChord()) {		// notes splitted by the operation are marked using an opened tie
+				Sguidotag tag = ARTag<kTTie>::create();
+				Sguidoelement etag = tag;
+				tag->setName ("tie");
+				markers::markOpened (tag, false);	// mark the tie begin opened 
+				push(etag, true);
+				clonevisitor::visitStart (elt);
+				fStack.pop();
+			}
+			else clonevisitor::visitStart (elt);
 		}
 	}
 }
