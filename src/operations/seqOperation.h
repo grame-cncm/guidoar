@@ -24,6 +24,8 @@
 #ifndef __seqOperation__
 #define __seqOperation__
 
+#include <map>
+
 #include "export.h"
 #include "ARTypes.h"
 #include "ARTag.h"
@@ -45,32 +47,38 @@ namespace guido
 \brief	A visitor to print the gmn description
 */
 class export seqOperation : 
-	public clonevisitor,
 	public operation,
-	public visitor<SARClef>,
-	public visitor<SAREndBar>,
-	public visitor<SARKey>,
-	public visitor<SARMeter>
+	public clonevisitor,
+	public visitor<SAREndBar>
 {
     private:
+		std::map<std::string,Sguidotag> fRangeTags;
+		std::map<std::string,Sguidotag> fPosTags;
+		std::map<std::string,Sguidotag> fOpenedTags;
+
 		rational fCurrentDuration;
 		int		 fCurrentOctave;
 		// current key, meter and clef are maintained to be avoid useless repetitions
-		Sguidotag	fCurrentKey, fCurrentMeter, fCurrentClef;
-		void checkHeader(Sguidotag tag, Sguidotag& target);
+//		Sguidotag	fCurrentKey, fCurrentMeter, fCurrentClef;
+//		void checkHeader(Sguidotag tag, Sguidotag& target);
+		void storeTag(Sguidotag tag);
+		void endTag(Sguidotag tag);
+		bool currentTag(Sguidotag tag);
+
 
 	protected:
 		enum state { kInFirstScore, kInSecondScore, kRemainVoice };
 		state	fState;
 		bool	fFirstInScore;
 		
-		void visitStart ( SARClef& elt );
-		void visitStart ( SAREndBar& elt );
-		void visitStart ( SARKey& elt );
-		void visitStart ( SARMeter& elt );
+
 		void visitStart ( SARNote& elt );
 		void visitStart ( SARVoice& elt );
+		void visitStart ( Sguidotag& elt );
+		void visitStart ( SAREndBar& elt );
+
 		void visitEnd	( SARVoice& elt );
+		void visitEnd	( Sguidotag& elt );
 
     public:
 				 seqOperation() {}

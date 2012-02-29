@@ -32,6 +32,7 @@
 #include "ARFactory.h"
 #include "ARNote.h"
 #include "AROthers.h"
+#include "markers.h"
 #include "tree_browser.h"
 
 using namespace std;
@@ -55,8 +56,11 @@ SARMusic seqOperation::operator() ( const SARMusic& score1, const SARMusic& scor
 
 		fFirstInScore = true;
 		tree_browser<guidoelement> browser(this);
+		// browse voice by voice in parallel
 		while ((s1i != sc1->lend()) && (s2i != sc2->lend())) {
-			fCurrentKey = fCurrentMeter = fCurrentClef = 0;
+			fRangeTags.clear();
+			fPosTags.clear();
+			fOpenedTags.clear();
 			if (s1i != sc1->lend()) {
 				fState = kInFirstScore;
 				browser.browse(*(*s1i));
@@ -75,28 +79,86 @@ SARMusic seqOperation::operator() ( const SARMusic& score1, const SARMusic& scor
 	return outscore;
 }
 
-void seqOperation::checkHeader(Sguidotag tag, Sguidotag& target)
+//________________________________________________________________________
+void seqOperation::storeTag(Sguidotag tag)
 {
-	switch (fState) {
-		case kInFirstScore:			
-			target = tag;
-		case kRemainVoice:			
-			clonevisitor::visitStart (tag);
-			break;
-		case kInSecondScore:
-			if (!target || (*tag != target)) 
-				clonevisitor::visitStart (tag);
-			fCurrentClef = 0;
-			break;
+	const string& name = tag->getName();
+	if (tag->beginTag())
+		fRangeTags[name] = tag;
+	else if (tag->endTag())
+		fRangeTags[tag->matchTag()] = 0;
+	else if (tag->size())
+		fRangeTags[name] = tag;
+	else {
+		switch (tag->getType()) {
+			case kTClef:
+			case kTColor:
+			case kTInstr:
+			case kTIntens:
+			case kTKey:
+			case kTMeter:
+				fPosTags[name] = tag;
+				break;
+		}
 	}
+}
+
+//________________________________________________________________________
+void seqOperation::endTag(Sguidotag tag)
+{
+	const string& name = tag->getName();
+	if (tag->size()) {
+		fRangeTags[name] = 0;
+		if (markers::opened (tag))
+			fOpenedTags[name] = tag;
+	}
+}
+
+//________________________________________________________________________
+bool seqOperation::currentTag(Sguidotag tag)
+{
+	bool ret = false;
+	const string& name = tag->getName();
+	if (!tag->size()) {
+		ret = fPosTags[name] != 0;
+		fPosTags[name] = 0;
+	}
+	return ret;
 }
 
 //________________________________________________________________________
 // The visit methods
 //________________________________________________________________________
-void seqOperation::visitStart ( SARClef& elt )		{ checkHeader (elt, fCurrentClef); }
-void seqOperation::visitStart ( SARKey& elt )		{ checkHeader (elt, fCurrentKey); }
-void seqOperation::visitStart ( SARMeter& elt )		{ checkHeader (elt, fCurrentMeter); }
+void seqOperation::visitStart ( Sguidotag& elt )
+{
+	switch (fState) {
+		case kInFirstScore:
+			storeTag (elt);
+			clonevisitor::visitStart (elt);
+			break;
+		case kRemainVoice:			
+		case kInSecondScore:			
+			if (!currentTag(elt))
+				clonevisitor::visitStart (elt);
+			break;
+	}
+}
+
+//________________________________________________________________________
+void seqOperation::visitEnd	( Sguidotag& elt )
+{
+	switch (fState) {
+		case kInFirstScore:			
+			endTag (elt);
+			clonevisitor::visitStart (elt);
+			break;
+		case kRemainVoice:			
+		case kInSecondScore:			
+			clonevisitor::visitStart (elt);
+			break;
+	}
+}
+
 
 // notes are visited only for correct duration link
 void seqOperation::visitStart ( SARNote& elt ) 
@@ -150,7 +212,7 @@ void seqOperation::visitStart ( SARVoice& elt )
 { 
 	fCurrentOctave = ARNote::kDefaultOctave;
 	switch (fState) {
-		case kInFirstScore:			
+		case kInFirstScore:	
 		case kRemainVoice:			
 			clonevisitor::visitStart (elt);
 			break;
@@ -159,7 +221,7 @@ void seqOperation::visitStart ( SARVoice& elt )
 	}
 }
 
-// a voice is created only for the first score
+// a voice is close only for the second score
 void seqOperation::visitEnd   ( SARVoice& elt )
 { 
 	switch (fState) {
