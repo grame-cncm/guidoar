@@ -116,9 +116,12 @@ void headOperation::visitStart ( SARNote& elt )
 	rational remain = fCutPoint - fDuration.currentVoiceDate();
 	bool tie = false;
 	if (float(remain) > 0) {
-		rational dur = elt->implicitDuration() ? fDuration.currentNoteDuration() : elt->duration();
+		rational currentDur = fDuration.currentNoteDuration();
+		int currentDots = fDuration.currentDots();
+		rational dur = elt->totalduration(currentDur, currentDots);
 		if (dur > remain) {
 			*elt = remain;
+			elt->SetDots(0);
 			tie = !fDuration.inChord();
 		}
 
