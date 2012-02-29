@@ -6,10 +6,10 @@
    )
 ],
 [
-  \text<"note that it alters existing note state", dx=-5hs, dy=14hs>(
+  \text<"note that it alters existing note state", dy=14hs>(empty*0/1)
  \text<"detune is rounded to the nearest quarter tone", dx=-5hs, dy=-2hs>( 
  a&&/1 \alter<detune=-0.5> (a&) a&   \alter<detune=-0.5> (a)
   a  \alter<detune=0.5> (a) \alter<detune=1> (a) \alter<detune=0.5> (a#) \alter<detune=1.8> (a)
-   ))
+   )
 ]
 }
