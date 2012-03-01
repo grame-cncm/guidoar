@@ -156,6 +156,7 @@ template <typename T> class ctree : virtual public smartable
 		}
 		virtual int  size  () const				{ return int(fElements.size()); }
 		virtual bool empty () const				{ return fElements.size()==0; }
+		virtual void clear ()					{ fElements.clear(); }
 
 		iterator begin()			{ treePtr start=dynamic_cast<T*>(this); return iterator(start); }
 		iterator end()				{ treePtr start=dynamic_cast<T*>(this); return iterator(start, true); }
