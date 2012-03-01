@@ -68,6 +68,7 @@ class export headOperation :
      protected:
 		rational		fCutPoint;
 		durationvisitor	fDuration;
+		int				fCurrentOctave;
 		bool			fCopy;
 
 		virtual void visitStart( SARVoice& elt );

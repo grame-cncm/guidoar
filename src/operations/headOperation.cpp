@@ -96,6 +96,7 @@ void headOperation::checkOpenedTags()
 void headOperation::visitStart ( SARVoice& elt )
 {
 	fOpenedTagsMap.clear();
+	fCurrentOctave = ARNote::kDefaultOctave;
 	fCopy = (float(fCutPoint) > 0.001) ? true: false;
 	clonevisitor::visitStart (elt);
 	fDuration.visitStart (elt);
@@ -116,6 +117,8 @@ void headOperation::visitStart ( SARNote& elt )
 	rational remain = fCutPoint - fDuration.currentVoiceDate();
 	bool tie = false;
 	if (float(remain) > 0) {
+		if (!elt->implicitOctave())
+			fCurrentOctave = elt->GetOctave();
 		rational currentDur = fDuration.currentNoteDuration();
 		int currentDots = fDuration.currentDots();
 		rational dur = elt->totalduration(currentDur, currentDots);
@@ -130,6 +133,7 @@ void headOperation::visitStart ( SARNote& elt )
 			tag->setName ("tie");
 			markers::markOpened (tag, true);
 			Sguidoelement etag(tag);
+			if (elt->implicitOctave()) elt->SetOctave (fCurrentOctave);
 			push(etag, true);
 		}
 		clonevisitor::visitStart (elt);
