@@ -55,6 +55,7 @@ class export seqOperation :
 		std::map<std::string,Sguidotag> fRangeTags;
 		std::map<std::string,Sguidotag> fPosTags;
 		std::map<std::string,Sguidotag> fOpenedTags;
+		Sguidotag fCurrentMatch;
 
 		rational fCurrentDuration;
 		int		 fCurrentOctave;
@@ -63,7 +64,9 @@ class export seqOperation :
 //		void checkHeader(Sguidotag tag, Sguidotag& target);
 		void storeTag(Sguidotag tag);
 		void endTag(Sguidotag tag);
-		bool currentTag(Sguidotag tag);
+		bool currentTag(Sguidotag tag, bool end=false);
+		bool matchOpenedTag(Sguidotag tag, bool end=false);
+		bool checkmatch(Sguidotag tag1, Sguidotag tag2);
 
 
 	protected:

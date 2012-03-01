@@ -35,10 +35,74 @@
 #include "markers.h"
 #include "tree_browser.h"
 
+#include "ARTag.h"
+
 using namespace std;
 
 namespace guido 
 {
+
+
+//______________________________________________________________________________
+/*!
+\brief	A visitor to clean opened tags
+*/
+class export seqCleaner : public clonevisitor
+{
+	protected:
+		SARNote	fFirstTied;
+		bool	fInTie;		
+
+		void visitStart ( SARNote& elt );
+		void visitStart ( Sguidotag& elt );
+		void visitEnd	( Sguidotag& elt );
+
+    public:
+				 seqCleaner() : fInTie(false) {}
+		virtual ~seqCleaner() {}
+};
+
+//_______________________________________________________________________________
+void seqCleaner::visitStart ( Sguidotag& elt )
+{
+cerr << "visitStart " << string(*elt) << endl;
+	if (markers::opened (elt) == markers::kClosed) {
+		if (elt->getType() == kTTie) fInTie = true;
+cerr << "clean tag " << string(*elt) << endl;
+		markers::delMark (elt);
+	}
+	if (!fInTie) {
+cerr << "clone tag " << string(*elt)  << endl;
+		clonevisitor::visitStart (elt);
+	}
+}
+
+void seqCleaner::visitEnd ( Sguidotag& elt )
+{
+	if (fInTie) {
+		fInTie = false;
+		fFirstTied = 0;
+	}
+	else {
+cerr << "end clone tag " << string(*elt) << endl;
+		clonevisitor::visitStart (elt);
+	}
+}
+
+void seqCleaner::visitStart	( SARNote& elt )
+{
+	if (fInTie) {
+		if (fFirstTied) {
+			*fFirstTied += elt->duration();
+cerr << "add note dur" << endl;
+		}
+		else {
+			fFirstTied = copy(elt);
+			clonevisitor::push(fFirstTied);
+		}
+	}
+	else clonevisitor::visitStart (elt);
+}
 
 //_______________________________________________________________________________
 SARMusic seqOperation::operator() ( const SARMusic& score1, const SARMusic& score2 )
@@ -74,7 +138,12 @@ SARMusic seqOperation::operator() ( const SARMusic& score1, const SARMusic& scor
 		}
 		fState = kRemainVoice;
 		for (; s1i != sc1->lend(); s1i++)	{ browser.browse(*(*s1i)); }
-		for (; s2i != sc2->lend(); s2i++)	{ browser.browse(*(*s2i)); }		
+		for (; s2i != sc2->lend(); s2i++)	{ browser.browse(*(*s2i)); }
+		
+//		seqCleaner	cleanTags;
+//		tree_browser<guidoelement> clean(&cleanTags);
+//		clean.browse (*outscore);
+//		outscore = dynamic_cast<ARMusic*>((guidoelement*)cleanTags.result());
 	}
 	return outscore;
 }
@@ -109,21 +178,77 @@ void seqOperation::endTag(Sguidotag tag)
 	const string& name = tag->getName();
 	if (tag->size()) {
 		fRangeTags[name] = 0;
-		if (markers::opened (tag))
-			fOpenedTags[name] = tag;
+		if (markers::opened (tag) > 1) {
+			Sguidotag copy = dynamic_cast<guidotag*>((guidoelement*)fStack.top());
+			fOpenedTags[name] = copy;
+		}
 	}
 }
 
 //________________________________________________________________________
-bool seqOperation::currentTag(Sguidotag tag)
+bool seqOperation::currentTag(Sguidotag tag, bool end)
 {
 	bool ret = false;
 	const string& name = tag->getName();
 	if (!tag->size()) {
-		ret = fPosTags[name] != 0;
-		fPosTags[name] = 0;
+		Sguidotag cur = fPosTags[name];
+		if (cur) {
+			ret = (*cur == tag);
+			if (end) fPosTags[name] = 0;
+		}
 	}
 	return ret;
+}
+
+//________________________________________________________________________
+bool seqOperation::checkmatch(Sguidotag tag1, Sguidotag tag2)
+{
+	if (markers::opened (tag2) & markers::kOpenedEnd) {
+		if (tag2->getType() == kTTie) {
+			if (fCurrentMatch == tag1) return true;
+
+			ctree<guidoelement>::iterator i1 = tag1->begin();
+			ctree<guidoelement>::iterator i2 = tag2->begin();
+			SARNote n1, n2;
+			while ((i1 != tag1->end()) && !n1)
+				n1 = dynamic_cast<ARNote*>((guidoelement*)*i1);
+			while ((i2 != tag2->end()) && !n2)
+				n2 = dynamic_cast<ARNote*>((guidoelement*)*i2);
+			if (n1 && n2) {
+				int octave = fCurrentOctave;
+				int p1 = n1->midiPitch(octave);
+				int p2 = n2->midiPitch(octave);
+				return p1 == p2;
+			}
+		}
+		else return true;
+	}
+	return false;
+}
+
+//________________________________________________________________________
+bool seqOperation::matchOpenedTag(Sguidotag tag, bool end)
+{
+	int type = markers::opened (tag);
+	if (type & markers::kOpenedBegin) {
+		Sguidotag match = fOpenedTags[tag->getName()];
+		if (match) {
+			if (checkmatch (tag, match)) {
+				if (end) {		// done with the current match
+					markers::setMark (match, (markers::opened (match)==markers::kOpenedEnd) ? markers::kClosed : markers::kOpenedBegin);
+					fOpenedTags[tag->getName()] = 0;
+					fCurrentMatch = 0;
+				}
+				else {
+					fCurrentMatch = tag;
+					match->push (tag->elements());		// transfer elements to matched tag
+					tag->clear();						// clears the current tag
+				}
+				return true;
+			}
+		}
+	}
+	return false;
 }
 
 //________________________________________________________________________
@@ -133,12 +258,12 @@ void seqOperation::visitStart ( Sguidotag& elt )
 {
 	switch (fState) {
 		case kInFirstScore:
-			storeTag (elt);
 			clonevisitor::visitStart (elt);
+			storeTag (elt);
 			break;
 		case kRemainVoice:			
 		case kInSecondScore:			
-			if (!currentTag(elt))
+			if (!matchOpenedTag (elt) && !currentTag(elt))
 				clonevisitor::visitStart (elt);
 			break;
 	}
@@ -150,11 +275,12 @@ void seqOperation::visitEnd	( Sguidotag& elt )
 	switch (fState) {
 		case kInFirstScore:			
 			endTag (elt);
-			clonevisitor::visitStart (elt);
+			clonevisitor::visitEnd (elt);
 			break;
 		case kRemainVoice:			
 		case kInSecondScore:			
-			clonevisitor::visitStart (elt);
+			if (!matchOpenedTag (elt, true) && !currentTag(elt))
+				clonevisitor::visitEnd (elt);
 			break;
 	}
 }
@@ -168,6 +294,8 @@ void seqOperation::visitStart ( SARNote& elt )
 	int octave = elt->GetOctave();
 
 	if (fState == kInFirstScore) {
+		// clear opened tags since only the last note is concerned
+		fOpenedTags.clear();
 		// maintain the current duration status while in the first score
 		if (!ARNote::implicitDuration (duration))
 			fCurrentDuration = duration;
