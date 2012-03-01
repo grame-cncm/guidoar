@@ -38,10 +38,14 @@ namespace guido
 \brief tools for marking tags.
 */
 class markers 
-{		
+{
     public:
-		static  void markOpened ( Sguidotag& elt, bool end=true );
-		static  bool opened		( Sguidotag& elt);
+		enum { kNoMark, kClosed=-1, kOpenedBegin=1, kOpenedEnd=2};
+		
+		static  void	markOpened  ( Sguidotag& elt, bool end=true );
+		static  void	setMark		( Sguidotag& elt, int type );
+		static  void	delMark		( Sguidotag& elt );
+		static  int		opened		( Sguidotag& elt );
 };
 
 /*! @} */

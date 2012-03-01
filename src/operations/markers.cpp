@@ -37,11 +37,52 @@ using namespace std;
 namespace guido 
 {
 
+static const char* kOpenedStr		= "opened";
+static const char* kOpenedBegStr	= "begin";
+static const char* kOpenedEndStr	= "end";
+static const char* kOpenedBegEndStr	= "begin-end";
+static const char* kOpenedClosedStr	= "closed";
+
 //________________________________________________________________________
-bool markers::opened ( Sguidotag& elt )
+int markers::opened ( Sguidotag& elt )
 {
-	Sguidoattribute attr = elt->getAttribute ("opened");
-	return (attr != 0);
+	Sguidoattribute attr = elt->getAttribute (kOpenedStr);
+	if (attr) {
+		const string& value = attr->getValue();
+		if (value == kOpenedBegStr)		return kOpenedBegin;
+		if (value == kOpenedEndStr)		return kOpenedEnd;
+		if (value == kOpenedBegEndStr)	return kOpenedBegin + kOpenedEnd;
+		if (value == kOpenedClosedStr)	return kClosed;
+	}
+	return kNoMark;
+}
+
+//________________________________________________________________________
+void markers::delMark ( Sguidotag& elt )
+{
+	elt->delAttribute (kOpenedStr);
+}
+
+//________________________________________________________________________
+void markers::setMark ( Sguidotag& elt, int type )
+{
+	Sguidoattribute attr = elt->getAttribute (kOpenedStr);
+	if (attr) {
+		switch (type) {
+			case kOpenedBegin:
+				attr->setValue(kOpenedBegStr, true);
+				break;
+			case kOpenedEnd:
+				attr->setValue(kOpenedEndStr, true);
+				break;
+			case kOpenedBegin + kOpenedEnd:
+				attr->setValue(kOpenedBegEndStr, true);
+				break;
+			default:
+				attr->setValue(kOpenedClosedStr, true);
+				break;
+		}
+	}
 }
 
 //________________________________________________________________________
@@ -63,17 +104,17 @@ void markers::markOpened ( Sguidotag& elt, bool end )
 	if (elt->getType() == kTMord) return;
 	if (elt->getType() == kTMarcato) return;
 	
-	Sguidoattribute attr = elt->getAttribute ("opened");
+	Sguidoattribute attr = elt->getAttribute (kOpenedStr);
 	if (attr) {
-		if (end && (attr->getValue() == "begin"))
-			attr->setValue("begin-end", true);
-		if (!end && (attr->getValue() == "end"))
-			attr->setValue("begin-end", true);
+		if (end && (attr->getValue() == kOpenedBegStr))
+			attr->setValue(kOpenedBegEndStr, true);
+		if (!end && (attr->getValue() == kOpenedEndStr))
+			attr->setValue(kOpenedBegEndStr, true);
 	}
 	else {
 		Sguidoattribute attr = guidoattribute::create();
-		attr->setName ("opened");
-		attr->setValue( end ? "end" : "begin", true);
+		attr->setName (kOpenedStr);
+		attr->setValue( end ? kOpenedEndStr : kOpenedBegStr, true);
 		elt->add (attr);
 	}
 }
