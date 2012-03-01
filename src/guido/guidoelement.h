@@ -128,6 +128,8 @@ class export guidoelement : public ctree<guidoelement>, public visitable
         const Sguidoattributes& attributes() const	{ return fAttributes; }
         Sguidoattributes& attributes()				{ return fAttributes; }
 
+        void				delAttribute			(const std::string& attrname);
+
         const Sguidoattribute getAttribute			(const std::string& attrname) const;
 		const std::string	getAttributeValue		(const std::string& attrname) const;
 		long				getAttributeLongValue	(const std::string& attrname, long defaultvalue) const;

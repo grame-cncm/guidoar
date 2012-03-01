@@ -98,6 +98,17 @@ const Sguidoattribute guidoelement::getAttribute (const std::string& attrname) c
 	return 0;
 }
 
+void guidoelement::delAttribute (const std::string& attrname)
+{
+	Sguidoattributes::iterator it;
+	for (it = attributes().begin(); it != attributes().end(); it++) {
+		if ((*it)->getName() == attrname) {
+			attributes().erase(it);
+			break;
+		}
+	}
+}
+
 const std::string guidoelement::getAttributeValue (const std::string& attrname) const
 {
 	Sguidoattribute attribute = getAttribute(attrname);
