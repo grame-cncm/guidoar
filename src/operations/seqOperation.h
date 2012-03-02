@@ -44,7 +44,7 @@ namespace guido
 
 //______________________________________________________________________________
 /*!
-\brief	A visitor to print the gmn description
+\brief	A visitor to put scores in sequence
 */
 class export seqOperation : 
 	public operation,
@@ -59,26 +59,25 @@ class export seqOperation :
 
 		rational fCurrentDuration;
 		int		 fCurrentOctave;
-		// current key, meter and clef are maintained to be avoid useless repetitions
-//		Sguidotag	fCurrentKey, fCurrentMeter, fCurrentClef;
-//		void checkHeader(Sguidotag tag, Sguidotag& target);
-		void storeTag(Sguidotag tag);
-		void endTag(Sguidotag tag);
+
+		void storeTag(Sguidotag tag);					///< stores the current tag
+		void endTag(Sguidotag tag);						///< update the current tags list
 		bool currentTag(Sguidotag tag, bool end=false);
 		bool matchOpenedTag(Sguidotag tag, bool end=false);
 		bool checkmatch(Sguidotag tag1, Sguidotag tag2);
+		bool compareContent (Sguidotag tag1, Sguidotag tag2);
 
 
 	protected:
 		enum state { kInFirstScore, kInSecondScore, kRemainVoice };
-		state	fState;
-		bool	fFirstInScore;
+		state	fState;		// the current operation state: copying the first score, the second score of the remaining of the second
+		bool	fFirstInSecondScore;		// a flag for special handling of the seconf score first note
 		
 
 		void visitStart ( SARNote& elt );
 		void visitStart ( SARVoice& elt );
 		void visitStart ( Sguidotag& elt );
-		void visitStart ( SAREndBar& elt );
+		void visitStart ( SAREndBar& elt );		// filers the end bar in the first score
 
 		void visitEnd	( SARVoice& elt );
 		void visitEnd	( Sguidotag& elt );

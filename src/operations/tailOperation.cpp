@@ -75,8 +75,6 @@ Sguidoelement tailOperation::operator() ( const Sguidoelement& score, const rati
 }
 
 //________________________________________________________________________
-
-//________________________________________________________________________
 void tailOperation::flushTags()
 {
 	for (unsigned int i = 0; i < fCurrentTags.size(); i++) {
@@ -167,7 +165,8 @@ void tailOperation::visitStart ( SARNote& elt )
 			}
 
 			flushTags();
-			if (remain.getNumerator() && !fDuration.inChord()) {		// notes splitted by the operation are marked using an opened tie
+			// notes splitted by the operation are marked using an opened tie
+			if (remain.getNumerator() && !fDuration.inChord() && !elt->isEmpty()) {
 				Sguidotag tag = ARTag<kTTie>::create();
 				Sguidoelement etag = tag;
 				tag->setName ("tie");
@@ -217,11 +216,9 @@ void tailOperation::popTag ( Sguidotag& elt )
 			if (fCurrentTags[i]) {
 				if (fCurrentTags[i]->getName() == elt->getName()) {
 					fCurrentTags[i] = 0;
-					return;
 				}
-				if (fCurrentTags[i]->getName() == elt->matchTag()) {
+				else if (fCurrentTags[i]->getName() == elt->matchTag()) {
 					fCurrentTags[i] = 0;
-					return;
 				}
 			}
 		}

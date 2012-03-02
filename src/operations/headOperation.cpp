@@ -79,7 +79,7 @@ void headOperation::checkOpenedTags()
 				Sguidotag endtag = ARFactory::instance().createTag(name);
 				markers::markOpened (endtag);
 				Sguidoelement endelt(endtag);
-				if (endtag) push (endelt, false);
+				if (endelt) push (endelt, false);
 			}
 			i->second = 0;
 		}
@@ -143,15 +143,16 @@ void headOperation::visitStart ( SARNote& elt )
 		if (dur > remain) {
 			*elt = remain;
 			elt->SetDots(0);
-			tie = !fDuration.inChord();
+			// force an explicit octave - makes the merge more easy to do when putting back in sequence
+			if (elt->implicitOctave()) elt->SetOctave (fCurrentOctave);
+			tie = !fDuration.inChord();		// tie already inserted before the chord
 		}
 
-		if (tie) {		// notes splitted by the operation are marked using an opened tie
+		if (tie && !elt->isEmpty()) {		// notes splitted by the operation are marked using an opened tie
 			Sguidotag tag = ARTag<kTTie>::create();
 			tag->setName ("tie");
 			markers::markOpened (tag, true);
 			Sguidoelement etag(tag);
-			if (elt->implicitOctave()) elt->SetOctave (fCurrentOctave);
 			push(etag, true);
 		}
 		clonevisitor::visitStart (elt);
