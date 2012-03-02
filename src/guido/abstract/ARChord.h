@@ -47,12 +47,18 @@ class export ARChord : public guidoelement
 		static SMARTP<ARChord> create();
         virtual void	acceptIn(basevisitor& v);
         virtual void	acceptOut(basevisitor& v);
+		// gives the list of notes durations
 		virtual void	duration(rationals&) const;
+		// gives the list of notes total durations in the given context
+		virtual void	duration(rationals&, rational current, int currentdots) const;
 
 		/// a chord duration is the max of its notes durations
 		/// it returns 0 when all notes have implicit duration 
 		/// or -max if one of the notes has an implicit duration
 		rational		duration() const;
+		/// gives the chord duration within the given context
+		rational		totalduration(rational current, int currentdots) const;
+
 		ARChord& operator =  (const rational& d);		///< force all notes duration to d
 		ARChord& operator += (const rational& d);		///< add d to all notes duration
 		ARChord& operator -= (const rational& d);		///< substract d from all notes duration

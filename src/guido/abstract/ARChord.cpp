@@ -78,6 +78,22 @@ class chorddurationvisitor : public visitor<SARNote>
 };
 
 //______________________________________________________________________________
+// a class to collect a chord notes total durations in a given context
+//______________________________________________________________________________
+class chordtotaldurationvisitor : public chorddurationvisitor
+{
+	rational fCurrentDuration;
+	int		 fCurrentDots;
+	public:
+				 chordtotaldurationvisitor(rational currentduration, int currentdots) 
+						: fCurrentDuration(currentduration), fCurrentDots(currentdots) {}
+		virtual ~chordtotaldurationvisitor() {}
+	
+	protected:		 
+		virtual void visitStart( SARNote& elt )		{ fDurations.push_back (elt->totalduration(fCurrentDuration, fCurrentDots)); }
+};
+
+//______________________________________________________________________________
 void chorddurationvisitor::durations (const ARChord* chord, rationals& dlist)
 {
 	fDurations.clear();
@@ -92,6 +108,11 @@ void chorddurationvisitor::durations (const ARChord* chord, rationals& dlist)
 //______________________________________________________________________________
 void ARChord::duration (rationals& dur) const {
 	chorddurationvisitor v;
+	v.durations (this, dur);
+}
+
+void ARChord::duration (rationals& dur, rational currdur, int curdots) const {
+	chordtotaldurationvisitor v (currdur, curdots);
 	v.durations (this, dur);
 }
 
@@ -117,6 +138,18 @@ void ARChord::acceptOut(basevisitor& v) {
 SMARTP<ARChord> ARChord::create()
     { ARChord* o = new ARChord; assert(o!=0); return o; }
 
+
+//______________________________________________________________________________
+rational ARChord::totalduration(rational current, int currentdots)	const
+{
+	rationals dlist;
+	duration (dlist, current, currentdots);
+	rational maxd (0,1);
+	for (unsigned int i=0; i<dlist.size(); i++) {
+		if (dlist[i] > maxd) maxd = dlist[i];
+	}
+	return maxd;
+}
 
 //______________________________________________________________________________
 rational ARChord::duration() const
