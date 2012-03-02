@@ -82,7 +82,8 @@ void tailOperation::flushTags()
 	for (unsigned int i = 0; i < fCurrentTags.size(); i++) {
 		Sguidotag tag = fCurrentTags[i];
 		if (tag) {
-			if (tag->size()) markers::markOpened (tag, false);
+			if (tag->beginTag()) markers::markOpened (tag, false);
+			else if (tag->size()) markers::markOpened (tag, false);
 			else if (ornament(tag)) continue;		// don't flush empty ornaments
 			clonevisitor::visitStart (tag);
 		}
@@ -97,7 +98,7 @@ void tailOperation::visitStart ( SARVoice& elt )
 {
 //cerr << "start voice --------------" << endl;
 	fCurrentTags.clear();
-	fCopy = false;
+	fCopy = fPopTie = false;
 	fCurrentOctave = ARNote::kDefaultOctave;
 	fCurrentNoteDots = 0;
 	clonevisitor::visitStart (elt);
@@ -110,17 +111,16 @@ void tailOperation::visitStart ( SARChord& elt )
 	if (fCopy) clonevisitor::visitStart (elt);
 	else {						// check if startpoint is reached
 		rational remain = fStartPoint - fDuration.currentVoiceDate();
-		rational dur = elt->duration();
-		if (elt->implicitDuration(dur)) {
-			if (!dur.getNumerator()) dur = fDuration.currentNoteDuration();
-			else dur.set (-dur.getNumerator(), dur.getDenominator());
-			dur = max(fDuration.currentNoteDuration(), dur);
-		}
-
+		rational dur = elt->totalduration(fDuration.currentNoteDuration(), fDuration.currentDots());
 		if (remain < dur) {
-//			fCopy = true;
 			flushTags();
-			clonevisitor::visitStart (elt);
+			Sguidotag tag = ARTag<kTTie>::create();
+			tag->setName ("tie");				// create a tie
+			markers::markOpened (tag, false);	// mark the tie begin opened 
+			Sguidoelement etag(tag);
+			push(etag, true);					// push the tag to the current copy
+			clonevisitor::visitStart (elt);		// start cloning the chord
+			fPopTie = true;						// intended to pop the tie at the chord end
 		}
 		fDuration.visitStart (elt);
 	}
@@ -243,7 +243,13 @@ void tailOperation::visitStart ( Sguidotag& elt )
 void tailOperation::visitEnd ( SARChord& elt )
 {
 	fDuration.visitEnd (elt);
-	if (fCopy) clonevisitor::visitEnd (elt);
+	if (fCopy) {
+		clonevisitor::visitEnd (elt);
+		if (fPopTie) { 
+			fStack.pop();
+			fPopTie = false;
+		}
+	}
 }
 
 //________________________________________________________________________

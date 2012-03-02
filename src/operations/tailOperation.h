@@ -74,6 +74,7 @@ class export tailOperation :
 		bool			fCopy;				// a flag to start copy
 		bool			fForceDuration;		// a flag to force explicit duration
 		bool			fForceOctave;		// a flag to force explicit octave
+		bool			fPopTie;
 
 		int				fCurrentOctave;
 		int				fCurrentNoteDots;
