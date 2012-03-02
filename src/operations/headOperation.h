@@ -70,6 +70,7 @@ class export headOperation :
 		durationvisitor	fDuration;
 		int				fCurrentOctave;
 		bool			fCopy;
+		bool			fPopTie;
 
 		virtual void visitStart( SARVoice& elt );
 		virtual void visitStart( SARChord& elt );
@@ -79,7 +80,6 @@ class export headOperation :
 		virtual void visitEnd  ( SARVoice& elt );
 		virtual void visitEnd  ( SARChord& elt );
 		virtual void visitEnd  ( Sguidotag& elt );
-		virtual void visitEnd  ( SARNote& elt );
 
      private:
 		std::map<std::string,Sguidotag> fRangeTagsMap;

@@ -31,6 +31,7 @@
 
 #include "ARNote.h"
 #include "ARFactory.h"
+#include "ARChord.h"
 #include "AROthers.h"
 #include "ARTag.h"
 #include "clonevisitor.h"
@@ -75,8 +76,10 @@ void headOperation::checkOpenedTags()
 			size_t n = name.find("Begin", 0);
 			if (n !=string::npos) {
 				name.replace (n, name.length(), "End");
-				Sguidoelement endtag = ARFactory::instance().createTag(name);
-				if (endtag) push (endtag, false);
+				Sguidotag endtag = ARFactory::instance().createTag(name);
+				markers::markOpened (endtag);
+				Sguidoelement endelt(endtag);
+				if (endtag) push (endelt, false);
 			}
 			i->second = 0;
 		}
@@ -98,6 +101,7 @@ void headOperation::visitStart ( SARVoice& elt )
 	fOpenedTagsMap.clear();
 	fCurrentOctave = ARNote::kDefaultOctave;
 	fCopy = (float(fCutPoint) > 0.001) ? true: false;
+	fPopTie = false;
 	clonevisitor::visitStart (elt);
 	fDuration.visitStart (elt);
 }
@@ -105,9 +109,23 @@ void headOperation::visitStart ( SARVoice& elt )
 //________________________________________________________________________
 void headOperation::visitStart ( SARChord& elt )
 {
-	if (fCopy) {
+	rational remain = fCutPoint - fDuration.currentVoiceDate();
+	rational dur = elt->totalduration(fDuration.currentNoteDuration(), fDuration.currentDots());
+	if (float(remain) > 0) {
+		if (remain < dur) {
+			Sguidotag tag = ARTag<kTTie>::create();
+			tag->setName ("tie");				// create a tie
+			markers::markOpened (tag, true);	// mark the tie begin opened 
+			Sguidoelement etag(tag);
+			push(etag, true);					// push the tag to the current copy
+			fPopTie = true;						// intended to pop the tie at the chord end
+		}
 		clonevisitor::visitStart (elt);
 		fDuration.visitStart (elt);
+	}
+	else {
+		fCopy = false;
+		checkOpenedTags();		// and close any opened tag
 	}
 }
 
@@ -139,12 +157,17 @@ void headOperation::visitStart ( SARNote& elt )
 		clonevisitor::visitStart (elt);
 		fDuration.visitStart (elt);
 	}
+	else {
+		fCopy = false;
+		checkOpenedTags();		// and close any opened tag
+	}
 }
 
 //________________________________________________________________________
 void headOperation::visitStart ( Sguidotag& elt )
 {
-	if (fCopy) {
+	rational remain = fCutPoint - fDuration.currentVoiceDate();
+	if (float(remain) > 0) {
 		clonevisitor::visitStart (elt);
 
 		string name = elt->getName();
@@ -156,14 +179,23 @@ void headOperation::visitStart ( Sguidotag& elt )
 			fRangeTagsMap[name] = dynamic_cast<guidotag*>((guidoelement*)fStack.top());
 		}
 	}
+	else {
+		fCopy = false;
+		checkOpenedTags();		// and close any opened tag
+	}
 }
 
 //________________________________________________________________________
-void headOperation::visitEnd ( SARNote& elt )
+void headOperation::visitEnd ( Sguidotag& elt )
 {
-	if (fCopy && (fDuration.currentVoiceDate() >= fCutPoint)) {
-		fCopy = false;
-		checkOpenedTags();
+	if (fCopy) {
+		clonevisitor::visitEnd (elt);
+		if (fPopTie) {
+			fStack.pop();
+			fPopTie = false;
+		}
+		if (elt->size())
+			fRangeTagsMap[elt->getName()] = 0;
 	}
 }
 
@@ -188,16 +220,6 @@ void headOperation::visitEnd ( SARVoice& elt )
 	// may be necessary due to potential end inside range tags
 	while (fStack.size() > 1)
 		fStack.pop();
-}
-
-//________________________________________________________________________
-void headOperation::visitEnd ( Sguidotag& elt )
-{
-	if (fCopy) {
-		clonevisitor::visitEnd (elt);
-		if (elt->size())
-			fRangeTagsMap[elt->getName()] = 0;
-	}
 }
 
 }
