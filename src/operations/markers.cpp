@@ -64,6 +64,13 @@ void markers::delMark ( Sguidotag& elt )
 }
 
 //________________________________________________________________________
+void markers::setMark ( Sguidoelement& elt, int type )
+{
+	Sguidotag tag = dynamic_cast<guidotag*>((guidoelement*)elt);
+	if (tag) setMark (tag, type);
+}
+
+//________________________________________________________________________
 void markers::setMark ( Sguidotag& elt, int type )
 {
 	Sguidoattribute attr = elt->getAttribute (kOpenedStr);
