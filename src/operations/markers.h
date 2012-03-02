@@ -42,9 +42,15 @@ class markers
     public:
 		enum { kNoMark, kClosed=-1, kOpenedBegin=1, kOpenedEnd=2};
 		
+		/// mark an element with an 'opened' attribute, taking care of its current openness
 		static  void	markOpened  ( Sguidotag& elt, bool end=true );
+		/// set an element 'opened' attribute whatever its current status
 		static  void	setMark		( Sguidotag& elt, int type );
+		/// set an element 'opened' attribute whatever its current status
+		static  void	setMark		( Sguidoelement& elt, int type );
+		/// delete the 'opened' attribute
 		static  void	delMark		( Sguidotag& elt );
+		/// gives the 'opened' attribute value
 		static  int		opened		( Sguidotag& elt );
 };
 
