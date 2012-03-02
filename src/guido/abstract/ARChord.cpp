@@ -21,6 +21,8 @@
 
 */
 
+#include <algorithm>
+
 #include "ARChord.h"
 #include "ARNote.h"
 #include "ARTypes.h"
@@ -58,6 +60,33 @@ class chordminusequal : public chorddurationchange	{ protected: inline void visi
 class chordmultequal : public chorddurationchange	{ protected: inline void visitStart ( SARNote& elt ) { *elt *= fDuration; } };
 class chorddivequal : public chorddurationchange	{ protected: inline void visitStart ( SARNote& elt ) { *elt /= fDuration; } };
 
+
+//______________________________________________________________________________
+// a class to collect notes midi pitches
+//______________________________________________________________________________
+class chordpitchvisitor : public visitor<SARNote>
+{
+	vector<int> fPitchlist;
+	int			fCurrentOctave;
+	public:
+				 chordpitchvisitor() : fBrowser(this) {}
+		virtual ~chordpitchvisitor() {}
+		
+		void	pitches (const ARChord* chord, int currentoctave, vector<int>& pitches);
+	
+	protected:		 
+		virtual void visitStart( SARNote& elt )		{ fPitchlist.push_back (elt->midiPitch(fCurrentOctave)); }
+		tree_browser<guidoelement> fBrowser;
+};
+
+void chordpitchvisitor::pitches (const ARChord* chord, int currentoctave, vector<int>& pitches)
+{
+	fCurrentOctave = currentoctave;
+	fPitchlist.clear();
+	fBrowser.browse (*(guidoelement*)chord);
+	sort(fPitchlist.begin(), fPitchlist.end());
+	pitches = fPitchlist;
+}
 
 //______________________________________________________________________________
 // a class to collect a chord notes durations
@@ -138,6 +167,13 @@ void ARChord::acceptOut(basevisitor& v) {
 SMARTP<ARChord> ARChord::create()
     { ARChord* o = new ARChord; assert(o!=0); return o; }
 
+
+//______________________________________________________________________________
+void ARChord::midiPitch(int currentoctave, vector<int>& pitches) const
+{
+	chordpitchvisitor cp;
+	cp.pitches (this, currentoctave, pitches);
+}
 
 //______________________________________________________________________________
 rational ARChord::totalduration(rational current, int currentdots)	const

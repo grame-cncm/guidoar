@@ -24,6 +24,8 @@
 #ifndef __ARChord__
 #define __ARChord__
 
+#include <vector>
+
 #include "export.h"
 #include "guidoelement.h"
 #include "rational.h"
@@ -51,6 +53,8 @@ class export ARChord : public guidoelement
 		virtual void	duration(rationals&) const;
 		// gives the list of notes total durations in the given context
 		virtual void	duration(rationals&, rational current, int currentdots) const;
+		// gives the list of the chord midi pitch in ascending ordered
+		virtual void	midiPitch(int currentoctave, std::vector<int>& pitches) const;
 
 		/// a chord duration is the max of its notes durations
 		/// it returns 0 when all notes have implicit duration 
