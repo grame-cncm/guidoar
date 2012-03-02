@@ -320,6 +320,8 @@ bool seqOperation::checkmatch(Sguidotag tag1, Sguidotag tag2)
 {
 	if (markers::opened (tag2) & markers::kOpenedEnd) {
 		if (tag2->getType() == kTTie) {
+if (fCurrentMatch)
+cerr << "fCurrentMatch " << string(*fCurrentMatch) << " " << string(*tag1) << endl;
 			if (fCurrentMatch == tag1) return true;		
 			return compareContent (tag1, tag2);
 //			ctree<guidoelement>::iterator i1 = tag1->begin();
