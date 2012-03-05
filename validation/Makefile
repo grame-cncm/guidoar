@@ -17,9 +17,11 @@ arg		:= "[ a a a ]"
 
 
 
-gmnfiles     = $(shell find ../gmn -name "*.gmn")
-gmnout		:= $(patsubst ../%.gmn, $(version)/$(tool)/%.gmn, $(gmnfiles))
-seqout		:= $(patsubst ../%.gmn, $(version)/guidoseq/%.gmn, $(gmnfiles))
+gmninput     = $(shell find ../gmn -name "*.gmn")
+gmnfiles     = $(shell find $(version)/$(tool) -name "*.gmn")
+pdffiles    := $(patsubst %.gmn, %.pdf, $(gmnfiles))
+gmnout		:= $(patsubst ../%.gmn, $(version)/$(tool)/%.gmn, $(gmninput))
+seqout		:= $(patsubst ../%.gmn, $(version)/guidoseq/%.gmn, $(gmninput))
 allgmn 		 = $(shell [ -d $(version)/$(tool) ] && find $(version)/$(tool) -name "*.gmn")
 
 checkgmn 	= $(patsubst %.gmn, %.checkgmn, $(allgmn))
@@ -33,11 +35,14 @@ help:
 	@echo "Makefile for testing the guidoar tools output. Available targets are:"
 	@echo "'cut' (default): test cut operations (head tail, evhead, evtail..."
 
+
 #########################################################################
 # tools to check the output correctness
 check: $(checkgmn)
 
 checkdur: $(durgmn)
+
+pdf: $(pdffiles)
 
 %.checkgmn: %.gmn
 	guidocheck $<	
@@ -73,4 +78,7 @@ $(version)/guidoseq/%.gmn: ../%.gmn
 	$(eval a := $(patsubst $(version)/guidoseq/%, $(version)/guidohead/%, $@))	
 	$(eval b := $(patsubst $(version)/guidoseq/%, $(version)/guidotail/%, $@))	
 	-guidoseq $(a) $(b) > $@
+
+%.pdf: %.gmn
+	guido2image -f $< -o $@
 
