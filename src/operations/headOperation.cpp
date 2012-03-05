@@ -190,10 +190,6 @@ void headOperation::visitEnd ( Sguidotag& elt )
 {
 	if (fCopy) {
 		clonevisitor::visitEnd (elt);
-		if (fPopTie) {
-			fStack.pop();
-			fPopTie = false;
-		}
 		if (elt->size())
 			fRangeTagsMap[elt->getName()] = 0;
 	}
@@ -204,10 +200,10 @@ void headOperation::visitEnd ( SARChord& elt )
 {
 	if (fCopy) {
 		clonevisitor::visitEnd (elt);
-//		if (fDuration.currentVoiceDate() >= fCutPoint) {
-//			fCopy = false;
-//			checkOpenedTags();
-//		}
+		if (fPopTie) {
+			fStack.pop();
+			fPopTie = false;
+		}
 	}
 	fDuration.visitEnd (elt);
 }
