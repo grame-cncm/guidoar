@@ -72,20 +72,21 @@ class chordpitchvisitor : public visitor<SARNote>
 				 chordpitchvisitor() : fBrowser(this) {}
 		virtual ~chordpitchvisitor() {}
 		
-		void	pitches (const ARChord* chord, int currentoctave, vector<int>& pitches);
+		void	pitches (const ARChord* chord, int& currentoctave, vector<int>& pitches);
 	
 	protected:		 
 		virtual void visitStart( SARNote& elt )		{ fPitchlist.push_back (elt->midiPitch(fCurrentOctave)); }
 		tree_browser<guidoelement> fBrowser;
 };
 
-void chordpitchvisitor::pitches (const ARChord* chord, int currentoctave, vector<int>& pitches)
+void chordpitchvisitor::pitches (const ARChord* chord, int& currentoctave, vector<int>& pitches)
 {
 	fCurrentOctave = currentoctave;
 	fPitchlist.clear();
 	fBrowser.browse (*(guidoelement*)chord);
 	sort(fPitchlist.begin(), fPitchlist.end());
 	pitches = fPitchlist;
+	currentoctave = fCurrentOctave;
 }
 
 //______________________________________________________________________________
@@ -169,7 +170,7 @@ SMARTP<ARChord> ARChord::create()
 
 
 //______________________________________________________________________________
-void ARChord::midiPitch(int currentoctave, vector<int>& pitches) const
+void ARChord::midiPitch(int& currentoctave, vector<int>& pitches) const
 {
 	chordpitchvisitor cp;
 	cp.pitches (this, currentoctave, pitches);
