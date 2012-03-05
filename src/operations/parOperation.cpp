@@ -70,23 +70,6 @@ void firstnotechecker::visitStart(SARNote& elt)
 }
 
 //_______________________________________________________________________________
-void parOperation::staffOffset(Sguidoelement elt, unsigned int offset)
-{
-	if (!offset) return;
-
-	SARVoice v = dynamic_cast<ARVoice*>((guidoelement*)elt);
-	if (v) {
-		for (ctree<guidoelement>::literator i = v->lbegin(); i != v->lend(); i++) {
-			if ((*i)->getName() == "staff") {
-				Sguidoattributes attrs = (*i)->attributes();
-				long int val = (int)(*attrs.front()) + offset;
-				attrs.front()->setValue(val);				
-			}
-		}
-	}	
-}
-
-//_______________________________________________________________________________
 SARMusic parOperation::extend ( SARMusic& score, const rational& duration )
 {
 	durationvisitor dv;
@@ -116,7 +99,6 @@ SARMusic parOperation::parallel ( const SARMusic& score1, const SARMusic& score2
 		if (score2) {
 			for (ctree<guidoelement>::literator i = score2->lbegin(); i != score2->lend(); i++) {
 				elt->push (*i);
-				staffOffset (*i, offset);
 			}
 		}
 	}

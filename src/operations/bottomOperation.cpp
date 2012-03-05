@@ -82,10 +82,4 @@ void bottomOperation::visitEnd ( SARVoice& elt )
 		clonevisitor::visitEnd (elt);
 }
 
-//________________________________________________________________________
-void bottomOperation::visitStart ( SARStaff& elt )
-{
-// don't copy staff assignments
-}
-
 }

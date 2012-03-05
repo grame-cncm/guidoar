@@ -1,5 +1,5 @@
 /*
-  Copyright © Grame 2008
+  Copyright ï¿½ Grame 2008
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -43,8 +43,7 @@ namespace guido
 */
 class export bottomOperation : 
 	public operation,
-	public clonevisitor,
-	public visitor<SARStaff>
+	public clonevisitor
 {		
     public:
  				 bottomOperation()	{ fBrowser.set(this); }
@@ -69,7 +68,6 @@ class export bottomOperation :
 		tree_browser<guidoelement> fBrowser;
 
 		virtual bool copy  ();
-		virtual void visitStart ( SARStaff& elt );
 		virtual void visitStart ( SARVoice& elt );
 		virtual void visitEnd   ( SARVoice& elt );
 };

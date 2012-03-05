@@ -80,6 +80,4 @@ void topOperation::visitEnd ( SARVoice& elt )
 	if (fCurrentVoice > fVoiceNum) fBrowser.stop(); 
 }
 
-void topOperation::visitStart ( SARStaff& elt )	{ /* don't copy staff assignments */ }
-
 }

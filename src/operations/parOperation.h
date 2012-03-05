@@ -54,7 +54,6 @@ class export parOperation : public operation
 
     private:
 		mode fMode;
-		void staffOffset(Sguidoelement, unsigned int offset);
 
 		SARMusic parallel ( const SARMusic& score1, const SARMusic& score2 );
 		SARMusic extend   ( SARMusic& score, const rational& duration );

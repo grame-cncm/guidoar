@@ -1,5 +1,5 @@
 /*
-  Copyright © Grame 2008
+  Copyright ï¿½ Grame 2008
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -42,8 +42,7 @@ namespace guido
 */
 class export topOperation : 
 	public operation,
-	public clonevisitor,
-	public visitor<SARStaff>
+	public clonevisitor
 {		
     public:
  				 topOperation();
@@ -71,7 +70,6 @@ class export topOperation :
 
 		virtual bool copy  () const;
 
-		virtual void visitStart( SARStaff& elt );
 		virtual void visitStart( SARVoice& elt );
 		virtual void visitEnd  ( SARVoice& elt );
 };
