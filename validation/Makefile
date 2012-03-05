@@ -22,6 +22,7 @@ gmnfiles     = $(shell find $(version)/$(tool) -name "*.gmn")
 pdffiles    := $(patsubst %.gmn, %.pdf, $(gmnfiles))
 gmnout		:= $(patsubst ../%.gmn, $(version)/$(tool)/%.gmn, $(gmninput))
 seqout		:= $(patsubst ../%.gmn, $(version)/guidoseq/%.gmn, $(gmninput))
+parout		:= $(patsubst ../%.gmn, $(version)/guidopar/%.gmn, $(gmninput))
 allgmn 		 = $(shell [ -d $(version)/$(tool) ] && find $(version)/$(tool) -name "*.gmn")
 
 checkgmn 	= $(patsubst %.gmn, %.checkgmn, $(allgmn))
@@ -68,6 +69,7 @@ clean:
 # tools to generate output files
 cut: $(gmnout)
 seq: $(seqout)
+par: $(parout)
 
 $(version)/$(tool)/%.gmn: ../%.gmn
 	@[ -d $(@D) ] || mkdir -p $(@D)
@@ -78,6 +80,12 @@ $(version)/guidoseq/%.gmn: ../%.gmn
 	$(eval a := $(patsubst $(version)/guidoseq/%, $(version)/guidohead/%, $@))	
 	$(eval b := $(patsubst $(version)/guidoseq/%, $(version)/guidotail/%, $@))	
 	-guidoseq $(a) $(b) > $@
+
+$(version)/guidopar/%.gmn: ../%.gmn
+	@[ -d $(@D) ] || mkdir -p $(@D)
+	$(eval a := $(patsubst $(version)/guidopar/%, $(version)/guidotop/%, $@))	
+	$(eval b := $(patsubst $(version)/guidopar/%, $(version)/guidobottom/%, $@))	
+	-guidopar $(a) $(b) > $@
 
 %.pdf: %.gmn
 	guido2image -f $< -o $@
