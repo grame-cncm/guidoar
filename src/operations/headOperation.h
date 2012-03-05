@@ -81,6 +81,8 @@ class export headOperation :
 		virtual void visitEnd  ( SARChord& elt );
 		virtual void visitEnd  ( Sguidotag& elt );
 
+		Sguidoelement makeOpenedTie() const;
+
      private:
 		std::map<std::string,Sguidotag> fRangeTagsMap;
 		std::map<std::string,Sguidotag> fOpenedTagsMap;

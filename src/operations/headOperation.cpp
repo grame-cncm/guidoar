@@ -71,17 +71,14 @@ void headOperation::checkOpenedTags()
 {
 	for (map<std::string,Sguidotag>::iterator i = fOpenedTagsMap.begin(); i != fOpenedTagsMap.end(); i++) {
 		Sguidotag tag = i->second;
-		if (tag) {
-			string name = i->first;
-			size_t n = name.find("Begin", 0);
-			if (n !=string::npos) {
-				name.replace (n, name.length(), "End");
-				Sguidotag endtag = ARFactory::instance().createTag(name);
+		if (tag) {			// only Begin tags are stored to this map
+			string match = tag->matchTag();
+			Sguidotag endtag = ARFactory::instance().createTag(match);
+			if (endtag) {
 				markers::markOpened (endtag);
 				Sguidoelement endelt(endtag);
-				if (endelt) push (endelt, false);
+				push (endelt, false);
 			}
-			i->second = 0;
 		}
 	}
 	fOpenedTagsMap.clear();
@@ -91,6 +88,15 @@ void headOperation::checkOpenedTags()
 		if (tag) markers::markOpened (tag, true);
 	}
 	fRangeTagsMap.clear();
+}
+
+//________________________________________________________________________
+Sguidoelement headOperation::makeOpenedTie() const
+{
+	Sguidotag tag = ARTag<kTTie>::create();
+	tag->setName ("tie");
+	markers::markOpened (tag, true);
+	return tag;
 }
 
 //________________________________________________________________________
@@ -111,22 +117,18 @@ void headOperation::visitStart ( SARChord& elt )
 {
 	rational remain = fCutPoint - fDuration.currentVoiceDate();
 	rational dur = elt->totalduration(fDuration.currentNoteDuration(), fDuration.currentDots());
-	if (float(remain) > 0) {
+	if (remain.getNumerator() > 0) {
 		if (remain < dur) {
-			Sguidotag tag = ARTag<kTTie>::create();
-			tag->setName ("tie");				// create a tie
-			markers::markOpened (tag, true);	// mark the tie begin opened 
-			Sguidoelement etag(tag);
-			push(etag, true);					// push the tag to the current copy
+			push(makeOpenedTie(), true);		// push an opened tie tag to the current copy
 			fPopTie = true;						// intended to pop the tie at the chord end
 		}
 		clonevisitor::visitStart (elt);
-		fDuration.visitStart (elt);
 	}
 	else {
 		fCopy = false;
 		checkOpenedTags();		// and close any opened tag
 	}
+	fDuration.visitStart (elt);
 }
 
 //________________________________________________________________________
@@ -134,7 +136,7 @@ void headOperation::visitStart ( SARNote& elt )
 {
 	rational remain = fCutPoint - fDuration.currentVoiceDate();
 	bool tie = false;
-	if (float(remain) > 0) {
+	if (remain.getNumerator() > 0) {
 		if (!elt->implicitOctave())
 			fCurrentOctave = elt->GetOctave();
 		rational currentDur = fDuration.currentNoteDuration();
@@ -149,28 +151,25 @@ void headOperation::visitStart ( SARNote& elt )
 		}
 
 		if (tie && !elt->isEmpty()) {		// notes splitted by the operation are marked using an opened tie
-			Sguidotag tag = ARTag<kTTie>::create();
-			tag->setName ("tie");
-			markers::markOpened (tag, true);
-			Sguidoelement etag(tag);
-			push(etag, true);
+			push(makeOpenedTie(), true);
+			clonevisitor::visitStart (elt);
+			fStack.pop();
 		}
-		clonevisitor::visitStart (elt);
-		fDuration.visitStart (elt);
+		else clonevisitor::visitStart (elt);
 	}
 	else {
 		fCopy = false;
 		checkOpenedTags();		// and close any opened tag
 	}
+	fDuration.visitStart (elt);
 }
 
 //________________________________________________________________________
 void headOperation::visitStart ( Sguidotag& elt )
 {
-	rational remain = fCutPoint - fDuration.currentVoiceDate();
-	if (float(remain) > 0) {
+	int remain = (fCutPoint - fDuration.currentVoiceDate()).getNumerator();
+	if ((remain > 0) || ((remain==0) && elt->endTag())) {	//  gives a chance to close Begin tags
 		clonevisitor::visitStart (elt);
-
 		string name = elt->getName();
 		if (elt->beginTag())
 			fOpenedTagsMap[name] = elt;
@@ -205,20 +204,19 @@ void headOperation::visitEnd ( SARChord& elt )
 {
 	if (fCopy) {
 		clonevisitor::visitEnd (elt);
-		fDuration.visitEnd (elt);
-		if (fDuration.currentVoiceDate() >= fCutPoint) {
-			fCopy = false;
-			checkOpenedTags();
-		}
+//		if (fDuration.currentVoiceDate() >= fCutPoint) {
+//			fCopy = false;
+//			checkOpenedTags();
+//		}
 	}
+	fDuration.visitEnd (elt);
 }
 
 //________________________________________________________________________
 void headOperation::visitEnd ( SARVoice& elt )
 {
 	clonevisitor::visitEnd (elt);
-	// adjusts the stack
-	// may be necessary due to potential end inside range tags
+	// adjusts the stack - necessary due to potential end inside range tags
 	while (fStack.size() > 1)
 		fStack.pop();
 }
