@@ -69,7 +69,7 @@ class export seqCleaner : public clonevisitor
 	protected:
 		SARNote			fFirstTied;			// used for merging tied notes carrying begin-end markers
 		Sguidoelement	fFirstCTied;		// used for merging chords notes carrying begin-end markers
-		Sguidoelement	fRepeatEnd;			// used for cancelling repeatEnd|Begin sequence carrying end-begin markers
+		std::map<std::string,Sguidoelement>	fEndTags; // used for cancelling xxxEnd|Begin sequence carrying end-begin markers
 		rational		fCurrentDuration;
 		bool	fInTie;		
 		bool	fTieChord;		
@@ -90,28 +90,30 @@ class export seqCleaner : public clonevisitor
 //_______________________________________________________________________________
 void seqCleaner::visitStart ( Sguidotag& elt )
 {
-	if (markers::opened (elt) == markers::kClosed) {
+	int status = markers::opened (elt);
+	bool done = false;
+	if (status == markers::kClosed) {
 		if (elt->getType() == kTTie) fInTie = true;
 		markers::delMark (elt);
 	}
-	switch (elt->getType()) {		// check for repeat begin end sequences
-		case kTRepeatEnd:
-			if (markers::opened (elt) == markers::kOpenedEnd) {
-				fRepeatEnd = ARTag<kTRepeatEnd>::create();
-				clonevisitor::push (copy(elt, fRepeatEnd), false);
-			}
-			break;
-		case kTRepeatBegin:
-			if ((markers::opened (elt) == markers::kOpenedBegin) && fRepeatEnd) {
-				// we've found a matching repeat end which is 'begin' opened
-				markers::setMark (elt, markers::kClosed);			// mark both as close
-				markers::setMark (fRepeatEnd, markers::kClosed);	// they should be removed
-				fRepeatEnd = 0;
-			}
-			break;
-		
+	if (elt->endTag() && (status == markers::kOpenedEnd)) {
+		Sguidoelement end = ARFactory::instance().createTag(elt->getName(), elt->getID());
+		end = copy(elt, end);
+		clonevisitor::push (end, false);
+		fEndTags[end->getName()] = end;
+		done = true;			// manual copy to keep the element in the end map
 	}
-	if (!fInTie && !fRepeatEnd) clonevisitor::visitStart (elt);
+	// check if it corresponds to a previous end tag
+	else if (elt->beginTag() && (status == markers::kOpenedBegin)) {
+		string name = elt->matchTag();
+		Sguidoelement end = fEndTags[name];
+		if (end) {
+			markers::setMark (elt, markers::kClosed);		// mark both as close
+			markers::setMark (end, markers::kClosed);		// they should be removed
+			fEndTags[name] = 0;
+		}
+	}
+	if (!fInTie && !done) clonevisitor::visitStart (elt);
 }
 
 void seqCleaner::visitEnd ( Sguidotag& elt )
@@ -155,7 +157,7 @@ void seqCleaner::visitEnd ( SARChord& elt )
 void seqCleaner::visitStart	( SARNote& elt )
 {
 	if (!elt->implicitDuration()) fCurrentDuration = elt->duration();
-	fRepeatEnd = 0;			// any note between repeat begin and repeat end cancels repeatBegin|End analysis
+	fEndTags.clear();		// any note between repeat begin and repeat end cancels xxxBegin|End analysis
 	if (fTieChord) return;	// tied notes inside chords are handled at chord level
 	if (fInTie) {			// we should get 2 notes to merge
 		if (fFirstTied)	{						// we've already got the first one
@@ -207,11 +209,11 @@ SARMusic seqOperation::operator() ( const SARMusic& score1, const SARMusic& scor
 		fState = kRemainVoice;
 		for (; s1i != sc1->lend(); s1i++)	{ browser.browse(*(*s1i)); }
 		for (; s2i != sc2->lend(); s2i++)	{ browser.browse(*(*s2i)); }
-		
-//cerr << "----------------------------------" << endl;
-//cerr << outscore << endl;
-//cerr << "----------------------------------" << endl;
-
+#if 0		
+ cerr << "----------------------------------" << endl;
+ cerr << outscore << endl;
+ cerr << "----------------------------------" << endl;
+#endif
 		seqCleaner	cleanTags;			// clean closed tags (i.e. handle slurs, ties, repeats...)
 		tree_browser<guidoelement> clean(&cleanTags);
 		clean.browse (*outscore);
