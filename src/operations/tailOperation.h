@@ -88,6 +88,8 @@ class export tailOperation :
 		virtual void visitEnd  ( SARChord& elt );
 		virtual void visitEnd  ( Sguidotag& elt );
 
+		Sguidoelement makeOpenedTie() const;
+
      private:
 		bool ornament (Sguidotag& elt );
 		void pushTag (Sguidotag& elt );

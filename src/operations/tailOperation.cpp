@@ -90,6 +90,15 @@ void tailOperation::flushTags()
 }
 
 //________________________________________________________________________
+Sguidoelement tailOperation::makeOpenedTie() const
+{
+	Sguidotag tag = ARTag<kTTie>::create();
+	tag->setName ("tie");
+	markers::markOpened (tag, false);
+	return tag;
+}
+
+//________________________________________________________________________
 // The visit methods
 //________________________________________________________________________
 void tailOperation::visitStart ( SARVoice& elt )
@@ -112,11 +121,7 @@ void tailOperation::visitStart ( SARChord& elt )
 		rational dur = elt->totalduration(fDuration.currentNoteDuration(), fDuration.currentDots());
 		if (remain < dur) {
 			flushTags();
-			Sguidotag tag = ARTag<kTTie>::create();
-			tag->setName ("tie");				// create a tie
-			markers::markOpened (tag, false);	// mark the tie begin opened 
-			Sguidoelement etag(tag);
-			push(etag, true);					// push the tag to the current copy
+			push(makeOpenedTie(), true);					// push the tag to the current copy
 			clonevisitor::visitStart (elt);		// start cloning the chord
 			fPopTie = true;						// intended to pop the tie at the chord end
 		}
@@ -167,11 +172,7 @@ void tailOperation::visitStart ( SARNote& elt )
 			flushTags();
 			// notes splitted by the operation are marked using an opened tie
 			if (remain.getNumerator() && !fDuration.inChord() && !elt->isEmpty()) {
-				Sguidotag tag = ARTag<kTTie>::create();
-				Sguidoelement etag = tag;
-				tag->setName ("tie");
-				markers::markOpened (tag, false);	// mark the tie begin opened 
-				push(etag, true);
+				push(makeOpenedTie(), true);
 				clonevisitor::visitStart (elt);
 				fStack.pop();
 			}
@@ -226,17 +227,6 @@ void tailOperation::popTag ( Sguidotag& elt )
 }
 
 //________________________________________________________________________
-void tailOperation::visitStart ( Sguidotag& elt )
-{
-	if (fCopy) {
-		clonevisitor::visitStart (elt);
-	}
-	else {
-		pushTag (elt);
-	}
-}
-
-//________________________________________________________________________
 void tailOperation::visitEnd ( SARChord& elt )
 {
 	fDuration.visitEnd (elt);
@@ -261,12 +251,29 @@ void tailOperation::visitEnd ( SARVoice& elt )
 }
 
 //________________________________________________________________________
+void tailOperation::visitStart ( Sguidotag& elt )
+{
+	if (fCopy) {
+		clonevisitor::visitStart (elt);
+	}
+	else {
+		int type = elt->getType();
+		if ((type == kTText) ||(type == kTLyrics))		// skip text and lyrics
+			elt->setID (-1);							// to prevent the tag from being popped by visitEnd
+		else pushTag (elt);
+	}
+}
+
+//________________________________________________________________________
 void tailOperation::visitEnd ( Sguidotag& elt )
 {
-	if (fCopy) clonevisitor::visitEnd (elt);
-	else {
-		popTag (elt);
+	if (fCopy) {
+		int type = elt->getType();
+		if ((type == kTText) ||(type == kTLyrics))		// skip text and lyrics
+			if (elt->getID () == -1) return;			// when previously skipped by visitStart
+		clonevisitor::visitEnd (elt);
 	}
+	else popTag (elt);
 }
 
 }
