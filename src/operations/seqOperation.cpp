@@ -70,10 +70,11 @@ class export seqCleaner : public clonevisitor
 		SARNote			fFirstTied;			// used for merging tied notes carrying begin-end markers
 		Sguidoelement	fFirstCTied;		// used for merging chords notes carrying begin-end markers
 		Sguidoelement	fRepeatEnd;			// used for cancelling repeatEnd|Begin sequence carrying end-begin markers
+		rational		fCurrentDuration;
 		bool	fInTie;		
 		bool	fTieChord;		
 
-		void visitStart ( SARVoice& elt )	{ fInTie = false; fTieChord=false; clonevisitor::visitStart(elt); }
+		void visitStart ( SARVoice& elt )	{ fCurrentDuration.set(1,4); fInTie = false; fTieChord=false; clonevisitor::visitStart(elt); }
 		void visitStart ( SARNote& elt );
 		void visitStart ( SARChord& elt );
 		void visitStart ( Sguidotag& elt );
@@ -82,7 +83,7 @@ class export seqCleaner : public clonevisitor
 		void visitEnd	( Sguidotag& elt );
 
     public:
-				 seqCleaner() : fInTie(false) {}
+				 seqCleaner() : 	fCurrentDuration(1,4), fInTie(false) {}
 		virtual ~seqCleaner() {}
 };
 
@@ -127,15 +128,16 @@ void seqCleaner::visitEnd ( Sguidotag& elt )
 //_______________________________________________________________________________
 void seqCleaner::visitStart ( SARChord& elt )
 {
+	fCurrentDuration = elt->totalduration (fCurrentDuration, 0);
 	if (fInTie) {						// we should get 2 chords to merge
 		fTieChord = true;				// a flag to prevent notes from being handled by ARNote visit
 		if (fFirstCTied) {				// we've already got the first chord
 			ARChord * c = dynamic_cast<ARChord*>((guidoelement*)fFirstCTied);
-//cout << "add duration " << elt->duration() << endl;
-			if (c) *c = c->duration() + elt->duration();	// add the current chord duration to this first chord
+			if (c) *c = c->duration() + fCurrentDuration;	// add the current chord duration to this first chord
 		}
 		else {										// this is the first chord
 			clonevisitor cc;
+			*elt = fCurrentDuration;				// makes explicit duration
 			fFirstCTied = cc.clone(elt);			// make a copy and store it for future use
 			clonevisitor::push(fFirstCTied, false);	// and push it to the current stack
 		}
@@ -152,13 +154,16 @@ void seqCleaner::visitEnd ( SARChord& elt )
 //_______________________________________________________________________________
 void seqCleaner::visitStart	( SARNote& elt )
 {
+	if (!elt->implicitDuration()) fCurrentDuration = elt->duration();
 	fRepeatEnd = 0;			// any note between repeat begin and repeat end cancels repeatBegin|End analysis
-	if (fTieChord) return;	// tied noes inside chords are handled at chord level
+	if (fTieChord) return;	// tied notes inside chords are handled at chord level
 	if (fInTie) {			// we should get 2 notes to merge
-		if (fFirstTied)							// we've already got the first one
-			*fFirstTied += elt->duration();		// add the current duration to this first note
+		if (fFirstTied)	{						// we've already got the first one
+			*fFirstTied += fCurrentDuration;		// add the current duration to this first note
+		}
 		else {									// this is the first one
 			fFirstTied = copy(elt);				// make a copy ans store it for future use
+			*fFirstTied = fCurrentDuration;		// makes explicit duration
 			clonevisitor::push(fFirstTied);		// and push it 
 		}
 	}
@@ -292,7 +297,7 @@ bool seqOperation::compareContent (Sguidotag tag1, Sguidotag tag2)
 		SARNote n2 = dynamic_cast<ARNote*>((guidoelement*)e2);
 		if (n1 && n1) {
 			int octave = fCurrentOctave;
-			int p1 = n1->midiPitch(octave);
+			int p1 = n1->midiPitch(fCurrentOctave);
 			int p2 = n2->midiPitch(octave);
 			return p1 == p2;
 		}
@@ -301,8 +306,9 @@ bool seqOperation::compareContent (Sguidotag tag1, Sguidotag tag2)
 		SARChord c2 = dynamic_cast<ARChord*>((guidoelement*)e2);
 		if (c1 && c2) {
 			vector<int> plist1, plist2;
+			int octave = fCurrentOctave;
 			c1->midiPitch (fCurrentOctave, plist1);		// octave should to be explicit, 
-			c2->midiPitch (fCurrentOctave, plist2);		// thus currentoctave could be ignored
+			c2->midiPitch (octave, plist2);				// thus currentoctave could be ignored
 			if (plist1.size() && (plist1.size() == plist2.size())) {
 				for (unsigned int i=0; i<plist1.size(); i++) {
 					if (plist1[i] != plist2[i]) return false;
@@ -320,23 +326,8 @@ bool seqOperation::checkmatch(Sguidotag tag1, Sguidotag tag2)
 {
 	if (markers::opened (tag2) & markers::kOpenedEnd) {
 		if (tag2->getType() == kTTie) {
-if (fCurrentMatch)
-cerr << "fCurrentMatch " << string(*fCurrentMatch) << " " << string(*tag1) << endl;
 			if (fCurrentMatch == tag1) return true;		
 			return compareContent (tag1, tag2);
-//			ctree<guidoelement>::iterator i1 = tag1->begin();
-//			ctree<guidoelement>::iterator i2 = tag2->begin();
-//			SARNote n1, n2;
-//			while ((i1 != tag1->end()) && !n1)
-//				n1 = dynamic_cast<ARNote*>((guidoelement*)*i1);
-//			while ((i2 != tag2->end()) && !n2)
-//				n2 = dynamic_cast<ARNote*>((guidoelement*)*i2);
-//			if (n1 && n2) {
-//				int octave = fCurrentOctave;
-//				int p1 = n1->midiPitch(octave);
-//				int p2 = n2->midiPitch(octave);
-//				return p1 == p2;
-//			}
 		}
 		else return true;
 	}
@@ -347,21 +338,18 @@ cerr << "fCurrentMatch " << string(*fCurrentMatch) << " " << string(*tag1) << en
 // updates the current opened tag list
 bool seqOperation::matchOpenedTag(Sguidotag tag, bool end)
 {
-cerr << "matchOpenedTag " << string(*tag) << " : " << endl;
 	int type = markers::opened (tag);
 	if (type & markers::kOpenedBegin) {					// first check the tag openness status
 		Sguidotag match = fOpenedTags[tag->getName()];	// and look for a previously similar opened tag
 		if (match) {									// we've found one
-cerr << "match found  " << string(*match) << " : " << end << endl;
 
 			if (checkmatch (tag, match)) {				// and we check if they match i.e. if their openness match (begin<->end)
-
-cerr << "match checked ok  " << string(*match) << " : " << end << endl;
 				if (end) {								// done with the current match
 														// the opened marker should be updated
 					markers::setMark (match, (markers::opened (match)==markers::kOpenedEnd) ? markers::kClosed : markers::kOpenedBegin);
 					fOpenedTags[tag->getName()] = 0;	// the tag is removed from the opened tag list
 					fCurrentMatch = 0;					// and the current match is cleared
+					fFirstInSecondScore = false;
 				}
 				else {									// that's the beginning of a match
 					fCurrentMatch = tag;				// store the first tag of the matching pair
