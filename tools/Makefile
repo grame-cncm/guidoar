@@ -86,6 +86,9 @@ guidosetdurationd.cpp : template.cxx desc/guidosetdurationd.h
 guidomultduration.cpp : template.cxx desc/guidomultduration.h
 	$(call makecpp,guidomultduration,float,guidoVMultDuration)
 
+install:
+	cp bin/* $(HOME/bin
+
 clean:
 	rm -f $(SRC) $(TOOLS)
 
