@@ -13,7 +13,7 @@
 version	:= $(shell guidoarversion)
 system	:= $(shell uname -s)
 tool	:= guidohead
-arg		:= "[ a a a ]"
+arg		:= "[ a g f ]"
 
 
 
@@ -23,6 +23,8 @@ pdffiles    := $(patsubst %.gmn, %.pdf, $(gmnfiles))
 midifiles   := $(patsubst %.gmn, %.mid, $(gmnfiles))
 gmnout		:= $(patsubst ../%.gmn, $(version)/$(tool)/%.gmn, $(gmninput))
 seqout		:= $(patsubst ../%.gmn, $(version)/guidoseq/%.gmn, $(gmninput))
+pitchout	:= $(patsubst ../%.gmn, $(version)/guidoapplypitch/%.gmn, $(gmninput))
+rythmout	:= $(patsubst ../%.gmn, $(version)/guidoapplyrythm/%.gmn, $(gmninput))
 parout		:= $(patsubst ../%.gmn, $(version)/guidopar/%.gmn, $(gmninput))
 allgmn 		 = $(shell [ -d $(version)/$(tool) ] && find $(version)/$(tool) -name "*.gmn")
 
@@ -44,6 +46,8 @@ check: 		$(checkgmn)
 checkdur: 	$(durgmn)
 pdf: 		$(pdffiles)
 midi: 		$(midifiles)
+applypitch: $(pitchout)
+applyrythm: $(rythmout)
 
 %.checkgmn: %.gmn
 	guidocheck $<	
@@ -80,6 +84,14 @@ $(version)/guidoseq/%.gmn: ../%.gmn
 	$(eval a := $(patsubst $(version)/guidoseq/%, $(version)/guidohead/%, $@))	
 	$(eval b := $(patsubst $(version)/guidoseq/%, $(version)/guidotail/%, $@))	
 	-guidoseq $(a) $(b) > $@
+
+$(version)/guidoapplypitch/%.gmn: ../%.gmn
+	@[ -d $(@D) ] || mkdir -p $(@D)
+	-guidoapplypitch -fbloop -high "[a g f e d c]" $< > $@
+
+$(version)/guidoapplyrythm/%.gmn: ../%.gmn
+	@[ -d $(@D) ] || mkdir -p $(@D)
+	-guidoapplyrythm -loop "[a  a/8 a a. a/16 a a/8.]" $< > $@
 
 $(version)/guidopar/%.gmn: ../%.gmn
 	@[ -d $(@D) ] || mkdir -p $(@D)
