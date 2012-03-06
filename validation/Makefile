@@ -20,6 +20,7 @@ arg		:= "[ a a a ]"
 gmninput     = $(shell find ../gmn -name "*.gmn")
 gmnfiles     = $(shell find $(version)/$(tool) -name "*.gmn")
 pdffiles    := $(patsubst %.gmn, %.pdf, $(gmnfiles))
+midifiles   := $(patsubst %.gmn, %.mid, $(gmnfiles))
 gmnout		:= $(patsubst ../%.gmn, $(version)/$(tool)/%.gmn, $(gmninput))
 seqout		:= $(patsubst ../%.gmn, $(version)/guidoseq/%.gmn, $(gmninput))
 parout		:= $(patsubst ../%.gmn, $(version)/guidopar/%.gmn, $(gmninput))
@@ -39,11 +40,10 @@ help:
 
 #########################################################################
 # tools to check the output correctness
-check: $(checkgmn)
-
-checkdur: $(durgmn)
-
-pdf: $(pdffiles)
+check: 		$(checkgmn)
+checkdur: 	$(durgmn)
+pdf: 		$(pdffiles)
+midi: 		$(midifiles)
 
 %.checkgmn: %.gmn
 	guidocheck $<	
@@ -89,4 +89,7 @@ $(version)/guidopar/%.gmn: ../%.gmn
 
 %.pdf: %.gmn
 	guido2image -f $< -o $@
+
+%.mid: %.gmn
+	guido2midi $< $@
 
