@@ -248,7 +248,10 @@ void transposeOperation::visitStart ( SARKey& elt )
 		int key = 0;
 		
 		if (attr->quoteVal()) {		// key is specified as a string
-			key = convertKey (attr->getValue());
+			string val = attr->getValue();
+			if (val.substr(0,4) == "free") 
+				return;				// don'tknow how to transpose free keys
+			key = convertKey (val);
 		}
 		else  key = int(*attr);
 		int enharmonicChange;
