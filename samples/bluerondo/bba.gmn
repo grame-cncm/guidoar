@@ -1,5 +1,6 @@
 [
-	\clef<"f"> \meter<"9/8">
-	{\accent(\stacc(c1)), f0} {\accent(\stacc(c#1)), f0} {\accent(\stacc(d1)), f0}  {\ten(e&1), f0}
+	\clef<"f"> 
+	{\accent(\stacc(c1)), f0} {\accent(\stacc(c#1)), f0} 
+	{\accent(\stacc(d1)), f0}  {\ten(e&1), f0}
 	_/8
 ]

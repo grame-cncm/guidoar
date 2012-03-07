@@ -1,5 +1,5 @@
 [
-	\clef<"f"> \meter<"9/8">
+	\clef<"f"> 
 	{\accent(c1), f0}    _/8
 	{\accent(c#1/4), f0} _/8
 	{\accent(d1/4), f0}  _/8
