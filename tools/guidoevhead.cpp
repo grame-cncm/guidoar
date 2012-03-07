@@ -4,6 +4,8 @@
 */
 
 #include <iostream>
+#include <sstream>
+#include <vector>
 
 #include "common.cxx"
 
@@ -23,9 +25,10 @@ static void usage(char * name)
 template <typename T> class operation
 {
 	typedef garErr (*TOperator)(const char*, T, ostream&);
-	TOperator	fOperator;
-	string		fScore;			// the score argument
-	string		fScoreArg;		// to store the second score argument
+	TOperator		fOperator;
+	string			fScore;			// the score argument
+	string			fScoreArg;		// to store the second score argument
+	vector<string>	fScoreArgs;		// to store the second score argument
 	T			fArg;
 	string		fSdtIn;			// intended to share stdin
 	
@@ -46,13 +49,38 @@ template <typename T> class operation
 				 operation(TOperator op) : fOperator (op) {}
 		virtual ~operation() {}
 		
-		bool init (int argc, char* argv[]) {
+		// strict run method: expects exaclty 2 arguments
+		bool strict_init (int argc, char* argv[]) {
 			if (argc != 3) return false;
 			if (!readArg (argv[1], fScore)) return false;
 			if (!readArg (argv[2], fArg)) return false;
 			return true;
 		}
-		garErr  run (ostream& out)		{ return fOperator (fScore.c_str(), fArg, out); }
+		
+		// relaxed run method: takes more than 2 arguments but only strings args are supported
+		bool init (int argc, char* argv[]) {
+			if (argc < 3) return false;
+			if (!readArg (argv[1], fScore)) return false;
+			for (int i=2; i<argc; i++) {
+				if (!readArg (argv[i], fScoreArg)) return false;
+				fScoreArgs.push_back (fScoreArg);
+			}
+			return true;
+		}
+		// strict run method: _strict_init should be called before
+		garErr strict_run (ostream& out)		{ return fOperator (fScore.c_str(), fArg, out); }
+		
+		// relaxed run method: init should be called before
+		garErr  run (ostream& out)		{ 
+			string score (fScore.c_str());
+			for (int i=0; i<fScoreArgs.size(); i++) {
+				stringstream sstr;
+				garErr err = fOperator (score.c_str(), fScoreArgs[i].c_str(), sstr);
+				if (err) return err;
+				score = sstr.str();
+			}
+			out << score;
+		}
 };
 
 
@@ -60,8 +88,8 @@ template <typename T> class operation
 int main (int argc, char* argv[])
 {
 	operation<const char*> op (guidoGEHead);
-	if (op.init(argc, argv)) {
-		garErr err = op.run (cout);
+	if (op.strict_init(argc, argv)) {
+		garErr err = op.strict_run (cout);
 		if (err != kNoErr) {
 			error (err);
 			return err;

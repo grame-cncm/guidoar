@@ -13,11 +13,13 @@ endif
 
 
 DESC  = $(wildcard desc/*.h)
-TOOLS = $(patsubst desc/%.h, bin/%, $(DESC))
+TOOLS = $(patsubst desc/%.h, bin/%, $(DESC))  bin/guidostdin
 SRC   = $(patsubst bin/%, %.cpp, $(TOOLS))
 CXXFLAGS = -I../src/interface $(lib)
 
-makecpp = sed -e 's/__desc__/$(1)/' template.cxx | sed -e 's/__T__/$(2)/' | sed -e 's/__operator__/$(3)/' > $(1).cpp
+makebase = sed -e 's/__desc__/$(1)/' template.cxx | sed -e 's/__T__/$(2)/' | sed -e 's/__operator__/$(3)/'
+makecpp			= $(call makebase,$(1),$(2),$(3)) | sed -e 's/__strict__/strict_/' 	> $(1).cpp
+makerelaxedcpp 	= $(call makebase,$(1),$(2),$(3)) | sed -e 's/__strict__//'  		> $(1).cpp
 
 all: $(TOOLS)
 
@@ -69,10 +71,10 @@ guidoevtailn.cpp : 		template.cxx desc/guidoevtailn.h
 	$(call makecpp,guidoevtailn,int,guidoVETail)
 
 guidoseq.cpp : 			template.cxx desc/guidoseq.h
-	$(call makecpp,guidoseq,const char*,guidoGSeq)
+	$(call makerelaxedcpp,guidoseq,const char*,guidoGSeq)
 
 guidopar.cpp : 			template.cxx desc/guidopar.h
-	$(call makecpp,guidopar,const char*,guidoGPar)
+	$(call makerelaxedcpp,guidopar,const char*,guidoGPar)
 
 guidoparright.cpp : 	template.cxx desc/guidoparright.h
 	$(call makecpp,guidoparright,const char*,guidoGRPar)
@@ -87,7 +89,7 @@ guidomultduration.cpp : template.cxx desc/guidomultduration.h
 	$(call makecpp,guidomultduration,float,guidoVMultDuration)
 
 install:
-	cp bin/* $(HOME/bin
+	cp bin/* $(HOME)/bin
 
 clean:
 	rm -f $(SRC) $(TOOLS)
