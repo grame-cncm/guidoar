@@ -13,7 +13,7 @@ endif
 
 
 DESC  = $(wildcard desc/*.h)
-TOOLS = $(patsubst desc/%.h, bin/%, $(DESC))  bin/guidostdin
+TOOLS = $(patsubst desc/%.h, bin/%, $(DESC))
 SRC   = $(patsubst bin/%, %.cpp, $(TOOLS))
 CXXFLAGS = -I../src/interface $(lib)
 

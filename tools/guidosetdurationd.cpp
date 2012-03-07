@@ -64,6 +64,7 @@ template <typename T> class operation
 			for (int i=2; i<argc; i++) {
 				if (!readArg (argv[i], fScoreArg)) return false;
 				fScoreArgs.push_back (fScoreArg);
+				fScoreArg.clear();
 			}
 			return true;
 		}
@@ -73,13 +74,16 @@ template <typename T> class operation
 		// relaxed run method: init should be called before
 		garErr  run (ostream& out)		{ 
 			string score (fScore.c_str());
+			garErr err = kNoErr;
 			for (int i=0; i<fScoreArgs.size(); i++) {
 				stringstream sstr;
+				sstr.clear();
 				garErr err = fOperator (score.c_str(), fScoreArgs[i].c_str(), sstr);
 				if (err) return err;
 				score = sstr.str();
 			}
 			out << score;
+			return err;
 		}
 };
 
