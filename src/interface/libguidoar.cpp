@@ -38,6 +38,7 @@
 #include "guidoparser.h"
 #include "headOperation.h"
 #include "midiconverter.h"
+#include "mirrorOperation.h"
 #include "parOperation.h"
 #include "seqOperation.h"
 #include "tailOperation.h"
@@ -229,6 +230,10 @@ export garErr guidoGPar (const char* gmn1, const char* gmn2, std::ostream& out)
 							{ return opgmnWrapper<parOperation>(gmn1, gmn2, out); }
 export garErr guidoGRPar (const char* gmn1, const char* gmn2, std::ostream& out)
 							{ return opgmnWrapper<rparOperation>(gmn1, gmn2, out); }
+
+//----------------------------------------------------------------------------
+export garErr guidoGMirror (const char* gmn1, const char* gmn2, std::ostream& out)
+							{ return opgmnWrapper<mirrorOperation>(gmn1, gmn2, out); }
 
 //----------------------------------------------------------------------------
 export rational guidoDuration(const char* gmn) 

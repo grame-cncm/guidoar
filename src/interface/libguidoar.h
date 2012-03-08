@@ -273,6 +273,15 @@ export garErr			guidoGPar		(const char* gmn1, const char* gmn2, std::ostream& ou
 */
 export garErr			guidoGRPar		(const char* gmn1, const char* gmn2, std::ostream& out);
 
+/*! \brief mirror a score using a second score as fixed pitch point
+
+	\param gmn1 a string containing gmn code
+	\param gmn2 a string containing gmn code which first note of first voice is used as fixed pitch
+	\param out		the output stream
+	\return an error code
+*/
+export garErr			guidoGMirror		(const char* gmn1, const char* gmn2, std::ostream& out);
+
 
 /*! \brief set the duration of one score to the duration of the second one
 	\param gmn a string containing gmn code

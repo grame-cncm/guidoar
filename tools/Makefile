@@ -25,8 +25,8 @@ all: $(TOOLS)
 
 src: $(SRC)	
 
-test:
-	$(call makecpp,guidotranspose,const char*,guidoGTranpose)
+guidomirror.cpp : 	template.cxx 	desc/guidomirror.h
+	$(call makecpp,guidomirror,const char*,guidoGMirror)
 
 guidotranspose.cpp : 	template.cxx 	desc/guidotranspose.h
 	$(call makecpp,guidotranspose,const char*,guidoGTranpose)
