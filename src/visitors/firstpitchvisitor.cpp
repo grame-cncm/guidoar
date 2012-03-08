@@ -58,17 +58,23 @@ void firstpitchvisitor::visitStart( SARNote& elt )
 {
 	int octave = elt->GetOctave();
 	if (!ARNote::implicitOctave(octave)) fCurrentOctave = octave;
-
-	int alter; int midi = -1;
-	ARNote::pitch pitch = elt->GetPitch (alter);
-	if (pitch != ARNote::kNoPitch) {
-		// offset in octave numeration between guido and midi is 3
-		int midioctave = (fCurrentOctave + 3) * 12;
-		midi = midioctave + (pitch*2) + alter;
-		if (pitch > ARNote::E) midi--;
+	
+	int midi = elt->midiPitch (fCurrentOctave);
+	if (midi >= 0) {
 		if (midi < fPitch) fPitch = midi;
 		if (!fInChord) fDone = true;
 	}
+
+//	int alter; int midi = -1;
+//	ARNote::pitch pitch = elt->GetPitch (alter);
+//	if (pitch != ARNote::kNoPitch) {
+//		// offset in octave numeration between guido and midi is 3
+//		int midioctave = (fCurrentOctave + 3) * 12;
+//		midi = midioctave + (pitch*2) + alter;
+//		if (pitch > ARNote::E) midi--;
+//		if (midi < fPitch) fPitch = midi;
+//		if (!fInChord) fDone = true;
+//	}
 }
 
 
