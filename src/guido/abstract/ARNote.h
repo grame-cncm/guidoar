@@ -99,11 +99,23 @@ class export ARNote : public guidoelement
 	static int		getImplicitOctave()					{ return kUndefinedOctave; }
 	static bool		implicitOctave(int o)				{ return o == kUndefinedOctave; }
 	
+	/// offsets a pitch according diatonic steps and a chromatic target interval
 	static pitch OffsetPitch			(pitch p, int offset, int& octave, int& alter, int targetinterval);
+	/// converts a note name to a pitch
 	static pitch NormalizedName2Pitch	(char note);
+	/// converts a pitch to a normalized note name
 	static char  NormalizedPitch2Name	(pitch p);
-	static char  NormalizedPitchName	(const std::string& name, int* outalter=0);		
+	/// converts a note name to a normalized note name i.e. 'a b c d...' notation, outalter is to catch 'cis, dis...' notation
+	static char  NormalizedPitchName	(const std::string& name, int* outalter=0);
+	static pitch chromaticOffsetPitch	(pitch p, int interval, int& octave, int& alter, bool preferSharp);
 
+	/// converts a pitch to the enharmonic pitch
+	static pitch enharmonic (pitch p, int& octave, int& alter);
+	/// a semi tone pitch increment (updates octave and alter)
+	static pitch incPitch	(pitch p, int& octave, int& alter);
+	/// a semi tone pitch decrement (updates octave and alter)
+	static pitch decPitch	(pitch p, int& octave, int& alter);
+	
 	operator std::string () const;
 };
 

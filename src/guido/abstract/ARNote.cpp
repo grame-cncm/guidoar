@@ -145,6 +145,95 @@ ARNote::pitch ARNote::NormalizedName2Pitch	(char note)
 }
 
 //______________________________________________________________________________
+ARNote::pitch ARNote::enharmonic (pitch p, int& octave, int& alter)
+{
+	if (alter > 0) {	
+		p = incPitch (p, octave, alter);
+		alter--;
+	}
+	else if (alter < 0) {
+		p = decPitch (p, octave, alter);
+		alter++;
+	}
+	return p;
+}
+
+//______________________________________________________________________________
+ARNote::pitch ARNote::incPitch	(pitch p, int& octave, int& alter)
+{
+	alter++;
+	if (alter >= 2) {
+		alter -= 2;
+		switch (p) {
+			case C:	p = D; break;
+			case D:	p = E; break;
+			case F: p = G; break;
+			case G: p = A; break;
+			case A: p = B; break;
+			case E:
+				p = F;
+				alter++;
+				break;
+			case B:
+				p = C;
+				alter++;
+				octave++;
+				break;
+		}
+	}
+	return p;
+}
+
+//______________________________________________________________________________
+ARNote::pitch ARNote::decPitch	(pitch p, int& octave, int& alter)
+{
+	alter--;
+	if (alter <= -2) {
+		alter += 2;
+		switch (p) {
+			case D:	p = C; break;
+			case E:	p = D; break;
+			case G: p = F; break;
+			case A: p = G; break;
+			case B: p = A; break;
+			case F:
+				p = E;
+				alter--;
+				break;
+			case C:
+				p = B;
+				alter--;
+				octave--;
+				break;
+		}
+	}
+	return p;
+}
+
+//______________________________________________________________________________
+ARNote::pitch ARNote::chromaticOffsetPitch	(pitch p, int interval, int& octave, int& alter, bool preferSharp)
+{
+	if (interval > 0) {
+		while (interval) {
+			p = incPitch (p, octave, alter);
+			interval--;
+		}
+	}
+	else if (interval < 0) {
+		while (interval) {
+			p = decPitch (p, octave, alter);
+			interval++;
+		}
+	}
+	if (preferSharp) {
+		if (alter < 0) p = enharmonic (p, octave, alter);
+	}
+	else if (alter > 0)
+		p = enharmonic (p, octave, alter);
+	return p;
+}
+
+//______________________________________________________________________________
 int ARNote::midiPitch (int& currentOctave) const
 {
 	int alter=0, midi = -1;
