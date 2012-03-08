@@ -88,7 +88,6 @@ void mirrorOperation::visitStart( SARNote& elt )
 	if (midi >= 0) {
 		int targetInterval = (fFixedPoint - midi) * 2;
 		int alter = 0;
-		ARNote::pitch pn = elt->GetPitch(alter);
 		ARNote::pitch p = ARNote::chromaticOffsetPitch (elt->GetPitch(alter), targetInterval, fCurrentOctave, alter, (fCurrentKey>=0));
 
 		string name; name += ARNote::NormalizedPitch2Name(p);

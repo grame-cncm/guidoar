@@ -75,7 +75,7 @@ template <typename T> class operation
 		garErr  run (ostream& out)		{ 
 			string score (fScore.c_str());
 			garErr err = kNoErr;
-			for (int i=0; i<fScoreArgs.size(); i++) {
+			for (unsigned int i=0; i<fScoreArgs.size(); i++) {
 				stringstream sstr;
 				sstr.clear();
 				garErr err = fOperator (score.c_str(), fScoreArgs[i].c_str(), sstr);

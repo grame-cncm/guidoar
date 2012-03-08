@@ -179,6 +179,8 @@ ARNote::pitch ARNote::incPitch	(pitch p, int& octave, int& alter)
 				alter++;
 				octave++;
 				break;
+			default:
+				;
 		}
 	}
 	return p;
@@ -205,6 +207,8 @@ ARNote::pitch ARNote::decPitch	(pitch p, int& octave, int& alter)
 				alter--;
 				octave--;
 				break;
+			default:
+				;
 		}
 	}
 	return p;
