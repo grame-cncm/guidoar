@@ -104,7 +104,7 @@ class export rational {
 };
 
 typedef std::vector<rational> rationals;
-std::ostream& operator << (std::ostream& os, rational);
-std::ostream& operator << (std::ostream& os, rationals );
+export std::ostream& operator << (std::ostream& os, rational);
+export std::ostream& operator << (std::ostream& os, rationals );
 
 #endif
