@@ -25,7 +25,7 @@
 #define __libguidoar__
 
 #ifdef WIN32
-# pragma warning (disable : 4786)
+# pragma warning (disable : 4786 4190)
 #endif
 
 #include <iostream>

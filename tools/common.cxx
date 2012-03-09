@@ -4,7 +4,7 @@
 #include <string>
 
 #ifdef WIN32
-# pragma warning (disable : 4786)
+# pragma warning (disable : 4786 4996)
 static const char* basename (const char* name) {
 	const char * sep = strrchr (name, '\\');
 	return sep ? ++sep : name;

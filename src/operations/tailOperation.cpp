@@ -196,7 +196,8 @@ void tailOperation::pushTag ( Sguidotag& elt )
 //________________________________________________________________________
 bool tailOperation::ornament ( Sguidotag& elt )
 {
-	switch (elt->getType() == kTAccent) {
+	switch (elt->getType()) {
+		case kTAccent:
 		case kTMord:
 		case kTTurn:
 		case kTTrill:
