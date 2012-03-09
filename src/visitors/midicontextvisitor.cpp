@@ -27,6 +27,7 @@
 
 #include <algorithm>
 #include <ctype.h>
+#include <stdio.h>
 
 #include "ARChord.h"
 #include "ARNote.h"
