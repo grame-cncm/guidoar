@@ -28,6 +28,7 @@
 
 #include "ARChord.h"
 #include "ARNote.h"
+#include "AROthers.h"
 #include "export.h"
 #include "clonevisitor.h"
 #include "operation.h"
