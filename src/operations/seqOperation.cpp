@@ -28,6 +28,7 @@
 #include <iostream>
 
 #include "clonevisitor.h"
+#include "countvisitor.h"
 #include "seqOperation.h"
 #include "ARFactory.h"
 #include "ARChord.h"
@@ -190,8 +191,8 @@ SARMusic seqOperation::operator() ( const SARMusic& score1, const SARMusic& scor
 
 		fFirstInSecondScore = true;
 		tree_browser<guidoelement> browser(this);
-		// browse voice by voice in parallel
-		while ((s1i != sc1->lend()) && (s2i != sc2->lend())) {
+        // browse voice by voice in parallel		
+        while ((s1i != sc1->lend()) && (s2i != sc2->lend())) {
 			fRangeTags.clear();
 			fPosTags.clear();
 			fOpenedTags.clear();
@@ -202,6 +203,14 @@ SARMusic seqOperation::operator() ( const SARMusic& score1, const SARMusic& scor
 			}
 			if (s2i != sc2->lend()) {
 				fState = kInSecondScore;
+                countvisitor<SARKey> keys;
+				if (fPosTags["key"] && !keys.count(*s2i)) {
+					Sguidotag k = ARFactory::instance().createTag("key");
+					Sguidoattribute attr = guidoattribute::create();
+					attr->setValue(0L);
+					k->add(attr);
+					visitStart (k);
+				}
 				browser.browse(*(*s2i));
 				s2i++;
 			}
@@ -243,7 +252,8 @@ void seqOperation::storeTag(Sguidotag tag)
 			(type == kTBarFormat ) || 
 			(type == kTBeamsAuto ) || 
 			(type == kTBeamsOff ) || 
-			(type == kTClef ) || 
+            (type == kTClef ) || 
+            (type == kTKey ) || 
 			(type == kTColor ) || 
 			(type == kTComposer ) || 
 			(type == kTDotFormat ) || 
