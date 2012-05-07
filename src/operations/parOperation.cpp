@@ -31,6 +31,7 @@
 #include "durationvisitor.h"
 #include "parOperation.h"
 #include "ARFactory.h"
+#include "ARChord.h"
 #include "ARNote.h"
 #include "AROthers.h"
 #include "tree_browser.h"
@@ -45,18 +46,20 @@ namespace guido
 class firstnotechecker : public visitor<SARNote>
 {
     public: firstnotechecker() {}
-		void check(const Sguidoelement&);
+		bool check(const Sguidoelement&);
 	protected:
 		void visitStart( SARNote& elt );
 		bool fDone;
 };
-void firstnotechecker::check(const Sguidoelement& elt)
+
+bool firstnotechecker::check(const Sguidoelement& elt)
 {
 	fDone = false;
 	if (elt) {
 		tree_browser<guidoelement> tb(this);
 		tb.browse (*elt);
 	}
+	return fDone;
 }
 
 void firstnotechecker::visitStart(SARNote& elt)
@@ -74,14 +77,20 @@ SARMusic parOperation::extend ( SARMusic& score, const rational& duration )
 {
 	durationvisitor dv;
 	rational total = dv.duration (score);
-	for (ctree<guidoelement>::literator i = score->lbegin(); i != score->lend(); i++) {		
+
+	// iterates the score voices
+	for (ctree<guidoelement>::literator i = score->lbegin(); i != score->lend(); i++) {
 		firstnotechecker fnc; 
 		fnc.check(*i);			// check for first note implicit duration and force to default
-
 		rational vdur = dv.duration(*i);
 		SARNote note = ARFactory::instance().createNote("_");
 		*note = duration + total - vdur;
-		(*i)->elements().insert((*i)->elements().begin(), note);
+		for (ctree<guidoelement>::literator j = (*i)->lbegin(); j != (*i)->lend(); j++) {
+			if (dynamic_cast<ARNote*>((guidoelement*)*j) || dynamic_cast<ARChord*>((guidoelement*)*j)) {
+				(*i)->elements().insert(j, note);
+				break;
+			}
+		}
 	}
 	return score;
 }
