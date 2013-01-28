@@ -4,7 +4,7 @@ start:
 	@ echo "     win32 : TODO"
 	@ echo "     linux : TODO"
 
-include makeBundle
+#include makeBundle
 
 APP_PATH := ../bin
 APP		 := GuidoCalculus
