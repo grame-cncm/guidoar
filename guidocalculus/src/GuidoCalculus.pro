@@ -9,6 +9,7 @@ GSMW	 = $$GUIDOLIB/Qt/GraphicsSceneMainWindow
 
 #######
 CONFIG += no_keywords
+QT += widgets printsupport
 
 !exists( $$GUIDOLIB ) {
 	error( "Can't find Guido Library at \"$$GUIDOLIB\". Call qmake with option: \"GUIDOLIB=./path/to/guidolib\" " )
@@ -24,18 +25,18 @@ win32-g++ {
 	LIBS += -L$$GSMW  -lGraphicsSceneMainWindow
 }
 unix {
-	LIBS += -L$$GSMW -lGraphicsSceneMainWindow
+	LIBS += -L$$GUIDOLIB/Qt -lGraphicsSceneMainWindow
 }
 INCLUDEPATH += $$GSMW/include
 
 # GuidoQt library link for each platform
 win32:!win32-g++:LIBS 	+=   $$GUIDOQT/GuidoQt.lib
 win32-g++:LIBS 	+= -L$$GUIDOQT/ -lGuidoQt
-unix:LIBS 		+= -L$$GUIDOQT/ -lGuidoQt
+unix:LIBS 		+= -L$$GUIDOLIB/Qt/ -lGuidoQt
 INCLUDEPATH 	+=  $$GUIDOQT/include
 
 # GUIDOEngine library link for each platform
-macx:LIBS 	+= -F$$GUIDOLIB/cmake/Release -framework GUIDOEngine
+macx:LIBS 	+= -F$$GUIDOLIB/build/MacOS/Release -framework GUIDOEngine
 win32:!win32-g++:LIBS 	+=   $$GUIDOLIB/cmake/release/GUIDOEngine.lib
 win32-g++:LIBS 	+= -L$$GUIDOLIB/cmake -lguidoengine
 unix:!macx:LIBS += -lguidoengine

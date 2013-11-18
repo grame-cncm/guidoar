@@ -17,11 +17,6 @@ win32:!win32-g++ {
 	TEMPLATE = vcapp
 }
 
-# Universal binary on MAC
-macx:QMAKE_MAC_SDK=/Developer/SDKs/MacOSX10.6.sdk
-#macx:CONFIG+=x86 x86_64
-macx:CONFIG+=x86_64
-
 
 macx {
 	RC_FILE += $$RESOURCES_DIR/English.lproj/InfoPlist.strings 
