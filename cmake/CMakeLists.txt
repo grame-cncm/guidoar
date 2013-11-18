@@ -19,12 +19,6 @@ if(UNIX)
 	add_definitions(-Wall -DGCC)
 endif()
 
-if(APPLE)
-	set (CMAKE_OSX_ARCHITECTURES "x86_64 i386")
-	set (CMAKE_OSX_SYSROOT /Developer/SDKs/MacOSX10.6.sdk)
-	set (CMAKE_C++_FLAGS -mmacosx-version-min=10.4)
-endif()
-
 if(WIN32)
  add_definitions(-DWINVER=0x0400 -DWIN32)
 endif()
