@@ -220,9 +220,9 @@ void MainWindow::exportToImage()
 //-------------------------------------------------------------------------
 void MainWindow::about()
 {
-    QMessageBox::about(this, tr(QString("About " + QString(APP_NAME)).toAscii().data()),
+    QMessageBox::about(this, tr(QString("About " + QString(APP_NAME)).toUtf8().data()),
              tr(QString("The <b>"+ QString(APP_NAME)+"</b> allows you to compose a graphics scene " + 
-                "made of GUIDO Scores.").toAscii().data()));
+                "made of GUIDO Scores.").toUtf8().data()));
 }
 
 //-------------------------------------------------------------------------
@@ -353,7 +353,7 @@ void MainWindow::exportItemToMidi()
 	QString selectedFilter("");
 	QString fileName = QFileDialog::getSaveFileName(this, tr("Export item"),
                             savePath,
-                            tr(filters.toAscii().data()) ,
+                            tr(filters.toUtf8().data()) ,
 							&selectedFilter);
 
 	if ( fileName.isEmpty() )
@@ -696,7 +696,7 @@ void MainWindow::exportRectDialog(const QRectF& exportRectangle )
 	QString selectedFilter("");
 	QString fileName = QFileDialog::getSaveFileName(this, tr("Export the scene"),
 							savePath,
-							tr(filters.toAscii().data()) ,
+							tr(filters.toUtf8().data()) ,
 							&selectedFilter);
 
 	if ( fileName.isEmpty() )
@@ -744,7 +744,7 @@ void MainWindow::exportRect(const QRectF& exportRectangle , const QString& fileN
 		printer.setOutputFileName( fileName );
 		if ( fileType == PS_FILE_FILTER )
 		{
-			printer.setOutputFormat( QPrinter::PostScriptFormat );
+			printer.setOutputFormat( QPrinter::PdfFormat );
 		}
 		else if ( fileType == PDF_FILE_FILTER )
 		{
@@ -828,7 +828,7 @@ void MainWindow::exportItem(QGuidoItemContainer * item)
 	QString selectedFilter("");
 	QString fileName = QFileDialog::getSaveFileName(this, "Export the selected " + GraphicsSceneMainWindow::applicationSettings().mLanguageNameShort + " item",
 							savePath,
-							tr(filters.toAscii().data()) ,
+							tr(filters.toUtf8().data()) ,
 							&selectedFilter);
 
 	if ( fileName.isEmpty() )

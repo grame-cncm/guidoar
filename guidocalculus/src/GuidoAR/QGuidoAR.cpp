@@ -43,12 +43,12 @@ typedef guido::garErr (*GuidoAROperation)( const char * , const char * , std::os
 QString operate( const QString& str1 , const QString& str2 ,guido::operation * guidoOperation )
 {
 	guido::guidoparser r;
-	guido::SARMusic g1 = r.parseString( str1.toAscii().data() );
+	guido::SARMusic g1 = r.parseString( str1.toUtf8().data() );
 	if (!g1) 
 //		readErr(*argsPtr);
 		return "";
 
-	guido::SARMusic g2 = r.parseString( str2.toAscii().data() );
+	guido::SARMusic g2 = r.parseString( str2.toUtf8().data() );
 	if (!g2) 
 //		readErr(*argsPtr);
 		return "";
@@ -71,7 +71,7 @@ QString operate( const QString& str1 , const QString& str2 ,guido::operation * g
 QString operate( const QString& str1 , const QString& str2 , GuidoAROperation operation )
 {
 	std::ostringstream oss;
-	guido::garErr err = operation( str1.toAscii().constData() , str2.toAscii().constData() , oss );
+	guido::garErr err = operation( str1.toUtf8().constData() , str2.toUtf8().constData() , oss );
 	if ( err == guido::kNoErr )
 		return QString( oss.str().c_str() );
 	else
@@ -148,7 +148,7 @@ QString QGuidoAR::bottom( const QString& str1 , const QString& str2 )
 QString QGuidoAR::rythm( const QString& str1 , const QString& str2 )
 {
 	std::ostringstream oss;
-	guido::garErr err = guido::guidoApplyRythm( str1.toAscii().constData() , str2.toAscii().constData() , guido::kApplyForwardLoop , oss );
+	guido::garErr err = guido::guidoApplyRythm( str1.toUtf8().constData() , str2.toUtf8().constData() , guido::kApplyForwardLoop , oss );
 	if ( err == guido::kNoErr )
 		return QString( oss.str().c_str() );
 	else
@@ -159,7 +159,7 @@ QString QGuidoAR::rythm( const QString& str1 , const QString& str2 )
 QString QGuidoAR::pitch( const QString& str1 , const QString& str2 )
 {
 	std::ostringstream oss;
-	guido::garErr err = guido::guidoApplyPitch( str1.toAscii().constData() , str2.toAscii().constData() , guido::kApplyForwardLoop , guido::kUseLowest , oss );
+	guido::garErr err = guido::guidoApplyPitch( str1.toUtf8().constData() , str2.toUtf8().constData() , guido::kApplyForwardLoop , guido::kUseLowest , oss );
 	if ( err == guido::kNoErr )
 		return QString( oss.str().c_str() );
 	else
@@ -179,14 +179,14 @@ void QGuidoAR::midiExport( const QString& gmnCode , const QString& outMidiFile )
 	assert( outMidiFile.length() );
 
 	guido::guidoparser r;
-	guido::Sguidoelement score = r.parseString( gmnCode.toAscii().data() );
+	guido::Sguidoelement score = r.parseString( gmnCode.toUtf8().data() );
 	if (score) 
 	{
 		guido::midiconverter mc;
 		
-		int err = mc.score2midifile(score, outMidiFile.toAscii().data() );
+		int err = mc.score2midifile(score, outMidiFile.toUtf8().data() );
 		if (err != noErr)
-			std::cerr << "error " << err << " while converting GMN to midifile " << outMidiFile.toAscii().data() << std::endl;
+			std::cerr << "error " << err << " while converting GMN to midifile " << outMidiFile.toUtf8().data() << std::endl;
 	}
 	else
 	{
@@ -199,11 +199,11 @@ int	QGuidoAR::getMidiRef( const QString& gmnCode )
 {
 	guido::guidoparser r;
 	
-	guido::Sguidoelement score = r.parseString( gmnCode.toAscii().data() );
+	guido::Sguidoelement score = r.parseString( gmnCode.toUtf8().data() );
 	if (score) 
 	{
 		guido::midiconverter mc;
-		short ref = mc.score2player(score, gmnCode.toAscii().data());
+		short ref = mc.score2player(score, gmnCode.toUtf8().data());
 		if (ref > 0) {
 			MidiConnect (ref, 0, true);
 			return ref;
