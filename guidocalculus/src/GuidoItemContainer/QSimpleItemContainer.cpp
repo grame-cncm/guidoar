@@ -138,7 +138,8 @@ void QSimpleItemContainer::resized(const QRectF& newRect)
 	
 	moveBy( newRect.x() , newRect.y() );
 
-	mContainedItem->scale( xRatio , yRatio );
+//	mContainedItem->scale( xRatio , yRatio );
+	mContainedItem->setTransform(QTransform::fromScale(xRatio, yRatio), true);
 	simpleItemUpdateGeometry( mContainedItem->mapToParent( mContainedItem->boundingRect() ).boundingRect() );
 
 	Q_EMIT scaleChanged( mContainedItem->transform().m11() );
@@ -160,7 +161,8 @@ void QSimpleItemContainer::init( QGraphicsItem * containedItem , QItemAdapter * 
 	mContainedItem->setCacheMode( QGraphicsItem::DeviceCoordinateCache );
 #endif
 
-	setAcceptsHoverEvents(true);
+//	setAcceptsHoverEvents(true);
+	setAcceptHoverEvents(true);
 	
 	// Set pens & brushes
 	mPenBrushSwitcher.addFlag( FLAG_SELECTED , 2 ,		PenBrush(SELECTED_PEN , SELECTED_BRUSH ) );
