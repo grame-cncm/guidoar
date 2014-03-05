@@ -19,6 +19,10 @@ if(UNIX)
 	add_definitions(-Wall -DGCC)
 endif()
 
+if(APPLE)
+	set (CMAKE_C++_FLAGS -mmacosx-version-min=10.6)
+endif(APPLE)
+
 if(WIN32)
  add_definitions(-DWINVER=0x0400 -DWIN32)
 endif()
