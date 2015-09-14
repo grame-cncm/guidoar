@@ -171,7 +171,7 @@ QDomElement QGuidoItemContainer::saveToDomElement( QDomDocument * doc)
 	
 	element.setAttribute( DOM_GUIDO_ITEM_PROPORTIONAL_LAYOUT , mIsProportionalOn );
 	element.setAttribute( DOM_GUIDO_ITEM_OPTIMAL_PAGE_FILL , mIsOptimalPageFillOn );
-	element.setAttribute( DOM_GUIDO_ITEM_RESIZE_PAGE_ON , mGuidoItem->isResizePageToMusic() );
+	element.setAttribute( DOM_GUIDO_ITEM_RESIZE_PAGE_ON , mGuidoItem->isResizePageToMusicOn() );
 	element.setAttribute( DOM_GUIDO_ITEM_SCALE , mGuidoItem->transform().m11() );
 
 	element.setAttribute( DOM_GUIDO_ITEM_CURRENT_PAGE, mGuidoItem->firstVisiblePage() );
@@ -366,7 +366,7 @@ void QGuidoItemContainer::switchProportional()
 //-------------------------------------------------------------------------
 void QGuidoItemContainer::switchResizePage()
 {
-	setResizePageToMusic( !mGuidoItem->isResizePageToMusic() );
+	setResizePageToMusic( !mGuidoItem->isResizePageToMusicOn() );
 }
 
 //-------------------------------------------------------------------------
@@ -518,7 +518,7 @@ void QGuidoItemContainer::loadFromMimeData( const QMimeData * mimeData )
 //-------------------------------------------------------------------------
 void QGuidoItemContainer::loadFromOtherContainer( const QGuidoItemContainer * otherContainer )
 {
-	setResizePageToMusic( otherContainer->mGuidoItem->isResizePageToMusic() );
+	setResizePageToMusic( otherContainer->mGuidoItem->isResizePageToMusicOn() );
 	load( otherContainer );
 	mIsOptimalPageFillOn	= otherContainer->mIsOptimalPageFillOn;
 	mIsProportionalOn		= otherContainer->mIsProportionalOn;
@@ -582,7 +582,7 @@ QMenu *  QGuidoItemContainer::buildContextMenu()
 	layoutMenu->addAction(layoutOptimalPageFillSwitch);	
 
 	//Layout actions : Auto-resizePageToMusic
-	QString layoutResizePageMsg = QString("Switch ") + ( mGuidoItem->isResizePageToMusic() ? "OFF" : "ON" ) + " Auto Resize-Page";		
+	QString layoutResizePageMsg = QString("Switch ") + ( mGuidoItem->isResizePageToMusicOn() ? "OFF" : "ON" ) + " Auto Resize-Page";
 	QAction * layoutResizePageSwitch = new QAction( layoutResizePageMsg , layoutMenu );
 	connect( layoutResizePageSwitch , SIGNAL(triggered()) , this , SLOT(switchResizePage()) );
 	layoutMenu->addAction(layoutResizePageSwitch);	
@@ -708,7 +708,7 @@ QMimeData * QGuidoItemContainer::buildMimeData()
 	data->setData( GMN_CONTAINER_MIME_FLAG , 0 );
 	data->setData( GMN_CONTAINER_MIME_PROPORTIONAL_ON , QByteArray::number(mIsProportionalOn) );
 	data->setData( GMN_CONTAINER_MIME_OPTIMAL_PAGE_FILL_ON , QByteArray::number(mIsOptimalPageFillOn) );
-	data->setData( GMN_CONTAINER_MIME_RESIZE_PAGE_ON , QByteArray::number(mGuidoItem->isResizePageToMusic()) );
+	data->setData( GMN_CONTAINER_MIME_RESIZE_PAGE_ON , QByteArray::number(mGuidoItem->isResizePageToMusicOn()) );
 	data->setData( GMN_CONTAINER_MIME_SCALE , QByteArray::number(mGuidoItem->transform().m11() ) );
 	
 	data->setData( GMN_CONTAINER_MIME_PAGE_INDEX , QByteArray::number( mGuidoItem->firstVisiblePage()) );
