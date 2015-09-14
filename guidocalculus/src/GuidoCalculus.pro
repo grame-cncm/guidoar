@@ -4,8 +4,8 @@ include( shared.pri )
 
 RESOURCES_DIR=rsc
 isEmpty( GUIDOLIB ) { GUIDOLIB = ../../../guidolib }
-GUIDOQT	 = $$GUIDOLIB/Qt/GuidoQt
-GSMW	 = $$GUIDOLIB/Qt/GraphicsSceneMainWindow
+GUIDOQT	 = $$GUIDOLIB/environments/Qt/libs/GuidoQt
+GSMW	 = $$GUIDOLIB/environments/Qt/libs/GraphicsSceneMainWindow
 
 #######
 CONFIG += no_keywords
@@ -25,7 +25,7 @@ win32-g++ {
 	LIBS += -L$$GSMW  -lGraphicsSceneMainWindow
 }
 unix {
-	LIBS += -L$$GUIDOLIB/Qt -lGraphicsSceneMainWindow
+	LIBS += -L$$GUIDOLIB/environments/Qt/libs -lGraphicsSceneMainWindow
 }
 INCLUDEPATH += $$GSMW/include
 
@@ -40,7 +40,7 @@ macx:LIBS 	+= -F$$GUIDOLIB/build/MacOS/Release -framework GUIDOEngine
 win32:!win32-g++:LIBS 	+=   $$GUIDOLIB/cmake/release/GUIDOEngine.lib
 win32-g++:LIBS 	+= -L$$GUIDOLIB/cmake -lguidoengine
 unix:!macx:LIBS += -lguidoengine
-INCLUDEPATH 	+= $$GUIDOLIB/src/include
+INCLUDEPATH 	+= $$GUIDOLIB/src/engine/include
 
 ###### GUIDO AR ######
 DEFINES += USES_GUIDO_AR
