@@ -27,7 +27,7 @@
 #include "guidoexpression.h"
 #include "guidovalue.h"
 #include "guidoEnv.h"
-#include "rational.h"
+#include "guidorational.h"
 
 namespace guidolang 
 {

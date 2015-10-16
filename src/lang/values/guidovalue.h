@@ -27,7 +27,7 @@
 #include "export.h"
 #include "visitable.h"
 //#include "ctree.h"
-#include "rational.h"
+#include "guidorational.h"
 #include "smartpointer.h"
 
 #ifdef valueDebug

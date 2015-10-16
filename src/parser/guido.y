@@ -7,7 +7,7 @@
 
 #include "guidoelement.h"
 #include "gmnreader.h"
-#include "rational.h"
+#include "guidorational.h"
 
 #include "guidoparse.hpp"
 #include "guidolex.c++"

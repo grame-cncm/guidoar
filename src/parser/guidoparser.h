@@ -28,7 +28,7 @@
 #include "export.h"
 #include "gmnreader.h"
 #include "ARTypes.h"
-#include "rational.h"
+#include "guidorational.h"
 
 namespace guido 
 {

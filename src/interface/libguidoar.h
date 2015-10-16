@@ -31,7 +31,7 @@
 #include <iostream>
 #include <string>
 #include <stdio.h>
-#include "rational.h"
+#include "guidorational.h"
 #include "export.h"
 
 namespace guido 

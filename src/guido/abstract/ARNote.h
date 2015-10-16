@@ -28,7 +28,7 @@
 #include <string>
 
 #include "guidoelement.h"
-#include "rational.h"
+#include "guidorational.h"
 #include "export.h"
 
 namespace guido 

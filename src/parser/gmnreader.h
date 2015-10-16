@@ -27,7 +27,7 @@
 #include <string>
 
 #include "ARTypes.h"
-#include "rational.h"
+#include "guidorational.h"
 
 //class rational;
 

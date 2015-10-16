@@ -39,7 +39,7 @@ INCLUDEPATH 	+=  $$GUIDOQT/include
 macx:LIBS 	+= -F$$GUIDOLIB/build/MacOS/Release -framework GUIDOEngine
 win32:!win32-g++:LIBS 	+=   $$GUIDOLIB/cmake/release/GUIDOEngine.lib
 win32-g++:LIBS 	+= -L$$GUIDOLIB/cmake -lguidoengine
-unix:!macx:LIBS += -lguidoengine
+unix:!macx:LIBS += -lGUIDOEngine
 INCLUDEPATH 	+= $$GUIDOLIB/src/engine/include
 
 ###### GUIDO AR ######
