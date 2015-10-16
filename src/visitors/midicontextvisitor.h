@@ -31,7 +31,7 @@
 #include "guidoelement.h"
 #include "AROthers.h"
 #include "ARTypes.h"
-#include "rational.h"
+#include "guidorational.h"
 #include "visitor.h"
 
 namespace guido 

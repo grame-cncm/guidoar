@@ -30,7 +30,7 @@
 #include "ARTypes.h"
 #include "browser.h"
 #include "export.h"
-#include "rational.h"
+#include "guidorational.h"
 #include "visitor.h"
 
 namespace guido 

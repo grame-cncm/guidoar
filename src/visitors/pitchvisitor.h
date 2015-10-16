@@ -30,7 +30,7 @@
 #include "guidoelement.h"
 #include "ARTypes.h"
 #include "libguidoar.h"
-#include "rational.h"
+#include "guidorational.h"
 #include "tree_browser.h"
 #include "visitor.h"
 

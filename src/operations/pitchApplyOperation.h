@@ -32,7 +32,7 @@
 #include "export.h"
 #include "clonevisitor.h"
 #include "operation.h"
-#include "rational.h"
+#include "guidorational.h"
 #include "pitchvisitor.h"
 #include "transposeOperation.h"
 #include "tree_browser.h"

@@ -23,7 +23,7 @@
 #include <string.h>
 #include <sstream>
 #include <cmath>
-#include "rational.h"
+#include "guidorational.h"
 
 using namespace std;
 

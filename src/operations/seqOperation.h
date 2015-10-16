@@ -32,7 +32,7 @@
 #include "clonevisitor.h"
 #include "guidoelement.h"
 #include "operation.h"
-#include "rational.h"
+#include "guidorational.h"
 
 namespace guido 
 {
