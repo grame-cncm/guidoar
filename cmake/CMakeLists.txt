@@ -15,13 +15,10 @@ if(CMAKE_CONFIGURATION_TYPES)
 	set(CMAKE_CONFIGURATION_TYPES Debug Release)
 endif()
  
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -stdlib=libc++")
 if(UNIX)
 	add_definitions(-Wall -DGCC)
 endif()
-
-if(APPLE)
-	set (CMAKE_C++_FLAGS -mmacosx-version-min=10.6)
-endif(APPLE)
 
 if(WIN32)
  add_definitions(-DWINVER=0x0400 -DWIN32)
@@ -53,7 +50,7 @@ endforeach(folder)
 #######################################
 # set includes
 include_directories( ${INCL} ${GARSRC}/midisharelight)
-set_source_files_properties (${COREH} PROPERTIES HEADER_FILE_ONLY TRUE)
+#set_source_files_properties (${COREH} PROPERTIES HEADER_FILE_ONLY TRUE)
 
 
 #######################################
