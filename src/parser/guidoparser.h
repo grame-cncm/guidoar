@@ -33,7 +33,7 @@
 namespace guido 
 {
 
-class export guidoparser : public gmnreader
+class gar_export guidoparser : public gmnreader
 { 
 	SARMusic fMusic;
 

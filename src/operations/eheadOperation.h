@@ -39,7 +39,7 @@ namespace guido
 /*!
 \brief A visitor that cuts the tail of a score after a given events number.
 */
-class export eheadOperation : public headOperation
+class gar_export eheadOperation : public headOperation
 {		
     public:
  				 eheadOperation()	{}

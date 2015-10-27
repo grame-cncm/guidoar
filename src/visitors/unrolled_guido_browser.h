@@ -58,7 +58,7 @@ namespace guido
   time (if any), and that we're not currently jumping to a coda, which location could be unknown at the
   time of the jump.
 */
-class export unrolled_guido_browser : public browser<Sguidoelement>,
+class gar_export unrolled_guido_browser : public browser<Sguidoelement>,
 	public visitor<SARRepeatBegin>,
 	public visitor<SARRepeatEnd>,
 	public visitor<SARDaCapo>,

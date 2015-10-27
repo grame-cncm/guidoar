@@ -42,7 +42,7 @@ namespace guido
 	It is based on MidiShare and on the Player libraries.
 	It supports MIDIfile export as well as MidiShare player interface.
 */
-class export midiconverter : public midiwriter {
+class gar_export midiconverter : public midiwriter{
 	public:
 				 midiconverter(long tpq=480) : fTPQ(tpq), fSeq(0), fTimeSignDone(false), fVoiceNumber(0) {}
 		virtual ~midiconverter();

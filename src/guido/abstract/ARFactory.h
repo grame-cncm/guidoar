@@ -47,7 +47,7 @@ typedef functor<Sguidotag,long>	NewTagFunctor;
 /*!
 \brief A factory for creating GAR objects
 */
-class export ARFactory : public singleton<ARFactory>{
+class gar_export ARFactory : public singleton<ARFactory>{
 
 	std::map<std::string, NewTagFunctor*> fMap;
 	public:

@@ -51,7 +51,7 @@ namespace guido
 	
 \todo transposing ornaments elements
 */
-class export transposeOperation :
+class gar_export transposeOperation :
 	public operation,
 	public visitor<SARNote>,
 	public visitor<SARKey>,

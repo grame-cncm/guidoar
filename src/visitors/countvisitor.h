@@ -43,7 +43,7 @@ namespace guido
 \brief  a visitor to count the number of notes and chords.
 		A chord counts for 1 and notes inside a chord are ignored.
 */
-template <typename C> class export countvisitor : public visitor<C>
+template <typename C> class gar_export countvisitor : public visitor<C>
 {
     public: 
 				 countvisitor() { fBrowser.set(this); }

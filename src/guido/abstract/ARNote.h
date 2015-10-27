@@ -44,7 +44,7 @@ class basevisitor;
 /*!
 \brief A Guido note description
 */
-class export ARNote : public guidoelement
+class gar_export ARNote : public guidoelement
 { 
     protected:
 				ARNote();

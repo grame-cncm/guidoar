@@ -38,7 +38,7 @@ namespace guido
 	inherit from the smartable class which provides reference counting
 	and automatic delete when the reference count drops to zero.
 */
-class export smartable {
+class gar_export smartable {
 	private:
 		unsigned 	refCount;		
 	public:

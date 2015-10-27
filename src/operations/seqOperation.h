@@ -46,7 +46,7 @@ namespace guido
 /*!
 \brief	A visitor to put scores in sequence
 */
-class export seqOperation : 
+class gar_export seqOperation :
 	public operation,
 	public clonevisitor,
 	public visitor<SAREndBar>

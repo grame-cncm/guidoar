@@ -49,7 +49,7 @@ namespace guido
 	Intended to minimize code size.
 	Can only be instantiated by derived class.
 */
-class export rythmApplyBaseOperation : 
+class gar_export rythmApplyBaseOperation :
 	public operation,
 	public clonevisitor
 {		
@@ -72,7 +72,7 @@ class export rythmApplyBaseOperation :
 /*!
 \brief A visitor that applies a rythm to a score.
 */
-template <typename T> class export rythmApplyOperation : public rythmApplyBaseOperation
+template <typename T> class gar_export rythmApplyOperation : public rythmApplyBaseOperation
 {
     public:
 		typedef typename T::iterator durIterator;

@@ -33,7 +33,7 @@
 /*!
 \brief An output stream decorateur
 */
-class export streambeautifuller {
+class gar_export streambeautifuller {
 	std::ostream&	fStream;
 	int				fSize;
 	int				fMaxSize;

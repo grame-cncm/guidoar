@@ -45,7 +45,7 @@ namespace guido
 \brief  a visitor to count the number of notes and chords.
 		A chord counts for 1 and notes inside a chord are ignored.
 */
-class export counteventsvisitor :
+class gar_export counteventsvisitor :
 	public visitor<SARChord>,
 	public visitor<SARNote>
 {
@@ -72,7 +72,7 @@ class export counteventsvisitor :
 /*!
 \brief  a visitor to count the number of notes and chords per voice.
 */
-class export countvoiceseventsvisitor : 
+class gar_export countvoiceseventsvisitor :
 	public counteventsvisitor,
 	public visitor<SARVoice>
 {

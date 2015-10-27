@@ -41,7 +41,7 @@ namespace guido
 /*!
 \brief	A visitor to put scores in parallel
 */
-class export parOperation : public operation
+class gar_export parOperation : public operation
 {
     public:
 		enum mode { kLeft, kRight };
@@ -63,7 +63,7 @@ class export parOperation : public operation
 /*!
 \brief	A visitor to put scores in parallel, right justified
 */
-class export rparOperation : public parOperation
+class gar_export rparOperation : public parOperation
 {
     public:
 				 rparOperation() : parOperation(kRight) {}

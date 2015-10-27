@@ -49,7 +49,7 @@ namespace guido
 /*!
 \brief	A visitor to remove closed tags
 */
-class export closedRemover : public clonevisitor
+class gar_export closedRemover : public clonevisitor
 {
 	protected:
 		void visitStart ( Sguidotag& elt )	{ if (markers::opened (elt) != markers::kClosed) clonevisitor::visitStart(elt); }
@@ -65,7 +65,7 @@ class export closedRemover : public clonevisitor
 \brief	A visitor to clean opened tags
 */
 //______________________________________________________________________________
-class export seqCleaner : public clonevisitor
+class gar_export seqCleaner : public clonevisitor
 {
 	protected:
 		SARNote			fFirstTied;			// used for merging tied notes carrying begin-end markers

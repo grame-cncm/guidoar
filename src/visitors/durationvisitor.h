@@ -45,7 +45,7 @@ namespace guido
 /*!
 \brief	A visitor to print the gmn description
 */
-class export durationvisitor :
+class gar_export durationvisitor :
 	public visitor<SARVoice>,
 	public visitor<SARChord>,
 	public visitor<SARNote>

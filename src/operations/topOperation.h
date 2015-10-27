@@ -40,7 +40,7 @@ namespace guido
 /*!
 \brief A visitor that cuts the tail of a score voices.
 */
-class export topOperation : 
+class gar_export topOperation :
 	public operation,
 	public clonevisitor
 {		

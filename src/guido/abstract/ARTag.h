@@ -55,7 +55,7 @@ The GAR is organised as a Tree composed of the following elements:
 */
 class guidotag;
 typedef SMARTP<guidotag>	Sguidotag;
-class export guidotag : public guidoelement
+class gar_export guidotag : public guidoelement
 {
 	public:
         virtual void acceptIn(basevisitor& v);

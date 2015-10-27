@@ -41,7 +41,7 @@ namespace guido
 /*!
 \brief A visitor that cuts the head of a score voices.
 */
-class export bottomOperation : 
+class gar_export bottomOperation :
 	public operation,
 	public clonevisitor
 {		

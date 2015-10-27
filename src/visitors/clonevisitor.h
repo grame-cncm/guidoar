@@ -43,7 +43,7 @@ namespace guido
 /*!
 \brief	A visitor to print the gmn description
 */
-class export clonevisitor :
+class gar_export clonevisitor :
 	public visitor<SARMusic>,
 	public visitor<SARVoice>,
 	public visitor<SARChord>,

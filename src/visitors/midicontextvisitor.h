@@ -66,7 +66,7 @@ class midiwriter {
 \brief A Visitor that maintains a context for MIDI generation.
 */
 
-class export midicontextvisitor : 
+class gar_export midicontextvisitor :
 	// time management
 	public visitor<SARSlur>,
 	public visitor<SARSlurBegin>,
