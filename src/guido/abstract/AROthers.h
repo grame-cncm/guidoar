@@ -40,7 +40,7 @@ class basevisitor;
 /*!
 \brief The root element of a Guido tree
 */
-class export ARMusic : public guidoelement
+class gar_export ARMusic : public guidoelement
 { 
 	public:
 		static SMARTP<ARMusic> create();
@@ -56,7 +56,7 @@ class export ARMusic : public guidoelement
 /*!
 \brief A Guido voice
 */
-class export ARVoice : public guidoelement
+class gar_export ARVoice : public guidoelement
 { 
 	public:
 		static SMARTP<ARVoice> create();

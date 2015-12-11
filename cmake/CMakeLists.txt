@@ -22,6 +22,11 @@ endif()
 
 if(WIN32)
  add_definitions(-DWINVER=0x0400 -DWIN32)
+ if (${CMAKE_GENERATOR} MATCHES ".*Win64")
+  set (WIN win64)
+ else()
+  set (WIN win32)
+ endif ()
 endif()
 
 
@@ -76,7 +81,7 @@ if(APPLE)
 elseif(UNIX)
 	set (MSH "-L/usr/local/lib -lmidisharelight")
 elseif(WIN32)
-	set (MSH "${GARSRC}/midisharelight/win32/midisharelight.lib")
+	set (MSH "${GARSRC}/midisharelight/${WIN}/midisharelight.lib")
 endif()
 target_link_libraries( ${target} ${MSH})
 

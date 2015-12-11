@@ -48,7 +48,7 @@ namespace guido
 	However, we need to introduce a new specific \backward<dur> tag to catch
 	the case where a single note is tied to a chord.
 */
-class export normalizeOperation : 
+class gar_export normalizeOperation :
 	public clonevisitor
 {		
     public:

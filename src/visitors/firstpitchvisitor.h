@@ -42,7 +42,7 @@ namespace guido
 /*!
 \brief	A visitor to retrieve the pitch of the first note (first voice, lowest note) 
 */
-class export firstpitchvisitor :
+class gar_export firstpitchvisitor :
 	public tree_browser<guidoelement>,
 	public visitor<SARChord>,
 	public visitor<SARNote>

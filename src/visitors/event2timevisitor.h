@@ -45,7 +45,7 @@ namespace guido
 	 \\empty events are ignored when looking for the target event or position.
 	 Chords account for one event.
 */
-class export event2timevisitor : public durationvisitor
+class gar_export event2timevisitor : public durationvisitor
 {
     public: 
 				 event2timevisitor() {}

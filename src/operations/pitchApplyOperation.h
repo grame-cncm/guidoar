@@ -51,7 +51,7 @@ namespace guido
 	Intended to minimize code size.
 	Can only be instantiated by derived class.
 */
-class export pitchApplyBaseOperation : 
+class gar_export pitchApplyBaseOperation :
 	public operation,
 	public clonevisitor
 {		
@@ -81,7 +81,7 @@ class export pitchApplyBaseOperation :
 /*!
 \brief A visitor that applies a list of pitches to a score.
 */
-template <typename T> class export pitchApplyOperation :  public pitchApplyBaseOperation
+template <typename T> class gar_export pitchApplyOperation : public pitchApplyBaseOperation
 {		
     public:
 		typedef typename T::iterator pitchIterator;
@@ -148,13 +148,13 @@ template <typename T> class export pitchApplyOperation :  public pitchApplyBaseO
 };
 
 /// \brief a specialized class on low chords pitches
-template <typename T> class export pitchLowApplyOperation : public pitchApplyOperation<T>
+template <typename T> class gar_export pitchLowApplyOperation : public pitchApplyOperation<T>
 {		
     public: pitchLowApplyOperation() : pitchApplyOperation<T>(kUseLowest) {}
 };
 
 /// \brief a specialized class on high chords pitches
-template <typename T> class export pitchHighApplyOperation : public pitchApplyOperation<T>
+template <typename T> class gar_export pitchHighApplyOperation : public pitchApplyOperation<T>
 {		
     public: pitchHighApplyOperation() : pitchApplyOperation<T>(kUseHighest) {}
 };

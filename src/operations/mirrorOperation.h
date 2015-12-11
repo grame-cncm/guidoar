@@ -43,7 +43,7 @@ namespace guido
 /*!
 \brief	A visitor to mirror pitches around a given pitch
 */
-class export mirrorOperation : 
+class gar_export mirrorOperation :
 	public operation,
 	public clonevisitor,
 	public visitor<SARKey>

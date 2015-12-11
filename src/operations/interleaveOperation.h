@@ -41,7 +41,7 @@ namespace guido
 /*!
 \brief	an operation to interleave 2 scores
 */
-class export interleaveOperation : public operation
+class gar_export interleaveOperation : public operation
 {
     public:
 		enum mode { kLeft, kRight };

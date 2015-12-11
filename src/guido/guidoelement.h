@@ -47,7 +47,7 @@ typedef SMARTP<guidoelement> 	Sguidoelement;
 	An attribute is represented by its name and its value.
 	Attributes are mainly used with tags. Names are often omitted.	
 */
-class export guidoattribute : public smartable {
+class gar_export guidoattribute : public smartable {
 	//! the attribute name
 	std::string	fName;
 	//! the attribute value
@@ -96,7 +96,7 @@ typedef std::vector<Sguidoattribute> Sguidoattributes;
 	the lists of its attributes.
 	Attributes and elements must be added in the required order.
 */
-class export guidoelement : public ctree<guidoelement>, public visitable
+class gar_export guidoelement : public ctree<guidoelement>, public visitable
 {
 	//! the element name
 	std::string	fName;
@@ -147,7 +147,7 @@ class export guidoelement : public ctree<guidoelement>, public visitable
 		virtual bool operator !=(const Sguidoelement& i) const		{ return !(*this == i); }
 };
 
-export std::ostream& operator << (std::ostream& os, const Sguidoelement& elt);
+gar_export std::ostream& operator << (std::ostream& os, const Sguidoelement& elt);
 
 } // namespace
 

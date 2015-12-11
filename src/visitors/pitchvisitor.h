@@ -46,7 +46,7 @@ namespace guido
 /*!
 \brief	A visitor to extract the pitch of a score voice
 */
-class export pitchvisitor :
+class gar_export pitchvisitor :
 	public visitor<SARVoice>,
 	public visitor<SARChord>,
 	public visitor<SARNote>

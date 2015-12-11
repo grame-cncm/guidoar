@@ -43,7 +43,7 @@ namespace guido
 /*!
 \brief A visitor that cuts the tail of a score.
 */
-class export headOperation : 
+class gar_export headOperation :
 	public operation,
 	public clonevisitor
 {		

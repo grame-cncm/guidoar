@@ -39,7 +39,7 @@ namespace guido
 /*!
 \brief A visitor to stretch a score.
 */
-class export durationOperation : 
+class gar_export durationOperation :
 	public operation,
 	public clonevisitor
 {		

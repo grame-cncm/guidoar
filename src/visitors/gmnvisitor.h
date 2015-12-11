@@ -43,7 +43,7 @@ namespace guido
 /*!
 \brief	A visitor to print the gmn description
 */
-class export gmnvisitor :
+class gar_export gmnvisitor :
 	public visitor<Sguidotag>,
 	public visitor<SARBar>,
 	public visitor<SARRepeatBegin>,

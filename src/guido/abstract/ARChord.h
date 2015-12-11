@@ -43,7 +43,7 @@ class basevisitor;
 /*!
 \brief A Guido chord
 */
-class export ARChord : public guidoelement
+class gar_export ARChord : public guidoelement
 { 
 	public:
 		static SMARTP<ARChord> create();

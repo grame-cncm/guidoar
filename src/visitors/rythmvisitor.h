@@ -45,7 +45,7 @@ namespace guido
 /*!
 \brief	A visitor to extract the rythm of a score voice
 */
-class export rythmvisitor :
+class gar_export rythmvisitor :
 	public visitor<SARVoice>,
 	public visitor<SARChord>,
 	public visitor<SARNote>

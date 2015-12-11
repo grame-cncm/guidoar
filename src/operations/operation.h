@@ -39,7 +39,7 @@ namespace guido
 /*!
 \brief	A visitor to print the gmn description
 */
-class export operation
+class gar_export operation
 {
     public:
 				 operation() {}
