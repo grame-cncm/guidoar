@@ -1,8 +1,8 @@
-/* A Bison parser, made by GNU Bison 3.0.2.  */
+/* A Bison parser, made by GNU Bison 3.0.4.  */
 
 /* Bison implementation for Yacc-like parsers in C
 
-   Copyright (C) 1984, 1989-1990, 2000-2013 Free Software Foundation, Inc.
+   Copyright (C) 1984, 1989-1990, 2000-2015 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@
 #define YYBISON 1
 
 /* Bison version.  */
-#define YYBISON_VERSION "3.0.2"
+#define YYBISON_VERSION "3.0.4"
 
 /* Skeleton name.  */
 #define YYSKELETON_NAME "yacc.c"
@@ -188,10 +188,10 @@ extern int guidoardebug;
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef union YYSTYPE YYSTYPE;
+
 union YYSTYPE
 {
-#line 50 "guido.y" /* yacc.c:355  */
+#line 48 "guido.y" /* yacc.c:355  */
          
 	long int		num;
 	float			real;
@@ -206,6 +206,8 @@ union YYSTYPE
 
 #line 208 "guidoparse.c++" /* yacc.c:355  */
 };
+
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif
@@ -219,7 +221,7 @@ int guidoarparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 223 "guidoparse.c++" /* yacc.c:358  */
+#line 225 "guidoparse.c++" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -459,18 +461,18 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  9
+#define YYFINAL  10
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   105
+#define YYLAST   107
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  37
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  35
+#define YYNNTS  36
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  75
+#define YYNRULES  76
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  111
+#define YYNSTATES  112
 
 /* YYTRANSLATE[YYX] -- Symbol number corresponding to YYX as returned
    by yylex, with out-of-bounds checking.  */
@@ -520,14 +522,14 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,   125,   125,   126,   127,   130,   131,   134,   137,   138,
-     139,   140,   145,   146,   149,   150,   153,   156,   159,   160,
-     161,   164,   165,   166,   167,   168,   169,   172,   173,   176,
-     177,   184,   187,   188,   191,   192,   193,   194,   197,   198,
-     201,   204,   205,   211,   212,   215,   216,   219,   220,   223,
-     224,   227,   228,   229,   230,   233,   234,   237,   238,   241,
-     242,   245,   246,   247,   248,   251,   252,   253,   259,   261,
-     263,   265,   267,   269,   270,   271
+       0,   122,   122,   126,   127,   128,   131,   132,   135,   138,
+     139,   140,   141,   146,   147,   150,   151,   154,   157,   160,
+     161,   162,   165,   166,   167,   168,   169,   170,   173,   174,
+     177,   178,   185,   188,   189,   192,   193,   194,   195,   198,
+     199,   202,   205,   206,   212,   213,   216,   217,   220,   221,
+     224,   225,   228,   229,   230,   231,   234,   235,   238,   239,
+     242,   243,   246,   247,   248,   249,   252,   253,   254,   260,
+     262,   264,   266,   268,   270,   271,   272
 };
 #endif
 
@@ -541,12 +543,12 @@ static const char *const yytname[] =
   "STARTRANGE", "ENDRANGE", "SEP", "IDSEP", "BAR", "TAGNAME", "ID",
   "DIATONIC", "CHROMATIC", "SOLFEGE", "EMPTY", "REST", "DOT", "DDOT",
   "SHARP", "FLAT", "MLS", "SEC", "UNIT", "MULT", "DIV", "EQUAL", "STRING",
-  "EXTRA", "$accept", "score", "voicelist", "voice", "symbols", "tag",
-  "positiontag", "rangetag", "tagname", "tagid", "tagarg", "tagparam",
-  "tagparams", "chord", "chordsymbols", "tagchordsymbol", "chordsymbol",
-  "rangechordtag", "taglist", "music", "rest", "note", "noteid",
-  "notename", "accidentals", "accidental", "octave", "duration", "dots",
-  "id", "number", "pnumber", "nnumber", "floatn", "signednumber", YY_NULLPTR
+  "EXTRA", "$accept", "start", "score", "voicelist", "voice", "symbols",
+  "tag", "positiontag", "rangetag", "tagname", "tagid", "tagarg",
+  "tagparam", "tagparams", "chord", "chordsymbols", "tagchordsymbol",
+  "chordsymbol", "rangechordtag", "taglist", "music", "rest", "note",
+  "noteid", "notename", "accidentals", "accidental", "octave", "duration",
+  "dots", "id", "number", "pnumber", "nnumber", "floatn", "signednumber", YY_NULLPTR
 };
 #endif
 
@@ -562,10 +564,10 @@ static const yytype_uint16 yytoknum[] =
 };
 # endif
 
-#define YYPACT_NINF -67
+#define YYPACT_NINF -68
 
 #define yypact_value_is_default(Yystate) \
-  (!!((Yystate) == (-67)))
+  (!!((Yystate) == (-68)))
 
 #define YYTABLE_NINF -1
 
@@ -576,18 +578,18 @@ static const yytype_uint16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-       6,    36,   -67,    14,   -67,   -67,    40,   -67,    50,   -67,
-     -67,    10,    58,   -67,   -67,   -67,   -67,   -67,   -67,   -67,
-      -1,   -67,    16,   -67,    43,    15,   -67,   -67,   -67,   -67,
-      13,    66,   -67,    48,    54,   -67,    46,   -67,    58,   -67,
-      83,    86,    86,    59,   -67,    87,     2,   -67,   -67,   -67,
-     -67,   -67,    13,   -67,    55,   -67,   -67,   -67,   -67,    88,
-      58,   -67,    58,   -67,    46,    48,    46,    80,    60,   -67,
-     -67,   -67,   -67,    29,   -67,   -67,   -67,   -67,   -67,   -67,
-      12,    61,    63,    65,   -67,    55,    59,    85,    84,   -67,
-     -67,    46,    55,    86,   -67,   -67,     2,     2,   -67,   -67,
-      59,   -67,   -67,   -67,    59,   -67,   -67,   -67,   -67,   -67,
-     -67
+      52,     5,   -68,    63,   -68,   -68,   -68,     7,   -68,    50,
+     -68,   -68,    10,    58,   -68,   -68,   -68,   -68,   -68,   -68,
+     -68,    -1,   -68,    16,   -68,    61,    73,   -68,   -68,   -68,
+     -68,    13,    76,   -68,    56,    40,   -68,     8,   -68,    58,
+     -68,    85,    86,    86,    19,   -68,    87,     2,   -68,   -68,
+     -68,   -68,   -68,    13,   -68,    53,   -68,   -68,   -68,   -68,
+      88,    58,   -68,    58,   -68,     8,    56,     8,    80,    60,
+     -68,   -68,   -68,   -68,    29,   -68,   -68,   -68,   -68,   -68,
+     -68,    12,    62,    64,    66,   -68,    53,    19,    82,    84,
+     -68,   -68,     8,    53,    86,   -68,   -68,     2,     2,   -68,
+     -68,    19,   -68,   -68,   -68,    19,   -68,   -68,   -68,   -68,
+     -68,   -68
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -595,36 +597,36 @@ static const yytype_int8 yypact[] =
      means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       0,     0,     8,     0,     4,     2,     0,     5,     0,     1,
-       3,     0,     0,     7,    20,    17,    51,    52,    53,    54,
-      61,    10,    12,    13,    18,    14,    11,     9,    44,    43,
-      59,    49,     6,    41,     0,    32,    34,    39,     0,    38,
-       0,     0,     0,    65,     8,     0,     0,    69,    70,    71,
-      57,    58,    59,    55,    61,    73,    74,    75,    60,     0,
-       0,    31,     0,    41,    36,    42,    35,     0,    63,    64,
-      66,    67,    45,     0,    19,    72,    68,    25,    27,    29,
-       0,    26,    22,    21,    56,    61,    65,     0,     0,    33,
-      42,    37,    61,     0,    16,    15,     0,     0,    24,    23,
-      65,    47,    50,    40,    65,    62,    30,    28,    26,    48,
-      46
+       0,     0,     9,     0,     2,     5,     3,     0,     6,     0,
+       1,     4,     0,     0,     8,    21,    18,    52,    53,    54,
+      55,    62,    11,    13,    14,    19,    15,    12,    10,    45,
+      44,    60,    50,     7,    42,     0,    33,    35,    40,     0,
+      39,     0,     0,     0,    66,     9,     0,     0,    70,    71,
+      72,    58,    59,    60,    56,    62,    74,    75,    76,    61,
+       0,     0,    32,     0,    42,    37,    43,    36,     0,    64,
+      65,    67,    68,    46,     0,    20,    73,    69,    26,    28,
+      30,     0,    27,    23,    22,    57,    62,    66,     0,     0,
+      34,    43,    38,    62,     0,    17,    16,     0,     0,    25,
+      24,    66,    48,    51,    41,    66,    63,    31,    29,    27,
+      49,    47
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -67,   -67,   -67,    11,    56,   -67,    -8,   -67,   -67,   -67,
-       4,     3,   -67,   -67,   -67,   -37,    64,   -67,   -27,    -7,
-     -67,   -67,   -67,   -67,   -67,    51,    52,   -50,   -66,     8,
-     -39,   -67,   -67,   -67,   -19
+     -68,   -68,   -68,   -68,    11,    54,   -68,    -9,   -68,   -68,
+     -68,     3,     6,   -68,   -68,   -68,     1,    65,   -68,   -28,
+      -8,   -68,   -68,   -68,   -68,   -68,    47,    49,   -51,   -67,
+       9,   -40,   -68,   -68,   -68,   -20
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,     3,     6,     4,     8,    21,    33,    23,    24,    25,
-      78,    79,    80,    26,    34,    35,    36,    37,    38,    39,
-      28,    29,    30,    31,    52,    53,    54,    43,    72,    81,
-      55,    56,    57,    82,    83
+      -1,     3,     4,     7,     5,     9,    22,    34,    24,    25,
+      26,    79,    80,    81,    27,    35,    36,    37,    38,    39,
+      40,    29,    30,    31,    32,    53,    54,    55,    44,    73,
+      82,    56,    57,    58,    83,    84
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -632,76 +634,76 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_uint8 yytable[] =
 {
-      22,    27,    68,    69,    86,    47,    48,    49,    75,    64,
-      40,    58,     7,     1,     9,     2,    47,    48,    49,     2,
-     101,    76,    32,    88,    95,    89,    46,    96,    63,    44,
-      65,    41,    42,    58,   109,   100,    12,    77,   110,    91,
-      50,    51,   104,    94,     5,     2,    14,    15,    10,    16,
-      17,    18,    19,    20,   105,    11,    90,    12,    63,    45,
-      13,    60,    61,    14,    15,    22,    27,    14,    15,    62,
-      16,    17,    18,    19,    20,    14,    15,    59,    16,    17,
-      18,    19,    20,    90,    70,    71,    67,    41,    42,    47,
-      74,    87,    92,    93,    98,    97,    99,   102,   103,   106,
-      73,   107,    66,    84,    85,   108
+      23,    28,    69,    70,    87,    48,    49,    50,    76,    65,
+      41,    59,     8,     6,     2,    11,    48,    49,    50,     2,
+     102,    77,    12,    33,    96,    15,    16,    97,    64,    45,
+      66,    42,    43,    59,   110,   101,    13,    78,   111,    92,
+      51,    52,   105,    95,    71,    72,    15,    16,    62,    17,
+      18,    19,    20,    21,   106,    63,    91,    13,    64,     1,
+      14,     2,    89,    10,    90,    23,    28,    15,    16,    61,
+      17,    18,    19,    20,    21,    15,    16,    46,    17,    18,
+      19,    20,    21,    91,    47,    42,    43,    60,    68,    48,
+      75,    88,    93,    94,   103,    99,    98,   100,   104,    74,
+      85,   108,    86,   107,    67,     0,     0,   109
 };
 
-static const yytype_uint8 yycheck[] =
+static const yytype_int8 yycheck[] =
 {
-       8,     8,    41,    42,    54,     3,     4,     5,     6,    36,
-      11,    30,     1,     7,     0,     9,     3,     4,     5,     9,
-      86,    19,    11,    60,    12,    62,    11,    15,    36,    13,
-      38,    32,    33,    52,   100,    85,     7,    35,   104,    66,
-      27,    28,    92,    14,     8,     9,    17,    18,     8,    20,
-      21,    22,    23,    24,    93,    15,    64,     7,    66,    16,
-      10,    13,     8,    17,    18,    73,    73,    17,    18,    15,
-      20,    21,    22,    23,    24,    17,    18,    11,    20,    21,
-      22,    23,    24,    91,    25,    26,     3,    32,    33,     3,
-       3,     3,    12,    33,    31,    34,    31,    12,    14,    96,
-      44,    97,    38,    52,    52,    97
+       9,     9,    42,    43,    55,     3,     4,     5,     6,    37,
+      11,    31,     1,     8,     9,     8,     3,     4,     5,     9,
+      87,    19,    15,    12,    12,    17,    18,    15,    37,    13,
+      39,    32,    33,    53,   101,    86,     7,    35,   105,    67,
+      27,    28,    93,    14,    25,    26,    17,    18,     8,    20,
+      21,    22,    23,    24,    94,    15,    65,     7,    67,     7,
+      10,     9,    61,     0,    63,    74,    74,    17,    18,    13,
+      20,    21,    22,    23,    24,    17,    18,    16,    20,    21,
+      22,    23,    24,    92,    11,    32,    33,    11,     3,     3,
+       3,     3,    12,    33,    12,    31,    34,    31,    14,    45,
+      53,    98,    53,    97,    39,    -1,    -1,    98
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,     7,     9,    38,    40,     8,    39,    40,    41,     0,
-       8,    15,     7,    10,    17,    18,    20,    21,    22,    23,
-      24,    42,    43,    44,    45,    46,    50,    56,    57,    58,
-      59,    60,    40,    43,    51,    52,    53,    54,    55,    56,
-      11,    32,    33,    64,    13,    16,    11,     3,     4,     5,
-      27,    28,    61,    62,    63,    67,    68,    69,    71,    11,
-      13,     8,    15,    43,    55,    43,    53,     3,    67,    67,
-      25,    26,    65,    41,     3,     6,    19,    35,    47,    48,
-      49,    66,    70,    71,    62,    63,    64,     3,    52,    52,
-      43,    55,    12,    33,    14,    12,    15,    34,    31,    31,
-      64,    65,    12,    14,    64,    67,    48,    47,    66,    65,
-      65
+       0,     7,     9,    38,    39,    41,     8,    40,    41,    42,
+       0,     8,    15,     7,    10,    17,    18,    20,    21,    22,
+      23,    24,    43,    44,    45,    46,    47,    51,    57,    58,
+      59,    60,    61,    41,    44,    52,    53,    54,    55,    56,
+      57,    11,    32,    33,    65,    13,    16,    11,     3,     4,
+       5,    27,    28,    62,    63,    64,    68,    69,    70,    72,
+      11,    13,     8,    15,    44,    56,    44,    54,     3,    68,
+      68,    25,    26,    66,    42,     3,     6,    19,    35,    48,
+      49,    50,    67,    71,    72,    63,    64,    65,     3,    53,
+      53,    44,    56,    12,    33,    14,    12,    15,    34,    31,
+      31,    65,    66,    12,    14,    65,    68,    49,    48,    67,
+      66,    66
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    37,    38,    38,    38,    39,    39,    40,    41,    41,
-      41,    41,    42,    42,    43,    43,    44,    45,    46,    46,
-      46,    47,    47,    47,    47,    47,    47,    48,    48,    49,
-      49,    50,    51,    51,    52,    52,    52,    52,    53,    53,
-      54,    55,    55,    56,    56,    57,    57,    58,    58,    59,
-      59,    60,    60,    60,    60,    61,    61,    62,    62,    63,
-      63,    64,    64,    64,    64,    65,    65,    65,    66,    67,
-      68,    69,    70,    71,    71,    71
+       0,    37,    38,    39,    39,    39,    40,    40,    41,    42,
+      42,    42,    42,    43,    43,    44,    44,    45,    46,    47,
+      47,    47,    48,    48,    48,    48,    48,    48,    49,    49,
+      50,    50,    51,    52,    52,    53,    53,    53,    53,    54,
+      54,    55,    56,    56,    57,    57,    58,    58,    59,    59,
+      60,    60,    61,    61,    61,    61,    62,    62,    63,    63,
+      64,    64,    65,    65,    65,    65,    66,    66,    66,    67,
+      68,    69,    70,    71,    72,    72,    72
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
-       0,     2,     2,     3,     1,     1,     3,     3,     0,     2,
-       2,     2,     1,     1,     1,     4,     4,     1,     1,     3,
-       1,     1,     1,     2,     2,     1,     1,     1,     3,     1,
-       3,     3,     1,     3,     1,     2,     2,     3,     1,     1,
-       4,     1,     2,     1,     1,     3,     6,     4,     5,     1,
-       4,     1,     1,     1,     1,     1,     2,     1,     1,     0,
-       1,     0,     4,     2,     2,     0,     1,     1,     1,     1,
-       1,     1,     1,     1,     1,     1
+       0,     2,     1,     2,     3,     1,     1,     3,     3,     0,
+       2,     2,     2,     1,     1,     1,     4,     4,     1,     1,
+       3,     1,     1,     1,     2,     2,     1,     1,     1,     3,
+       1,     3,     3,     1,     3,     1,     2,     2,     3,     1,
+       1,     4,     1,     2,     1,     1,     3,     6,     4,     5,
+       1,     4,     1,     1,     1,     1,     1,     2,     1,     1,
+       0,     1,     0,     4,     2,     2,     0,     1,     1,     1,
+       1,     1,     1,     1,     1,     1,     1
 };
 
 
@@ -1378,451 +1380,457 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 125 "guido.y" /* yacc.c:1646  */
-    { debug("new score"); (yyval.elt) = gReader->newScore(); }
-#line 1384 "guidoparse.c++" /* yacc.c:1646  */
+#line 122 "guido.y" /* yacc.c:1646  */
+    {delete (yyvsp[0].elt);}
+#line 1386 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 3:
 #line 126 "guido.y" /* yacc.c:1646  */
-    { debug("score voicelist"); (yyval.elt) = gReader->newScore(); addElt(*(yyval.elt), (yyvsp[-1].velt)); }
-#line 1390 "guidoparse.c++" /* yacc.c:1646  */
+    { debug("new score"); (yyval.elt) = gReader->newScore(); }
+#line 1392 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 4:
 #line 127 "guido.y" /* yacc.c:1646  */
-    { debug("score voice"); (yyval.elt) = gReader->newScore(); addElt(*(yyval.elt), (yyvsp[0].elt)); }
-#line 1396 "guidoparse.c++" /* yacc.c:1646  */
+    { debug("score voicelist"); (yyval.elt) = gReader->newScore(); addElt(*(yyval.elt), (yyvsp[-1].velt)); }
+#line 1398 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 130 "guido.y" /* yacc.c:1646  */
-    { debug("new voicelist"); (yyval.velt) = new vector<Sguidoelement>; (yyval.velt)->push_back (*(yyvsp[0].elt)); delete (yyvsp[0].elt); }
-#line 1402 "guidoparse.c++" /* yacc.c:1646  */
+#line 128 "guido.y" /* yacc.c:1646  */
+    { debug("score voice"); (yyval.elt) = gReader->newScore(); addElt(*(yyval.elt), (yyvsp[0].elt)); }
+#line 1404 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 6:
 #line 131 "guido.y" /* yacc.c:1646  */
-    { debug("add voicelist"); (yyval.velt) = (yyvsp[-2].velt); (yyval.velt)->push_back (*(yyvsp[0].elt)); delete (yyvsp[0].elt); }
-#line 1408 "guidoparse.c++" /* yacc.c:1646  */
+    { debug("new voicelist"); (yyval.velt) = new vector<Sguidoelement>; (yyval.velt)->push_back (*(yyvsp[0].elt)); delete (yyvsp[0].elt); }
+#line 1410 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 134 "guido.y" /* yacc.c:1646  */
-    { debug("new voice"); (yyval.elt) = gReader->newVoice(); addElt(*(yyval.elt), (yyvsp[-1].velt)); }
-#line 1414 "guidoparse.c++" /* yacc.c:1646  */
+#line 132 "guido.y" /* yacc.c:1646  */
+    { debug("add voicelist"); (yyval.velt) = (yyvsp[-2].velt); (yyval.velt)->push_back (*(yyvsp[0].elt)); delete (yyvsp[0].elt); }
+#line 1416 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 137 "guido.y" /* yacc.c:1646  */
-    { debug("new symbols"); (yyval.velt) = new vector<Sguidoelement>; }
-#line 1420 "guidoparse.c++" /* yacc.c:1646  */
+#line 135 "guido.y" /* yacc.c:1646  */
+    { debug("new voice"); (yyval.elt) = gReader->newVoice(); addElt(*(yyval.elt), (yyvsp[-1].velt)); }
+#line 1422 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 9:
 #line 138 "guido.y" /* yacc.c:1646  */
-    { debug("add music"); (yyval.velt) = (yyvsp[-1].velt); (yyval.velt)->push_back(*(yyvsp[0].elt)); delete (yyvsp[0].elt); }
-#line 1426 "guidoparse.c++" /* yacc.c:1646  */
+    { debug("new symbols"); (yyval.velt) = new vector<Sguidoelement>; }
+#line 1428 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 10:
 #line 139 "guido.y" /* yacc.c:1646  */
-    { debug("add tag"); (yyval.velt) = (yyvsp[-1].velt); (yyval.velt)->push_back(*(yyvsp[0].elt)); delete (yyvsp[0].elt); }
-#line 1432 "guidoparse.c++" /* yacc.c:1646  */
+    { debug("add music"); (yyval.velt) = (yyvsp[-1].velt); (yyval.velt)->push_back(*(yyvsp[0].elt)); delete (yyvsp[0].elt); }
+#line 1434 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 11:
 #line 140 "guido.y" /* yacc.c:1646  */
-    { debug("add chord"); (yyval.velt) = (yyvsp[-1].velt); (yyval.velt)->push_back(*(yyvsp[0].elt)); delete (yyvsp[0].elt); }
-#line 1438 "guidoparse.c++" /* yacc.c:1646  */
+    { debug("add tag"); (yyval.velt) = (yyvsp[-1].velt); (yyval.velt)->push_back(*(yyvsp[0].elt)); delete (yyvsp[0].elt); }
+#line 1440 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 145 "guido.y" /* yacc.c:1646  */
-    { debug("position tag "); (yyval.elt) = (yyvsp[0].elt); }
-#line 1444 "guidoparse.c++" /* yacc.c:1646  */
+#line 141 "guido.y" /* yacc.c:1646  */
+    { debug("add chord"); (yyval.velt) = (yyvsp[-1].velt); (yyval.velt)->push_back(*(yyvsp[0].elt)); delete (yyvsp[0].elt); }
+#line 1446 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 13:
 #line 146 "guido.y" /* yacc.c:1646  */
-    { debug("range tag "); (yyval.elt) = (yyvsp[0].elt); }
-#line 1450 "guidoparse.c++" /* yacc.c:1646  */
+    { debug("position tag "); (yyval.elt) = (yyvsp[0].elt); }
+#line 1452 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 149 "guido.y" /* yacc.c:1646  */
-    { debug("new position tag "); (yyval.elt) = (yyvsp[0].elt); }
-#line 1456 "guidoparse.c++" /* yacc.c:1646  */
+#line 147 "guido.y" /* yacc.c:1646  */
+    { debug("range tag "); (yyval.elt) = (yyvsp[0].elt); }
+#line 1458 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 15:
 #line 150 "guido.y" /* yacc.c:1646  */
-    { debug("new tag + params"); (yyval.elt) = (yyvsp[-3].elt); (*(yyvsp[-3].elt))->add (*(yyvsp[-1].vattr)); delete (yyvsp[-1].vattr); }
-#line 1462 "guidoparse.c++" /* yacc.c:1646  */
+    { debug("new position tag "); (yyval.elt) = (yyvsp[0].elt); }
+#line 1464 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 153 "guido.y" /* yacc.c:1646  */
-    { debug("new range tag "); (yyval.elt) = (yyvsp[-3].elt); (*(yyvsp[-3].elt))->push (*(yyvsp[-1].velt)); delete (yyvsp[-1].velt); }
-#line 1468 "guidoparse.c++" /* yacc.c:1646  */
+#line 151 "guido.y" /* yacc.c:1646  */
+    { debug("new tag + params"); (yyval.elt) = (yyvsp[-3].elt); (*(yyvsp[-3].elt))->add (*(yyvsp[-1].vattr)); delete (yyvsp[-1].vattr); }
+#line 1470 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 156 "guido.y" /* yacc.c:1646  */
-    { debug("tag name "); (yyval.str) = new string(guidoartext); }
-#line 1474 "guidoparse.c++" /* yacc.c:1646  */
+#line 154 "guido.y" /* yacc.c:1646  */
+    { debug("new range tag "); (yyval.elt) = (yyvsp[-3].elt); (*(yyvsp[-3].elt))->push (*(yyvsp[-1].velt)); delete (yyvsp[-1].velt); }
+#line 1476 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 159 "guido.y" /* yacc.c:1646  */
-    { vdebug("new tag", *(yyvsp[0].str)); (yyval.elt) = gReader->newTag(*(yyvsp[0].str), 0); delete (yyvsp[0].str); if (!(yyval.elt)) { guidoarerror("unknown tag"); YYERROR;} }
-#line 1480 "guidoparse.c++" /* yacc.c:1646  */
+#line 157 "guido.y" /* yacc.c:1646  */
+    { debug("tag name "); (yyval.str) = new string(guidoartext); }
+#line 1482 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 19:
 #line 160 "guido.y" /* yacc.c:1646  */
-    { debug("new tag::id"); (yyval.elt) = gReader->newTag(*(yyvsp[-2].str), (yyvsp[-1].c)); delete (yyvsp[-2].str); if (!(yyval.elt)) { guidoarerror("unknown tag"); YYERROR;} }
-#line 1486 "guidoparse.c++" /* yacc.c:1646  */
+    { vdebug("new tag", *(yyvsp[0].str)); (yyval.elt) = gReader->newTag(*(yyvsp[0].str), 0); delete (yyvsp[0].str); if (!(yyval.elt)) { guidoarerror("unknown tag"); YYERROR;} }
+#line 1488 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 20:
 #line 161 "guido.y" /* yacc.c:1646  */
-    { debug("new bar"); (yyval.elt) = gReader->newTag("bar", 0); }
-#line 1492 "guidoparse.c++" /* yacc.c:1646  */
+    { debug("new tag::id"); (yyval.elt) = gReader->newTag(*(yyvsp[-2].str), (yyvsp[-1].c)); delete (yyvsp[-2].str); if (!(yyval.elt)) { guidoarerror("unknown tag"); YYERROR;} }
+#line 1494 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 164 "guido.y" /* yacc.c:1646  */
-    { debug("new signednumber arg"); (yyval.attr) = gReader->newAttribute((yyvsp[0].num)); }
-#line 1498 "guidoparse.c++" /* yacc.c:1646  */
+#line 162 "guido.y" /* yacc.c:1646  */
+    { debug("new bar"); (yyval.elt) = gReader->newTag("bar", 0); }
+#line 1500 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 22:
 #line 165 "guido.y" /* yacc.c:1646  */
-    { debug("new FLOAT arg"); (yyval.attr) = gReader->newAttribute((yyvsp[0].real)); }
-#line 1504 "guidoparse.c++" /* yacc.c:1646  */
+    { debug("new signednumber arg"); (yyval.attr) = gReader->newAttribute((yyvsp[0].num)); }
+#line 1506 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 23:
 #line 166 "guido.y" /* yacc.c:1646  */
-    { debug("new signednumber UNIT arg"); (yyval.attr) = gReader->newAttribute((yyvsp[-1].num)); (*(yyval.attr))->setUnit(guidoartext); }
-#line 1510 "guidoparse.c++" /* yacc.c:1646  */
+    { debug("new FLOAT arg"); (yyval.attr) = gReader->newAttribute((yyvsp[0].real)); }
+#line 1512 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 24:
 #line 167 "guido.y" /* yacc.c:1646  */
-    { debug("new FLOAT UNIT arg"); (yyval.attr) = gReader->newAttribute((yyvsp[-1].real)); (*(yyval.attr))->setUnit(guidoartext); }
-#line 1516 "guidoparse.c++" /* yacc.c:1646  */
+    { debug("new signednumber UNIT arg"); (yyval.attr) = gReader->newAttribute((yyvsp[-1].num)); (*(yyval.attr))->setUnit(guidoartext); }
+#line 1518 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 25:
 #line 168 "guido.y" /* yacc.c:1646  */
-    { debug("new STRING arg"); (yyval.attr) = gReader->newAttribute(guidoartext, true); }
-#line 1522 "guidoparse.c++" /* yacc.c:1646  */
+    { debug("new FLOAT UNIT arg"); (yyval.attr) = gReader->newAttribute((yyvsp[-1].real)); (*(yyval.attr))->setUnit(guidoartext); }
+#line 1524 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 26:
 #line 169 "guido.y" /* yacc.c:1646  */
-    { debug("new ID arg"); (yyval.attr) = gReader->newAttribute(*(yyvsp[0].str), false); delete (yyvsp[0].str); }
-#line 1528 "guidoparse.c++" /* yacc.c:1646  */
+    { debug("new STRING arg"); (yyval.attr) = gReader->newAttribute(guidoartext, true); }
+#line 1530 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 27:
-#line 172 "guido.y" /* yacc.c:1646  */
-    { (yyval.attr) = (yyvsp[0].attr); }
-#line 1534 "guidoparse.c++" /* yacc.c:1646  */
+#line 170 "guido.y" /* yacc.c:1646  */
+    { debug("new ID arg"); (yyval.attr) = gReader->newAttribute(*(yyvsp[0].str), false); delete (yyvsp[0].str); }
+#line 1536 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 28:
 #line 173 "guido.y" /* yacc.c:1646  */
-    { (yyval.attr) = (yyvsp[0].attr); (*(yyvsp[0].attr))->setName(*(yyvsp[-2].str)); delete (yyvsp[-2].str); }
-#line 1540 "guidoparse.c++" /* yacc.c:1646  */
+    { (yyval.attr) = (yyvsp[0].attr); }
+#line 1542 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 29:
-#line 176 "guido.y" /* yacc.c:1646  */
-    { (yyval.vattr) = new vector<Sguidoattribute>; (yyval.vattr)->push_back(*(yyvsp[0].attr)); delete (yyvsp[0].attr); }
-#line 1546 "guidoparse.c++" /* yacc.c:1646  */
+#line 174 "guido.y" /* yacc.c:1646  */
+    { (yyval.attr) = (yyvsp[0].attr); (*(yyvsp[0].attr))->setName(*(yyvsp[-2].str)); delete (yyvsp[-2].str); }
+#line 1548 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 30:
 #line 177 "guido.y" /* yacc.c:1646  */
-    { (yyval.vattr) = (yyvsp[-2].vattr); (yyval.vattr)->push_back(*(yyvsp[0].attr)); delete (yyvsp[0].attr); }
-#line 1552 "guidoparse.c++" /* yacc.c:1646  */
+    { (yyval.vattr) = new vector<Sguidoattribute>; (yyval.vattr)->push_back(*(yyvsp[0].attr)); delete (yyvsp[0].attr); }
+#line 1554 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 31:
-#line 184 "guido.y" /* yacc.c:1646  */
-    { debug("new chord"); (yyval.elt) = gReader->newChord(); (*(yyval.elt))->push(*(yyvsp[-1].velt)); delete (yyvsp[-1].velt); }
-#line 1558 "guidoparse.c++" /* yacc.c:1646  */
+#line 178 "guido.y" /* yacc.c:1646  */
+    { (yyval.vattr) = (yyvsp[-2].vattr); (yyval.vattr)->push_back(*(yyvsp[0].attr)); delete (yyvsp[0].attr); }
+#line 1560 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 32:
-#line 187 "guido.y" /* yacc.c:1646  */
-    { (yyval.velt) = new vector<Sguidoelement>; vadd((yyval.velt), (yyvsp[0].velt)); delete (yyvsp[0].velt); }
-#line 1564 "guidoparse.c++" /* yacc.c:1646  */
+#line 185 "guido.y" /* yacc.c:1646  */
+    { debug("new chord"); (yyval.elt) = gReader->newChord(); (*(yyval.elt))->push(*(yyvsp[-1].velt)); delete (yyvsp[-1].velt); }
+#line 1566 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 33:
 #line 188 "guido.y" /* yacc.c:1646  */
-    { (yyval.velt) = (yyvsp[-2].velt); vadd((yyval.velt), (yyvsp[0].velt)); delete (yyvsp[0].velt); }
-#line 1570 "guidoparse.c++" /* yacc.c:1646  */
+    { (yyval.velt) = new vector<Sguidoelement>; vadd((yyval.velt), (yyvsp[0].velt)); delete (yyvsp[0].velt); }
+#line 1572 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 34:
-#line 191 "guido.y" /* yacc.c:1646  */
-    { (yyval.velt) = (yyvsp[0].velt);}
-#line 1576 "guidoparse.c++" /* yacc.c:1646  */
+#line 189 "guido.y" /* yacc.c:1646  */
+    { (yyval.velt) = (yyvsp[-2].velt); vadd((yyval.velt), (yyvsp[0].velt)); delete (yyvsp[0].velt); }
+#line 1578 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 35:
 #line 192 "guido.y" /* yacc.c:1646  */
-    { (yyval.velt) = (yyvsp[-1].velt); vadd((yyval.velt), (yyvsp[0].velt)); delete (yyvsp[0].velt); }
-#line 1582 "guidoparse.c++" /* yacc.c:1646  */
+    { (yyval.velt) = (yyvsp[0].velt);}
+#line 1584 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 36:
 #line 193 "guido.y" /* yacc.c:1646  */
     { (yyval.velt) = (yyvsp[-1].velt); vadd((yyval.velt), (yyvsp[0].velt)); delete (yyvsp[0].velt); }
-#line 1588 "guidoparse.c++" /* yacc.c:1646  */
+#line 1590 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 37:
 #line 194 "guido.y" /* yacc.c:1646  */
-    { (yyval.velt) = (yyvsp[-2].velt); vadd((yyval.velt), (yyvsp[-1].velt)); delete (yyvsp[-1].velt); vadd((yyval.velt), (yyvsp[0].velt)); delete (yyvsp[0].velt); }
-#line 1594 "guidoparse.c++" /* yacc.c:1646  */
+    { (yyval.velt) = (yyvsp[-1].velt); vadd((yyval.velt), (yyvsp[0].velt)); delete (yyvsp[0].velt); }
+#line 1596 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 38:
-#line 197 "guido.y" /* yacc.c:1646  */
-    { (yyval.velt) = new vector<Sguidoelement>; (yyval.velt)->push_back(*(yyvsp[0].elt)); delete (yyvsp[0].elt); }
-#line 1600 "guidoparse.c++" /* yacc.c:1646  */
+#line 195 "guido.y" /* yacc.c:1646  */
+    { (yyval.velt) = (yyvsp[-2].velt); vadd((yyval.velt), (yyvsp[-1].velt)); delete (yyvsp[-1].velt); vadd((yyval.velt), (yyvsp[0].velt)); delete (yyvsp[0].velt); }
+#line 1602 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 39:
 #line 198 "guido.y" /* yacc.c:1646  */
     { (yyval.velt) = new vector<Sguidoelement>; (yyval.velt)->push_back(*(yyvsp[0].elt)); delete (yyvsp[0].elt); }
-#line 1606 "guidoparse.c++" /* yacc.c:1646  */
+#line 1608 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 40:
-#line 201 "guido.y" /* yacc.c:1646  */
-    { debug("range chord tag"); (yyval.elt) = (yyvsp[-3].elt); (*(yyval.elt))->push(*(yyvsp[-1].velt)); delete (yyvsp[-1].velt); }
-#line 1612 "guidoparse.c++" /* yacc.c:1646  */
+#line 199 "guido.y" /* yacc.c:1646  */
+    { (yyval.velt) = new vector<Sguidoelement>; (yyval.velt)->push_back(*(yyvsp[0].elt)); delete (yyvsp[0].elt); }
+#line 1614 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 41:
-#line 204 "guido.y" /* yacc.c:1646  */
-    { debug("new taglist 1"); (yyval.velt) = new vector<Sguidoelement>; (yyval.velt)->push_back(*(yyvsp[0].elt)); delete (yyvsp[0].elt); }
-#line 1618 "guidoparse.c++" /* yacc.c:1646  */
+#line 202 "guido.y" /* yacc.c:1646  */
+    { debug("range chord tag"); (yyval.elt) = (yyvsp[-3].elt); (*(yyval.elt))->push(*(yyvsp[-1].velt)); delete (yyvsp[-1].velt); }
+#line 1620 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 42:
 #line 205 "guido.y" /* yacc.c:1646  */
-    { debug("new taglist 2"); (yyval.velt) = (yyvsp[-1].velt); (yyval.velt)->push_back(*(yyvsp[0].elt)); delete (yyvsp[0].elt); }
-#line 1624 "guidoparse.c++" /* yacc.c:1646  */
+    { debug("new taglist 1"); (yyval.velt) = new vector<Sguidoelement>; (yyval.velt)->push_back(*(yyvsp[0].elt)); delete (yyvsp[0].elt); }
+#line 1626 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 43:
-#line 211 "guido.y" /* yacc.c:1646  */
-    { (yyval.elt) = (yyvsp[0].elt); }
-#line 1630 "guidoparse.c++" /* yacc.c:1646  */
+#line 206 "guido.y" /* yacc.c:1646  */
+    { debug("new taglist 2"); (yyval.velt) = (yyvsp[-1].velt); (yyval.velt)->push_back(*(yyvsp[0].elt)); delete (yyvsp[0].elt); }
+#line 1632 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 44:
 #line 212 "guido.y" /* yacc.c:1646  */
     { (yyval.elt) = (yyvsp[0].elt); }
-#line 1636 "guidoparse.c++" /* yacc.c:1646  */
+#line 1638 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 45:
-#line 215 "guido.y" /* yacc.c:1646  */
-    { debug("new rest 1"); (yyval.elt) = gReader->newRest((yyvsp[-1].r), (yyvsp[0].num)); delete (yyvsp[-1].r); }
-#line 1642 "guidoparse.c++" /* yacc.c:1646  */
+#line 213 "guido.y" /* yacc.c:1646  */
+    { (yyval.elt) = (yyvsp[0].elt); }
+#line 1644 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 46:
 #line 216 "guido.y" /* yacc.c:1646  */
-    { debug("new rest 2"); (yyval.elt) = gReader->newRest((yyvsp[-1].r), (yyvsp[0].num)); delete (yyvsp[-1].r); }
-#line 1648 "guidoparse.c++" /* yacc.c:1646  */
+    { debug("new rest 1"); (yyval.elt) = gReader->newRest((yyvsp[-1].r), (yyvsp[0].num)); delete (yyvsp[-1].r); }
+#line 1650 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 47:
-#line 219 "guido.y" /* yacc.c:1646  */
-    { debug("new note v1"); (yyval.elt) = gReader->newNote(*(yyvsp[-3].str), 0, (yyvsp[-2].num), (yyvsp[-1].r), (yyvsp[0].num)); delete (yyvsp[-3].str); delete (yyvsp[-1].r); }
-#line 1654 "guidoparse.c++" /* yacc.c:1646  */
+#line 217 "guido.y" /* yacc.c:1646  */
+    { debug("new rest 2"); (yyval.elt) = gReader->newRest((yyvsp[-1].r), (yyvsp[0].num)); delete (yyvsp[-1].r); }
+#line 1656 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 48:
 #line 220 "guido.y" /* yacc.c:1646  */
-    { debug("new note v2"); (yyval.elt) = gReader->newNote(*(yyvsp[-4].str), (yyvsp[-3].num), (yyvsp[-2].num), (yyvsp[-1].r), (yyvsp[0].num)); delete (yyvsp[-4].str); delete (yyvsp[-1].r); }
-#line 1660 "guidoparse.c++" /* yacc.c:1646  */
+    { debug("new note v1"); (yyval.elt) = gReader->newNote(*(yyvsp[-3].str), 0, (yyvsp[-2].num), (yyvsp[-1].r), (yyvsp[0].num)); delete (yyvsp[-3].str); delete (yyvsp[-1].r); }
+#line 1662 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 49:
-#line 223 "guido.y" /* yacc.c:1646  */
-    { vdebug("notename", *(yyvsp[0].str)); (yyval.str) = (yyvsp[0].str); }
-#line 1666 "guidoparse.c++" /* yacc.c:1646  */
+#line 221 "guido.y" /* yacc.c:1646  */
+    { debug("new note v2"); (yyval.elt) = gReader->newNote(*(yyvsp[-4].str), (yyvsp[-3].num), (yyvsp[-2].num), (yyvsp[-1].r), (yyvsp[0].num)); delete (yyvsp[-4].str); delete (yyvsp[-1].r); }
+#line 1668 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 50:
 #line 224 "guido.y" /* yacc.c:1646  */
-    { (yyval.str) = (yyvsp[-3].str); }
-#line 1672 "guidoparse.c++" /* yacc.c:1646  */
+    { vdebug("notename", *(yyvsp[0].str)); (yyval.str) = (yyvsp[0].str); }
+#line 1674 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 51:
-#line 227 "guido.y" /* yacc.c:1646  */
-    { debug("new diatonic note"); (yyval.str) = new string(guidoartext); }
-#line 1678 "guidoparse.c++" /* yacc.c:1646  */
+#line 225 "guido.y" /* yacc.c:1646  */
+    { (yyval.str) = (yyvsp[-3].str); }
+#line 1680 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 52:
 #line 228 "guido.y" /* yacc.c:1646  */
-    { debug("new chromatic note"); (yyval.str) = new string(guidoartext); }
-#line 1684 "guidoparse.c++" /* yacc.c:1646  */
+    { debug("new diatonic note"); (yyval.str) = new string(guidoartext); }
+#line 1686 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 53:
 #line 229 "guido.y" /* yacc.c:1646  */
-    { debug("new solfege note"); (yyval.str) = new string(guidoartext); }
-#line 1690 "guidoparse.c++" /* yacc.c:1646  */
+    { debug("new chromatic note"); (yyval.str) = new string(guidoartext); }
+#line 1692 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 54:
 #line 230 "guido.y" /* yacc.c:1646  */
-    { debug("new empty note"); (yyval.str) = new string(guidoartext); }
-#line 1696 "guidoparse.c++" /* yacc.c:1646  */
+    { debug("new solfege note"); (yyval.str) = new string(guidoartext); }
+#line 1698 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 55:
-#line 233 "guido.y" /* yacc.c:1646  */
-    { debug("accidental"); (yyval.num) = (yyvsp[0].num); }
-#line 1702 "guidoparse.c++" /* yacc.c:1646  */
+#line 231 "guido.y" /* yacc.c:1646  */
+    { debug("new empty note"); (yyval.str) = new string(guidoartext); }
+#line 1704 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 56:
 #line 234 "guido.y" /* yacc.c:1646  */
-    { debug("accidentals"); (yyval.num) = (yyvsp[-1].num) + (yyvsp[0].num); }
-#line 1708 "guidoparse.c++" /* yacc.c:1646  */
+    { debug("accidental"); (yyval.num) = (yyvsp[0].num); }
+#line 1710 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 57:
-#line 237 "guido.y" /* yacc.c:1646  */
-    { debug("sharp"); (yyval.num) = 1; }
-#line 1714 "guidoparse.c++" /* yacc.c:1646  */
+#line 235 "guido.y" /* yacc.c:1646  */
+    { debug("accidentals"); (yyval.num) = (yyvsp[-1].num) + (yyvsp[0].num); }
+#line 1716 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 58:
 #line 238 "guido.y" /* yacc.c:1646  */
-    { debug("flat"); (yyval.num) = -1; }
-#line 1720 "guidoparse.c++" /* yacc.c:1646  */
+    { debug("sharp"); (yyval.num) = 1; }
+#line 1722 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 59:
-#line 241 "guido.y" /* yacc.c:1646  */
-    { debug("no octave"); (yyval.num) = -1000; }
-#line 1726 "guidoparse.c++" /* yacc.c:1646  */
+#line 239 "guido.y" /* yacc.c:1646  */
+    { debug("flat"); (yyval.num) = -1; }
+#line 1728 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 60:
 #line 242 "guido.y" /* yacc.c:1646  */
-    { debug("octave"); (yyval.num) = (yyvsp[0].num); }
-#line 1732 "guidoparse.c++" /* yacc.c:1646  */
+    { debug("no octave"); (yyval.num) = -1000; }
+#line 1734 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 61:
-#line 245 "guido.y" /* yacc.c:1646  */
-    { debug("implicit duration"); (yyval.r) = new rational(-1, 1); }
-#line 1738 "guidoparse.c++" /* yacc.c:1646  */
+#line 243 "guido.y" /* yacc.c:1646  */
+    { debug("octave"); (yyval.num) = (yyvsp[0].num); }
+#line 1740 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 62:
 #line 246 "guido.y" /* yacc.c:1646  */
-    { debug("duration ./."); (yyval.r) = new rational((yyvsp[-2].num), (yyvsp[0].num)); }
-#line 1744 "guidoparse.c++" /* yacc.c:1646  */
+    { debug("implicit duration"); (yyval.r) = new rational(-1, 1); }
+#line 1746 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 63:
 #line 247 "guido.y" /* yacc.c:1646  */
-    { debug("duration *"); (yyval.r) = new rational((yyvsp[0].num), 1); }
-#line 1750 "guidoparse.c++" /* yacc.c:1646  */
+    { debug("duration ./."); (yyval.r) = new rational((yyvsp[-2].num), (yyvsp[0].num)); }
+#line 1752 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 64:
 #line 248 "guido.y" /* yacc.c:1646  */
-    { debug("duration /"); (yyval.r) = new rational(1, (yyvsp[0].num)); }
-#line 1756 "guidoparse.c++" /* yacc.c:1646  */
+    { debug("duration *"); (yyval.r) = new rational((yyvsp[0].num), 1); }
+#line 1758 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 65:
-#line 251 "guido.y" /* yacc.c:1646  */
-    { debug("dots 0"); (yyval.num) = 0; }
-#line 1762 "guidoparse.c++" /* yacc.c:1646  */
+#line 249 "guido.y" /* yacc.c:1646  */
+    { debug("duration /"); (yyval.r) = new rational(1, (yyvsp[0].num)); }
+#line 1764 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 66:
 #line 252 "guido.y" /* yacc.c:1646  */
-    { debug("dots 1"); (yyval.num) = 1; }
-#line 1768 "guidoparse.c++" /* yacc.c:1646  */
+    { debug("dots 0"); (yyval.num) = 0; }
+#line 1770 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 67:
 #line 253 "guido.y" /* yacc.c:1646  */
-    { debug("dots 2"); (yyval.num) = 2; }
-#line 1774 "guidoparse.c++" /* yacc.c:1646  */
+    { debug("dots 1"); (yyval.num) = 1; }
+#line 1776 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 68:
-#line 259 "guido.y" /* yacc.c:1646  */
-    { (yyval.str) = new string(guidoartext); }
-#line 1780 "guidoparse.c++" /* yacc.c:1646  */
+#line 254 "guido.y" /* yacc.c:1646  */
+    { debug("dots 2"); (yyval.num) = 2; }
+#line 1782 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 69:
-#line 261 "guido.y" /* yacc.c:1646  */
-    { vdebug("NUMBER", guidoartext); (yyval.num) = atol(guidoartext); }
-#line 1786 "guidoparse.c++" /* yacc.c:1646  */
+#line 260 "guido.y" /* yacc.c:1646  */
+    { (yyval.str) = new string(guidoartext); }
+#line 1788 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 70:
-#line 263 "guido.y" /* yacc.c:1646  */
+#line 262 "guido.y" /* yacc.c:1646  */
     { vdebug("NUMBER", guidoartext); (yyval.num) = atol(guidoartext); }
-#line 1792 "guidoparse.c++" /* yacc.c:1646  */
+#line 1794 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 71:
-#line 265 "guido.y" /* yacc.c:1646  */
+#line 264 "guido.y" /* yacc.c:1646  */
     { vdebug("NUMBER", guidoartext); (yyval.num) = atol(guidoartext); }
-#line 1798 "guidoparse.c++" /* yacc.c:1646  */
+#line 1800 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 72:
-#line 267 "guido.y" /* yacc.c:1646  */
-    { (yyval.real) = atof(guidoartext); }
-#line 1804 "guidoparse.c++" /* yacc.c:1646  */
+#line 266 "guido.y" /* yacc.c:1646  */
+    { vdebug("NUMBER", guidoartext); (yyval.num) = atol(guidoartext); }
+#line 1806 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 73:
-#line 269 "guido.y" /* yacc.c:1646  */
-    { (yyval.num) = (yyvsp[0].num); }
-#line 1810 "guidoparse.c++" /* yacc.c:1646  */
+#line 268 "guido.y" /* yacc.c:1646  */
+    { (yyval.real) = atof(guidoartext); }
+#line 1812 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 74:
 #line 270 "guido.y" /* yacc.c:1646  */
     { (yyval.num) = (yyvsp[0].num); }
-#line 1816 "guidoparse.c++" /* yacc.c:1646  */
+#line 1818 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
   case 75:
 #line 271 "guido.y" /* yacc.c:1646  */
     { (yyval.num) = (yyvsp[0].num); }
-#line 1822 "guidoparse.c++" /* yacc.c:1646  */
+#line 1824 "guidoparse.c++" /* yacc.c:1646  */
+    break;
+
+  case 76:
+#line 272 "guido.y" /* yacc.c:1646  */
+    { (yyval.num) = (yyvsp[0].num); }
+#line 1830 "guidoparse.c++" /* yacc.c:1646  */
     break;
 
 
-#line 1826 "guidoparse.c++" /* yacc.c:1646  */
+#line 1834 "guidoparse.c++" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2050,7 +2058,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 273 "guido.y" /* yacc.c:1906  */
+#line 274 "guido.y" /* yacc.c:1906  */
 
 
 } // namespace

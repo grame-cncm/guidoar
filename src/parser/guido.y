@@ -45,8 +45,6 @@ namespace guido
 
 //%pure_parser
 
-%start score
-
 %union {         
 	long int		num;
 	float			real;
@@ -120,6 +118,9 @@ namespace guido
 %type <vattr>	tagparams
 
 %%
+
+start		: score				{delete $1;}
+		;
 
 //_______________________________________________
 score		: STARTCHORD ENDCHORD							{ debug("new score"); $$ = gReader->newScore(); }
