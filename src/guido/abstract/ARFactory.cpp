@@ -221,4 +221,12 @@ ARFactory::ARFactory()
 	fMap["pizz"]		= new newTagFunctor<kTPizz>;
 }
 
+ARFactory::~ARFactory()
+{
+	std::map<std::string, NewTagFunctor*>::const_iterator it = fMap.begin();
+	while( it != fMap.end()){
+		delete it->second;
+	}
+}
+
 } // namespace
