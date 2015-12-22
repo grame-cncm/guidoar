@@ -15,7 +15,6 @@ if(CMAKE_CONFIGURATION_TYPES)
 	set(CMAKE_CONFIGURATION_TYPES Debug Release)
 endif()
  
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -stdlib=libc++")
 if(UNIX)
 	add_definitions(-Wall -DGCC)
 endif()
@@ -29,6 +28,26 @@ if(WIN32)
  endif ()
 endif()
 
+if(APPLE)
+#######################################
+#   iOS support
+	if ( IOS )
+		message (STATUS "Generates project for iOS - Use -DIOS=no to change.")
+		set (CMAKE_XCODE_EFFECTIVE_PLATFORMS "iPhoneOS")
+		set (CMAKE_OSX_ARCHITECTURES "arm64 armv7 armv7s")
+		set (CMAKE_OSX_SYSROOT "iphoneos")
+		set (libtype STATIC)
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
+	else ()
+		message (STATUS "Generates Mac OS project- Use -DIOS=yes to change.")
+	 	#######################################
+		set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
+		set (CMAKE_C++_FLAGS -mmacosx-version-min=10.7)
+		set (CMAKE_LDFLAGS -mmacosx-version-min=10.7)
+		set (CMAKE_OSX_DEPLOYMENT_TARGET 10.7)
+		set (MACOSX_DEPLOYMENT_TARGET 10.7)
+	endif ()
+endif()
 
 #######################################
 # set directories, src and headers.
@@ -66,28 +85,35 @@ if(WIN32)
 	set(LIBCONTENT ${LIBCONTENT} ${GAR}/rsrc/libguidoar.rc)
 endif()
 
-add_library(${target} SHARED ${LIBCONTENT})
-set_target_properties (${target} PROPERTIES DEFINE_SYMBOL GUIDOAR_EXPORTS)
-set_target_properties (${target} PROPERTIES PUBLIC_HEADER "${COREH}")
-set_target_properties (${target} PROPERTIES 
+if (IOS)
+	add_library(${target} STATIC ${LIBCONTENT})
+
+else()
+	add_library(${target} SHARED ${LIBCONTENT})
+	set_target_properties (${target} PROPERTIES DEFINE_SYMBOL GUIDOAR_EXPORTS)
+	set_target_properties (${target} PROPERTIES PUBLIC_HEADER "${COREH}")
+	set_target_properties (${target} PROPERTIES 
 			FRAMEWORK TRUE 
 			FRAMEWORK_VERSION A
 			MACOSX_FRAMEWORK_SHORT_VERSION_STRING ${VERSIONSTR}
 			MACOSX_FRAMEWORK_BUNDLE_VERSION ${VERSION}
-)
+	)
+endif()
 
 if(APPLE)
-	set (MSH "-L${GARSRC}/midisharelight/macos -lmidisharelight")
+	set (LINK "-L${GARSRC}/midisharelight/macos -lmidisharelight -lc++")
 elseif(UNIX)
-	set (MSH "-L/usr/local/lib -lmidisharelight")
+	set (LINK "-L/usr/local/lib -lmidisharelight")
 elseif(WIN32)
-	set (MSH "${GARSRC}/midisharelight/${WIN}/midisharelight.lib")
+	set (LINK "${GARSRC}/midisharelight/${WIN}/midisharelight.lib")
 endif()
-target_link_libraries( ${target} ${MSH})
+target_link_libraries( ${target} ${LINK})
 
 
 #######################################
 # set tools targets
+if (NOT IOS)
+
 file (GLOB TOOLS RELATIVE ${GARTOOLS} "${GARTOOLS}/*.cpp")
 
 foreach(toolcpp ${TOOLS})
@@ -100,6 +126,7 @@ endforeach()
 if(${USEMidiShare})
 	target_link_libraries( guido2midi ${MSH})
 	set_target_properties (guido2midi PROPERTIES COMPILE_FLAGS -I/usr/local/include)
+endif()
 endif()
 
 
