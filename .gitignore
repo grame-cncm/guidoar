@@ -1,3 +1,7 @@
 .DS_Store
 *~
-
+build/guidoar.framework/
+build/guidoar.tgz
+build/ios/
+build/libguidoar.a
+build/macos/
