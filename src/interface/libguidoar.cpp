@@ -248,6 +248,7 @@ gar_export rational guidoDuration(const char* gmn)
 }
 
 //----------------------------------------------------------------------------
+#ifdef MIDIEXPORT
 gar_export garErr guido2midifile(const char* gmn, const char* file)
 {
 	Sguidoelement score =  read(gmn); 
@@ -256,6 +257,7 @@ gar_export garErr guido2midifile(const char* gmn, const char* file)
 	midiconverter mc;
 	return mc.score2midifile(score, file) ? kNoErr : kOperationFailed; 
 }
+#endif
 
 //----------------------------------------------------------------------------
 gar_export bool guidocheck(const char* gmn)
