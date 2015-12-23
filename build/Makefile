@@ -105,6 +105,9 @@ $(IOS)/guidoar.xcodeproj : CMakeLists.txt
 macclean :
 	rm -rf $(IOS) $(MACX) $(OUT)
 
+iosclean :
+	rm -rf $(IOS) libguidoar.a
+
 #===============================================================
 # building the library on windows
 #===============================================================
