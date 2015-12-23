@@ -5,3 +5,6 @@ build/guidoar.tgz
 build/ios/
 build/libguidoar.a
 build/macos/
+build/android/libguidoar.so
+build/android/libs/
+build/android/obj/
