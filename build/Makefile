@@ -179,3 +179,7 @@ linuxclean:
 android :
 	ndk-build -C android -j 4
 	cp android/libs/armeabi/libguidoar.so android
+	
+androidclean:
+	cd android && rm -rf libguidoar.so libs obj
+
