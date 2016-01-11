@@ -1,9 +1,18 @@
 ----------------------------------------------------------------------
-Compiling the GuidoAr library
+
+      GuidoAr library
+
+      A library providing a simple memory representation and a consistent
+      way to browse and transform Guido Music Notation scores. 
+      It provides also a set of score level manipulation operations 
+      (like putting scores in sequence, in parallel, stretching etc.).
+
+      Copyright 2009-2016 (c) Grame 
+
 ----------------------------------------------------------------------
 
 ======================================================================
-1) Compiling the GUIDOEngine
+1) Compiling the GuidoAR library
 ----------------------------------------------------------------------
 GuidoAR relies on CMake, a cross-platform, open-source build 
 system ( see http://www.cmake.org/).
