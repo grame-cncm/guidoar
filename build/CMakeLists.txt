@@ -8,8 +8,8 @@ set(target guidoar)
 
 #######################################
 # version management
-set (VERSION "0.90")
-set (VERSIONSTR "v.0.90")
+set (VERSION "1.00")
+set (VERSIONSTR "v.1.00")
 
 if(CMAKE_CONFIGURATION_TYPES)
 	set(CMAKE_CONFIGURATION_TYPES Debug Release)
@@ -19,6 +19,8 @@ if(UNIX)
 	add_definitions(-Wall -DGCC)
 endif()
 
+#######################################
+# windows support
 if(WIN32)
  add_definitions(-DWINVER=0x0400 -DWIN32)
  if (${CMAKE_GENERATOR} MATCHES ".*Win64")
@@ -27,6 +29,7 @@ if(WIN32)
   set (WIN win32)
  endif ()
 endif()
+
 
 if(APPLE)
 #######################################
@@ -37,7 +40,7 @@ if(APPLE)
 		set (CMAKE_OSX_ARCHITECTURES "arm64 armv7 armv7s")
 		set (CMAKE_OSX_SYSROOT "iphoneos")
 		set (libtype STATIC)
-		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
+		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DGUIDOAR_EXPORTS -stdlib=libc++")
 	else ()
 		message (STATUS "Generates Mac OS project- Use -DIOS=yes to change.")
 	 	#######################################
@@ -75,6 +78,26 @@ endforeach(folder)
 # set includes
 include_directories( ${INCL} ${GARSRC}/midisharelight)
 #set_source_files_properties (${COREH} PROPERTIES HEADER_FILE_ONLY TRUE)
+
+#######################################
+# midi export support
+if (MIDIEXPORT STREQUAL "yes")
+	message (STATUS "MIDI export will be generated (requires MidiShareLight) - Use -DMIDIEXPORT=no to change.")
+	add_definitions(-DMIDIEXPORT)	
+	if (WIN32)
+		if (${CMAKE_CL_64})
+			set(LINK ${LINK} " ${GARSRC}/midisharelight/win64/midisharelight64.lib")
+		else()
+			set(LINK ${LINK} " ${GARSRC}/midisharelight/win32/midisharelight.lib")
+		endif()
+	elseif(APPLE)
+		set(LINK ${LINK} "-L${GARSRC}/midisharelight/macos -lmidisharelight")
+	elseif(UNIX)
+		set(LINK ${LINK} "-L/usr/local/lib -lmidisharelight")
+	endif (WIN32)
+else()
+	message (STATUS "MIDI export will not be generated - Use -DMIDIEXPORT=yes to change (requires MidiShareLight).")
+endif()
 
 
 #######################################

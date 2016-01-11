@@ -5,3 +5,16 @@ build/guidoar.tgz
 build/ios/
 build/libguidoar.a
 build/macos/
+build/android/libguidoar.so
+build/android/libs/
+build/android/obj/
+guidocalculus/package/GuidoCalculus.app/
+guidocalculus/src/.qmake.stash
+guidocalculus/src/Debug/
+guidocalculus/src/GuidoCalculus.build/
+guidocalculus/src/GuidoCalculus.xcodeproj/
+guidocalculus/src/Info.plist
+guidocalculus/src/Release/
+guidocalculus/src/project.pbxproj
+guidocalculus/src/tmpSrc/
+validation/0.90/
