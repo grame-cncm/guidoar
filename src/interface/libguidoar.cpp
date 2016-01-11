@@ -54,8 +54,8 @@ namespace guido
 {
 
 //----------------------------------------------------------------------------
-gar_export float			guidoarVersion()	{ return 0.90; }
-gar_export const char*		guidoarVersionStr()	{ return "0.90"; }
+gar_export float			guidoarVersion()	{ return 1.00; }
+gar_export const char*		guidoarVersionStr()	{ return "1.00"; }
 
 //----------------------------------------------------------------------------
 static SARMusic read (const char* buff)
@@ -248,16 +248,19 @@ gar_export rational guidoDuration(const char* gmn)
 }
 
 //----------------------------------------------------------------------------
-#ifdef MIDIEXPORT
 gar_export garErr guido2midifile(const char* gmn, const char* file)
 {
-	Sguidoelement score =  read(gmn); 
+#ifdef MIDIEXPORT
+	Sguidoelement score =  read(gmn);
 	if (!score) return kInvalidArgument;
 
 	midiconverter mc;
 	return mc.score2midifile(score, file) ? kNoErr : kOperationFailed; 
-}
+#else
+	cerr << "guido2midifile: no support for midifile conversion embedded in the guidoar library" << endl;
+	return kOperationFailed;
 #endif
+}
 
 //----------------------------------------------------------------------------
 gar_export bool guidocheck(const char* gmn)

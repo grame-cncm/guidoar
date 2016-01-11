@@ -360,9 +360,7 @@ gar_export int				guidoTime2Ev(const char* gmn, const rational& date, unsigned i
 	\param file the midi file name
 	\return an error code
 */
-#ifdef MIDIEXPORT
 gar_export garErr			guido2midifile(const char* gmn, const char* file);
-#endif
 
 /*! \brief check gmn code correctness
 	\return a boolean value

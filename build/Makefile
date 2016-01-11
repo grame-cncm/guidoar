@@ -42,7 +42,14 @@ ifeq ($(TARGET), windows)
 endif
 
 LINUX := linux
-CMAKEOPT ?= -Wno-dev
+
+MIDIEXPORT ?= no
+CMAKEOPT ?= -Wno-dev 
+ifeq ($(MIDIEXPORT), yes)
+	CMAKEOPT += -DMIDIEXPORT=yes
+else
+	CMAKEOPT += -DMIDIEXPORT=no
+endif
 
 all :
 	make $(TARGET)
@@ -78,7 +85,6 @@ guidoar.framework :  $(MACX)/guidoar.xcodeproj  $(MACX)/Release/guidoar.framewor
 $(MACX)/Release/guidoar.framework :
 	xcodebuild -jobs 8 -project $(MACX)/guidoar.xcodeproj -target ALL_BUILD -configuration Release
 
-maccmake:
 $(MACX)/guidoar.xcodeproj : CMakeLists.txt
 	[ -d $(MACX) ] || mkdir $(MACX)
 	cd $(MACX) && cmake .. -G Xcode $(CMAKEOPT)
