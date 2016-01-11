@@ -168,6 +168,7 @@ linux : $(LINUX)/Makefile libguidoar.so
 
 libguidoar.so :  $(LINUX)/Makefile  $(LINUX)/libguidoar.so
 	rm -rf guidoar*.so*
+	make -C $(LINUX)
 	cp -R $(LINUX)/libguidoar*.so* .
 
 $(LINUX)/libguidoar.so : 
@@ -180,6 +181,9 @@ $(LINUX)/Makefile : CMakeLists.txt
 
 linuxclean:
 	rm -rf $(LINUX)
+
+install:
+	make -C $(LINUX) install
 
 
 #===============================================================
