@@ -49,10 +49,11 @@ typedef functor<Sguidotag,long>	NewTagFunctor;
 */
 class gar_export ARFactory : public singleton<ARFactory>{
 
-	std::map<std::string, NewTagFunctor*> fMap;
+	typedef std::map<std::string, NewTagFunctor*>	TFunctors;
+	TFunctors fMap;
 	public:
 				 ARFactory();
-		virtual ~ARFactory(){}
+		virtual ~ARFactory();
 
 		Sguidotag	createTag(const std::string& elt, long id=0) const;	
 		SARMusic	createMusic() const;	

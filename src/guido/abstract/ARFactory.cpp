@@ -221,5 +221,26 @@ ARFactory::ARFactory()
 	fMap["pizz"]		= new newTagFunctor<kTPizz>;
 }
 
+//______________________________________________________________________________
+// WARNING !
+// the functors map contains aliases that must be set to 0 before deallocation
+//
+ARFactory::~ARFactory()
+{
+	fMap["bm"]			= 0;
+	fMap["b"]			= 0;
+	fMap["colour"]		= 0;
+	fMap["i"]			= 0;
+	fMap["set"]			= 0;
+	fMap["sl"]			= 0;
+	fMap["chord"]		= 0;
+	fMap["t"]			= 0;
+	TFunctors::iterator i = fMap.begin();
+	while (i != fMap.end()) {
+		delete i->second;
+		i++;
+	}
+}
+
 
 } // namespace
