@@ -100,10 +100,10 @@ SARMusic parOperation::parallel ( const SARMusic& score1, const SARMusic& score2
 {
 	SARMusic elt = ARFactory::instance().createMusic();
 	if (elt) {
-		unsigned int offset = 0;
+//		unsigned int offset = 0;
 		if (score1) {
 			elt->push (score1->elements());
-			offset = score1->elements().size();
+//			offset = score1->elements().size();
 		}
 		if (score2) {
 			for (ctree<guidoelement>::literator i = score2->lbegin(); i != score2->lend(); i++) {
