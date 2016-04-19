@@ -8,8 +8,9 @@ set(target guidoar)
 
 #######################################
 # version management
-set (VERSION "1.00")
+set (VERSION 1.00)
 set (VERSIONSTR "v.1.00")
+set (SOVERS 1)
 
 if(CMAKE_CONFIGURATION_TYPES)
 	set(CMAKE_CONFIGURATION_TYPES Debug Release)
@@ -118,6 +119,8 @@ else()
 	set_target_properties (${target} PROPERTIES 
 			FRAMEWORK TRUE 
 			FRAMEWORK_VERSION A
+			VERSION ${VERSION}
+			SOVERSION ${SOVERS}
 			MACOSX_FRAMEWORK_SHORT_VERSION_STRING ${VERSIONSTR}
 			MACOSX_FRAMEWORK_BUNDLE_VERSION ${VERSION}
 	)
@@ -157,7 +160,7 @@ if(UNIX AND NOT APPLE)
 #######################################
 # install setup
 install ( TARGETS ${target}
-    	LIBRARY DESTINATION /usr/local/lib
+    	LIBRARY DESTINATION /usr/lib
      	PUBLIC_HEADER DESTINATION /usr/local/include/guidoar
 )
 
