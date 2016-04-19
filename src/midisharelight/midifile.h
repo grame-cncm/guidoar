@@ -31,7 +31,7 @@
 
 #if defined(linux) || defined(__MACH__)
 # define MFAPI
-# define errno  /* a revoir */
+//# define errno  /* a revoir */
 
 #elif defined(WIN32)
 # ifdef __BuildDLL__

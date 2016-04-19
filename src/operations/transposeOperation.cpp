@@ -118,7 +118,7 @@ void transposeOperation::transpose ( char& pitch, int& alter, int& octave, int t
 	// retrieve first the normaized pitch integer class
 	int pitch1 = ARNote::NormalizedName2Pitch(pitch);
 	// then browse the fifth cycle table
-	for (unsigned int i=0; i < fFifthCycle.size(); i++) {
+	for (int i=0; i < fFifthCycle.size(); i++) {
 		// until we find the same pitch spelling (ie including name and accident)
 		if ((fFifthCycle[i].second == alter) && (fFifthCycle[i].first == pitch)) {
 			// then we shift into the table

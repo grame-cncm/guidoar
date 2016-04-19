@@ -111,7 +111,7 @@ void seqCleaner::visitStart ( Sguidotag& elt )
 		if (end) {
 			markers::setMark (elt, markers::kClosed);		// mark both as close
 			markers::setMark (end, markers::kClosed);		// they should be removed
-			fEndTags[name] = 0;
+			fEndTags[name] = (void*)0;
 		}
 	}
 	if (!fInTie && !done) clonevisitor::visitStart (elt);
@@ -122,8 +122,8 @@ void seqCleaner::visitEnd ( Sguidotag& elt )
 	if (fInTie) {
 		fInTie = false;
 		fTieChord = false;
-		fFirstTied = 0;
-		fFirstCTied = 0;
+		fFirstTied = (void*)0;
+		fFirstCTied = (void*)0;
 	}
 	else clonevisitor::visitEnd (elt);
 }
@@ -243,7 +243,7 @@ void seqOperation::storeTag(Sguidotag tag)
 	if (tag->beginTag())
 		fRangeTags[name] = tag;
 	else if (tag->endTag())
-		fRangeTags[tag->matchTag()] = 0;
+		fRangeTags[tag->matchTag()] = (void*)0;
 	else if (tag->size())
 		fRangeTags[name] = tag;
 	else {
@@ -273,7 +273,7 @@ void seqOperation::endTag(Sguidotag tag)
 {
 	const string& name = tag->getName();
 	if (tag->size()) {
-		fRangeTags[name] = 0;
+		fRangeTags[name] = (void*)0;
 		if (markers::opened (tag) > 1) {
 			Sguidotag copy = dynamic_cast<guidotag*>((guidoelement*)fStack.top());
 			fOpenedTags[name] = copy;
@@ -291,7 +291,7 @@ bool seqOperation::currentTag(Sguidotag tag, bool end)
 		Sguidotag cur = fPosTags[name];		// look for an previous similar tag
 		if (cur) {
 			ret = (*cur == tag);			// check if equal
-			if (end) fPosTags[name] = 0;	// in case this is the tag end, remove the current one
+			if (end) fPosTags[name] = (void*)0;	// in case this is the tag end, remove the current one
 		}
 	}
 	return ret;
@@ -359,8 +359,8 @@ bool seqOperation::matchOpenedTag(Sguidotag tag, bool end)
 				if (end) {								// done with the current match
 														// the opened marker should be updated
 					markers::setMark (match, (markers::opened (match)==markers::kOpenedEnd) ? markers::kClosed : markers::kOpenedBegin);
-					fOpenedTags[tag->getName()] = 0;	// the tag is removed from the opened tag list
-					fCurrentMatch = 0;					// and the current match is cleared
+					fOpenedTags[tag->getName()] = (void*)0;	// the tag is removed from the opened tag list
+					fCurrentMatch = (void*)0;				// and the current match is cleared
 					fFirstInSecondScore = false;
 				}
 				else {									// that's the beginning of a match

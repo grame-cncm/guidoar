@@ -174,7 +174,7 @@ void headOperation::visitStart ( Sguidotag& elt )
 		if (elt->beginTag())
 			fOpenedTagsMap[name] = elt;
 		else if (elt->endTag())
-			fOpenedTagsMap[elt->matchTag()] = 0;
+			fOpenedTagsMap[elt->matchTag()] = (void*)0;
 		else if (elt->size()) {
 			fRangeTagsMap[name] = dynamic_cast<guidotag*>((guidoelement*)fStack.top());
 		}
@@ -191,7 +191,7 @@ void headOperation::visitEnd ( Sguidotag& elt )
 	if (fCopy) {
 		clonevisitor::visitEnd (elt);
 		if (elt->size())
-			fRangeTagsMap[elt->getName()] = 0;
+			fRangeTagsMap[elt->getName()] = (void*)0;
 	}
 }
 

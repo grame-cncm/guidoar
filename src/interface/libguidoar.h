@@ -333,20 +333,6 @@ gar_export garErr			guidoVSetDuration(const char* gmn, rational duration, std::o
 */
 gar_export garErr			guidoVMultDuration(const char* gmn, float mult, std::ostream& out);
 
-/*! \brief gives a score duration
-	\param gmn a string containing gmn code
-	\return a rational value (1 is a whole note), negative in case of error
-*/
-gar_export rational			guidoDuration(const char* gmn);
-
-/*! \brief gives an event date
-	\param gmn a string containing gmn code
-	\param index the target event index
-	\param voice the target voice index
-	\return a date in musical time expressed as a rational
-*/
-gar_export rational			guidoEv2Time(const char* gmn, unsigned int index, unsigned int voice);
-
 /*! \brief gives an event index at a given date
 	\param gmn a string containing gmn code
 	\param date a date expressed as a rational (1 is a whole note)
@@ -371,6 +357,22 @@ gar_export bool				guidocheck(const char* gmn);
 #ifdef __cplusplus
 }
 #endif
+
+
+/*! \brief gives a score duration
+	\param gmn a string containing gmn code
+	\return a rational value (1 is a whole note), negative in case of error
+*/
+gar_export rational			guidoDuration(const char* gmn);
+
+/*! \brief gives an event date
+	\param gmn a string containing gmn code
+	\param index the target event index
+	\param voice the target voice index
+	\return a date in musical time expressed as a rational
+*/
+gar_export rational			guidoEv2Time(const char* gmn, unsigned int index, unsigned int voice);
+
 
 /*! @} */
 

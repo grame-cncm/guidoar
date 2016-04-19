@@ -217,10 +217,10 @@ void tailOperation::popTag ( Sguidotag& elt )
 		for (unsigned int i=0; i < fCurrentTags.size(); i++) {
 			if (fCurrentTags[i]) {
 				if (fCurrentTags[i]->getName() == elt->getName()) {
-					fCurrentTags[i] = 0;
+					fCurrentTags[i] = (void*)0;
 				}
 				else if (fCurrentTags[i]->getName() == elt->matchTag()) {
-					fCurrentTags[i] = 0;
+					fCurrentTags[i] = (void*)0;
 				}
 			}
 		}
