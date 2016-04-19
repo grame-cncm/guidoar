@@ -1,5 +1,5 @@
 /*
-  Copyright © Grame 2006
+  Copyright ï¿½ Grame 2006
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -24,6 +24,10 @@
 #define __visitor__
 
 #include "basevisitor.h"
+
+#ifdef APPLE
+#pragma clang diagnostic ignored "-Woverloaded-virtual"
+#endif
 
 namespace guido 
 {
