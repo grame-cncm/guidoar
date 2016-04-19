@@ -33,6 +33,8 @@ endif()
 
 
 if(APPLE)
+ 	add_definitions(-DAPPLE)
+
 #######################################
 #   iOS support
 	if ( IOS )
