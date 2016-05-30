@@ -4,6 +4,7 @@ include( shared.pri )
 
 RESOURCES_DIR=rsc
 isEmpty( GUIDOLIB ) { GUIDOLIB = ../../../guidolib }
+GUIDOLIBS = $$GUIDOLIB/environments/Qt/libs
 GUIDOQT	 = $$GUIDOLIB/environments/Qt/libs/GuidoQt
 GSMW	 = $$GUIDOLIB/environments/Qt/libs/GraphicsSceneMainWindow
 
@@ -25,14 +26,14 @@ win32-g++ {
 	LIBS += -L$$GSMW  -lGraphicsSceneMainWindow
 }
 unix {
-	LIBS += -L$$GUIDOLIB/environments/Qt/libs -lGraphicsSceneMainWindow
+	LIBS += -L$$GUIDOLIBS -lGraphicsSceneMainWindow
 }
 INCLUDEPATH += $$GSMW/include
 
 # GuidoQt library link for each platform
 win32:!win32-g++:LIBS 	+=   $$GUIDOQT/GuidoQt.lib
 win32-g++:LIBS 	+= -L$$GUIDOQT/ -lGuidoQt
-unix:LIBS 		+= -L$$GUIDOLIB/Qt/ -lGuidoQt
+unix:LIBS 		+= -L$$GUIDOLIBS -lGuidoQt
 INCLUDEPATH 	+=  $$GUIDOQT/include
 
 # GUIDOEngine library link for each platform
@@ -55,7 +56,7 @@ macx {
 }
 
 #### guidoar library link
-macx:LIBS += -F$$GUIDO_AR_PATH/cmake/Release -framework guidoar
+macx:LIBS += -F$$GUIDO_AR_PATH/build/macos/Release -framework guidoar
 win32:!win32-g++:LIBS += $$GUIDO_AR_PATH/cmake/release/guidoar.lib
 win32-g++:LIBS += -L$$GUIDO_AR_PATH/cmake -lguidoar
 unix:!macx:LIBS += -L$$GUIDO_AR_PATH/cmake -lguidoar
