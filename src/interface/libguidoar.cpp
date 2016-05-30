@@ -37,7 +37,9 @@
 #include "guidoelement.h"
 #include "guidoparser.h"
 #include "headOperation.h"
+#ifdef MIDIEXPORT
 #include "midiconverter.h"
+#endif
 #include "mirrorOperation.h"
 #include "parOperation.h"
 #include "seqOperation.h"
