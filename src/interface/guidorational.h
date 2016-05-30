@@ -34,15 +34,18 @@
 class gar_export rational {
 
    private:    
-   
+#ifndef EMCC   
         long int fNumerator;
         long int fDenominator;        
-        
+#endif        
         // Used by rationalise()
         long int gcd(long int a, long int b); 
  
     public:    
-	
+#ifdef EMCC   
+        long int fNumerator;			// fields must be public for emcc
+        long int fDenominator;        
+#endif        
         rational(long int num = 0, long int denom = 1);
         rational(const rational& d);
         rational(const std::string &str);
