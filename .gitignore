@@ -1,5 +1,6 @@
 .DS_Store
 *~
+*.o
 build/guidoar.framework/
 build/guidoar.tgz
 build/ios/
