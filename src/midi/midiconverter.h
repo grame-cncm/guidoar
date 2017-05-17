@@ -21,6 +21,7 @@
   research@grame.fr
 
 */
+#ifdef MIDIEXPORT
 
 #ifndef __midiConverter__
 #define __midiConverter__
@@ -76,3 +77,5 @@ class gar_export midiconverter : public midiwriter{
 }
 
 #endif // __midiConverter__
+#endif // MIDIEXPORT
+

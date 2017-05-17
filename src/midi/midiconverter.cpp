@@ -20,6 +20,8 @@
 
 */
 
+#ifdef MIDIEXPORT
+
 #include "midifile.h"
 #include "midiconverter.h"
 #include "tree_browser.h"
@@ -169,3 +171,6 @@ void midiconverter::keySignChange (long date, int signature, bool major)
 }
 
 } // end namespace
+
+#endif
+
