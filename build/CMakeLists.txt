@@ -31,6 +31,10 @@ if(WIN32)
  endif ()
 endif()
 
+#######################################
+# Options disabled by default
+option ( ALL 			"build the library and the tools" off )
+option ( MIDIEXPORT 	"MIDI export" off )
 
 if(APPLE)
  	add_definitions(-DAPPLE)
@@ -39,6 +43,7 @@ if(APPLE)
 #   iOS support
 	if ( IOS )
 		message (STATUS "Generates project for iOS - Use -DIOS=no to change.")
+		set (ALL "no")
 		set (CMAKE_XCODE_EFFECTIVE_PLATFORMS "iPhoneOS")
 		set (CMAKE_OSX_ARCHITECTURES "arm64 armv7 armv7s")
 		set (CMAKE_OSX_SYSROOT "iphoneos")
@@ -48,10 +53,10 @@ if(APPLE)
 		message (STATUS "Generates Mac OS project- Use -DIOS=yes to change.")
 	 	#######################################
 		set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
-		set (CMAKE_C++_FLAGS -mmacosx-version-min=10.7)
-		set (CMAKE_LDFLAGS -mmacosx-version-min=10.7)
-		set (CMAKE_OSX_DEPLOYMENT_TARGET 10.7)
-		set (MACOSX_DEPLOYMENT_TARGET 10.7)
+		set (CMAKE_C++_FLAGS -mmacosx-version-min=10.9)
+		set (CMAKE_LDFLAGS -mmacosx-version-min=10.9)
+		set (CMAKE_OSX_DEPLOYMENT_TARGET 10.9)
+		set (MACOSX_DEPLOYMENT_TARGET 10.9)
 	endif ()
 endif()
 
@@ -128,19 +133,12 @@ else()
 	)
 endif()
 
-if(APPLE)
-	set (LINK "-L${GARSRC}/midisharelight/macos -lmidisharelight -lc++")
-elseif(UNIX)
-	set (LINK "-L/usr/local/lib -lmidisharelight")
-elseif(WIN32)
-	set (LINK "${GARSRC}/midisharelight/${WIN}/midisharelight.lib")
-endif()
 target_link_libraries( ${target} ${LINK})
 
 
 #######################################
 # set tools targets
-if (NOT IOS)
+if (ALL)
 
 file (GLOB TOOLS RELATIVE ${GARTOOLS} "${GARTOOLS}/*.cpp")
 
