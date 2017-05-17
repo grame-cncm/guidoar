@@ -154,7 +154,7 @@ win64/Release/guidoar64.dll : win64/guidoar.sln
 win64cmake:
 win64/guidoar.sln : CMakeLists.txt
 	[ -d win64 ] || mkdir win64
-	cd win64 && cmake .. -G "$(WIN64VS)" $(CMAKEOPT) -DMIDIEXPORT=yes
+	cd win64 && cmake .. -G "$(WIN64VS)" $(CMAKEOPT) $(CMAKEOPT)
 
 winclean:
 	rm -rf win32 win64 guidoar*.lib guidoar.dll
@@ -177,7 +177,7 @@ $(LINUX)/libguidoar.so :
 linuxcmake:
 $(LINUX)/Makefile : CMakeLists.txt
 	[ -d $(LINUX) ] || mkdir $(LINUX)
-	cd $(LINUX) && cmake .. -G "Unix Makefiles" -DMIDIEXPORT=yes
+	cd $(LINUX) && cmake .. -G "Unix Makefiles" $(CMAKEOPT)
 
 linuxclean:
 	rm -rf $(LINUX)
