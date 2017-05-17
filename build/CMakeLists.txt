@@ -60,6 +60,12 @@ if(APPLE)
 	endif ()
 endif()
 
+if(NOT WIN32)
+	set (CMAKE_C++_FLAGS ${CMAKE_C++_FLAGS} -Wno-overloaded-virtual)
+endif()
+
+
+
 #######################################
 # set directories, src and headers.
 set (GAR 		${CMAKE_CURRENT_SOURCE_DIR}/..)
