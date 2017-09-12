@@ -4,19 +4,19 @@
 
 .PHONY : macos ios android win32 win64
 
+TARGET := undefined
+
 system	:= $(shell uname -s)
+# normalizes MINGW versions
+system := $(shell echo $(system) | grep MINGW > /dev/null && echo MINGW || echo $(system))
 ifeq ($(system), Darwin)
 	TARGET = mac
 else
-ifeq ($(system), MINGW32_NT-6.1)
-	TARGET = windows
-else
-ifeq ($(system), MINGW32_NT-6.2)
+ifeq ($(system), MINGW)
 	TARGET = windows
 else
 ifeq ($(system), Linux)
 	TARGET = linux
-endif
 endif
 endif
 endif
@@ -53,6 +53,9 @@ endif
 
 all :
 	make $(TARGET)
+
+undefined:
+	$(error System is undefined, not target available)
 
 help :
 	@echo guidoar makefile - Targets are :
