@@ -167,7 +167,7 @@ void headOperation::visitStart ( SARNote& elt )
 //________________________________________________________________________
 void headOperation::visitStart ( Sguidotag& elt )
 {
-	int remain = (fCutPoint - fDuration.currentVoiceDate()).getNumerator();
+	long remain = (fCutPoint - fDuration.currentVoiceDate()).getNumerator();
 	if ((remain > 0) || ((remain==0) && elt->endTag())) {	//  gives a chance to close Begin tags
 		clonevisitor::visitStart (elt);
 		string name = elt->getName();

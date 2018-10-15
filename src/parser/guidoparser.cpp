@@ -89,7 +89,7 @@ Sguidoelement* guidoparser::newRest(const rational * r, long dots)
 	Sguidoelement* notep = new Sguidoelement;
 	SARNote note = ARFactory::instance().createNote("_");
 	if (r->getNumerator() >= 0)		(*note) = *r;
-	if (dots > 0)					note->SetDots (dots);
+	if (dots > 0)					note->SetDots (int(dots));
 	*notep = note;
 	return notep;
 }
@@ -99,10 +99,10 @@ Sguidoelement* guidoparser::newNote(const std::string& name, long accidentals, l
 //	cout << "create new note " << name << " acc: " << accidentals << " oct: " <<  octave << " - " << string(*r) << " dots: " << dots << endl;
 	Sguidoelement* notep = new Sguidoelement;
 	SARNote note = ARFactory::instance().createNote(name);
-	if (accidentals)				note->SetAccidental (accidentals);
-	if (octave != -1000)			note->SetOctave (octave);
+	if (accidentals)				note->SetAccidental (int(accidentals));
+	if (octave != -1000)			note->SetOctave (int(octave));
 	if (r->getNumerator() >= 0)		(*note) = *r;
-	if (dots > 0)					note->SetDots (dots);
+	if (dots > 0)					note->SetDots (int(dots));
 	*notep = note;
 	return notep;
 }

@@ -1,8 +1,8 @@
-/* A Bison parser, made by GNU Bison 3.0.4.  */
+/* A Bison parser, made by GNU Bison 3.1.  */
 
 /* Bison implementation for Yacc-like parsers in C
 
-   Copyright (C) 1984, 1989-1990, 2000-2015 Free Software Foundation, Inc.
+   Copyright (C) 1984, 1989-1990, 2000-2015, 2018 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@
 #define YYBISON 1
 
 /* Bison version.  */
-#define YYBISON_VERSION "3.0.4"
+#define YYBISON_VERSION "3.1"
 
 /* Skeleton name.  */
 #define YYSKELETON_NAME "yacc.c"
@@ -242,13 +242,13 @@ typedef signed char yytype_int8;
 #ifdef YYTYPE_UINT16
 typedef YYTYPE_UINT16 yytype_uint16;
 #else
-typedef unsigned short int yytype_uint16;
+typedef unsigned short yytype_uint16;
 #endif
 
 #ifdef YYTYPE_INT16
 typedef YYTYPE_INT16 yytype_int16;
 #else
-typedef short int yytype_int16;
+typedef short yytype_int16;
 #endif
 
 #ifndef YYSIZE_T
@@ -260,7 +260,7 @@ typedef short int yytype_int16;
 #  include <stddef.h> /* INFRINGES ON USER NAME SPACE */
 #  define YYSIZE_T size_t
 # else
-#  define YYSIZE_T unsigned int
+#  define YYSIZE_T unsigned
 # endif
 #endif
 
@@ -312,7 +312,7 @@ typedef short int yytype_int16;
 # define YYUSE(E) /* empty */
 #endif
 
-#if defined __GNUC__ && 407 <= __GNUC__ * 100 + __GNUC_MINOR__
+#if defined __GNUC__ && ! defined __ICC && 407 <= __GNUC__ * 100 + __GNUC_MINOR__
 /* Suppress an incorrect diagnostic about yylval being uninitialized.  */
 # define YY_IGNORE_MAYBE_UNINITIALIZED_BEGIN \
     _Pragma ("GCC diagnostic push") \
@@ -480,7 +480,7 @@ union yyalloc
 #define YYMAXUTOK   291
 
 #define YYTRANSLATE(YYX)                                                \
-  ((unsigned int) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
+  ((unsigned) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
 
 /* YYTRANSLATE[TOKEN-NUM] -- Symbol number corresponding to TOKEN-NUM
    as returned by yylex, without out-of-bounds checking.  */
@@ -838,7 +838,7 @@ do {                                                            \
 static void
 yy_reduce_print (yytype_int16 *yyssp, YYSTYPE *yyvsp, int yyrule)
 {
-  unsigned long int yylno = yyrline[yyrule];
+  unsigned long yylno = yyrline[yyrule];
   int yynrhs = yyr2[yyrule];
   int yyi;
   YYFPRINTF (stderr, "Reducing stack by rule %d (line %lu):\n",
@@ -1064,6 +1064,7 @@ yysyntax_error (YYSIZE_T *yymsg_alloc, char **yymsg,
       case N:                               \
         yyformat = S;                       \
       break
+    default: /* Avoid compiler warnings. */
       YYCASE_(0, YY_("syntax error"));
       YYCASE_(1, YY_("syntax error, unexpected %s"));
       YYCASE_(2, YY_("syntax error, unexpected %s, expecting %s"));
@@ -1269,7 +1270,7 @@ yyparse (void)
       yyvsp = yyvs + yysize - 1;
 
       YYDPRINTF ((stderr, "Stack size increased to %lu\n",
-                  (unsigned long int) yystacksize));
+                  (unsigned long) yystacksize));
 
       if (yyss + yystacksize - 1 <= yyssp)
         YYABORT;
@@ -1380,457 +1381,457 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 122 "guido.y" /* yacc.c:1646  */
+#line 122 "guido.y" /* yacc.c:1666  */
     {delete (yyvsp[0].elt);}
-#line 1386 "guidoparse.c++" /* yacc.c:1646  */
+#line 1387 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 3:
-#line 126 "guido.y" /* yacc.c:1646  */
+#line 126 "guido.y" /* yacc.c:1666  */
     { debug("new score"); (yyval.elt) = gReader->newScore(); }
-#line 1392 "guidoparse.c++" /* yacc.c:1646  */
+#line 1393 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 4:
-#line 127 "guido.y" /* yacc.c:1646  */
+#line 127 "guido.y" /* yacc.c:1666  */
     { debug("score voicelist"); (yyval.elt) = gReader->newScore(); addElt(*(yyval.elt), (yyvsp[-1].velt)); }
-#line 1398 "guidoparse.c++" /* yacc.c:1646  */
+#line 1399 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 5:
-#line 128 "guido.y" /* yacc.c:1646  */
+#line 128 "guido.y" /* yacc.c:1666  */
     { debug("score voice"); (yyval.elt) = gReader->newScore(); addElt(*(yyval.elt), (yyvsp[0].elt)); }
-#line 1404 "guidoparse.c++" /* yacc.c:1646  */
+#line 1405 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 6:
-#line 131 "guido.y" /* yacc.c:1646  */
+#line 131 "guido.y" /* yacc.c:1666  */
     { debug("new voicelist"); (yyval.velt) = new vector<Sguidoelement>; (yyval.velt)->push_back (*(yyvsp[0].elt)); delete (yyvsp[0].elt); }
-#line 1410 "guidoparse.c++" /* yacc.c:1646  */
+#line 1411 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 7:
-#line 132 "guido.y" /* yacc.c:1646  */
+#line 132 "guido.y" /* yacc.c:1666  */
     { debug("add voicelist"); (yyval.velt) = (yyvsp[-2].velt); (yyval.velt)->push_back (*(yyvsp[0].elt)); delete (yyvsp[0].elt); }
-#line 1416 "guidoparse.c++" /* yacc.c:1646  */
+#line 1417 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 8:
-#line 135 "guido.y" /* yacc.c:1646  */
+#line 135 "guido.y" /* yacc.c:1666  */
     { debug("new voice"); (yyval.elt) = gReader->newVoice(); addElt(*(yyval.elt), (yyvsp[-1].velt)); }
-#line 1422 "guidoparse.c++" /* yacc.c:1646  */
+#line 1423 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 9:
-#line 138 "guido.y" /* yacc.c:1646  */
+#line 138 "guido.y" /* yacc.c:1666  */
     { debug("new symbols"); (yyval.velt) = new vector<Sguidoelement>; }
-#line 1428 "guidoparse.c++" /* yacc.c:1646  */
+#line 1429 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 10:
-#line 139 "guido.y" /* yacc.c:1646  */
+#line 139 "guido.y" /* yacc.c:1666  */
     { debug("add music"); (yyval.velt) = (yyvsp[-1].velt); (yyval.velt)->push_back(*(yyvsp[0].elt)); delete (yyvsp[0].elt); }
-#line 1434 "guidoparse.c++" /* yacc.c:1646  */
+#line 1435 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 11:
-#line 140 "guido.y" /* yacc.c:1646  */
+#line 140 "guido.y" /* yacc.c:1666  */
     { debug("add tag"); (yyval.velt) = (yyvsp[-1].velt); (yyval.velt)->push_back(*(yyvsp[0].elt)); delete (yyvsp[0].elt); }
-#line 1440 "guidoparse.c++" /* yacc.c:1646  */
+#line 1441 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 12:
-#line 141 "guido.y" /* yacc.c:1646  */
+#line 141 "guido.y" /* yacc.c:1666  */
     { debug("add chord"); (yyval.velt) = (yyvsp[-1].velt); (yyval.velt)->push_back(*(yyvsp[0].elt)); delete (yyvsp[0].elt); }
-#line 1446 "guidoparse.c++" /* yacc.c:1646  */
+#line 1447 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 13:
-#line 146 "guido.y" /* yacc.c:1646  */
+#line 146 "guido.y" /* yacc.c:1666  */
     { debug("position tag "); (yyval.elt) = (yyvsp[0].elt); }
-#line 1452 "guidoparse.c++" /* yacc.c:1646  */
+#line 1453 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 14:
-#line 147 "guido.y" /* yacc.c:1646  */
+#line 147 "guido.y" /* yacc.c:1666  */
     { debug("range tag "); (yyval.elt) = (yyvsp[0].elt); }
-#line 1458 "guidoparse.c++" /* yacc.c:1646  */
+#line 1459 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 15:
-#line 150 "guido.y" /* yacc.c:1646  */
+#line 150 "guido.y" /* yacc.c:1666  */
     { debug("new position tag "); (yyval.elt) = (yyvsp[0].elt); }
-#line 1464 "guidoparse.c++" /* yacc.c:1646  */
+#line 1465 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 16:
-#line 151 "guido.y" /* yacc.c:1646  */
+#line 151 "guido.y" /* yacc.c:1666  */
     { debug("new tag + params"); (yyval.elt) = (yyvsp[-3].elt); (*(yyvsp[-3].elt))->add (*(yyvsp[-1].vattr)); delete (yyvsp[-1].vattr); }
-#line 1470 "guidoparse.c++" /* yacc.c:1646  */
+#line 1471 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 17:
-#line 154 "guido.y" /* yacc.c:1646  */
+#line 154 "guido.y" /* yacc.c:1666  */
     { debug("new range tag "); (yyval.elt) = (yyvsp[-3].elt); (*(yyvsp[-3].elt))->push (*(yyvsp[-1].velt)); delete (yyvsp[-1].velt); }
-#line 1476 "guidoparse.c++" /* yacc.c:1646  */
+#line 1477 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 18:
-#line 157 "guido.y" /* yacc.c:1646  */
+#line 157 "guido.y" /* yacc.c:1666  */
     { debug("tag name "); (yyval.str) = new string(guidoartext); }
-#line 1482 "guidoparse.c++" /* yacc.c:1646  */
+#line 1483 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 19:
-#line 160 "guido.y" /* yacc.c:1646  */
+#line 160 "guido.y" /* yacc.c:1666  */
     { vdebug("new tag", *(yyvsp[0].str)); (yyval.elt) = gReader->newTag(*(yyvsp[0].str), 0); delete (yyvsp[0].str); if (!(yyval.elt)) { guidoarerror("unknown tag"); YYERROR;} }
-#line 1488 "guidoparse.c++" /* yacc.c:1646  */
+#line 1489 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 20:
-#line 161 "guido.y" /* yacc.c:1646  */
+#line 161 "guido.y" /* yacc.c:1666  */
     { debug("new tag::id"); (yyval.elt) = gReader->newTag(*(yyvsp[-2].str), (yyvsp[-1].c)); delete (yyvsp[-2].str); if (!(yyval.elt)) { guidoarerror("unknown tag"); YYERROR;} }
-#line 1494 "guidoparse.c++" /* yacc.c:1646  */
+#line 1495 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 21:
-#line 162 "guido.y" /* yacc.c:1646  */
+#line 162 "guido.y" /* yacc.c:1666  */
     { debug("new bar"); (yyval.elt) = gReader->newTag("bar", 0); }
-#line 1500 "guidoparse.c++" /* yacc.c:1646  */
+#line 1501 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 22:
-#line 165 "guido.y" /* yacc.c:1646  */
+#line 165 "guido.y" /* yacc.c:1666  */
     { debug("new signednumber arg"); (yyval.attr) = gReader->newAttribute((yyvsp[0].num)); }
-#line 1506 "guidoparse.c++" /* yacc.c:1646  */
+#line 1507 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 23:
-#line 166 "guido.y" /* yacc.c:1646  */
+#line 166 "guido.y" /* yacc.c:1666  */
     { debug("new FLOAT arg"); (yyval.attr) = gReader->newAttribute((yyvsp[0].real)); }
-#line 1512 "guidoparse.c++" /* yacc.c:1646  */
+#line 1513 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 24:
-#line 167 "guido.y" /* yacc.c:1646  */
+#line 167 "guido.y" /* yacc.c:1666  */
     { debug("new signednumber UNIT arg"); (yyval.attr) = gReader->newAttribute((yyvsp[-1].num)); (*(yyval.attr))->setUnit(guidoartext); }
-#line 1518 "guidoparse.c++" /* yacc.c:1646  */
+#line 1519 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 25:
-#line 168 "guido.y" /* yacc.c:1646  */
+#line 168 "guido.y" /* yacc.c:1666  */
     { debug("new FLOAT UNIT arg"); (yyval.attr) = gReader->newAttribute((yyvsp[-1].real)); (*(yyval.attr))->setUnit(guidoartext); }
-#line 1524 "guidoparse.c++" /* yacc.c:1646  */
+#line 1525 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 26:
-#line 169 "guido.y" /* yacc.c:1646  */
+#line 169 "guido.y" /* yacc.c:1666  */
     { debug("new STRING arg"); (yyval.attr) = gReader->newAttribute(guidoartext, true); }
-#line 1530 "guidoparse.c++" /* yacc.c:1646  */
+#line 1531 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 27:
-#line 170 "guido.y" /* yacc.c:1646  */
+#line 170 "guido.y" /* yacc.c:1666  */
     { debug("new ID arg"); (yyval.attr) = gReader->newAttribute(*(yyvsp[0].str), false); delete (yyvsp[0].str); }
-#line 1536 "guidoparse.c++" /* yacc.c:1646  */
+#line 1537 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 28:
-#line 173 "guido.y" /* yacc.c:1646  */
+#line 173 "guido.y" /* yacc.c:1666  */
     { (yyval.attr) = (yyvsp[0].attr); }
-#line 1542 "guidoparse.c++" /* yacc.c:1646  */
+#line 1543 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 29:
-#line 174 "guido.y" /* yacc.c:1646  */
+#line 174 "guido.y" /* yacc.c:1666  */
     { (yyval.attr) = (yyvsp[0].attr); (*(yyvsp[0].attr))->setName(*(yyvsp[-2].str)); delete (yyvsp[-2].str); }
-#line 1548 "guidoparse.c++" /* yacc.c:1646  */
+#line 1549 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 30:
-#line 177 "guido.y" /* yacc.c:1646  */
+#line 177 "guido.y" /* yacc.c:1666  */
     { (yyval.vattr) = new vector<Sguidoattribute>; (yyval.vattr)->push_back(*(yyvsp[0].attr)); delete (yyvsp[0].attr); }
-#line 1554 "guidoparse.c++" /* yacc.c:1646  */
+#line 1555 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 31:
-#line 178 "guido.y" /* yacc.c:1646  */
+#line 178 "guido.y" /* yacc.c:1666  */
     { (yyval.vattr) = (yyvsp[-2].vattr); (yyval.vattr)->push_back(*(yyvsp[0].attr)); delete (yyvsp[0].attr); }
-#line 1560 "guidoparse.c++" /* yacc.c:1646  */
+#line 1561 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 32:
-#line 185 "guido.y" /* yacc.c:1646  */
+#line 185 "guido.y" /* yacc.c:1666  */
     { debug("new chord"); (yyval.elt) = gReader->newChord(); (*(yyval.elt))->push(*(yyvsp[-1].velt)); delete (yyvsp[-1].velt); }
-#line 1566 "guidoparse.c++" /* yacc.c:1646  */
+#line 1567 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 33:
-#line 188 "guido.y" /* yacc.c:1646  */
+#line 188 "guido.y" /* yacc.c:1666  */
     { (yyval.velt) = new vector<Sguidoelement>; vadd((yyval.velt), (yyvsp[0].velt)); delete (yyvsp[0].velt); }
-#line 1572 "guidoparse.c++" /* yacc.c:1646  */
+#line 1573 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 34:
-#line 189 "guido.y" /* yacc.c:1646  */
+#line 189 "guido.y" /* yacc.c:1666  */
     { (yyval.velt) = (yyvsp[-2].velt); vadd((yyval.velt), (yyvsp[0].velt)); delete (yyvsp[0].velt); }
-#line 1578 "guidoparse.c++" /* yacc.c:1646  */
+#line 1579 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 35:
-#line 192 "guido.y" /* yacc.c:1646  */
+#line 192 "guido.y" /* yacc.c:1666  */
     { (yyval.velt) = (yyvsp[0].velt);}
-#line 1584 "guidoparse.c++" /* yacc.c:1646  */
+#line 1585 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 36:
-#line 193 "guido.y" /* yacc.c:1646  */
+#line 193 "guido.y" /* yacc.c:1666  */
     { (yyval.velt) = (yyvsp[-1].velt); vadd((yyval.velt), (yyvsp[0].velt)); delete (yyvsp[0].velt); }
-#line 1590 "guidoparse.c++" /* yacc.c:1646  */
+#line 1591 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 37:
-#line 194 "guido.y" /* yacc.c:1646  */
+#line 194 "guido.y" /* yacc.c:1666  */
     { (yyval.velt) = (yyvsp[-1].velt); vadd((yyval.velt), (yyvsp[0].velt)); delete (yyvsp[0].velt); }
-#line 1596 "guidoparse.c++" /* yacc.c:1646  */
+#line 1597 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 38:
-#line 195 "guido.y" /* yacc.c:1646  */
+#line 195 "guido.y" /* yacc.c:1666  */
     { (yyval.velt) = (yyvsp[-2].velt); vadd((yyval.velt), (yyvsp[-1].velt)); delete (yyvsp[-1].velt); vadd((yyval.velt), (yyvsp[0].velt)); delete (yyvsp[0].velt); }
-#line 1602 "guidoparse.c++" /* yacc.c:1646  */
+#line 1603 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 39:
-#line 198 "guido.y" /* yacc.c:1646  */
+#line 198 "guido.y" /* yacc.c:1666  */
     { (yyval.velt) = new vector<Sguidoelement>; (yyval.velt)->push_back(*(yyvsp[0].elt)); delete (yyvsp[0].elt); }
-#line 1608 "guidoparse.c++" /* yacc.c:1646  */
+#line 1609 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 40:
-#line 199 "guido.y" /* yacc.c:1646  */
+#line 199 "guido.y" /* yacc.c:1666  */
     { (yyval.velt) = new vector<Sguidoelement>; (yyval.velt)->push_back(*(yyvsp[0].elt)); delete (yyvsp[0].elt); }
-#line 1614 "guidoparse.c++" /* yacc.c:1646  */
+#line 1615 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 41:
-#line 202 "guido.y" /* yacc.c:1646  */
+#line 202 "guido.y" /* yacc.c:1666  */
     { debug("range chord tag"); (yyval.elt) = (yyvsp[-3].elt); (*(yyval.elt))->push(*(yyvsp[-1].velt)); delete (yyvsp[-1].velt); }
-#line 1620 "guidoparse.c++" /* yacc.c:1646  */
+#line 1621 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 42:
-#line 205 "guido.y" /* yacc.c:1646  */
+#line 205 "guido.y" /* yacc.c:1666  */
     { debug("new taglist 1"); (yyval.velt) = new vector<Sguidoelement>; (yyval.velt)->push_back(*(yyvsp[0].elt)); delete (yyvsp[0].elt); }
-#line 1626 "guidoparse.c++" /* yacc.c:1646  */
+#line 1627 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 43:
-#line 206 "guido.y" /* yacc.c:1646  */
+#line 206 "guido.y" /* yacc.c:1666  */
     { debug("new taglist 2"); (yyval.velt) = (yyvsp[-1].velt); (yyval.velt)->push_back(*(yyvsp[0].elt)); delete (yyvsp[0].elt); }
-#line 1632 "guidoparse.c++" /* yacc.c:1646  */
+#line 1633 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 44:
-#line 212 "guido.y" /* yacc.c:1646  */
+#line 212 "guido.y" /* yacc.c:1666  */
     { (yyval.elt) = (yyvsp[0].elt); }
-#line 1638 "guidoparse.c++" /* yacc.c:1646  */
+#line 1639 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 45:
-#line 213 "guido.y" /* yacc.c:1646  */
+#line 213 "guido.y" /* yacc.c:1666  */
     { (yyval.elt) = (yyvsp[0].elt); }
-#line 1644 "guidoparse.c++" /* yacc.c:1646  */
+#line 1645 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 46:
-#line 216 "guido.y" /* yacc.c:1646  */
+#line 216 "guido.y" /* yacc.c:1666  */
     { debug("new rest 1"); (yyval.elt) = gReader->newRest((yyvsp[-1].r), (yyvsp[0].num)); delete (yyvsp[-1].r); }
-#line 1650 "guidoparse.c++" /* yacc.c:1646  */
+#line 1651 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 47:
-#line 217 "guido.y" /* yacc.c:1646  */
+#line 217 "guido.y" /* yacc.c:1666  */
     { debug("new rest 2"); (yyval.elt) = gReader->newRest((yyvsp[-1].r), (yyvsp[0].num)); delete (yyvsp[-1].r); }
-#line 1656 "guidoparse.c++" /* yacc.c:1646  */
+#line 1657 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 48:
-#line 220 "guido.y" /* yacc.c:1646  */
+#line 220 "guido.y" /* yacc.c:1666  */
     { debug("new note v1"); (yyval.elt) = gReader->newNote(*(yyvsp[-3].str), 0, (yyvsp[-2].num), (yyvsp[-1].r), (yyvsp[0].num)); delete (yyvsp[-3].str); delete (yyvsp[-1].r); }
-#line 1662 "guidoparse.c++" /* yacc.c:1646  */
+#line 1663 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 49:
-#line 221 "guido.y" /* yacc.c:1646  */
+#line 221 "guido.y" /* yacc.c:1666  */
     { debug("new note v2"); (yyval.elt) = gReader->newNote(*(yyvsp[-4].str), (yyvsp[-3].num), (yyvsp[-2].num), (yyvsp[-1].r), (yyvsp[0].num)); delete (yyvsp[-4].str); delete (yyvsp[-1].r); }
-#line 1668 "guidoparse.c++" /* yacc.c:1646  */
+#line 1669 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 50:
-#line 224 "guido.y" /* yacc.c:1646  */
+#line 224 "guido.y" /* yacc.c:1666  */
     { vdebug("notename", *(yyvsp[0].str)); (yyval.str) = (yyvsp[0].str); }
-#line 1674 "guidoparse.c++" /* yacc.c:1646  */
+#line 1675 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 51:
-#line 225 "guido.y" /* yacc.c:1646  */
+#line 225 "guido.y" /* yacc.c:1666  */
     { (yyval.str) = (yyvsp[-3].str); }
-#line 1680 "guidoparse.c++" /* yacc.c:1646  */
+#line 1681 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 52:
-#line 228 "guido.y" /* yacc.c:1646  */
+#line 228 "guido.y" /* yacc.c:1666  */
     { debug("new diatonic note"); (yyval.str) = new string(guidoartext); }
-#line 1686 "guidoparse.c++" /* yacc.c:1646  */
+#line 1687 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 53:
-#line 229 "guido.y" /* yacc.c:1646  */
+#line 229 "guido.y" /* yacc.c:1666  */
     { debug("new chromatic note"); (yyval.str) = new string(guidoartext); }
-#line 1692 "guidoparse.c++" /* yacc.c:1646  */
+#line 1693 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 54:
-#line 230 "guido.y" /* yacc.c:1646  */
+#line 230 "guido.y" /* yacc.c:1666  */
     { debug("new solfege note"); (yyval.str) = new string(guidoartext); }
-#line 1698 "guidoparse.c++" /* yacc.c:1646  */
+#line 1699 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 55:
-#line 231 "guido.y" /* yacc.c:1646  */
+#line 231 "guido.y" /* yacc.c:1666  */
     { debug("new empty note"); (yyval.str) = new string(guidoartext); }
-#line 1704 "guidoparse.c++" /* yacc.c:1646  */
+#line 1705 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 56:
-#line 234 "guido.y" /* yacc.c:1646  */
+#line 234 "guido.y" /* yacc.c:1666  */
     { debug("accidental"); (yyval.num) = (yyvsp[0].num); }
-#line 1710 "guidoparse.c++" /* yacc.c:1646  */
+#line 1711 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 57:
-#line 235 "guido.y" /* yacc.c:1646  */
+#line 235 "guido.y" /* yacc.c:1666  */
     { debug("accidentals"); (yyval.num) = (yyvsp[-1].num) + (yyvsp[0].num); }
-#line 1716 "guidoparse.c++" /* yacc.c:1646  */
+#line 1717 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 58:
-#line 238 "guido.y" /* yacc.c:1646  */
+#line 238 "guido.y" /* yacc.c:1666  */
     { debug("sharp"); (yyval.num) = 1; }
-#line 1722 "guidoparse.c++" /* yacc.c:1646  */
+#line 1723 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 59:
-#line 239 "guido.y" /* yacc.c:1646  */
+#line 239 "guido.y" /* yacc.c:1666  */
     { debug("flat"); (yyval.num) = -1; }
-#line 1728 "guidoparse.c++" /* yacc.c:1646  */
+#line 1729 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 60:
-#line 242 "guido.y" /* yacc.c:1646  */
+#line 242 "guido.y" /* yacc.c:1666  */
     { debug("no octave"); (yyval.num) = -1000; }
-#line 1734 "guidoparse.c++" /* yacc.c:1646  */
+#line 1735 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 61:
-#line 243 "guido.y" /* yacc.c:1646  */
+#line 243 "guido.y" /* yacc.c:1666  */
     { debug("octave"); (yyval.num) = (yyvsp[0].num); }
-#line 1740 "guidoparse.c++" /* yacc.c:1646  */
+#line 1741 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 62:
-#line 246 "guido.y" /* yacc.c:1646  */
+#line 246 "guido.y" /* yacc.c:1666  */
     { debug("implicit duration"); (yyval.r) = new rational(-1, 1); }
-#line 1746 "guidoparse.c++" /* yacc.c:1646  */
+#line 1747 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 63:
-#line 247 "guido.y" /* yacc.c:1646  */
+#line 247 "guido.y" /* yacc.c:1666  */
     { debug("duration ./."); (yyval.r) = new rational((yyvsp[-2].num), (yyvsp[0].num)); }
-#line 1752 "guidoparse.c++" /* yacc.c:1646  */
+#line 1753 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 64:
-#line 248 "guido.y" /* yacc.c:1646  */
+#line 248 "guido.y" /* yacc.c:1666  */
     { debug("duration *"); (yyval.r) = new rational((yyvsp[0].num), 1); }
-#line 1758 "guidoparse.c++" /* yacc.c:1646  */
+#line 1759 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 65:
-#line 249 "guido.y" /* yacc.c:1646  */
+#line 249 "guido.y" /* yacc.c:1666  */
     { debug("duration /"); (yyval.r) = new rational(1, (yyvsp[0].num)); }
-#line 1764 "guidoparse.c++" /* yacc.c:1646  */
+#line 1765 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 66:
-#line 252 "guido.y" /* yacc.c:1646  */
+#line 252 "guido.y" /* yacc.c:1666  */
     { debug("dots 0"); (yyval.num) = 0; }
-#line 1770 "guidoparse.c++" /* yacc.c:1646  */
+#line 1771 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 67:
-#line 253 "guido.y" /* yacc.c:1646  */
+#line 253 "guido.y" /* yacc.c:1666  */
     { debug("dots 1"); (yyval.num) = 1; }
-#line 1776 "guidoparse.c++" /* yacc.c:1646  */
+#line 1777 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 68:
-#line 254 "guido.y" /* yacc.c:1646  */
+#line 254 "guido.y" /* yacc.c:1666  */
     { debug("dots 2"); (yyval.num) = 2; }
-#line 1782 "guidoparse.c++" /* yacc.c:1646  */
+#line 1783 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 69:
-#line 260 "guido.y" /* yacc.c:1646  */
+#line 260 "guido.y" /* yacc.c:1666  */
     { (yyval.str) = new string(guidoartext); }
-#line 1788 "guidoparse.c++" /* yacc.c:1646  */
+#line 1789 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 70:
-#line 262 "guido.y" /* yacc.c:1646  */
+#line 262 "guido.y" /* yacc.c:1666  */
     { vdebug("NUMBER", guidoartext); (yyval.num) = atol(guidoartext); }
-#line 1794 "guidoparse.c++" /* yacc.c:1646  */
+#line 1795 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 71:
-#line 264 "guido.y" /* yacc.c:1646  */
+#line 264 "guido.y" /* yacc.c:1666  */
     { vdebug("NUMBER", guidoartext); (yyval.num) = atol(guidoartext); }
-#line 1800 "guidoparse.c++" /* yacc.c:1646  */
+#line 1801 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 72:
-#line 266 "guido.y" /* yacc.c:1646  */
+#line 266 "guido.y" /* yacc.c:1666  */
     { vdebug("NUMBER", guidoartext); (yyval.num) = atol(guidoartext); }
-#line 1806 "guidoparse.c++" /* yacc.c:1646  */
+#line 1807 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 73:
-#line 268 "guido.y" /* yacc.c:1646  */
+#line 268 "guido.y" /* yacc.c:1666  */
     { (yyval.real) = atof(guidoartext); }
-#line 1812 "guidoparse.c++" /* yacc.c:1646  */
+#line 1813 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 74:
-#line 270 "guido.y" /* yacc.c:1646  */
+#line 270 "guido.y" /* yacc.c:1666  */
     { (yyval.num) = (yyvsp[0].num); }
-#line 1818 "guidoparse.c++" /* yacc.c:1646  */
+#line 1819 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 75:
-#line 271 "guido.y" /* yacc.c:1646  */
+#line 271 "guido.y" /* yacc.c:1666  */
     { (yyval.num) = (yyvsp[0].num); }
-#line 1824 "guidoparse.c++" /* yacc.c:1646  */
+#line 1825 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
   case 76:
-#line 272 "guido.y" /* yacc.c:1646  */
+#line 272 "guido.y" /* yacc.c:1666  */
     { (yyval.num) = (yyvsp[0].num); }
-#line 1830 "guidoparse.c++" /* yacc.c:1646  */
+#line 1831 "guidoparse.c++" /* yacc.c:1666  */
     break;
 
 
-#line 1834 "guidoparse.c++" /* yacc.c:1646  */
+#line 1835 "guidoparse.c++" /* yacc.c:1666  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2058,7 +2059,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 274 "guido.y" /* yacc.c:1906  */
+#line 274 "guido.y" /* yacc.c:1910  */
 
 
 } // namespace

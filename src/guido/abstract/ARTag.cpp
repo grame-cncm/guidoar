@@ -89,7 +89,7 @@ void guidotag::acceptOut(basevisitor& v) {
 string guidotag::escape(const std::string& val) const
 {
 	string esc;
-	int n = val.size();
+	size_t n = val.size();
 	for (int i=0; i<n; i++) {
 		if ((val[i] == '\\') && (val[i+1] == '"'))
 			esc += '\\';

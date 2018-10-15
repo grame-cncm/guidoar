@@ -38,7 +38,7 @@ static int is_unicode (FILE * fd)
 	return kNotUnicode;
 }
 
-static int file_length (FILE * fd)
+static long file_length (FILE * fd)
 {
 	if (fseek (fd, 0, SEEK_END) == -1) 
 		return 0;
@@ -49,7 +49,7 @@ void convert_from_unicode (const char *filename)
 {
 	FILE *fd = fopen (filename,"rb");
 	if (!fd) return;
-	int n , len, i;
+	long n , len, i;
 	unsigned char * content = 0;
 	
 	int ucode = is_unicode (fd);

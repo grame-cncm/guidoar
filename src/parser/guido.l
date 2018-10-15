@@ -6,10 +6,12 @@
 #define YY_NO_UNISTD_H
 extern YYSTYPE guidoarlval;
 
+#define register // intended to get rid of the deprecated register warning
+
 static int nested;
 
 static  char* unescape (char * str) {
-	int n = strlen(str);
+	size_t n = strlen(str);
 	for (int i=0, j=0; i <= n; i++) {		
 		if (str[i] == '\\') {
 			if (str[i+1] == '\\') {
@@ -25,7 +27,7 @@ static  char* unescape (char * str) {
 }
 
 static  char* unquote (char * str) {
-	int n = strlen(str);
+	size_t n = strlen(str);
 	for (int i=0; i < n; i++)
 		str[i] = str[i+1];
 	str[n-2] = 0;
@@ -33,7 +35,7 @@ static  char* unquote (char * str) {
 }
 
 static  char* untag (char * str) {
-	int n = strlen(str);
+	size_t n = strlen(str);
 	for (int i=0; i < n; i++)
 		str[i] = str[i+1];
 	return str;

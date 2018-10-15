@@ -44,7 +44,7 @@ void streambeautifuller::pbreak ()
 
 void streambeautifuller::print (const string& s)
 {
-	int n = s.size();
+	size_t n = s.size();
 	for (int i=0; i<n; i++) {
 		if (s[i] == '\n') newline();
 		else {

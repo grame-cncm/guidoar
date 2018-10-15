@@ -334,7 +334,7 @@ ARNote::operator string() const {
 		}
 	}
 
-	int n = fDuration.getNumerator();
+	long n = fDuration.getNumerator();
 	if (n != kUndefinedDuration) {
 		if ((n != 1) || octOut)  str << '*' << n;
 		n = fDuration.getDenominator();
