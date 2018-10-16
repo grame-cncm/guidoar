@@ -20,6 +20,8 @@ if(UNIX)
 	add_definitions(-Wall -DGCC)
 endif()
 
+set (CMAKE_CXX_STANDARD 11)
+
 #######################################
 # windows support
 if(WIN32)
@@ -45,9 +47,10 @@ if(APPLE)
 		message (STATUS "Generates project for iOS - Use -DIOS=no to change.")
 		set (ALL "no")
 		set (CMAKE_XCODE_EFFECTIVE_PLATFORMS "iPhoneOS")
-#		set (CMAKE_OSX_ARCHITECTURES "arm64 armv7 armv7s")
+		set (CMAKE_OSX_ARCHITECTURES "arm64 armv7 armv7s")
 		set (CMAKE_OSX_SYSROOT "iphoneos")
-		set (libtype STATIC)
+		set (IOS_DEPLOYMENT_TARGET 8.0) 
+	set (libtype STATIC)
 		set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DGUIDOAR_EXPORTS -stdlib=libc++")
 	else ()
 		message (STATUS "Generates Mac OS project- Use -DIOS=yes to change.")
@@ -124,6 +127,8 @@ endif()
 
 if (IOS)
 	add_library(${target} STATIC ${LIBCONTENT})
+	set_target_properties ( ${target} PROPERTIES 
+				XCODE_ATTRIBUTE_IPHONEOS_DEPLOYMENT_TARGET ${IOS_DEPLOYMENT_TARGET} )
 
 else()
 	add_library(${target} SHARED ${LIBCONTENT})
