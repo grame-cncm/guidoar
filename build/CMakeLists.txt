@@ -12,9 +12,11 @@ set (VERSION 1.00)
 set (VERSIONSTR "v.1.00")
 set (SOVERS 1)
 
-if(CMAKE_CONFIGURATION_TYPES)
-	set(CMAKE_CONFIGURATION_TYPES Debug Release)
-endif()
+set (BINDIR ${CMAKE_CURRENT_SOURCE_DIR}/bin)
+set (LIBDIR ${CMAKE_CURRENT_SOURCE_DIR}/lib)
+get_filename_component(ROOT ${CMAKE_CURRENT_SOURCE_DIR} DIRECTORY)
+
+set (CMAKE_BUILD_TYPE Release)
  
 if(UNIX)
 	add_definitions(-Wall -DGCC)
@@ -145,6 +147,11 @@ else()
 endif()
 
 target_link_libraries( ${target} ${LINK})
+set_target_properties( ${target} PROPERTIES 
+		ARCHIVE_OUTPUT_DIRECTORY ${LIBDIR}
+		LIBRARY_OUTPUT_DIRECTORY ${LIBDIR}
+		ARCHIVE_OUTPUT_DIRECTORY_RELEASE ${LIBDIR}
+		LIBRARY_OUTPUT_DIRECTORY_RELEASE ${LIBDIR})
 
 
 #######################################
@@ -157,6 +164,9 @@ foreach(toolcpp ${TOOLS})
 	string(REPLACE ".cpp" "" tool ${toolcpp})
 	add_executable( ${tool} ${GARTOOLS}/${tool}.cpp )
 	target_link_libraries( ${tool} ${target})
+	set_target_properties( ${tool} PROPERTIES 
+			RUNTIME_OUTPUT_DIRECTORY  ${BINDIR}
+			RUNTIME_OUTPUT_DIRECTORY_RELEASE  ${BINDIR})
 	add_dependencies(${tool} ${target})
 endforeach()
 
@@ -167,12 +177,15 @@ endif()
 endif()
 
 
-if(UNIX AND NOT APPLE)
+if(NOT IOS)
 #######################################
 # install setup
+message (STATUS "Install prefix set to ${CMAKE_INSTALL_PREFIX}")
 install ( TARGETS ${target}
-    	LIBRARY DESTINATION /usr/lib
-     	PUBLIC_HEADER DESTINATION /usr/local/include/guidoar
+    	RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin
+    	FRAMEWORK DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
+    	LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/lib
+     	PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_PREFIX}/include/guidoar
 )
 
 endif()
