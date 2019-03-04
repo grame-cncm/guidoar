@@ -43,7 +43,7 @@ BUILDOPT ?= --config Release
 
 #===============================================================
 all : $(PROJ)
-	cd $(BUILDDIR) && cmake --build .  $(BUILDOPT) -- $(JOBS)
+	cmake --build $(BUILDDIR)  $(BUILDOPT) -- $(JOBS)
 
 $(PROJ) : $(BUILDDIR)
 	cd $(BUILDDIR) && cmake $(CMAKEOPT) .. -G $(GENERATOR)
@@ -92,6 +92,6 @@ androidclean:
 # install target
 #===============================================================
 install:
-	cmake --build .  --config Release --target install 
+	cmake --build $(BUILDDIR) --config Release --target install 
 
 
