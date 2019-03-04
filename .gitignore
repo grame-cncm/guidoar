@@ -3,7 +3,9 @@
 *.o
 build/guidoar.framework/
 build/guidoar.tgz
-build/ios/
+build/guidoardir
+build/iosdir
+build/lib
 build/libguidoar.a
 build/macos/
 build/android/libguidoar.so
