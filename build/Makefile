@@ -33,6 +33,7 @@ BUILDDIR ?= guidoardir
 BUILDDIR ?= guidoardir
 MIDIEXPORT ?= no
 CMAKEOPT ?= -Wno-dev 
+
 ifeq ($(MIDIEXPORT), yes)
 	CMAKEOPT += -DMIDIEXPORT=yes
 else
@@ -80,12 +81,15 @@ iosdir/guidoar.xcodeproj:
 #===============================================================
 # building the library for Android
 #===============================================================
+android : PLATFORM ?= 22
+android : J ?= 6
 android :
-	ndk-build -C android -j 4
-	cp android/libs/armeabi/libguidoar.so android
+	@echo "### Android platform is android-$(PLATFORM)"
+	@echo "### Use PLATFORM=xx to change"
+	ndk-build -C android -j $(J) APP_PLATFORM=android-$(PLATFORM)
 	
 androidclean:
-	cd android && rm -rf libguidoar.so libs obj
+	cd android && rm -rf libs obj
 
 
 #===============================================================
