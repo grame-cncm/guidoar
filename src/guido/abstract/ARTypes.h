@@ -24,7 +24,7 @@
 #ifndef __ARTypes__
 #define __ARTypes__
 
-#include "smartpointer.h"
+#include "gar_smartpointer.h"
 #include "guidotags.h"
 
 namespace guido 

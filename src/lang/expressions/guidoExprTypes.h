@@ -25,7 +25,7 @@
 #define __guidoExpTypes__
 
 #include "guidoExprEnum.h"
-#include "smartpointer.h"
+#include "gar_smartpointer.h"
 
 namespace guidolang 
 {

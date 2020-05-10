@@ -28,7 +28,7 @@
 #include "visitable.h"
 //#include "ctree.h"
 #include "guidorational.h"
-#include "smartpointer.h"
+#include "gar_smartpointer.h"
 
 #ifdef valueDebug
 #define valuePrint(expr)	cout << "create \"" << expr << "\"" << endl

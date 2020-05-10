@@ -28,7 +28,7 @@
 
 #include "guidoexpression.h"
 #include "guidovalue.h"
-#include "smartpointer.h"
+#include "gar_smartpointer.h"
 
 namespace guidolang 
 {

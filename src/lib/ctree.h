@@ -33,7 +33,7 @@
 #include <stack>
 #include <vector>
 #include <iterator>
-#include "smartpointer.h"
+#include "gar_smartpointer.h"
 #include "visitable.h"
 
 namespace guido 

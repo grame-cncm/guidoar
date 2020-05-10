@@ -25,7 +25,7 @@
 #define __guidoSuspTypes__
 
 #include "guidoSuspEnum.h"
-#include "smartpointer.h"
+#include "gar_smartpointer.h"
 
 namespace guidolang 
 {

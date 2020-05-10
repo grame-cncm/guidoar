@@ -30,7 +30,7 @@
 #include "ctree.h"
 #include "functor.h"
 #include "guidoExprEnum.h"
-#include "smartpointer.h"
+#include "gar_smartpointer.h"
 #include "visitable.h"
 #include "visitor.h"
 

@@ -24,7 +24,7 @@
 #ifndef __guidoValueTypes__
 #define __guidoValueTypes__
 
-#include "smartpointer.h"
+#include "gar_smartpointer.h"
 
 namespace guidolang 
 {

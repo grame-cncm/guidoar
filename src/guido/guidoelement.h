@@ -27,10 +27,10 @@
 #include <string>
 #include <vector>
 
-#include "export.h"
+#include "arexport.h"
 #include "visitable.h"
 #include "ctree.h"
-#include "smartpointer.h"
+#include "gar_smartpointer.h"
 
 namespace guido 
 {
