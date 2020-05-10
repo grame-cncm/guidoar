@@ -24,7 +24,7 @@
 #ifndef __interleaveOperation__
 #define __interleaveOperation__
 
-#include "export.h"
+#include "arexport.h"
 #include "guidoelement.h"
 #include "operation.h"
 #include "ARTypes.h"

@@ -24,7 +24,7 @@
 #ifndef __operation__
 #define __operation__
 
-#include "export.h"
+#include "arexport.h"
 #include "ARTypes.h"
 
 namespace guido 

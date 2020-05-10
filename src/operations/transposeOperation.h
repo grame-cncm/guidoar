@@ -1,5 +1,5 @@
 /*
-  Copyright © Grame 2008
+  Copyright ï¿½ Grame 2008
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -26,7 +26,7 @@
 #include <map>
 #include <vector>
 
-#include "export.h"
+#include "arexport.h"
 #include "ARTypes.h"
 #include "guidoelement.h"
 #include "operation.h"

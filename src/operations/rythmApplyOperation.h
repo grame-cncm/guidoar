@@ -28,7 +28,7 @@
 
 #include "ARNote.h"
 #include "AROthers.h"
-#include "export.h"
+#include "arexport.h"
 #include "clonevisitor.h"
 #include "operation.h"
 #include "guidorational.h"

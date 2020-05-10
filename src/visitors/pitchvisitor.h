@@ -26,7 +26,7 @@
 
 #include <ostream>
 
-#include "export.h"
+#include "arexport.h"
 #include "guidoelement.h"
 #include "ARTypes.h"
 #include "libguidoar.h"

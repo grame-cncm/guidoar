@@ -27,7 +27,7 @@
 
 #include <map>
 
-#include "export.h"
+#include "arexport.h"
 #include "guidoelement.h"
 #include "AROthers.h"
 #include "ARTypes.h"

@@ -32,7 +32,7 @@
 #include <string>
 #include <stdio.h>
 #include "guidorational.h"
-#include "export.h"
+#include "arexport.h"
 
 namespace guido 
 {

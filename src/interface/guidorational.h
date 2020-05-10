@@ -25,7 +25,7 @@
 #include <string>
 #include <vector>
 
-#include "export.h"
+#include "arexport.h"
 
 /*!
 \brief	Rational number representation.

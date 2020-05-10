@@ -23,7 +23,7 @@
 #ifndef __bottomOperation__
 #define __bottomOperation__
 
-#include "export.h"
+#include "arexport.h"
 #include "AROthers.h"
 #include "clonevisitor.h"
 #include "operation.h"

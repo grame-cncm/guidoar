@@ -1,7 +1,7 @@
 /*
 
   MusicXML Library
-  Copyright © Grame 2007
+  Copyright ï¿½ Grame 2007
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -29,7 +29,7 @@
 
 #include "ARTypes.h"
 #include "browser.h"
-#include "export.h"
+#include "arexport.h"
 #include "guidorational.h"
 #include "visitor.h"
 

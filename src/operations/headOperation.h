@@ -26,7 +26,7 @@
 #include <map>
 #include <string>
 
-#include "export.h"
+#include "arexport.h"
 #include "guidoelement.h"
 #include "clonevisitor.h"
 #include "durationvisitor.h"

@@ -1,5 +1,5 @@
 /*
-  Copyright © Grame 2008
+  Copyright ï¿½ Grame 2008
 
     This library is free software; you can redistribute it and/or
     modify it under the terms of the GNU Lesser General Public
@@ -23,7 +23,7 @@
 #ifndef __firstpitchvisitor__
 #define __firstpitchvisitor__
 
-#include "export.h"
+#include "arexport.h"
 #include "ARTypes.h"
 #include "visitor.h"
 #include "tree_browser.h"

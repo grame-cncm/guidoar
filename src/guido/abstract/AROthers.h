@@ -24,7 +24,7 @@
 #ifndef __AROthers__
 #define __AROthers__
 
-#include "export.h"
+#include "arexport.h"
 #include "guidoelement.h"
 
 namespace guido 

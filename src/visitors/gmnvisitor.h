@@ -26,7 +26,7 @@
 
 #include <ostream>
 
-#include "export.h"
+#include "arexport.h"
 #include "ARTypes.h"
 #include "streambeautifuller.h"
 #include "visitor.h"

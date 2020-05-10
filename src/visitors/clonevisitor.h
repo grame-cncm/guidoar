@@ -27,7 +27,7 @@
 #include <ostream>
 #include <stack>
 
-#include "export.h"
+#include "arexport.h"
 #include "ARTypes.h"
 #include "visitor.h"
 

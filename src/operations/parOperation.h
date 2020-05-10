@@ -24,7 +24,7 @@
 #ifndef __parOperation__
 #define __parOperation__
 
-#include "export.h"
+#include "arexport.h"
 #include "guidoelement.h"
 #include "operation.h"
 #include "ARTypes.h"

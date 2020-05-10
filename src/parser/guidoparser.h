@@ -25,7 +25,7 @@
 #define __guidoparser__
 
 #include <stdio.h>
-#include "export.h"
+#include "arexport.h"
 #include "gmnreader.h"
 #include "ARTypes.h"
 #include "guidorational.h"

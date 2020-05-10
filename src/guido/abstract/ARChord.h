@@ -26,7 +26,7 @@
 
 #include <vector>
 
-#include "export.h"
+#include "arexport.h"
 #include "guidoelement.h"
 #include "guidorational.h"
 

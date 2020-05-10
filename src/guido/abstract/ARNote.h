@@ -29,7 +29,7 @@
 
 #include "guidoelement.h"
 #include "guidorational.h"
-#include "export.h"
+#include "arexport.h"
 
 namespace guido 
 {

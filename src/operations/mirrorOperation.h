@@ -24,7 +24,7 @@
 #ifndef __mirrorOperation__
 #define __mirrorOperation__
 
-#include "export.h"
+#include "arexport.h"
 #include "ARTypes.h"
 #include "ARTag.h"
 #include "clonevisitor.h"

@@ -23,7 +23,7 @@
 #ifndef __topOperation__
 #define __topOperation__
 
-#include "export.h"
+#include "arexport.h"
 #include "ARTypes.h"
 #include "clonevisitor.h"
 #include "operation.h"

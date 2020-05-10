@@ -24,7 +24,7 @@
 #ifndef __event2timeVisitor__
 #define __event2timeVisitor__
 
-#include "export.h"
+#include "arexport.h"
 #include "durationvisitor.h"
 #include "counteventsvisitor.h"
 #include "guidoelement.h"

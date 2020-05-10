@@ -28,7 +28,7 @@
 #include <string>
 #include <sstream>
 
-#include "export.h"
+#include "arexport.h"
 
 /*!
 \brief An output stream decorateur
