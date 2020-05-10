@@ -22,11 +22,19 @@
 
 */
 
-#ifndef __smartpointer__
-#define __smartpointer__
+#pragma once
+
+#ifdef HAS_LIBMAPPING_SMARTP
+
+#include "smartpointer.h"
+
+#define SMARTP libmapping::SMARTP
+#define smartable libmapping::smartable
+
+#else
 
 #include <cassert>
-#include "export.h"
+#include "arexport.h"
 
 namespace guido
 {
@@ -133,3 +141,4 @@ template<class T> class SMARTP {
 }
 
 #endif
+
