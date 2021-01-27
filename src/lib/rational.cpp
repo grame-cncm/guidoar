@@ -27,6 +27,9 @@
 
 using namespace std;
 
+namespace guido
+{
+
 string rational::toString() const
 {
     ostringstream res;
@@ -237,4 +240,6 @@ ostream& operator << (ostream& os, rationals l) {
 		if (i!=l.end()) os << ", ";
 	}
 	return os;
+}
+
 }

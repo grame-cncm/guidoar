@@ -9,7 +9,7 @@
 #include "gmnreader.h"
 #include "guidorational.h"
 
-#include "guidoparse.hpp"
+#include "guidoparse.h++"
 #include "guidolex.c++"
 
 int guidoarerror(const char*s);
@@ -55,7 +55,7 @@ namespace guido
 	guido::Sguidoattribute*		attr;
 	std::vector<guido::Sguidoelement>*	 velt;
 	std::vector<guido::Sguidoattribute>* vattr;
-	rational *		r;
+	guido::rational *		r;
 }
 
 /*------------------------------ numbers ------------------------------*/

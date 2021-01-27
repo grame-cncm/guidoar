@@ -31,6 +31,9 @@
 \brief	Rational number representation.
 */
 
+namespace guido
+{
+
 class gar_export rational {
 
    private:    
@@ -109,5 +112,7 @@ class gar_export rational {
 typedef std::vector<rational> rationals;
 gar_export std::ostream& operator << (std::ostream& os, rational);
 gar_export std::ostream& operator << (std::ostream& os, rationals);
+
+}
 
 #endif
