@@ -12,12 +12,12 @@ system := $(shell echo $(system) | grep -e MINGW -e MSYS > /dev/null && echo MIN
 ifeq ($(system), Darwin)
 	GENERATOR ?= Xcode
 	PREFIX ?= /usr/local
-	PROJ ?= $(BUILDDIR)/guidolib.xcodeproj
+	PROJ ?= $(BUILDDIR)/guidoar.xcodeproj
 	JOBS ?= -jobs 4
 else
 ifeq ($(system), MINGW)
 	GENERATOR ?= "Visual Studio 14 2015 Win64"
-	PROJ ?= $(BUILDDIR)/guidolib.sln
+	PROJ ?= $(BUILDDIR)/guidoar.sln
 	JOBS ?= /maxcpucount:4
 else
 	GENERATOR ?= "Unix Makefiles"
@@ -75,7 +75,7 @@ ios : iosdir/guidoar.xcodeproj
 
 iosdir/guidoar.xcodeproj:
 	@[ -d iosdir ] || mkdir iosdir
-	cd iosdir && cmake -DIOS=yes -DMIDIEXPORT=no -DIOS=on .. -G Xcode
+	cd iosdir && cmake -DIOS=yes -DMIDIEXPORT=$(MIDIEXPORT) -DIOS=on .. -G Xcode
 
 
 #===============================================================

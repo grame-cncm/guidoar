@@ -1,8 +1,8 @@
 #######################################
 # CMAKE guidoar
 #######################################
+cmake_minimum_required(VERSION 3.5)
 project(guidoar)
-cmake_minimum_required(VERSION 2.6)
 
 set(target guidoar)
 
@@ -37,7 +37,7 @@ endif()
 
 #######################################
 # Options disabled by default
-option ( ALL 			"build the library and the tools" off )
+option ( ALL 			"build the library and the tools" on )
 option ( MIDIEXPORT 	"MIDI export" off )
 
 if(APPLE)
@@ -60,8 +60,8 @@ if(APPLE)
 		set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
 		set (CMAKE_C++_FLAGS -mmacosx-version-min=10.9)
 		set (CMAKE_LDFLAGS -mmacosx-version-min=10.9)
-		set (CMAKE_OSX_DEPLOYMENT_TARGET 10.9)
-		set (MACOSX_DEPLOYMENT_TARGET 10.9)
+		set (CMAKE_OSX_DEPLOYMENT_TARGET 12.0)
+		set (MACOSX_DEPLOYMENT_TARGET 12.0)
 	endif ()
 endif()
 
@@ -133,16 +133,16 @@ if (IOS)
 				XCODE_ATTRIBUTE_IPHONEOS_DEPLOYMENT_TARGET ${IOS_DEPLOYMENT_TARGET} )
 
 else()
-	add_library(${target} SHARED ${LIBCONTENT})
+	add_library(${target} STATIC ${LIBCONTENT})
 	set_target_properties (${target} PROPERTIES DEFINE_SYMBOL GUIDOAR_EXPORTS)
 	set_target_properties (${target} PROPERTIES PUBLIC_HEADER "${COREH}")
 	set_target_properties (${target} PROPERTIES 
-			FRAMEWORK TRUE 
-			FRAMEWORK_VERSION A
+# 			FRAMEWORK TRUE 
+# 			FRAMEWORK_VERSION A
 			VERSION ${VERSION}
 			SOVERSION ${SOVERS}
-			MACOSX_FRAMEWORK_SHORT_VERSION_STRING ${VERSIONSTR}
-			MACOSX_FRAMEWORK_BUNDLE_VERSION ${VERSION}
+# 			MACOSX_FRAMEWORK_SHORT_VERSION_STRING ${VERSIONSTR}
+# 			MACOSX_FRAMEWORK_BUNDLE_VERSION ${VERSION}
 	)
 endif()
 

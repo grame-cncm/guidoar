@@ -2,7 +2,7 @@
 
 system	:= $(shell uname -s)
 ifeq ($(system), Darwin)
-  lib =  -F../cmake/Release/ -framework guidoar
+  lib =  -L../build/lib/ -l guidoar
 else
 ifeq ($(system), MINGW32_NT-6.1)
   lib =  ../cmake/Release/guidoar.lib
