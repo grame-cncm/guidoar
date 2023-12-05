@@ -12,28 +12,18 @@
 #include "guidoparse.h++"
 #include "guidolex.c++"
 
-int guidoarerror(const char*s);
-int	guidoarwrap()		{ return(1); }
 
-extern guido::gmnreader* gReader;
-
-static void vadd (std::vector<guido::Sguidoelement>* v1, std::vector<guido::Sguidoelement>* v2)
-{
-	for (std::vector<guido::Sguidoelement>::iterator i = v2->begin(); i != v2->end(); i++)
-		v1->push_back(*i);
-}
-
-//#define parseDebug
-
-#ifdef parseDebug
-#define debug(msg)		cout << msg << endl;
-#define vdebug(msg,v)	cout << msg << " " << v << endl;
-#else
-#define debug(msg)
-#define vdebug(msg, v)
+#ifdef WIN32
+# pragma warning (disable : 4267 4005)
 #endif
 
-#define addElt(to,elt)	(to)->push(*elt); delete elt
+
+#define YYERROR_VERBOSE
+int guidoerror (YYLTYPE* locp, GuidoParser* context, const char*s);
+int varerror (int line, int column, GuidoParser* p, const char* varname);
+int yylex(YYSTYPE* lvalp, YYLTYPE* llocp, void* scanner);
+
+#define scanner context->fScanner
 
 using namespace std;
 
@@ -42,8 +32,14 @@ namespace guido
 
 %}
 
+%define api.pure
+%locations
+%defines
+%define parse.error verbose
+%parse-param { GuidoParser* context }
+%lex-param { void* scanner  }
 
-//%pure_parser
+%start gmn
 
 %union {         
 	long int		num;
@@ -79,18 +75,20 @@ namespace guido
 /*------------------------------   tags  ------------------------------*/
 %token BAR
 %token TAGNAME
-%token ID
+%token IDT
 
 /*------------------------------   notes ------------------------------*/
 %token DIATONIC
 %token CHROMATIC
 %token SOLFEGE
-%token EMPTY
-%token REST
+%token EMPTYT
+%token RESTT
 %token DOT
 %token DDOT
-%token SHARP
-%token FLAT
+%token TDOT
+%token SHARPT
+%token FLATT
+%token TAB
 
 /*------------------------------   misc  ------------------------------*/
 %token MLS
@@ -101,15 +99,20 @@ namespace guido
 %token EQUAL
 %token STRING
 %token EXTRA
+%token ENDVAR
+%token VARNAME
+%token FRETTE
 
+
+/*------------------------------   types  ------------------------------*/
 %type <num> 	NUMBER PNUMBER NNUMBER
 %type <real> 	FLOAT floatn
-%type <token>	TAGNAME ID MLS SEC STRING UNIT DIATONIC CHROMATIC SOLFEGE REST 
-%type <token>	EMPTY DOT DDOT EXTRA
+%type <token>	TAGNAME IDT MLS SEC STRING UNIT DIATONIC CHROMATIC SOLFEGE RESTT 
+%type <token>	EMPTYT DOT DDOT EXTRA
 %type <c>		STARTCHORD ENDCHORD STARTSEQ ENDSEQ STARTPARAM ENDPARAM STARTRANGE ENDRANGE SEP IDSEP BAR 
-%type <c>		SHARP FLAT MULT DIV EQUAL
+%type <c>		SHARPT FLATT MULT DIV EQUAL
 
-%type <str>		notename noteid tagname id 
+%type <str>		notename noteid tagname id varname
 %type <num>		dots accidentals accidental octave number pnumber nnumber signednumber
 %type <r>		duration
 %type <elt>		score voice note rest music chord  tag tagid positiontag rangetag rangechordtag 
@@ -119,10 +122,11 @@ namespace guido
 
 %%
 
-start		: score				{delete $1;}
-		;
-
 //_______________________________________________
+gmn			: score
+			| variables score
+			;
+
 score		: STARTCHORD ENDCHORD							{ debug("new score"); $$ = gReader->newScore(); }
 			| STARTCHORD voicelist ENDCHORD					{ debug("score voicelist"); $$ = gReader->newScore(); addElt(*$$, $2); }
 			| voice											{ debug("score voice"); $$ = gReader->newScore(); addElt(*$$, $1); }
@@ -139,6 +143,21 @@ symbols		:												{ debug("new symbols"); $$ = new vector<Sguidoelement>; }
 			| symbols music									{ debug("add music"); $$ = $1; $$->push_back(*$2); delete $2; }
 			| symbols tag									{ debug("add tag"); $$ = $1; $$->push_back(*$2); delete $2; }
 			| symbols chord									{ debug("add chord"); $$ = $1; $$->push_back(*$2); delete $2; }
+			| symbols varname								{ debug("varname"); $$ = $1; $$->push_back(*$2); delete $2; }
+			;
+
+//_______________________________________________
+// variables - introduced on sept. 15 2020 by DF
+variables 	: vardecl
+			| variables vardecl
+			;
+
+vardecl 	: varname EQUAL STRING ENDVAR					{ context->variableDecl ($1->c_str(), context->fText.c_str(), GuidoParser::kString); delete $1; }
+			| varname EQUAL signednumber ENDVAR				{ context->variableDecl ($1->c_str(), context->fText.c_str(), GuidoParser::kInt); delete $1; }
+			| varname EQUAL floatn ENDVAR					{ context->variableDecl ($1->c_str(), context->fText.c_str(), GuidoParser::kFloat); delete $1; }
+			;
+
+varname		: VARNAME										{ $$ = new string(context->fText); }
 			;
 
 //_______________________________________________
@@ -178,7 +197,6 @@ tagparams	: tagparam										{ $$ = new vector<Sguidoattribute>; $$->push_back(
 			| tagparams SEP tagparam						{ $$ = $1; $$->push_back(*$3); delete $3; }
 			;
 
-
 //_______________________________________________
 // chord description
 
@@ -213,8 +231,8 @@ music		: note											{ $$ = $1; }
 			| rest											{ $$ = $1; }
 			;
 
-rest		: REST duration	dots							{ debug("new rest 1"); $$ = gReader->newRest($2, $3); delete $2; }
-			| REST STARTPARAM NUMBER ENDPARAM duration dots	{ debug("new rest 2"); $$ = gReader->newRest($5, $6); delete $5; }
+rest		: RESTT duration	dots							{ debug("new rest 1"); $$ = gReader->newRest($2, $3); delete $2; }
+			| RESTT STARTPARAM NUMBER ENDPARAM duration dots	{ debug("new rest 2"); $$ = gReader->newRest($5, $6); delete $5; }
 			;
 
 note		: noteid octave duration dots				{ debug("new note v1"); $$ = gReader->newNote(*$1, 0, $2, $3, $4); delete $1; delete $3; }
@@ -228,15 +246,15 @@ noteid		: notename									{ vdebug("notename", *$1); $$ = $1; }
 notename	: DIATONIC								{ debug("new diatonic note"); $$ = new string(guidoartext); }
 			| CHROMATIC								{ debug("new chromatic note"); $$ = new string(guidoartext); }
 			| SOLFEGE								{ debug("new solfege note"); $$ = new string(guidoartext); }
-			| EMPTY									{ debug("new empty note"); $$ = new string(guidoartext); }
+			| EMPTYT								{ debug("new empty note"); $$ = new string(guidoartext); }
 			;		
 
 accidentals	: accidental							{ debug("accidental"); $$ = $1; }
 			| accidentals accidental				{ debug("accidentals"); $$ = $1 + $2; }
 			;
 
-accidental	: SHARP									{ debug("sharp"); $$ = 1; }
-			| FLAT									{ debug("flat"); $$ = -1; }
+accidental	: SHARPT								{ debug("sharp"); $$ = 1; }
+			| FLATT									{ debug("flat"); $$ = -1; }
 			;
 
 octave		:										{ debug("no octave"); $$ = -1000; }					// implicit duration
@@ -257,7 +275,7 @@ dots		:										{ debug("dots 0"); $$ = 0; }
 //_______________________________________________
 // misc
 
-id			: ID									{ $$ = new string(guidoartext); }
+id			: IDT									{ $$ = new string(guidoartext); }
 			;
 number		: NUMBER								{ vdebug("NUMBER", guidoartext); $$ = atol(guidoartext); }
 			;
@@ -275,7 +293,25 @@ signednumber: number								{ $$ = $1; }
 
 } // namespace
 
-int guidoarerror(const char*s) {
-	YY_FLUSH_BUFFER;
-	return gReader->error(s, guidoarlineno);
+#ifdef TEST
+int	gParseErrorLine = 0;
+#else
+extern int	gParseErrorLine;
+#endif
+
+static int _error(int line, int column, GuidoParser* p, const char* msg) {
+	p->parseError (line, column, msg);
+	return 0;
 }
+
+int varerror(int line, int column, GuidoParser* p, const char* varname) {
+	string msg = "unknown variable ";
+	msg += varname;
+	return _error (line, column, p, msg.c_str());
+}
+
+int guidoerror(YYLTYPE* loc, GuidoParser* p, const char*s) {
+	return _error (loc->last_line, loc->first_column, p, s);
+}
+
+int GuidoParser::_yyparse()		{ return yyparse (this); }
