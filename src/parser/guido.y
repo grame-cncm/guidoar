@@ -17,7 +17,6 @@
 # pragma warning (disable : 4267 4005)
 #endif
 
-
 #define YYERROR_VERBOSE
 int guidoerror (YYLTYPE* locp, GuidoParser* context, const char*s);
 int varerror (int line, int column, GuidoParser* p, const char* varname);
@@ -32,11 +31,11 @@ namespace guido
 
 %}
 
-%define api.pure
+/* %define api.pure */
 %locations
 %defines
 %define parse.error verbose
-%parse-param { GuidoParser* context }
+%parse-param { guidoparser* context }
 %lex-param { void* scanner  }
 
 %start gmn
@@ -299,19 +298,19 @@ int	gParseErrorLine = 0;
 extern int	gParseErrorLine;
 #endif
 
-static int _error(int line, int column, GuidoParser* p, const char* msg) {
+static int _error(int line, int column, guido::guidoparser* p, const char* msg) {
 	p->parseError (line, column, msg);
 	return 0;
 }
 
-int varerror(int line, int column, GuidoParser* p, const char* varname) {
+int varerror(int line, int column, guido::guidoparser* p, const char* varname) {
 	string msg = "unknown variable ";
 	msg += varname;
 	return _error (line, column, p, msg.c_str());
 }
 
-int guidoerror(YYLTYPE* loc, GuidoParser* p, const char*s) {
+int guidoerror(YYLTYPE* loc, guido::guidoparser* p, const char*s) {
 	return _error (loc->last_line, loc->first_column, p, s);
 }
 
-int GuidoParser::_yyparse()		{ return yyparse (this); }
+int guido::guidoparser::_yyparse()		{ return yyparse (this); }

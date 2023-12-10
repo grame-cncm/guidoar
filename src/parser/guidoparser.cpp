@@ -51,6 +51,24 @@ extern bool readfile   (FILE * , gmnreader * );
 extern bool readfile   (const char * , gmnreader * );
 extern bool readstring (const char * , gmnreader * );
 
+//--------------------------------------------------------------------------
+guidoparser::guidoparser()
+{
+	setlocale(LC_NUMERIC, "C");
+//	fFactory = 0;
+    initScanner();
+//	fErrorLine = fErrorColumn = 0;
+//    fStream = NULL;
+}
+
+//--------------------------------------------------------------------------
+guidoparser::~guidoparser() 
+{
+	setlocale(LC_NUMERIC, 0);
+	destroyScanner();
+//	delete fFactory;
+}
+
 //______________________________________________________________________________
 Sguidoelement* guidoparser::newComment(const string& comment, bool multiline)
 {

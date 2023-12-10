@@ -37,9 +37,16 @@ class gar_export guidoparser : public gmnreader
 { 
 	SARMusic fMusic;
 
+    protected:
+    
+	void initScanner();
+	void destroyScanner();
+	void *fScanner;   // the flex scanner
+	int guidoparser::_yyparse();
+	
 	public:
-				 guidoparser() {}
-		virtual ~guidoparser() {}
+				 guidoparser();
+		virtual ~guidoparser();
 
 		SARMusic parseFile  (FILE* fd);
 		SARMusic parseFile  (const char* file);

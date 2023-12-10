@@ -20,9 +20,9 @@
 #ifdef TEST
 #include "tests/GuidoParserTest.h"
 #else
-#include "GuidoParser.h"
+#include "guidoparser.h"
 #endif
-#include "guidoparse.hpp"
+#include "guidoparse.h++"
 
 using namespace std;
 
@@ -100,13 +100,13 @@ SPACE	[ \t]
 EOL		[\x0a\x0d]
 
 %%
-{DIGIT}+					yyextra->fText = yytext; return NUMBER;
-"+"{DIGIT}+					yyextra->fText = yytext; return PNUMBER;
-"-"{DIGIT}+					yyextra->fText = yytext; return NNUMBER;
+{DIGIT}+					return NUMBER;
+"+"{DIGIT}+					return PNUMBER;
+"-"{DIGIT}+					return NNUMBER;
 
-{DIGIT}*"."{DIGIT}+			yyextra->fText = yytext; return FLOAT;
-"+"{DIGIT}*"."{DIGIT}+		yyextra->fText = yytext; return FLOAT;
-"-"{DIGIT}*"."{DIGIT}+		yyextra->fText = yytext; return FLOAT;
+{DIGIT}*"."{DIGIT}+			return FLOAT;
+"+"{DIGIT}*"."{DIGIT}+		return FLOAT;
+"-"{DIGIT}*"."{DIGIT}+		return FLOAT;
 
 {SPACE}*"%"			BEGIN CMNTLN;
 <CMNTLN>.
@@ -140,28 +140,28 @@ EOL		[\x0a\x0d]
 
 "ms"				return MLS;
 "s"					return SEC;
-"m"|"cm"|"mm"|"in"|"pt"|"pc"|"hs"|"rl"		yyextra->fText = yytext; return UNIT;
+"m"|"cm"|"mm"|"in"|"pt"|"pc"|"hs"|"rl"		return UNIT;
 
 
 "<"					BEGIN PARAM; return STARTPARAM;
-<PARAM>{ID}			yyextra->fText = yytext; return IDT;
+<PARAM>{ID}			return IDT;
 <PARAM>">"			BEGIN INITIAL; return ENDPARAM;
 
-"\\"{ID}			yyextra->fText = yytext; return TAGNAME;
+"\\"{ID}			return TAGNAME;
 
-"$"{ID}				yyextra->fText = yytext; return VARNAME;
+"$"{ID}				return VARNAME;
 
 
-"do"|"re"|"mi"|"fa"|"sol"|"la"|"si"|"ti"	yyextra->fText = yytext; return SOLFEGE;
-"cis"|"dis"|"fis"|"gis"|"ais"				yyextra->fText = yytext; return CHROMATIC;
-{NOTE}				yyextra->fText = yytext; return DIATONIC;
-"empty"				yyextra->fText = yytext; return EMPTYT;
-"s"[1-6]			yyextra->fText = yytext; return TAB;
+"do"|"re"|"mi"|"fa"|"sol"|"la"|"si"|"ti"	return SOLFEGE;
+"cis"|"dis"|"fis"|"gis"|"ais"				return CHROMATIC;
+{NOTE}				return DIATONIC;
+"empty"				return EMPTYT;
+"s"[1-6]			return TAB;
 "_"					return RESTT;
 
-\"(\\\\|\\.|[^\\\"])*\"   unescape(yytext); unquote(yytext); yyextra->fText = yytext; return STRING;
-\'(\\\\|\\.|[^\\\'])*\'   unescape(yytext); unquote(yytext); yyextra->fText = yytext; return STRING;
-":"(\\[: ]|[^:\\\n])*":"    unescape(yytext); unquote(yytext); yyextra->fText = yytext; return FRETTE;
+\"(\\\\|\\.|[^\\\"])*\"   unescape(yytext); unquote(yytext); return STRING;
+\'(\\\\|\\.|[^\\\'])*\'   unescape(yytext); unquote(yytext); return STRING;
+":"(\\[: ]|[^:\\\n])*":"    unescape(yytext); unquote(yytext); return FRETTE;
 
 {SPACE}+			/* eat up space */
 
@@ -171,13 +171,13 @@ EOL		[\x0a\x0d]
 
 %%
 
-void GuidoParser::initScanner()
+void guido::guidoparser::initScanner()
 {
 	yylex_init(&fScanner);
 	yyset_extra(this, fScanner);
 }
 
-void GuidoParser::destroyScanner()
+void guido::guidoparser::destroyScanner()
 {
 	yylex_destroy(fScanner);
 }
