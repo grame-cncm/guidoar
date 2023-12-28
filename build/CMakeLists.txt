@@ -8,8 +8,8 @@ set(target guidoar)
 
 #######################################
 # version management
-set (VERSION 1.00)
-set (VERSIONSTR "v.1.00")
+set (VERSION 1.10)
+set (VERSIONSTR "v.1.10")
 set (SOVERS 1)
 
 set (BINDIR ${CMAKE_CURRENT_SOURCE_DIR}/bin)
@@ -38,7 +38,7 @@ endif()
 #######################################
 # Options disabled by default
 option ( ALL 			"build the library and the tools" on )
-option ( MIDIEXPORT 	"MIDI export" off )
+option ( MIDIEXPORT 	"MIDI export" on )
 
 if(APPLE)
  	add_definitions(-DAPPLE)
@@ -81,6 +81,8 @@ set (SRCFOLDERS  interface guido guido/abstract lib operations visitors midi par
 foreach(folder ${SRCFOLDERS})
 	set(SRC ${SRC} "${GARSRC}/${folder}/*.cpp")			# add source files
 endforeach(folder)
+set(SRC ${SRC} "${GARSRC}/parser/*.c++")			# add source files
+
 file (GLOB CORESRC RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} ${SRC})
 
 foreach(folder ${SRCFOLDERS})

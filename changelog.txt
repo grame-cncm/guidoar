@@ -1,8 +1,15 @@
 ----------------------------------------------------------------
   GUIDO AR Library history
   (c) Grame 2009-2016
-  fober@grame.fr
+  (c) D.Fober 2023
+  dfober@gmail.com
 ----------------------------------------------------------------
+
+----------------------------------------------------------------
+2023-12-27  version 1.10
+- update to latest guido language
+- add support for variables et comments
+Note: tablatures not supported yet
 
 ----------------------------------------------------------------
 2015-12-23  version 1.00
