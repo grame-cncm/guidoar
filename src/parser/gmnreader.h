@@ -1,6 +1,6 @@
 /*
   GUIDO Library
-  Copyright (C) 2006  Grame
+  Copyright (C) 2006 Grame - 2023 D.Fober
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -21,9 +21,7 @@
 
 */
 
-#ifndef __gmnreader__
-#define __gmnreader__
-
+#pragma once
 #include <string>
 
 #include "ARTypes.h"
@@ -43,8 +41,17 @@ namespace guido
 class gmnreader   // : public singleton
 { 
 	public:
+		enum vartype { kString, kInt, kFloat };
+		
+		typedef struct errInfo {
+			int line;
+			int col;
+			std::string msg;
+		} errInfo;
+
 		virtual ~gmnreader() {}
-		virtual Sguidoelement* newComment(const std::string&, bool multiline) = 0;
+		virtual const errInfo& getError() const = 0;
+		virtual Sguidoelement* newComment(const std::string&) = 0;
 		virtual Sguidoelement* newScore() = 0;
 		virtual Sguidoelement* newVoice() = 0;
 		virtual Sguidoelement* newChord() = 0;
@@ -54,9 +61,9 @@ class gmnreader   // : public singleton
 		virtual Sguidoattribute* newAttribute(long value) = 0;
 		virtual Sguidoattribute* newAttribute(float value) = 0;
 		virtual Sguidoattribute* newAttribute(const std::string& value, bool quote) = 0;
-		virtual int error(const char * msg, int lineno) = 0;
+		virtual void variableDecl (Sguidoelement var, const char* value, vartype type) = 0;
+
+		virtual int error(const char * msg, int line, int col) = 0;
 };
 
 } // namespace
-
-#endif

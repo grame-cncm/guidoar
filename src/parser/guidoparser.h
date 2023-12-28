@@ -1,6 +1,6 @@
 /*
   GUIDO Library
-  Copyright (C) 2006  Grame
+  Copyright (C) 2006 Grame - 2023 D.Fober
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -21,10 +21,16 @@
 
 */
 
-#ifndef __guidoparser__
-#define __guidoparser__
+#pragma once
 
 #include <stdio.h>
+#include <istream>
+#include <string>
+#include <sstream>
+#include <map>
+#include <stack>
+#include <locale.h>
+
 #include "arexport.h"
 #include "gmnreader.h"
 #include "ARTypes.h"
@@ -35,36 +41,49 @@ namespace guido
 
 class gar_export guidoparser : public gmnreader
 { 
-	SARMusic fMusic;
-
-    protected:
+	SARMusic 		fMusic;
+	std::istream * 	fStream = nullptr;     // input stream
     
 	void initScanner();
 	void destroyScanner();
-	void *fScanner;   // the flex scanner
-	int guidoparser::_yyparse();
+	int 	_yyparse();
+	void 	parse  (std::istream * stream);
 	
 	public:
 				 guidoparser();
 		virtual ~guidoparser();
 
-		SARMusic parseFile  (FILE* fd);
+		void *	fScanner;   // the flex scanner
+		errInfo fError;
+		std::string fText;
+		
+		virtual const errInfo& getError() const  { return fError; }
+		virtual bool get(char& c);  // return the next char in stream
+        virtual void setStream(std::istream *stream);
+
+//		SARMusic parseFile  (FILE* fd);
 		SARMusic parseFile  (const char* file);
 		SARMusic parseString(const char* string);
 
-		virtual Sguidoelement* newComment(const std::string&, bool multiline);
+		virtual void	 	   setHeader(std::vector<Sguidoelement>*);
+		virtual void	 	   addFooter(Sguidoelement);
+		virtual void	 	   beforeVoice(Sguidoelement* voice, Sguidoelement);
+		virtual void	 	   afterVoice(Sguidoelement* voice, Sguidoelement);
+		virtual Sguidoelement* newComment(const std::string&);
 		virtual Sguidoelement* newScore();
 		virtual Sguidoelement* newVoice();
 		virtual Sguidoelement* newChord();
 		virtual Sguidoelement* newRest(const rational * r, long dots);
 		virtual Sguidoelement* newNote(const std::string& name, long accidentals, long octave, const rational * r, long dots);
 		virtual Sguidoelement* newTag(const std::string&, long id);
+		virtual Sguidoelement* newVariable(const std::string& value);
 		virtual Sguidoattribute* newAttribute(long value);
 		virtual Sguidoattribute* newAttribute(float value);
 		virtual Sguidoattribute* newAttribute(const std::string& value, bool quote);
-		virtual int error(const char * msg, int lineno);
+
+		virtual void variableDecl (Sguidoelement var, const char* value, vartype type);
+
+		virtual int error(const char * msg, int line, int col);
 };
 
 } // namespace
-
-#endif

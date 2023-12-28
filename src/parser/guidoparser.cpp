@@ -26,10 +26,13 @@
 #endif
 
 #include <locale.h>
-#include <iostream>
+#include <fstream>
+#include <sstream>
 
 #include "guidoparser.h"
 #include "guidoelement.h"
+#include "guidocomment.h"
+#include "guidovariable.h"
 #include "ARFactory.h"
 #include "ARChord.h"
 #include "ARNote.h"
@@ -47,18 +50,11 @@ namespace guido
 #define debug(str,val)
 #endif
 
-extern bool readfile   (FILE * , gmnreader * );
-extern bool readfile   (const char * , gmnreader * );
-extern bool readstring (const char * , gmnreader * );
-
 //--------------------------------------------------------------------------
 guidoparser::guidoparser()
 {
 	setlocale(LC_NUMERIC, "C");
-//	fFactory = 0;
     initScanner();
-//	fErrorLine = fErrorColumn = 0;
-//    fStream = NULL;
 }
 
 //--------------------------------------------------------------------------
@@ -66,13 +62,58 @@ guidoparser::~guidoparser()
 {
 	setlocale(LC_NUMERIC, 0);
 	destroyScanner();
-//	delete fFactory;
+}
+
+//--------------------------------------------------------------------------
+// return the next char in stream
+bool guidoparser::get(char& c)
+{
+	fStream->get(c);
+	return !fStream->eof();
+}
+//--------------------------------------------------------------------------
+void guidoparser::setStream(std::istream *stream)
+{
+    if (stream)
+        fStream = stream;
 }
 
 //______________________________________________________________________________
-Sguidoelement* guidoparser::newComment(const string& comment, bool multiline)
+Sguidoelement* guidoparser::newComment(const string& comment)
 {
-	return 0;
+	Sguidoelement* cptr = new Sguidoelement;
+	Sguidocomment c = guidocomment::create();
+	c->setName(comment);
+	*cptr = c;
+	return cptr;
+}
+
+//______________________________________________________________________________
+void guidoparser::setHeader(std::vector<Sguidoelement>* header)
+{
+	if (fMusic) fMusic->setHeader(*header);
+	else cerr << "guidoparser::setHeader called without fMusic" << endl;
+}
+
+//______________________________________________________________________________
+void guidoparser::addFooter(Sguidoelement elt)
+{
+	if (fMusic) fMusic->addFooter(elt);
+	else cerr << "guidoparser::setHeader called without fMusic" << endl;
+}
+
+//______________________________________________________________________________
+void guidoparser::beforeVoice(Sguidoelement* voice, Sguidoelement elt)
+{
+	SARVoice v = dynamic_cast<ARVoice*>((guidoelement*)(*voice));
+	if (v) v->addBefore (elt);
+}
+
+//______________________________________________________________________________
+void guidoparser::afterVoice(Sguidoelement* voice, Sguidoelement elt)
+{
+	SARVoice v = dynamic_cast<ARVoice*>((guidoelement*)(*voice));
+	if (v) v->addAfter (elt);
 }
 
 //______________________________________________________________________________
@@ -128,11 +169,20 @@ Sguidoelement* guidoparser::newNote(const std::string& name, long accidentals, l
 Sguidoelement* guidoparser::newTag(const std::string& name, long id)
 {
 //	cout << "create new tag " << name << " id: " << id << endl;
-	Sguidoelement tag = ARFactory::instance().createTag(name, id);
+	Sguidoelement tag = ARFactory::instance().createTag(name.substr(1), id);
 	if (!tag) return 0;
 	Sguidoelement* tagp = new Sguidoelement;
 	*tagp = tag;
 	return tagp;
+}
+
+Sguidoelement* guidoparser::newVariable(const std::string& name)
+{
+	Sguidoelement var = ARFactory::instance().createVariable(name);
+	if (!var) return 0;
+	Sguidoelement* varp = new Sguidoelement;
+	*varp = var;
+	return varp;
 }
 
 Sguidoattribute* guidoparser::newAttribute(long value)
@@ -162,37 +212,62 @@ Sguidoattribute* guidoparser::newAttribute(const std::string& value, bool quote)
 	return attr;
 }
 
-int guidoparser::error(const char * msg, int lineno)
+int guidoparser::error(const char * msg, int line, int col)
 {
-	cerr << msg << " on line " << lineno << endl;
+	fError.line = line;
+	fError.col = col;
+	fError.msg = msg;
+	cerr << "line " << line << " col " << col << ": " << msg << endl;
 	return 0;
 }
 
 //______________________________________________________________________________
-SARMusic guidoparser::parseFile(FILE* fd)
+void guidoparser::parse  (std::istream * stream)
 {
+	fStream = stream;
+    destroyScanner();
+    initScanner();
 	setlocale(LC_NUMERIC, "C");
-	readfile (fd, this);
+	_yyparse ();
 	setlocale(LC_NUMERIC, 0);
-	return fMusic;
+	fStream = nullptr;
 }
+
+//______________________________________________________________________________
+//SARMusic guidoparser::parseFile(FILE* fd)
+//{
+//	setlocale(LC_NUMERIC, "C");
+//	readfile (fd, this);
+//	setlocale(LC_NUMERIC, 0);
+//	return fMusic;
+//}
 
 //______________________________________________________________________________
 SARMusic guidoparser::parseFile(const char* file)
 {
-	setlocale(LC_NUMERIC, "C");
-	readfile (file, this);
-	setlocale(LC_NUMERIC, 0);
+	ifstream * fileStream = new ifstream (file, std::ifstream::in);
+	parse (fileStream);
+	fileStream->close();
+	delete fileStream;
 	return fMusic;
 }
 
 //______________________________________________________________________________
 SARMusic guidoparser::parseString(const char* str)
 {
-	setlocale(LC_NUMERIC, "C");
-	readstring (str, this);
-	setlocale(LC_NUMERIC, 0);
+	stringstream* ss = new stringstream(str);
+	parse (ss);
 	return fMusic;
+}
+
+//--------------------------------------------------------------------------
+void guidoparser::variableDecl (Sguidoelement var, const char* value, vartype type)
+{
+	Sguidovariable v = dynamic_cast<guidovariable*>((guidoelement*)var);
+	if (v) {
+		v->setValue (value, (type == kString));
+	}
+	else cerr << "Unexpected variable declaration " << var << endl;
 }
 
 } // namespace
