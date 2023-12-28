@@ -5,12 +5,15 @@ build/guidoar.framework/
 build/guidoar.tgz
 build/guidoardir
 build/iosdir
+build/bin
 build/lib
 build/libguidoar.a
+build/unix/
 build/macos/
 build/android/libguidoar.so
 build/android/libs/
 build/android/obj/
+guidocalculus/bin
 guidocalculus/package/GuidoCalculus.app/
 guidocalculus/src/.qmake.stash
 guidocalculus/src/Debug/
@@ -20,4 +23,6 @@ guidocalculus/src/Info.plist
 guidocalculus/src/Release/
 guidocalculus/src/project.pbxproj
 guidocalculus/src/tmpSrc/
+tools/bin
 validation/0.90/
+validation/1.10/
