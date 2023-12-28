@@ -136,13 +136,13 @@ rational midicontextvisitor::noteduration (const SARNote& elt, rational& current
 void midicontextvisitor::playTempoChange (long bpm)
 {
 	if (fMidiWriter && bpm)
-		fMidiWriter->tempoChange (fCurrentDate, bpm);
+		fMidiWriter->tempoChange (fCurrentDate, int(bpm));
 }
 
 void midicontextvisitor::playProgChange (long prog)
 {
 	if (fMidiWriter)
-		fMidiWriter->progChange (fCurrentDate, prog);
+		fMidiWriter->progChange (fCurrentDate, int(prog));
 }
 
 //________________________________________________________________________
@@ -267,7 +267,7 @@ void midicontextvisitor::lookupTied(guidoIterator start, guidoIterator end, cons
 		if (chord) {
 			ARNotes clist;
 			storeNotes (chord, clist);		// get the notes from the chord
-			chordnotes = clist.size();		// stores the notes count (to be ignored above)
+			chordnotes = (int)clist.size();		// stores the notes count (to be ignored above)
 			bool chordTied = false;			// a flag to check for effective tied notes
 			for (ARNotes::const_iterator i = clist.begin(); i != clist.end(); i++) {
 				if ( equalPitch(note, *i) ) {

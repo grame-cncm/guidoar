@@ -26,7 +26,7 @@
 #ifndef __midiConverter__
 #define __midiConverter__
 
-#include "export.h"
+#include "arexport.h"
 #include "guidoelement.h"
 #include "midicontextvisitor.h"
 
