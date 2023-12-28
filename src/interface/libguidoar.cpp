@@ -23,6 +23,7 @@
 */
 
 #include <fstream>
+#include <sstream>
 #include <string.h>
 
 #include "libguidoar.h"
@@ -56,8 +57,8 @@ namespace guido
 {
 
 //----------------------------------------------------------------------------
-gar_export float			guidoarVersion()	{ return 1.00; }
-gar_export const char*		guidoarVersionStr()	{ return "1.00"; }
+gar_export float			guidoarVersion()	{ return 1.10; }
+gar_export const char*		guidoarVersionStr()	{ return "1.10"; }
 
 //----------------------------------------------------------------------------
 static SARMusic read (const char* buff)

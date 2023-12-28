@@ -1,6 +1,6 @@
 /*
   GUIDO Library
-  Copyright (C) 2006  Grame
+  Copyright (C) 2006 Grame - 2023 D.Fober
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -21,8 +21,7 @@
 
 */
 
-#ifndef __guidotags__
-#define __guidotags__
+#pragma once
 
 namespace guido 
 {
@@ -39,8 +38,10 @@ enum {
 	kTAccelBegin,
 	kTAccelEnd,
 	kTAccent,
+	kTAccidental,
 	kTAccol,
 	kTAlter,
+	kTArpeggio,
 	kTAuto,
 	kTAutoBreak,
 	kTBar,
@@ -49,10 +50,13 @@ enum {
 	kTBeamBegin,
 	kTBeamEnd,
 	kTBeamsAuto,
+	kTBeamsFull,
 	kTBeamsOff,
 	kTBembel,
+	kTBow,
 	kTBreathMark,
 	kTClef,
+	kTCluster,
 	kTCoda,
 	kTColor,
 	kTComposer,
@@ -66,6 +70,8 @@ enum {
 	kTDalSegno,
 	kTDalSegnoAlFine,
 	kTDecresc,
+	kTDecrescBegin,
+	kTDecrescEnd,
 	kTDefineTag,
 	kTDim,
 	kTDimBegin,
@@ -75,16 +81,26 @@ enum {
 	kTDotFormat,
 	kTDoubleBar,
 	kTEndBar,
+	kTFBeam,
+	kTFBeamBegin,
+	kTFBeamEnd,
 	kTFermata,
 	kTFine,
 	kTFingering,
+	kTFooter,
+	kTGlissando,
+	kTGlissandoBegin,
+	kTGlissandoEnd,
 	kTGrace,
+	kTHarmony,
+	kTHarmonic,
 	kTHeadsCenter,
 	kTHeadsLeft,
 	kTHeadsNormal,
 	kTHeadsReverse,
 	kTHeadsRight,
 	kTInstr,
+	kTInstrument,
 	kTIntens,
 	kTKey,
 	kTLabel,
@@ -94,12 +110,16 @@ enum {
 	kTMerge,
 	kTMeter,
 	kTMord,
+	kTMrest,
 	kTNewLine,
 	kTNewPage,
 	kTNewSystem,
 	kTNoteFormat,
 	kTOct,
 	kTPageFormat,
+	kTPedalOn,
+	kTPedalOff,
+	kTPizz,
 	kTPort,
 	kTRepeatBegin,
 	kTRepeatEnd,
@@ -126,6 +146,7 @@ enum {
 	kTStemsDown,
 	kTStemsOff,
 	kTStemsUp,
+	kTSymbol,
 	kTSystemFormat,
 	kTTempo,
 	kTTen,
@@ -135,8 +156,14 @@ enum {
 	kTTieEnd,
 	kTTitle,
 	kTTrem,
+	kTTremBegin,
+	kTTremEnd,
 	kTTrill,
+	kTTrillBegin,
+	kTTrillEnd,
 	kTTuplet,
+	kTTupletBegin,
+	kTTupletEnd,
 	kTTurn,
 	kTUnits,
 	kTVolta,
@@ -145,12 +172,8 @@ enum {
 	kTDrHoos,
 	kTDrRenz,
 	kTBackward,		// a tag specific to the normal form of a chord
-	// new tags Guido v.1.38
-	kTHarmonic,
-	kTPizz,
+
 	kTagEnd
 };
 
 } //namespace
-
-#endif

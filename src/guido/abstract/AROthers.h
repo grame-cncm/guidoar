@@ -26,6 +26,7 @@
 
 #include "arexport.h"
 #include "guidoelement.h"
+#include "guidovariable.h"
 
 namespace guido 
 {
@@ -41,15 +42,24 @@ class basevisitor;
 \brief The root element of a Guido tree
 */
 class gar_export ARMusic : public guidoelement
-{ 
+{
 	public:
+		typedef std::vector<Sguidoelement> THeader;
+		typedef std::vector<Sguidoelement> TFooter;
+	
 		static SMARTP<ARMusic> create();
         virtual void	acceptIn(basevisitor& v);
         virtual void	acceptOut(basevisitor& v);
+		virtual void	setHeader (THeader& header)	{ fHeader = header; }
+		virtual THeader	getHeader () const			{ return fHeader; }
+		virtual void	addFooter (Sguidoelement elt)	{ fFooter.push_back(elt); }
+		virtual TFooter	getFooter () const			{ return fFooter; }
 
-    protected:	
+    protected:
 				 ARMusic() {}
 		virtual ~ARMusic() {}
+		THeader fHeader;
+		TFooter fFooter;
 };
 
 //______________________________________________________________________________
@@ -59,13 +69,21 @@ class gar_export ARMusic : public guidoelement
 class gar_export ARVoice : public guidoelement
 { 
 	public:
+		typedef std::vector<Sguidoelement> TComments;
+
 		static SMARTP<ARVoice> create();
         virtual void	acceptIn(basevisitor& v);
         virtual void	acceptOut(basevisitor& v);
+		virtual void		addBefore(Sguidoelement elt){ fBefore.push_back(elt); }
+		virtual TComments	getBefore () const			{ return fBefore; }
+		virtual void		addAfter (Sguidoelement elt){ fAfter.push_back(elt); }
+		virtual TComments	getAfter () const			{ return fAfter; }
 
     protected:	
 				 ARVoice() {}
 		virtual ~ARVoice() {}
+		TComments fBefore;
+		TComments fAfter;
 };
 
 /*! @} */

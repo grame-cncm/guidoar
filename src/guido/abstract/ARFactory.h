@@ -55,11 +55,12 @@ class gar_export ARFactory : public singleton<ARFactory>{
 				 ARFactory();
 		virtual ~ARFactory();
 
-		Sguidotag	createTag(const std::string& elt, long id=0) const;	
-		SARMusic	createMusic() const;	
-		SARVoice	createVoice() const;	
-		SARChord	createChord() const;	
-		SARNote		createNote(const std::string& name) const;	
+		Sguidotag		createTag(const std::string& elt, long id=0) const;	
+		SARMusic		createMusic() const;
+		SARVoice		createVoice() const;
+		SARChord		createChord() const;
+		SARNote			createNote(const std::string& name) const;
+		Sguidovariable	createVariable(const std::string& name) const;
 };
 
 } // namespace

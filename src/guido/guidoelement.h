@@ -147,6 +147,7 @@ class gar_export guidoelement : public ctree<guidoelement>, public visitable
 		virtual bool operator !=(const Sguidoelement& i) const		{ return !(*this == i); }
 };
 
+
 gar_export std::ostream& operator << (std::ostream& os, const Sguidoelement& elt);
 
 } // namespace

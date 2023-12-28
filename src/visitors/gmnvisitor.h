@@ -51,7 +51,9 @@ class gar_export gmnvisitor :
 	public visitor<SARNote>,
 	public visitor<SARMusic>,
 	public visitor<SARChord>,
-	public visitor<SARVoice>
+	public visitor<SARVoice>,
+	public visitor<Sguidocomment>,
+	public visitor<Sguidovariable>
 {
 	private:
 		streambeautifuller fOut;	///< the decorated output stream 
@@ -69,6 +71,8 @@ class gar_export gmnvisitor :
 					: fOut(stream, kMaxLine), fChordNotes(0), 
 					  fVoicesCount(1), fInsideTag(0), fVisitAuto(visitauto) {}
 
+		virtual void visitStart ( Sguidocomment& tag );
+		virtual void visitStart ( Sguidovariable& tag );
 		virtual void visitStart ( Sguidotag& tag );
 		virtual void visitStart ( SARNote& tag );
 		virtual void visitStart ( SARMusic& tag );

@@ -32,6 +32,7 @@
 #include "ARNote.h"
 #include "AROthers.h"
 #include "ARTag.h"
+#include "guidocomment.h"
 
 using namespace std;
 
@@ -106,8 +107,13 @@ void gmnvisitor::visitStart ( SARRepeatBegin& bar )	{ fOut << "\n " << string(*b
 void gmnvisitor::visitStart ( SARRepeatEnd& bar )	{ fOut << "\n " << string(*bar) << " "; }
 
 //______________________________________________________________________________
+void gmnvisitor::visitStart ( Sguidovariable& var )	{ fOut << "\n" << Sguidoelement(var); }
+void gmnvisitor::visitStart ( Sguidocomment& c )	{ fOut << c->getName(); }
+
+//______________________________________________________________________________
 void gmnvisitor::visitStart ( SARMusic& music )
 {
+	for (auto elt: music->getHeader()) elt->acceptIn(*this);
 	fVoicesCount = music->size();
 	fOut << "{";
 	if (fVoicesCount >= 1)
@@ -121,6 +127,7 @@ void gmnvisitor::visitEnd ( SARMusic& music )
 		fOut--;
 	}
 	fOut << "}";
+	for (auto elt: music->getFooter()) { fOut << elt ; }
 }
 
 //______________________________________________________________________________
@@ -144,7 +151,8 @@ void gmnvisitor::visitEnd ( SARChord& chord )
 //______________________________________________________________________________
 void gmnvisitor::visitStart ( SARVoice& voice )
 {
-	fOut << "["; 
+	for (auto elt: voice->getBefore()) elt->acceptIn(*this);
+	fOut << "[";
 	if (voice->size () > 10) fOut++ << '\n';
 }
 
@@ -153,6 +161,7 @@ void gmnvisitor::visitEnd ( SARVoice& voice )
 {
 	if (voice->size () > 10) --fOut << '\n';
 	fOut << ']';
+	for (auto elt: voice->getAfter()) elt->acceptIn(*this);
 	if  (--fVoicesCount) fOut << ",\n\n";
 	else --fOut << "\n" ;
 }
