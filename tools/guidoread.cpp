@@ -34,10 +34,10 @@ int main (int argc, char* argv[])
 
 	if (elt) cout << elt << endl;
 	else {
-		cerr << "invalid gmn code" << endl;
-		return 1;
+		const guidoparser::errInfo& err = r.getError();
+		cout << "line " << err.line << " col " << err.col << " : " << err.msg << endl;
+		return -1;
 	}
-	
 	return 0;
 }
 
