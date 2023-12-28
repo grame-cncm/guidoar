@@ -30,8 +30,7 @@ endif
 .PHONY: ios android
 
 BUILDDIR ?= guidoardir
-BUILDDIR ?= guidoardir
-MIDIEXPORT ?= no
+MIDIEXPORT ?= yes
 CMAKEOPT ?= -Wno-dev 
 
 ifeq ($(MIDIEXPORT), yes)
@@ -55,6 +54,11 @@ cmake : $(BUILDDIR)
 $(BUILDDIR) :
 	mkdir $(BUILDDIR)
 
+parser:
+	make -C ../src/parser
+
+localinstall:
+	cp bin/guido* ~/bin
 
 #===============================================================
 help :
@@ -65,7 +69,10 @@ help :
 	@echo "   ios"	
 	@echo "   windows (build 32 and 64 bits library)"	
 	@echo "   linux"	
-	@echo "   android      : build the guidoar static library for Android"	
+	@echo "   android : build the guidoar static library for Android"	
+	@echo "Misc:"
+	@echo "   parser        : regenerate the parser"	
+	@echo "   localinstall  : install tools in ~/bin"	
 
 #===============================================================
 # building the library for iOS

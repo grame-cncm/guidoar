@@ -10,98 +10,128 @@
 #   requires valgrind
 #
 
-version	:= $(shell guidoarversion)
-system	:= $(shell uname -s)
+version	:= $(shell cat version.txt)
+guidopath  ?= ../../guidolib
+gmndir  := $(guidopath)/gmn-examples
 tool	:= guidohead
 arg		:= "[ a g f ]"
+targ	:= "1/1"
+
+IGNORE   ?= ignored-min.txt
+gmninput := $(shell find $(gmndir) -name "*.gmn" | grep -v -F -f $(IGNORE))
 
 
+CUTTOOLS   := guidobottom guidoevhead guidoevtail guidohead guidotail guidotop
+CUTNTOOLS  := guidobottomn guidoevheadn guidoevtailn guidotopn 
+CUTDTOOLS  := guidoheadt guidotailt 
+TRNSTOOLS  := guidoapplypitch guidoapplyrythm guidomirror guidomultduration guidosetduration guidosetdurationd guidotranspose guidotransposei 
+MISCTOOLS  := guido2midi guido2unrolled guidoduration 
+UNTESTED   := guidoev2time guidotime2ev 
 
-gmninput     = $(shell find ../gmn -name "*.gmn")
-gmnfiles     = $(shell find $(version)/$(tool) -name "*.gmn")
-pdffiles    := $(patsubst %.gmn, %.pdf, $(gmnfiles))
-midifiles   := $(patsubst %.gmn, %.mid, $(gmnfiles))
-gmnout		:= $(patsubst ../%.gmn, $(version)/$(tool)/%.gmn, $(gmninput))
-seqout		:= $(patsubst ../%.gmn, $(version)/guidoseq/%.gmn, $(gmninput))
-pitchout	:= $(patsubst ../%.gmn, $(version)/guidoapplypitch/%.gmn, $(gmninput))
-rythmout	:= $(patsubst ../%.gmn, $(version)/guidoapplyrythm/%.gmn, $(gmninput))
-parout		:= $(patsubst ../%.gmn, $(version)/guidopar/%.gmn, $(gmninput))
-allgmn 		 = $(shell [ -d $(version)/$(tool) ] && find $(version)/$(tool) -name "*.gmn")
+READOUT 	:= $(gmninput:$(guidopath)/%.gmn=$(version)/read/%.gmn)
+DUROUT 		:= $(gmninput:$(guidopath)/%.gmn=$(version)/guidoduration/%.txt)
+CUTOUT 		:= $(gmninput:$(guidopath)/%.gmn=$(version)/$(CUTTOOL)/%.gmn)
+CUTNOUT 	:= $(gmninput:$(guidopath)/%.gmn=$(version)/$(CUTTOOLN)/%.gmn)
+CUTTOUT 	:= $(gmninput:$(guidopath)/%.gmn=$(version)/$(CUTTOOLT)/%.gmn)
+MIDIOUT 	:= $(gmninput:$(guidopath)/%.gmn=$(version)/midi/%.mid)
 
-checkgmn 	= $(patsubst %.gmn, %.checkgmn, $(allgmn))
-durgmn 	 	= $(patsubst %.gmn, %.durgmn, $(allgmn))
-validgmn 	= $(patsubst %.gmn, %.outgmn, $(allgmn))
-
-
-default : cut
+default : read
 
 help:
 	@echo "Makefile for testing the guidoar tools output. Available targets are:"
-	@echo "'cut' (default): test cut operations (head tail, evhead, evtail..."
+	@echo "  'read' (default): read input file and write from AR representation"
+	@echo "  'duration'      : test guidoduration"
+	@echo "  'cut'           : test cut operations $(CUTTOOLS)"
+	@echo "  'cutn'          : test cut operations $(CUTNTOOLS)"
+	@echo "  'cutt'          : test cut operations $(CUTDTOOLS)"
+	@echo "  'all'           : call all the targets above"
+	@echo "  'midi'          : test mdi conversion (guido2midi)"
 
 
 #########################################################################
-# tools to check the output correctness
-check: 		$(checkgmn)
-checkdur: 	$(durgmn)
-pdf: 		$(pdffiles)
-midi: 		$(midifiles)
-applypitch: $(pitchout)
-applyrythm: $(rythmout)
+# targets
+all:
+	make read
+	make duration
+	make cut
+	make cutn
+	make cutt
 
-%.checkgmn: %.gmn
-	guidocheck $<	
+read: 		$(READOUT)
+duration: 	$(DUROUT)
+midi: 		$(MIDIOUT)
+cut:
+	make guidobottom CUTTOOL=guidobottom 
+	make guidoevhead CUTTOOL=guidoevhead IGNORE=ignored.txt
+	make guidoevtail CUTTOOL=guidoevtail IGNORE=ignored.txt
+	make guidotail CUTTOOL=guidotail IGNORE=ignored.txt
+	make guidotop CUTTOOL=guidotop IGNORE=ignored.txt
 
-%.durgmn: %.gmn
-	guidoduration $<
+$(CUTTOOL): $(CUTOUT)
+
+cutn:
+	make guidobottomn CUTTOOLN=guidobottomn 
+	make guidoevheadn CUTTOOLN=guidoevheadn IGNORE=ignored.txt
+	make guidoevtailn CUTTOOLN=guidoevtailn IGNORE=ignored.txt
+	make guidotopn CUTTOOLN=guidotopn IGNORE=ignored.txt
+
+$(CUTTOOLN): $(CUTNOUT)
+
+cutt:
+	make guidoheadt CUTTOOLT=guidoheadt IGNORE=ignored.txt
+	make guidotailt CUTTOOLT=guidotailt IGNORE=ignored.txt
+
+$(CUTTOOLT): $(CUTTOUT)
+
+#########################################################################
+test: 
+	@echo $(gmninput)
+
 
 #########################################################################
 # tools to validate the output, based diff
 validate: $(validgmn)
 	@echo Validating $(tool) - version $(version) with $(VERSION)
-	
-%.outgmn: %.gmn
-	$(eval tmp := $(patsubst $(version)/$(tool)/%, $(VERSION)/$(tool)/%, $<))	
-	@[ -f  $(tmp) ] || echo $< : new file
-	@diff $< $(tmp) 2>/dev/null >/dev/null || ([ -f  $(tmp) ] && echo "open -t $< $(patsubst $(version)/$(tool)/%, $(VERSION)/$(tool)/%, $<) # to check changes"; true)
 
 #########################################################################
 clean: 
 	rm -f $(gmnout)
 
 #########################################################################
-# tools to generate output files
-cut: $(gmnout)
-seq: $(seqout)
-par: $(parout)
+# rules
 
-$(version)/$(tool)/%.gmn: ../%.gmn
+#### read
+$(version)/read/%.gmn: $(guidopath)/%.gmn
 	@[ -d $(@D) ] || mkdir -p $(@D)
-	-$(tool) $< $(arg) > $@
+	guidoread $< > $@ || (rm $@; false)
 
-$(version)/guidoseq/%.gmn: ../%.gmn
+#### duration
+$(version)/guidoduration/%.txt: $(guidopath)/%.gmn
 	@[ -d $(@D) ] || mkdir -p $(@D)
-	$(eval a := $(patsubst $(version)/guidoseq/%, $(version)/guidohead/%, $@))	
-	$(eval b := $(patsubst $(version)/guidoseq/%, $(version)/guidotail/%, $@))	
-	-guidoseq $(a) $(b) > $@
+	guidoduration $< > $@ || (rm $@; false)
 
-$(version)/guidoapplypitch/%.gmn: ../%.gmn
+#### cut tools
+$(version)/$(CUTTOOLN)/%.gmn: $(guidopath)/%.gmn
 	@[ -d $(@D) ] || mkdir -p $(@D)
-	-guidoapplypitch -fbloop -high "[a g f e d c]" $< > $@
+	$(CUTTOOLN) $< 1 > $@ || (rm $@; false)
+	guido2svg $@ > $@.svg
+	guido2svg $< > $@.src.svg
 
-$(version)/guidoapplyrythm/%.gmn: ../%.gmn
+$(version)/$(CUTTOOLT)/%.gmn: $(guidopath)/%.gmn
 	@[ -d $(@D) ] || mkdir -p $(@D)
-	-guidoapplyrythm -loop "[a  a/8 a a. a/16 a a/8.]" $< > $@
+	$(CUTTOOLT) $< $(targ) > $@ || (rm $@; false)
+	guido2svg $@ > $@.svg
+	guido2svg $< > $@.src.svg
 
-$(version)/guidopar/%.gmn: ../%.gmn
+$(version)/$(CUTTOOL)/%.gmn: $(guidopath)/%.gmn
 	@[ -d $(@D) ] || mkdir -p $(@D)
-	$(eval a := $(patsubst $(version)/guidopar/%, $(version)/guidotop/%, $@))	
-	$(eval b := $(patsubst $(version)/guidopar/%, $(version)/guidobottom/%, $@))	
-	-guidopar $(a) $(b) > $@
+	$(CUTTOOL) $< $(arg) > $@ || (rm $@; false)
+	guido2svg $@ > $@.svg
+	guido2svg $< > $@.src.svg
 
-%.pdf: %.gmn
-	guido2image -f $< -o $@
+#### midi
+$(version)/midi/%.mid: $(guidopath)/%.gmn
+	@[ -d $(@D) ] || mkdir -p $(@D)
+	guido2midi $< $@ || (rm $@; false)
 
-%.mid: %.gmn
-	guido2midi $< $@
 
