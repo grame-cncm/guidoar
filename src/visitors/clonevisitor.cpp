@@ -35,6 +35,8 @@
 #include "ARTag.h"
 #include "clonevisitor.h"
 #include "guidoelement.h"
+#include "guidocomment.h"
+#include "guidovariable.h"
 #include "tree_browser.h"
 
 using namespace std;
@@ -117,7 +119,24 @@ void clonevisitor::push( const Sguidoelement& elt, bool stack )
 //______________________________________________________________________________
 void clonevisitor::visitStart( SARMusic& elt )
 {
-	fStack.push (ARFactory::instance().createMusic());
+	SARMusic music = ARFactory::instance().createMusic();
+	for (auto elt: elt->getHeader()) music->addHeader (elt);
+	for (auto elt: elt->getFooter()) music->addFooter (elt);
+	fStack.push (music);
+}
+
+//______________________________________________________________________________
+void clonevisitor::visitStart( Sguidovariable& elt ) {
+	if (copy()) {
+		Sguidoelement c = guidovariable::create();
+		push( copy(elt, c), false );
+	}
+}
+void clonevisitor::visitStart( Sguidocomment& elt )  {
+	if (copy()) {
+		Sguidoelement c = guidocomment::create();
+		push( copy(elt,c ), false );
+	}
 }
 
 //______________________________________________________________________________

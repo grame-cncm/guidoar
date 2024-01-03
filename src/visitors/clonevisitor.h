@@ -48,7 +48,9 @@ class gar_export clonevisitor :
 	public visitor<SARVoice>,
 	public visitor<SARChord>,
 	public visitor<SARNote>,
-	public visitor<Sguidotag>
+	public visitor<Sguidotag>,
+	public visitor<Sguidocomment>,
+	public visitor<Sguidovariable>
 {
     public:
 				 clonevisitor() {}
@@ -63,6 +65,8 @@ class gar_export clonevisitor :
 		virtual void visitStart( SARChord& elt );
 		virtual void visitStart( SARNote& elt );
 		virtual void visitStart( Sguidotag& elt );
+		virtual void visitStart( Sguidocomment& elt );
+		virtual void visitStart( Sguidovariable& elt );
 
 		virtual void visitEnd  ( SARVoice& elt );
 		virtual void visitEnd  ( SARChord& elt );
