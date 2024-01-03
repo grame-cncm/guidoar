@@ -50,10 +50,11 @@ class gar_export ARMusic : public guidoelement
 		static SMARTP<ARMusic> create();
         virtual void	acceptIn(basevisitor& v);
         virtual void	acceptOut(basevisitor& v);
-		virtual void	setHeader (THeader& header)	{ fHeader = header; }
-		virtual THeader	getHeader () const			{ return fHeader; }
+		virtual void	setHeader (THeader& header)		{ fHeader = header; }
+		virtual void	addHeader (Sguidoelement elt)	{ fHeader.push_back(elt); }
+		virtual THeader	getHeader () const				{ return fHeader; }
 		virtual void	addFooter (Sguidoelement elt)	{ fFooter.push_back(elt); }
-		virtual TFooter	getFooter () const			{ return fFooter; }
+		virtual TFooter	getFooter () const				{ return fFooter; }
 
     protected:
 				 ARMusic() {}

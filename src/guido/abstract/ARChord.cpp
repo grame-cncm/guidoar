@@ -131,11 +131,41 @@ void chorddurationvisitor::durations (const ARChord* chord, rationals& dlist)
 	dlist = fDurations;
 }
 
+//______________________________________________________________________________
+// a class to collect a chord notes
+//______________________________________________________________________________
+class chordnotesvisitor : public visitor<SARNote>
+{
+	public:
+				 chordnotesvisitor() : fBrowser(this) {}
+		virtual ~chordnotesvisitor() {}
+		
+		vector<const SARNote>	notes (const ARChord* chord);
+	
+	protected:		 
+		virtual void visitStart( SARNote& elt )		{ fNotes.push_back (elt); }
+
+		vector<const SARNote>	fNotes;
+		tree_browser<guidoelement> fBrowser;
+};
+
+//______________________________________________________________________________
+vector<const SARNote> chordnotesvisitor::notes (const ARChord* chord)
+{
+	fNotes.clear();
+	fBrowser.browse (*(guidoelement*)chord);
+	return fNotes;
+}
 
 //______________________________________________________________________________
 //
 //   ARChord
 //______________________________________________________________________________
+std::vector<const SARNote> ARChord::notes() const {
+	chordnotesvisitor nv;
+	return nv.notes(this);
+}
+
 void ARChord::duration (rationals& dur) const {
 	chorddurationvisitor v;
 	v.durations (this, dur);

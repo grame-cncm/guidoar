@@ -27,6 +27,7 @@
 #include <vector>
 
 #include "arexport.h"
+#include "ARTypes.h"
 #include "guidoelement.h"
 #include "guidorational.h"
 
@@ -56,8 +57,10 @@ class gar_export ARChord : public guidoelement
 		// gives the list of the chord midi pitch in ascending ordered
 		virtual void	midiPitch(int& currentoctave, std::vector<int>& pitches) const;
 
+		std::vector<const SARNote> notes() const;
+
 		/// a chord duration is the max of its notes durations
-		/// it returns 0 when all notes have implicit duration 
+		/// it returns 0 when all notes have implicit duration
 		/// or -max if one of the notes has an implicit duration
 		rational		duration() const;
 		/// gives the chord duration within the given context
