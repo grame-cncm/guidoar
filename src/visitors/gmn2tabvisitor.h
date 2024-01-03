@@ -87,12 +87,14 @@ class gar_export gmn2tabvisitor :
 	private:
 		AccordionKeyboard fKeyBoard;    ///< the keyboard description
 		SARVoice fTabVoice;				///< the tablature voice
+		SARVoice fHarmVoice;			///< the harmony voice
 		int	 	 fInTie;				///< use to prevent tablature for tied notes
 		bool	 fInChord;
 		int		 fVoiceNum;				///< the current voice number
 		int		 fTargetVoice;			///< the target voice for tablature
 		int		 fCurrentOctave;		///<  the current octave, required to sort chord notes
 		int 	 fMeasureNum;
+		rational fHarmDur;				///< the last harmony duration
 
 		typedef struct TabMode {
 			bool push;
@@ -109,16 +111,19 @@ class gar_export gmn2tabvisitor :
 		} TPNote;
 		std::vector<TPNote> fChordNotes;	// list of chord notes with associated midi pitch
 
-		void addToTabVoice 		( Sguidoelement elt );
-		void initTabVoice 		( Sguidoelement elt );
-		void initVariables 		( SARMusic score);
+		void 	addToTabVoice 		( Sguidoelement elt );
+		void 	initTabVoice 		( Sguidoelement elt );
+		SARVoice initHarmVoice 		() const;
+		void 	initVariables 		( SARMusic score);
 
 		Sguidoattribute makeAttribute ( const char* name, const char* value, bool quote ) const;
 		Sguidoattribute makeAttribute ( const char* name, float value ) const;
 		Sguidotag 		makeTab 	  ( const std::string& content, bool push ) const;
-//		std::string		note2tab	  ( const std::string& note, TabMode& mode, bool force=false);
+		void 			makeHarmony   ( const std::string& h, const rational& dur );
 		std::string		noteName 	  ( const SARNote& note) const;   // note name + octave
 		Sguidoelement 	newLine 	  () const;
+		void 			handleTab 	  (const std::string&);  // handle tab expressions
+		void 			handleHarm 	  (const std::string&);  // handle harmony expressions
 
     public:
 		typedef enum { kUnknown, k3Rows, k3RowsH2, k2RowsCG, k2RowsDA, kDefault = k3Rows } kbType;

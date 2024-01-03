@@ -50,11 +50,21 @@ static const char* PushDy    = "$PushDy";
 static const char* PullDy    = "$PullDy";
 static const char* TabStaffDist= "$TabStaffDist";
 
+static const char* HarmMainDy= "$HarmMainDy";
+static const char* HarmSubDy = "$HarmSubDy";
+static const char* HarmMainSize = "$HarmMainSize";
+static const char* HarmSubSize  = "$HarmSubSize";
+
 static const char* defaultInstrSize = "1.5";
 static const char* defaultTabSize 	= "1.6";
-static const char* defaultPy = "3.5";
-static const char* defaultTy = "1.6";
-static const char* deafaultTabStaffDist= "3.2";
+static const char* defaultPy 		= "3.5";
+static const char* defaultTy 		= "1.6";
+static const char* defaultTabStaffDist	= "3.2";
+
+static const char* defaultHarmMainDy	= "0";
+static const char* defaultHarmSubDy 	= "-0.5";
+static const char* defaultHarmMainSize 	= "2.5";
+static const char* defaultHarmSubSize  	= "2.0";
 
 //______________________________________________________________________________
 AccordionKeyboard::AccordionKeyboard(KBDType type)
@@ -303,6 +313,7 @@ SARMusic gmn2tabvisitor::gmn2tab (const SARMusic ar, int targetvoice)
 	fInChord = false;
 	fInTie = 0;
 	fMeasureNum = 1;
+	fHarmDur = rational ("1/4");
 	fCurrentOctave = ARNote::getDefaultOctave();
 	fTabVoice = ARFactory::instance().createVoice();
 	initTabVoice(fTabVoice);
@@ -392,13 +403,46 @@ void gmn2tabvisitor::initVariables (SARMusic score)
 	score->addHeader (var);
 
 	var = ARFactory().instance().createVariable(TabStaffDist);
-	var->setValue(deafaultTabStaffDist, false);
+	var->setValue(defaultTabStaffDist, false);
 	score->addHeader (var);
-	
+
+	score->addHeader(newLine());
+
+	var = ARFactory().instance().createVariable(HarmMainDy);
+	var->setValue(defaultHarmMainDy, false);
+	score->addHeader (var);
+	var = ARFactory().instance().createVariable(HarmSubDy);
+	var->setValue(defaultHarmSubDy, false);
+	score->addHeader (var);
+	var = ARFactory().instance().createVariable(HarmMainSize);
+	var->setValue(defaultHarmMainSize, false);
+	score->addHeader (var);
+	var = ARFactory().instance().createVariable(HarmSubSize);
+	var->setValue(defaultHarmSubSize, false);
+	score->addHeader (var);
+
 	c = guidocomment::create();
 	c->setName("\n% end of auto variables\n");
 	score->addHeader (c);
 
+}
+
+//______________________________________________________________________________
+SARVoice gmn2tabvisitor::initHarmVoice () const
+{
+	SARVoice voice = ARFactory().instance().createVoice();
+
+	Sguidotag staff = ARFactory().instance().createTag("staff");
+	staff->add( makeAttribute(nullptr, fTargetVoice+1 ));
+	voice->push (staff);
+	voice->push(newLine());
+	
+	Sguidotag clef = ARFactory().instance().createTag("clef");
+	clef->add( makeAttribute(nullptr, "none", true) );
+	voice->push (clef);
+	voice->push(newLine());
+
+	return voice;
 }
 
 //______________________________________________________________________________
@@ -462,7 +506,7 @@ void gmn2tabvisitor::visitStart ( SARBar& bar )	{
 void gmn2tabvisitor::visitStart ( SARRepeatBegin& bar )	{
 	Sguidotag tag = bar;
 	clonevisitor::visitStart( tag );
-	addToTabVoice(ARFactory().instance().createTag("bar"));
+//	addToTabVoice(ARFactory().instance().createTag("bar"));
 	addToTabVoice(makeMeasureNum(++fMeasureNum));
 }
 void gmn2tabvisitor::visitStart ( SARRepeatEnd& bar ) {
@@ -503,24 +547,89 @@ void gmn2tabvisitor::visitStart ( SARNote& note )
 }
 
 //______________________________________________________________________________
+void gmn2tabvisitor::handleTab (const std::string& str)
+{
+	size_t pos = str.find_first_of("PT");
+	if (pos != string::npos) {
+		fTabMode.push = (str[pos] == 'P');
+		pos = str.find_first_of("GC", pos);
+		if (pos != string::npos) {
+			fTabMode.row = (str[pos] == 'G') ? 1 : 2;
+		}
+	}
+}
+
+//______________________________________________________________________________
+void gmn2tabvisitor::makeHarmony( const string& h, const rational& dur)
+{
+	if (!fHarmVoice) fHarmVoice = initHarmVoice();
+	cerr << "gmn2tabvisitor::makeHarmony " << h << " " << dur << endl;
+	
+	if (h == "|") {
+		Sguidotag bar = ARFactory().instance().createTag("bar");
+		fHarmVoice->push (bar);
+	}
+	else {
+		const char * dy 	= isupper(h[0]) ? HarmMainDy : HarmSubDy;
+		const char * size 	= isupper(h[0]) ? HarmMainSize : HarmSubSize;
+		Sguidotag harm = ARFactory().instance().createTag("harmony");
+		harm->add( makeAttribute(nullptr, h.c_str(), true) );
+		harm->add( makeAttribute("dy", dy, false) );
+		harm->add( makeAttribute("dx", 0) );
+		harm->add( makeAttribute("fsize", size, false) );
+		fHarmVoice->push (harm);
+
+		SARNote empty = ARFactory().instance().createNote("empty");
+		*empty = dur;
+		fHarmVoice->push (empty);
+	}
+	fHarmVoice->push (newLine());
+}
+
+//______________________________________________________________________________
+void gmn2tabvisitor::handleHarm (const std::string& str)
+{
+	vector<string> parts;
+	size_t pos = str.find_first_of("ABCDEFGabcdefg");
+	while ( pos != string::npos ) {
+		size_t n = str.find_first_of(" 	", pos);
+		if (n != string::npos) {
+			string p = str.substr( pos, n-pos);
+			parts.push_back( p );
+			pos = str.find_first_of("ABCDEFGabcdefg|", n+1);
+		}
+		else {
+			string p = str.substr( pos);
+			parts.push_back( p );
+			break;
+		}
+	}
+	for (auto elt: parts) {
+		pos = elt.find_first_of("*/");
+		string h = elt.substr(0, pos);
+		if (pos != string::npos ) {
+			string d = elt.substr(pos);
+			if (d[0] == '*') d = d.substr(1);
+			else d = '1' + d;
+			fHarmDur = rational (d);
+		}
+		makeHarmony ( elt.substr(0,pos), fHarmDur );
+	}
+}
+
+//______________________________________________________________________________
 void gmn2tabvisitor::visitStart ( Sguidocomment& c )
 {
 	clonevisitor::visitStart(c);
 	if (fVoiceNum == fTargetVoice) {
-		const char * tabExpr = "%[ \t]*tab[ \t]*:..*";
 		string str = c->trim();
-		std::regex tab (tabExpr);
+		std::regex tab  ("%[ \t]*tab[ \t]*:..*");		// catch tab expressions
+		std::regex harm ("%[ \t]*H[ \t]*:..*");			// catch harmony expressions
 		if (std::regex_match (str, tab)) {
-			size_t pos = str.find_first_of("PT");
-			if (pos != string::npos) {
-				fTabMode.push = (str[pos] == 'P');
-//				cerr << "push mode change to " << fTabMode.push << endl;
-				pos = str.find_first_of("GC", pos);
-				if (pos != string::npos) {
-					fTabMode.row = (str[pos] == 'G') ? 1 : 2;
-//					cerr << "row mode change to " << fTabMode.row << endl;
-				}
-			}
+			handleTab(str);
+		}
+		else if (std::regex_match (str, harm)) {
+			handleHarm(str);
 		}
 	}
 }
@@ -578,6 +687,10 @@ void gmn2tabvisitor::visitEnd ( SARVoice& voice )
 	if (fVoiceNum == fTargetVoice) {
 		Sguidoelement elt = fTabVoice;
 		clonevisitor::push (elt, false);
+		if (fHarmVoice) {
+			Sguidoelement elt = fHarmVoice;
+			clonevisitor::push (elt, false);
+		}
 	}
 }
 
