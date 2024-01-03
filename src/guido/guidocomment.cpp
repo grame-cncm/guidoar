@@ -54,13 +54,10 @@ void guidocomment::print(std::ostream& os)
 //______________________________________________________________________________
 const std::string guidocomment::trim () const {
 	string str = getName();
-	size_t pos = str.find_first_of ("(*");
-	if (pos != string::npos)
-		return str.substr(pos);
-	pos = str.find_first_of ("%");
-	if (pos != string::npos)
-		return str.substr(pos);
-	return str;
+    const char* WhiteSpace = " \t\v\r\n";
+    std::size_t start = str.find_first_not_of(WhiteSpace);
+    std::size_t end = str.find_last_not_of(WhiteSpace);
+    return start == end ? std::string() : str.substr(start, end - start + 1);
 }
 
 } // namespace
