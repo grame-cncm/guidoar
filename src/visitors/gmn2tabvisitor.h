@@ -118,6 +118,7 @@ class gar_export gmn2tabvisitor :
 
 		Sguidoattribute makeAttribute ( const char* name, const char* value, bool quote ) const;
 		Sguidoattribute makeAttribute ( const char* name, float value ) const;
+		Sguidotag 		makeHidden 	  ( const std::string& name) const;
 		Sguidotag 		makeTab 	  ( const std::string& content, bool push ) const;
 		void 			makeHarmony   ( const std::string& h, const rational& dur );
 		std::string		noteName 	  ( const SARNote& note) const;   // note name + octave

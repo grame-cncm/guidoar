@@ -55,14 +55,14 @@ static const char* HarmSubDy = "$HarmSubDy";
 static const char* HarmMainSize = "$HarmMainSize";
 static const char* HarmSubSize  = "$HarmSubSize";
 
-static const char* defaultInstrSize = "1.5";
+static const char* defaultInstrSize = "2.0";
 static const char* defaultTabSize 	= "1.6";
 static const char* defaultPy 		= "3.5";
 static const char* defaultTy 		= "1.6";
-static const char* defaultTabStaffDist	= "3.2";
+static const char* defaultTabStaffDist	= "4";
 
-static const char* defaultHarmMainDy	= "0";
-static const char* defaultHarmSubDy 	= "-0.5";
+static const char* defaultHarmMainDy	= "-0.5";
+static const char* defaultHarmSubDy 	= "-1.0";
 static const char* defaultHarmMainSize 	= "2.5";
 static const char* defaultHarmSubSize  	= "2.0";
 
@@ -436,6 +436,11 @@ SARVoice gmn2tabvisitor::initHarmVoice () const
 	staff->add( makeAttribute(nullptr, fTargetVoice+1 ));
 	voice->push (staff);
 	voice->push(newLine());
+
+	Sguidotag set = ARFactory().instance().createTag("set");
+	set->add( makeAttribute("autoEndBar", "off", true) );
+	voice->push (set);
+	voice->push(newLine());
 	
 	Sguidotag clef = ARFactory().instance().createTag("clef");
 	clef->add( makeAttribute(nullptr, "none", true) );
@@ -462,7 +467,7 @@ void gmn2tabvisitor::initTabVoice ( Sguidoelement elt )
 	instr->add( makeAttribute(nullptr, "P", true) );
 	instr->add( makeAttribute("autopos", "on", true) );
 	instr->add( makeAttribute("fsize", InstrSize, false) );
-	instr->add( makeAttribute("dx", -2.5) );
+	instr->add( makeAttribute("dx", -3) );
 	instr->add( makeAttribute("dy", 1.8) );
 	elt->push (instr);
 	elt->push(newLine());
@@ -471,7 +476,7 @@ void gmn2tabvisitor::initTabVoice ( Sguidoelement elt )
 	instr->add( makeAttribute(nullptr, "T", true) );
 	instr->add( makeAttribute("autopos", "on", true) );
 	instr->add( makeAttribute("fsize", InstrSize, false) );
-	instr->add( makeAttribute("dx", -6.8) );
+	instr->add( makeAttribute("dx", -7.7) );
 	instr->add( makeAttribute("dy", -2.2) );
 	elt->push (instr);
 	elt->push(newLine());
@@ -506,13 +511,13 @@ void gmn2tabvisitor::visitStart ( SARBar& bar )	{
 void gmn2tabvisitor::visitStart ( SARRepeatBegin& bar )	{
 	Sguidotag tag = bar;
 	clonevisitor::visitStart( tag );
-//	addToTabVoice(ARFactory().instance().createTag("bar"));
+//	addToTabVoice(makeHidden("repeatBegin"));
 	addToTabVoice(makeMeasureNum(++fMeasureNum));
 }
 void gmn2tabvisitor::visitStart ( SARRepeatEnd& bar ) {
 	Sguidotag tag = bar;
 	clonevisitor::visitStart( tag );
-//	addToTabVoice(ARFactory().instance().createTag("bar"));
+//	addToTabVoice(makeHidden("repeatEnd"));
 	addToTabVoice(makeMeasureNum(++fMeasureNum));
 }
 
@@ -560,22 +565,47 @@ void gmn2tabvisitor::handleTab (const std::string& str)
 }
 
 //______________________________________________________________________________
+Sguidotag gmn2tabvisitor::makeHidden ( const std::string& name) const
+{
+	Sguidotag tag = ARFactory().instance().createTag(name);
+	tag->add (makeAttribute("hidden", "true", true));
+	return tag;
+}
+
+//______________________________________________________________________________
 void gmn2tabvisitor::makeHarmony( const string& h, const rational& dur)
 {
 	if (!fHarmVoice) fHarmVoice = initHarmVoice();
-	cerr << "gmn2tabvisitor::makeHarmony " << h << " " << dur << endl;
+//	cerr << "gmn2tabvisitor::makeHarmony " << h << " " << dur << endl;
+	
 	
 	if (h == "|") {
 		Sguidotag bar = ARFactory().instance().createTag("bar");
 		fHarmVoice->push (bar);
 	}
+	else if (h == "empty") {
+		SARNote empty = ARFactory().instance().createNote("empty");
+		*empty = dur;
+		fHarmVoice->push (empty);
+	}
+//	else if (h == ":|") {
+//		fHarmVoice->push (makeHidden("repeatEnd"));
+//	}
 	else {
+		fHarmVoice->push (newLine());
+		size_t dxpos = h.find("dx=");
+		string dx ("0");
+		string hh (h);
+		if (dxpos != string::npos) {
+			dx = h.substr(dxpos+3);
+			hh = h.substr(0,dxpos);
+		}
 		const char * dy 	= isupper(h[0]) ? HarmMainDy : HarmSubDy;
 		const char * size 	= isupper(h[0]) ? HarmMainSize : HarmSubSize;
 		Sguidotag harm = ARFactory().instance().createTag("harmony");
-		harm->add( makeAttribute(nullptr, h.c_str(), true) );
+		harm->add( makeAttribute(nullptr, hh.c_str(), true) );
 		harm->add( makeAttribute("dy", dy, false) );
-		harm->add( makeAttribute("dx", 0) );
+		harm->add( makeAttribute("dx", dx.c_str(), false) );
 		harm->add( makeAttribute("fsize", size, false) );
 		fHarmVoice->push (harm);
 
@@ -583,7 +613,6 @@ void gmn2tabvisitor::makeHarmony( const string& h, const rational& dur)
 		*empty = dur;
 		fHarmVoice->push (empty);
 	}
-	fHarmVoice->push (newLine());
 }
 
 //______________________________________________________________________________
