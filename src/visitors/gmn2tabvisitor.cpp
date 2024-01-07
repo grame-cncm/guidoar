@@ -392,46 +392,43 @@ Sguidotag gmn2tabvisitor::makeTab ( const std::string& content, bool push ) cons
 }
 
 //______________________________________________________________________________
+bool gmn2tabvisitor::existingVariables 	( const ARMusic::THeader& header, std::string varname) const
+{
+	for (auto elt: header) {
+		const guidovariable* var = dynamic_cast<const guidovariable*>((const guidoelement*)elt);
+		if (var && (var->getName() == varname)) return true;
+	}
+	return false;
+}
+
+//______________________________________________________________________________
+Sguidovariable gmn2tabvisitor::createVariable (const char * name, const char * value) const
+{
+	Sguidovariable var = ARFactory().instance().createVariable(name);
+	var->setValue(value, false);
+	return var;
+}
+
+//______________________________________________________________________________
 void gmn2tabvisitor::initVariables (SARMusic score)
 {
 	Sguidocomment c = guidocomment::create();
 	c->setName("\n% start of auto variables");
 	score->addHeader (c);
 
-	Sguidovariable var = ARFactory().instance().createVariable(InstrSize);
-	var->setValue(defaultInstrSize, false);
-	score->addHeader (var);
-
-	var = ARFactory().instance().createVariable(TabSize);
-	var->setValue(defaultTabSize, false);
-	score->addHeader (var);
-
-	var = ARFactory().instance().createVariable(PushDy);
-	var->setValue(defaultPy, false);
-	score->addHeader (var);
-
-	var = ARFactory().instance().createVariable(PullDy);
-	var->setValue(defaultTy, false);
-	score->addHeader (var);
-
-	var = ARFactory().instance().createVariable(TabStaffDist);
-	var->setValue(defaultTabStaffDist, false);
-	score->addHeader (var);
+	const ARMusic::THeader& header = score->getHeader();
+	if (!existingVariables(header, InstrSize)) 		score->addHeader (createVariable(InstrSize, defaultInstrSize));
+	if (!existingVariables(header, TabSize)) 		score->addHeader (createVariable(TabSize, defaultTabSize));
+	if (!existingVariables(header, PushDy)) 		score->addHeader (createVariable(PushDy, defaultPy));
+	if (!existingVariables(header, PullDy)) 		score->addHeader (createVariable(PullDy, defaultTy));
+	if (!existingVariables(header, TabStaffDist)) 	score->addHeader (createVariable(TabStaffDist, defaultTabStaffDist));
 
 	score->addHeader(newLine());
 
-	var = ARFactory().instance().createVariable(HarmMainDy);
-	var->setValue(defaultHarmMainDy, false);
-	score->addHeader (var);
-	var = ARFactory().instance().createVariable(HarmSubDy);
-	var->setValue(defaultHarmSubDy, false);
-	score->addHeader (var);
-	var = ARFactory().instance().createVariable(HarmMainSize);
-	var->setValue(defaultHarmMainSize, false);
-	score->addHeader (var);
-	var = ARFactory().instance().createVariable(HarmSubSize);
-	var->setValue(defaultHarmSubSize, false);
-	score->addHeader (var);
+	if (!existingVariables(header, HarmMainDy)) 	score->addHeader (createVariable(HarmMainDy, defaultHarmMainDy));
+	if (!existingVariables(header, HarmSubDy)) 		score->addHeader (createVariable(HarmSubDy, defaultHarmSubDy));
+	if (!existingVariables(header, HarmMainSize)) 	score->addHeader (createVariable(HarmMainSize, defaultHarmMainSize));
+	if (!existingVariables(header, HarmSubSize)) 	score->addHeader (createVariable(HarmSubSize, defaultHarmSubSize));
 
 	c = guidocomment::create();
 	c->setName("\n% end of auto variables\n");

@@ -27,6 +27,7 @@
 #include "arexport.h"
 #include "ARChord.h"
 #include "ARNote.h"
+#include "AROthers.h"
 #include "ARTypes.h"
 #include "clonevisitor.h"
 
@@ -112,11 +113,14 @@ class gar_export gmn2tabvisitor :
 					TPNote (SARNote n, int p) { note = n; pitch = p; }
 		} TPNote;
 		std::vector<TPNote> fChordNotes;	// list of chord notes with associated midi pitch
+		std::vector<std::string> fVariables;		// list of declared variables
 
 		void 	addToTabVoice 		( Sguidoelement elt );
 		void 	initTabVoice 		( Sguidoelement elt );
 		SARVoice initHarmVoice 		() const;
 		void 	initVariables 		( SARMusic score);
+		bool 	existingVariables 	( const ARMusic::THeader& header, std::string varname) const;
+		Sguidovariable createVariable (const char * name, const char * value) const;
 
 		Sguidoattribute makeAttribute ( const char* name, const char* value, bool quote ) const;
 		Sguidoattribute makeAttribute ( const char* name, float value ) const;
