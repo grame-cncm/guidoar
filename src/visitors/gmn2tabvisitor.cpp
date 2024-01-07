@@ -79,11 +79,15 @@ void AccordionKeyboard::initialize (KBDType type)
 	switch (type) {
 		case k3Rows:
 			init3Rows(fKeysMap);
+			fInitialised = true;
 			break;
 		case k3RowsH2:
 		case k2RowsCG:
-		case k2RowsEA:
+		case k2RowsDA:
 			cerr << "Keyboard type no yet supported" << endl;
+			break;
+		default:
+			cerr << "Unknown keyboard type" << endl;
 			break;
 	}
 }
@@ -306,6 +310,14 @@ const char * AccordionKeyboard::scanRows(const std::string& note, const TKeysMap
 //______________________________________________________________________________
 SARMusic gmn2tabvisitor::gmn2tab (const SARMusic ar, int targetvoice)
 {
+	if (ar->size() < targetvoice) {
+		cerr << "Voice " << targetvoice << ": out of range. Score voice count is " << ar->size() << "." << endl;
+		return nullptr;
+	}
+	if (!fKeyBoard.initialised()) {
+		cerr << "Keyboard not initialised" << endl;
+		return nullptr;
+	}
 	fTargetVoice = targetvoice;
 	fVoiceNum = 0;
 	fTabMode.push = false;

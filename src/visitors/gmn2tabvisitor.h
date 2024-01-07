@@ -52,7 +52,7 @@ class AccordionKeyboard
 			TKeysMap pull;
 		} Keyboard;
 		
-		typedef enum { k3Rows, k3RowsH2, k2RowsCG, k2RowsEA } KBDType;
+		typedef enum { kUnknown, k3Rows, k3RowsH2, k2RowsCG, k2RowsDA, kDefault=k3Rows} KBDType;
 
 			 AccordionKeyboard(KBDType type);
 	virtual ~AccordionKeyboard() {}
@@ -62,6 +62,7 @@ class AccordionKeyboard
 		// otherwise the effective push mode is returned by the push parameter
 		const char* note2tab (const std::string& note, bool& push, int row, bool force=false) const;
 		void 		initialize(KBDType type);
+		bool 		initialised() const		{ return fInitialised; }
 
 	private:
 	
@@ -71,6 +72,7 @@ class AccordionKeyboard
 
 		Keyboard  		fKeysMap;
 		TEnharmonics	fEnharmonics;
+		bool 			fInitialised = false;
 };
 
 //______________________________________________________________________________
