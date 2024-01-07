@@ -464,20 +464,12 @@ void gmn2tabvisitor::initTabVoice ( Sguidoelement elt )
 	elt->push(newLine());
 
 	Sguidotag instr = ARFactory().instance().createTag("instr");
-	instr->add( makeAttribute(nullptr, "P", true) );
+	instr->add( makeAttribute(nullptr, "P\\nT", true) );
 	instr->add( makeAttribute("autopos", "on", true) );
+	instr->add( makeAttribute("repeat", "on", true) );
 	instr->add( makeAttribute("fsize", InstrSize, false) );
-	instr->add( makeAttribute("dx", -3) );
-	instr->add( makeAttribute("dy", 1.8) );
-	elt->push (instr);
-	elt->push(newLine());
-
-	instr = ARFactory().instance().createTag("instr");
-	instr->add( makeAttribute(nullptr, "T", true) );
-	instr->add( makeAttribute("autopos", "on", true) );
-	instr->add( makeAttribute("fsize", InstrSize, false) );
-	instr->add( makeAttribute("dx", -7.7) );
-	instr->add( makeAttribute("dy", -2.2) );
+	instr->add( makeAttribute("dx", -4.0) );
+	instr->add( makeAttribute("dy", 1) );
 	elt->push (instr);
 	elt->push(newLine());
 
