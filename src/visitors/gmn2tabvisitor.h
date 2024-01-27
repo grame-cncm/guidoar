@@ -113,7 +113,6 @@ class gar_export gmn2tabvisitor :
 					TPNote (SARNote n, int p) { note = n; pitch = p; }
 		} TPNote;
 		std::vector<TPNote> fChordNotes;	// list of chord notes with associated midi pitch
-		std::vector<std::string> fVariables;		// list of declared variables
 
 		void 	addToTabVoice 		( Sguidoelement elt );
 		void 	initTabVoice 		( Sguidoelement elt );
@@ -129,6 +128,7 @@ class gar_export gmn2tabvisitor :
 		void 			makeHarmony   ( const std::string& h, const rational& dur );
 		std::string		noteName 	  ( const SARNote& note) const;   // note name + octave
 		Sguidoelement 	newLine 	  () const;
+		SARNote			makeEmpty	  ( const rational& dur, int dots) const;
 		void 			handleTab 	  (const std::string&);  // handle tab expressions
 		void 			handleHarm 	  (const std::string&);  // handle harmony expressions
 

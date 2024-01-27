@@ -382,6 +382,15 @@ Sguidoattribute gmn2tabvisitor::makeAttribute ( const char* name, float value ) 
 }
 
 //______________________________________________________________________________
+SARNote	gmn2tabvisitor::makeEmpty ( const rational& dur, int dots) const
+{
+	SARNote empty = ARFactory().instance().createNote("empty");
+	if (dur.getNumerator() != 0) *empty = dur;
+	empty->SetDots(dots);
+	return empty;
+}
+
+//______________________________________________________________________________
 Sguidotag gmn2tabvisitor::makeTab ( const std::string& content, bool push ) const
 {
 	Sguidotag lyric = ARFactory().instance().createTag("lyrics");
@@ -526,16 +535,15 @@ void gmn2tabvisitor::visitStart ( SARRepeatEnd& bar ) {
 void gmn2tabvisitor::visitStart ( SARNote& note )
 {
 	clonevisitor::visitStart(note);
-//cerr << "gmn2tabvisitor::visitStart SARNote " << noteName(note) << " " << note->GetAccidental() << endl;
+	if (fVoiceNum != fTargetVoice) return;
 
+//cerr << "gmn2tabvisitor::visitStart SARNote " << noteName(note) << " " << note->GetAccidental() << endl;
 	if (!note->implicitOctave()) fCurrentOctave = note->GetOctave();
-	if (fInChord)
-		fChordNotes.push_back(TPNote(note, note->midiPitch(fCurrentOctave)));
-	
-	if (fVoiceNum == fTargetVoice) {
-		SARNote empty = ARFactory().instance().createNote("empty");
-		*empty = note->duration();
-		empty->SetDots(note->GetDots());
+	if (fInChord) {
+	 	if (fInTie < 2) fChordNotes.push_back(TPNote(note, note->midiPitch(fCurrentOctave)));
+	}
+	else {
+		SARNote empty = makeEmpty(note->duration(), note->GetDots());
 		if (note->isPitched() && (fInTie < 2)) {
 //cerr << "gmn2tabvisitor::visitStart SARNote set tab to " << noteName(note) << " => " << string(*empty) << endl;
 			bool push = fTabMode.push;
@@ -548,8 +556,8 @@ void gmn2tabvisitor::visitStart ( SARNote& note )
 			}
 		}
 		else fTabVoice->push(empty);
+		if (fInTie) fInTie++;
 	}
-	if (fInTie) fInTie++;
 }
 
 //______________________________________________________________________________
@@ -578,7 +586,6 @@ void gmn2tabvisitor::makeHarmony( const string& h, const rational& dur)
 {
 	if (!fHarmVoice) fHarmVoice = initHarmVoice();
 //	cerr << "gmn2tabvisitor::makeHarmony " << h << " " << dur << endl;
-	
 	
 	if (h == "|") {
 		Sguidotag bar = ARFactory().instance().createTag("bar");
@@ -674,32 +681,39 @@ void gmn2tabvisitor::visitStart ( SARMusic& music )
 void gmn2tabvisitor::visitStart ( SARChord& chord )
 {
 	clonevisitor::visitStart (chord);
-	fChordNotes.clear();
-	fInChord = true;
+	if (fVoiceNum == fTargetVoice) {
+		fChordNotes.clear();
+		fInChord = true;
+	}
 }
 
 //______________________________________________________________________________
 void gmn2tabvisitor::visitEnd ( SARChord& chord )
 {
 	clonevisitor::visitEnd (chord);
+	if (fVoiceNum != fTargetVoice) return;
+
+	if (fInTie) fInTie++;
+	rational dur = chord->duration();
+	std::vector<const SARNote> vnotes = chord->notes();
+	int dots = vnotes.size() ? vnotes[0]->GetDots() : 0;
+
 	if (fChordNotes.size()) {
 		std::sort (fChordNotes.begin(), fChordNotes.end(), [] (gmn2tabvisitor::TPNote n1, gmn2tabvisitor::TPNote n2) { return n1.pitch < n2.pitch; });
-	}
-	if (fInTie < 2) {
 		const char* sep = "";
 		string tabs;
-		rational dur = chord->duration();
 		for (auto n: fChordNotes) {
 			tabs += sep;
 			tabs += fKeyBoard.note2tab (noteName (n.note), fTabMode.push, fTabMode.row, true);
 			sep = ",";
 		}
-		SARNote empty = ARFactory().instance().createNote("empty");
-		if (dur.getNumerator() != 0) *empty = dur;
 		Sguidotag lyric = makeTab (tabs, fTabMode.push);
-		lyric->push (empty);
+		lyric->push (makeEmpty (dur, dots));
 		fTabVoice->push(newLine());
 		fTabVoice->push(lyric);
+	}
+	else {
+		fTabVoice->push( makeEmpty (dur, dots ));
 	}
 	fInChord = false;
 }
@@ -715,8 +729,10 @@ void gmn2tabvisitor::visitEnd ( SARVoice& voice )
 {
 	clonevisitor::visitEnd(voice);
 	if (fVoiceNum == fTargetVoice) {
-		Sguidoelement elt = fTabVoice;
-		clonevisitor::push (elt, false);
+		if (fTabMode.row) {
+			Sguidoelement elt = fTabVoice;
+			clonevisitor::push (elt, false);
+		}
 		if (fHarmVoice) {
 			Sguidoelement elt = fHarmVoice;
 			clonevisitor::push (elt, false);
