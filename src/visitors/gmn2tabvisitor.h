@@ -68,6 +68,7 @@ class AccordionKeyboard
 	private:
 	
 		void 		 init3Rows (Keyboard& k);
+		void 		 initHeim2 (Keyboard& k);
 		void 		 initEnharmonics(TEnharmonics& tbl);
 		const char * scanRows(const std::string& note, const TKeysMap& map, int row) const;
 

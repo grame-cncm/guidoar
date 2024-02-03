@@ -82,6 +82,9 @@ void AccordionKeyboard::initialize (KBDType type)
 			fInitialised = true;
 			break;
 		case k3RowsH2:
+			initHeim2(fKeysMap);
+			fInitialised = true;
+			break;
 		case k2RowsCG:
 		case k2RowsDA:
 			cerr << "Keyboard type no yet supported" << endl;
@@ -171,6 +174,84 @@ void AccordionKeyboard::initEnharmonics(TEnharmonics& tbl)
 	tbl["a&&2"] = "g2";
 	tbl["f##3"] = "g3";
 	tbl["a&&3"] = "g3";
+}
+
+//______________________________________________________________________________
+void AccordionKeyboard::initHeim2 (Keyboard& map)
+{
+// push mode
+	map.push.first["b-1"]= "1";
+	map.push.first["d0"] = "2"; 
+	map.push.first["g0"] = "3"; 
+	map.push.first["b0"] = "4"; 
+	map.push.first["d1"] = "5"; 
+	map.push.first["g1"] = "6"; 
+	map.push.first["b1"] = "7"; 
+	map.push.first["d2"] = "8"; 
+	map.push.first["g2"] = "9"; 
+	map.push.first["b2"] = "10"; 
+	map.push.first["d3"] = "11"; 
+	map.push.first["g3"] = "12"; 
+
+	map.push.second["e0"] = "1'";
+	map.push.second["a0"] = "2'";
+	map.push.second["c1"] = "3'";
+	map.push.second["e1"] = "4'";
+	map.push.second["a1"] = "5'";
+	map.push.second["c2"] = "6'";
+	map.push.second["e2"] = "7'";
+	map.push.second["a2"] = "8'";
+	map.push.second["c3"] = "9'";
+	map.push.second["e3"] = "10'";
+	map.push.second["a3"] = "11'";
+
+	map.push.third["f0"]  = "1''";
+	map.push.third["g#0"] = "2''";
+	map.push.third["e&1"] = "3''";
+	map.push.third["f1"]  = "4''";
+	map.push.third["g#1"] = "5''";
+	map.push.third["e&2"] = "6''";
+	map.push.third["f2"]  = "7''";
+	map.push.third["g#2"] = "8''";
+	map.push.third["e&3"] = "9''";
+	map.push.third["f3"]  = "10''";
+
+// pull mode
+  	map.pull.first["e0"]  = "1";
+	map.pull.first["f#0"] = "2"; 
+	map.pull.first["a0"]  = "3"; 
+	map.pull.first["c1"]  = "4"; 
+	map.pull.first["e1"]  = "5"; 
+	map.pull.first["f#1"] = "6"; 
+	map.pull.first["a1"]  = "7"; 
+	map.pull.first["c2"]  = "8"; 
+	map.pull.first["e2"]  = "9"; 
+	map.pull.first["f#2"] = "10"; 
+	map.pull.first["a2"]  = "11"; 
+	map.pull.first["c3"]  = "12"; 
+
+	map.pull.second["g0"] = "1'";
+	map.pull.second["b0"] = "2'";
+	map.pull.second["d1"] = "3'";
+	map.pull.second["f1"] = "4'";
+	map.pull.second["g1"] = "5'";
+	map.pull.second["b1"] = "6'";
+	map.pull.second["d2"] = "7'";
+	map.pull.second["f2"] = "8'";
+	map.pull.second["g2"] = "9'";
+	map.pull.second["b2"] = "10'";
+	map.pull.second["d3"] = "11'";
+
+	map.pull.third["b&0"] = "1''";
+	map.pull.third["c#1"] = "2''";
+	map.pull.third["e&1"] = "3''";
+	map.pull.third["g#1"] = "4''";
+	map.pull.third["b&1"] = "5''";
+	map.pull.third["c#2"] = "6''";
+	map.pull.third["e&2"] = "7''";
+	map.pull.third["g#2"] = "8''";
+	map.pull.third["b&2"] = "9''";
+	map.pull.third["c#3"] = "10''";
 }
 
 //______________________________________________________________________________
